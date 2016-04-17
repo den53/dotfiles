@@ -1,2 +1,2 @@
 Bundle 'mxw/vim-jsx'
-Bundle 'vim-scripts/closetag.vim'
+Bundle 'alvan/vim-closetag'
