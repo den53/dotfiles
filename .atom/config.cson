@@ -1,0 +1,60 @@
+"*":
+  "atom-beautify":
+    css:
+      align_assignments: true
+    general:
+      _analyticsUserId: "8fd00a1d-9286-4d7a-88c7-f309b1a214da"
+    js:
+      default_beautifier: "Pretty Diff"
+      preserve_newlines: false
+      space_before_conditional: false
+    jsx: {}
+  core:
+    customFileTypes:
+      "source.ini": [
+        ".buckconfig"
+        ".flowconfig"
+      ]
+      "source.json": [
+        ".arcconfig"
+        "BUCK.autodeps"
+      ]
+      "source.python": [
+        "BUCK"
+      ]
+    disabledPackages: [
+      "angularjs"
+      "meteor-api"
+      "linter"
+      "tree-view"
+    ]
+    projectHome: "/Users/denbox/Google\\ Drive/workspace/"
+  editor:
+    invisibles: {}
+    softWrap: true
+  emmet: {}
+  "exception-reporting":
+    userId: "e008a362-3dbe-a897-cbde-7bc544bc12d5"
+  "file-watcher":
+    promptWhenFileHasChangedOnDisk: false
+  jshint:
+    onlyConfig: true
+    supportLintingJsx: true
+    validateOnlyOnSave: true
+  jslint:
+    useFoldModeAsDefault: true
+    validateOnChange: true
+  linter:
+    showErrorPanel: false
+  "linter-eslint":
+    disableWhenNoEslintConfig: false
+  nuclide:
+    installRecommendedPackages: true
+    "nuclide-distraction-free-mode": {}
+    "nuclide-format-js":
+      reprint: true
+    "nuclide-home":
+      showHome: false
+  "vim-mode": {}
+  welcome:
+    showOnStartup: false

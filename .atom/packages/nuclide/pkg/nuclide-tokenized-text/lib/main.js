@@ -1,0 +1,64 @@
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+
+/*
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the license found in the LICENSE file in
+ * the root directory of this source tree.
+ */
+
+// This type is duplicated in nuclide-flow-base/lib/FlowService.js
+// When updating update both locations!
+
+// This type is duplicated in nuclide-flow-base/lib/FlowService.js
+// When updating update both locations!
+
+// This type is duplicated in nuclide-flow-base/lib/FlowService.js
+// When updating update both locations!
+exports.keyword = keyword;
+exports.className = className;
+exports.constructor = constructor;
+exports.method = method;
+exports.param = param;
+exports.string = string;
+exports.whitespace = whitespace;
+exports.plain = plain;
+
+function keyword(value) {
+  return _buildToken('keyword', value);
+}
+
+function className(value) {
+  return _buildToken('class-name', value);
+}
+
+function constructor(value) {
+  return _buildToken('constructor', value);
+}
+
+function method(value) {
+  return _buildToken('method', value);
+}
+
+function param(value) {
+  return _buildToken('param', value);
+}
+
+function string(value) {
+  return _buildToken('string', value);
+}
+
+function whitespace(value) {
+  return _buildToken('whitespace', value);
+}
+
+function plain(value) {
+  return _buildToken('plain', value);
+}
+
+function _buildToken(kind, value) {
+  return { kind: kind, value: value };
+}

@@ -1,0 +1,65 @@
+{
+  "name": "nuclide-clang-atom",
+  "repository": "https://github.com/facebook/nuclide",
+  "main": "./lib/main",
+  "version": "0.0.0",
+  "description": "Exposes features from nuclide-clang in Atom",
+  "nuclide": {
+    "packageType": "Atom",
+    "testRunner": "apm",
+    "config": {
+      "enableDefaultFlags": {
+        "title": "Enable Default Compilation Flags",
+        "type": "boolean",
+        "default": "true",
+        "description": "Attempt to use Clang with *Default Compilation Flags* if they cannot be determined via Buck or `compile_commands.json`."
+      },
+      "defaultFlags": {
+        "title": "Default Compilation Flags",
+        "type": "array",
+        "default": ["-std=c++14", "-x", "c++"],
+        "description": "List of default flags to use with Clang, if enabled.",
+        "items": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "providedServices": {
+    "autocomplete.provider": {
+      "versions": {
+        "2.0.0": "createAutocompleteProvider"
+      }
+    },
+    "hyperclick.provider": {
+      "versions": {
+        "0.0.0": "getHyperclickProvider"
+      }
+    },
+    "nuclide-code-format.provider": {
+      "versions": {
+        "0.0.0": "provideCodeFormat"
+      }
+    },
+    "nuclide-diagnostics-provider": {
+      "versions": {
+        "0.1.0": "provideDiagnostics"
+      }
+    },
+    "nuclide-type-hint.provider": {
+      "versions": {
+        "0.0.0": "createTypeHintProvider"
+      }
+    },
+    "nuclide-busy-signal": {
+      "versions": {
+        "0.1.0": "provideBusySignal"
+      }
+    },
+    "nuclide-outline-view": {
+      "versions": {
+        "0.0.0": "provideOutlineView"
+      }
+    }
+  }
+}

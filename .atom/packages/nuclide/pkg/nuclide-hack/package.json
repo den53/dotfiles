@@ -1,0 +1,83 @@
+{
+  "name": "nuclide-hack",
+  "repository": "https://github.com/facebook/nuclide",
+  "main": "./lib/main",
+  "version": "0.0.0",
+  "description": "Provides hack language support in Nuclide",
+  "nuclide": {
+    "config": {
+      "hhClientPath": {
+        "title": "Overrides default path for hh_client.",
+        "type": "string",
+        "default": "",
+        "description": "Primarily for testing new versions of hh_client."
+      },
+      "useIdeConnection": {
+        "title": "Use persistent IDE connection to hh_client",
+        "type": "boolean",
+        "default": false,
+        "description": "In Development: For use by Hack/Nuclide team only."
+      },
+      "showTypeCoverage": {
+        "title": "Show regions of unchecked code",
+        "type": "boolean",
+        "default": false,
+        "description": "Show regions of Hack code which are not type checked."
+      }
+    },
+    "packageType": "Atom",
+    "testRunner": "apm"
+  },
+  "providedServices": {
+    "autocomplete.provider": {
+      "versions": {
+        "2.0.0": "createAutocompleteProvider"
+      }
+    },
+    "hyperclick.provider": {
+      "versions": {
+        "0.0.0": "getHyperclickProvider"
+      }
+    },
+    "nuclide-busy-signal": {
+      "versions": {
+        "0.1.0": "provideBusySignal"
+      }
+    },
+    "nuclide-diagnostics-provider": {
+      "versions": {
+        "0.1.0": "provideDiagnostics"
+      }
+    },
+    "nuclide-code-format.provider": {
+      "versions": {
+        "0.0.0": "createCodeFormatProvider"
+      }
+    },
+    "nuclide-find-references.provider": {
+      "versions": {
+        "0.0.0": "createFindReferencesProvider"
+      }
+    },
+    "nuclide-type-hint.provider": {
+      "versions": {
+        "0.0.0": "createTypeHintProvider"
+      }
+    },
+    "nuclide-evaluation-expression.provider": {
+      "versions": {
+        "0.0.0": "createEvaluationExpressionProvider"
+      }
+    },
+    "nuclide-code-highlight.provider": {
+      "versions": {
+        "0.0.0": "createCodeHighlightProvider"
+      }
+    },
+    "nuclide-outline-view": {
+      "versions": {
+        "0.0.0": "provideOutlines"
+      }
+    }
+  }
+}

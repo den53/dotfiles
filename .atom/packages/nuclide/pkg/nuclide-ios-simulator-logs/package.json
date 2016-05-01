@@ -1,0 +1,50 @@
+{
+  "name": "nuclide-ios-simulator-logs",
+  "repository": "https://github.com/facebook/nuclide",
+  "main": "./lib/main",
+  "version": "0.0.0",
+  "description": "A nuclide-output provider for iOS Simulator logs",
+  "nuclide": {
+    "packageType": "Atom",
+    "testRunner": "apm",
+    "config": {
+      "senderBlacklist": {
+        "title": "Sender Blacklist",
+        "type": "array",
+        "default": [
+          "assertiond",
+          "routined",
+          "syslogd",
+          "SpringBoard",
+          "installd",
+          "pkd",
+          "lsd",
+          "searchd",
+          "itunesstored",
+          "backboardd"
+        ],
+        "description": "Exclude messages sent by these senders from the output window"
+      },
+      "pathToSyslog": {
+        "title": "Path to syslog executable",
+        "type": "string",
+        "default": "syslog",
+        "description": "Absolute path to the syslog executable on your system."
+      }
+    }
+  },
+  "activationCommands": {
+    "atom-workspace": [
+      "nuclide-ios-simulator-logs:start",
+      "nuclide-ios-simulator-logs:stop",
+      "nuclide-ios-simulator-logs:restart"
+    ]
+  },
+  "consumedServices": {
+    "nuclide-output": {
+      "versions": {
+        "0.0.0": "consumeOutputService"
+      }
+    }
+  }
+}

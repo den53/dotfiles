@@ -1,0 +1,24 @@
+{
+  "name": "nuclide-diagnostics-datatip-provider",
+  "repository": "https://github.com/facebook/nuclide",
+  "main": "./lib/main",
+  "version": "0.0.0",
+  "description": "Provides datatips showing file-level warnings and errors.",
+  "nuclide": {
+    "packageType": "Atom",
+    "testRunner": "apm"
+  },
+  "private": true,
+  "consumedServices": {
+    "nuclide-diagnostics": {
+      "versions": {
+        "0.0.0": "consumeDiagnosticUpdates"
+      }
+    },
+    "nuclide-datatip.provider": {
+      "versions": {
+        "0.0.0": "consumeDatatipService"
+      }
+    }
+  }
+}

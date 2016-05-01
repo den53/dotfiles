@@ -1,0 +1,83 @@
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+/*
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the license found in the LICENSE file in
+ * the root directory of this source tree.
+ */
+
+var _atom = require('atom');
+
+var SyncScroll = (function () {
+  function SyncScroll(editor1Element, editor2Element) {
+    var _this = this;
+
+    _classCallCheck(this, SyncScroll);
+
+    // Atom master or >= v1.0.18 have changed the scroll logic to the editor element.
+    var subscriptions = this._subscriptions = new _atom.CompositeDisposable();
+    this._syncInfo = [{
+      scrollElement: editor1Element,
+      scrolling: false
+    }, {
+      scrollElement: editor2Element,
+      scrolling: false
+    }];
+    this._syncInfo.forEach(function (editorInfo, i) {
+      // Note that `onDidChangeScrollTop` isn't technically in the public API.
+      var scrollElement = editorInfo.scrollElement;
+
+      var updateScrollPosition = function updateScrollPosition() {
+        return _this._scrollPositionChanged(i);
+      };
+      subscriptions.add(scrollElement.onDidChangeScrollTop(updateScrollPosition));
+      subscriptions.add(scrollElement.onDidChangeScrollLeft(updateScrollPosition));
+    });
+  }
+
+  _createClass(SyncScroll, [{
+    key: '_scrollPositionChanged',
+    value: function _scrollPositionChanged(changeScrollIndex) {
+      var thisInfo = this._syncInfo[changeScrollIndex];
+      if (thisInfo.scrolling) {
+        return;
+      }
+      var otherInfo = this._syncInfo[1 - changeScrollIndex];
+      var otherElement = otherInfo.scrollElement;
+
+      if (otherElement.component == null) {
+        // The other editor isn't yet attached,
+        // while both editors were already in sync when attached.
+        return;
+      }
+      var thisElement = thisInfo.scrollElement;
+
+      otherInfo.scrolling = true;
+      otherElement.setScrollTop(thisElement.getScrollTop());
+      // $FlowFixMe Atom API backword compatability.
+      otherElement.setScrollLeft(thisElement.getScrollLeft());
+      otherInfo.scrolling = false;
+    }
+  }, {
+    key: 'dispose',
+    value: function dispose() {
+      if (this._subscriptions) {
+        this._subscriptions.dispose();
+        this._subscriptions = null;
+      }
+    }
+  }]);
+
+  return SyncScroll;
+})();
+
+exports['default'] = SyncScroll;
+module.exports = exports['default'];
