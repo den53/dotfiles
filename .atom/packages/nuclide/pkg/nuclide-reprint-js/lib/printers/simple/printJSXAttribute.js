@@ -8,11 +8,22 @@
  * the root directory of this source tree.
  */
 
-var flatten = require('../../utils/flatten');
-var markers = require('../../constants/markers');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _utilsFlatten2;
+
+function _utilsFlatten() {
+  return _utilsFlatten2 = _interopRequireDefault(require('../../utils/flatten'));
+}
+
+var _constantsMarkers2;
+
+function _constantsMarkers() {
+  return _constantsMarkers2 = _interopRequireDefault(require('../../constants/markers'));
+}
 
 function printJSXAttribute(print, node) {
-  return flatten([print(node.name), node.value ? [markers.noBreak, '=', markers.noBreak, print(node.value)] : markers.empty]);
+  return (0, (_utilsFlatten2 || _utilsFlatten()).default)([print(node.name), node.value ? [(_constantsMarkers2 || _constantsMarkers()).default.noBreak, '=', (_constantsMarkers2 || _constantsMarkers()).default.noBreak, print(node.value)] : (_constantsMarkers2 || _constantsMarkers()).default.empty]);
 }
 
 module.exports = printJSXAttribute;

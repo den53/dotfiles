@@ -14,7 +14,11 @@ exports.addTooltip = addTooltip;
  * the root directory of this source tree.
  */
 
-var _reactForAtom = require('react-for-atom');
+var _reactForAtom2;
+
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
 
 /**
 * Adds a self-disposing Atom's tooltip to a react element.
@@ -39,7 +43,7 @@ function addTooltip(options) {
 
     if (elementRef != null) {
       // $FlowFixMe -- findDOMNode takes a React.Component or an HTMLElement.
-      var node = _reactForAtom.ReactDOM.findDOMNode(elementRef);
+      var node = (_reactForAtom2 || _reactForAtom()).ReactDOM.findDOMNode(elementRef);
 
       prevRefDisposable = atom.tooltips.add(node, _extends({
         keyBindingTarget: node

@@ -1,4 +1,4 @@
-
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -8,14 +8,18 @@
  * the root directory of this source tree.
  */
 
-var path = require('path');
+var _path2;
+
+function _path() {
+  return _path2 = _interopRequireDefault(require('path'));
+}
 
 var ensureTrailingSeparator = require('../../nuclide-commons').paths.ensureTrailingSeparator;
 
 var ADD_ACTION = 'add';
 var REMOVE_ACTION = 'remove';
 
-var separatorRegex = new RegExp('\\' + path.sep, 'g');
+var separatorRegex = new RegExp('\\' + (_path2 || _path()).default.sep, 'g');
 
 /**
  * This function takes in a file path, and computes all directories that would
@@ -84,7 +88,7 @@ function removeItemFromCache(item, cache) {
     if (newValue > 0) {
       cache.set(item, newValue);
     } else {
-      cache['delete'](item);
+      cache.delete(item);
     }
   }
 }

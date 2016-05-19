@@ -4,11 +4,11 @@ Object.defineProperty(exports, '__esModule', {
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -18,11 +18,17 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * the root directory of this source tree.
  */
 
-var _os = require('os');
+var _os2;
 
-var _os2 = _interopRequireDefault(_os);
+function _os() {
+  return _os2 = _interopRequireDefault(require('os'));
+}
 
-var _process = require('./process');
+var _process2;
+
+function _process() {
+  return _process2 = require('./process');
+}
 
 var DEFAULT_JOIN_TIMEOUT = 5000;
 var SCRIBE_CAT_COMMAND = 'scribe_cat';
@@ -57,7 +63,7 @@ var ScribeProcess = (function () {
     value: _asyncToGenerator(function* (message) {
       var child = yield this._getOrCreateChildProcess();
       return new Promise(function (resolve, reject) {
-        child.stdin.write('' + message + _os2['default'].EOL, resolve);
+        child.stdin.write('' + message + (_os2 || _os()).default.EOL, resolve);
       });
     })
   }, {
@@ -103,7 +109,7 @@ var ScribeProcess = (function () {
         return this._childPromise;
       }
 
-      this._childPromise = (0, _process.safeSpawn)(SCRIBE_CAT_COMMAND, [this._scribeCategory]).then(function (child) {
+      this._childPromise = (0, (_process2 || _process()).safeSpawn)(SCRIBE_CAT_COMMAND, [this._scribeCategory]).then(function (child) {
         child.stdin.setDefaultEncoding('utf8');
         _this2._childProcessRunning.set(child, true);
         child.on('error', function (error) {
@@ -122,7 +128,7 @@ var ScribeProcess = (function () {
   }], [{
     key: 'isScribeCatOnPath',
     value: _asyncToGenerator(function* () {
-      var _ref = yield (0, _process.checkOutput)('which', [SCRIBE_CAT_COMMAND]);
+      var _ref = yield (0, (_process2 || _process()).checkOutput)('which', [SCRIBE_CAT_COMMAND]);
 
       var exitCode = _ref.exitCode;
 

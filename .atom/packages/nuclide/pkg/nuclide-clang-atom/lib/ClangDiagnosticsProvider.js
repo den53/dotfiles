@@ -8,37 +8,63 @@ var _createDecoratedClass = (function () { function defineProperties(target, des
  * the root directory of this source tree.
  */
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _assert = require('assert');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _assert2 = _interopRequireDefault(_assert);
+var _assert2;
 
-var _constants = require('./constants');
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
-var _nuclideDiagnosticsProviderBase = require('../../nuclide-diagnostics-provider-base');
+var _constants2;
 
-var _nuclideAnalytics = require('../../nuclide-analytics');
+function _constants() {
+  return _constants2 = require('./constants');
+}
 
-var _nuclideLogging = require('../../nuclide-logging');
+var _nuclideDiagnosticsProviderBase2;
 
-var _libclang = require('./libclang');
+function _nuclideDiagnosticsProviderBase() {
+  return _nuclideDiagnosticsProviderBase2 = require('../../nuclide-diagnostics-provider-base');
+}
 
-var _atom = require('atom');
+var _nuclideAnalytics2;
+
+function _nuclideAnalytics() {
+  return _nuclideAnalytics2 = require('../../nuclide-analytics');
+}
+
+var _nuclideLogging2;
+
+function _nuclideLogging() {
+  return _nuclideLogging2 = require('../../nuclide-logging');
+}
+
+var _libclang2;
+
+function _libclang() {
+  return _libclang2 = require('./libclang');
+}
+
+var _atom2;
+
+function _atom() {
+  return _atom2 = require('atom');
+}
 
 var DEFAULT_FLAGS_WARNING = 'Diagnostics are disabled due to lack of compilation flags. ' + 'Build this file with Buck, or create a compile_commands.json file manually.';
 
 function atomRangeFromSourceRange(clangRange) {
-  return new _atom.Range([clangRange.start.line, clangRange.start.column], [clangRange.end.line, clangRange.end.column]);
+  return new (_atom2 || _atom()).Range([clangRange.start.line, clangRange.start.column], [clangRange.end.line, clangRange.end.column]);
 }
 
 function atomRangeFromLocation(location) {
   var line = Math.max(0, location.line);
-  return new _atom.Range([line, 0], [line + 1, 0]);
+  return new (_atom2 || _atom()).Range([line, 0], [line + 1, 0]);
 }
 
 var ClangDiagnosticsProvider = (function () {
@@ -46,16 +72,16 @@ var ClangDiagnosticsProvider = (function () {
     _classCallCheck(this, ClangDiagnosticsProvider);
 
     var options = {
-      grammarScopes: _constants.GRAMMAR_SET,
+      grammarScopes: (_constants2 || _constants()).GRAMMAR_SET,
       onTextEditorEvent: this.runDiagnostics.bind(this),
       onNewUpdateSubscriber: this._receivedNewUpdateSubscriber.bind(this)
     };
-    this._providerBase = new _nuclideDiagnosticsProviderBase.DiagnosticsProviderBase(options);
+    this._providerBase = new (_nuclideDiagnosticsProviderBase2 || _nuclideDiagnosticsProviderBase()).DiagnosticsProviderBase(options);
     this._busySignalProvider = busySignalProvider;
 
     this._bufferDiagnostics = new WeakMap();
     this._hasSubscription = new WeakMap();
-    this._subscriptions = new _atom.CompositeDisposable();
+    this._subscriptions = new (_atom2 || _atom()).CompositeDisposable();
     this._openedFiles = new Set();
   }
 
@@ -70,7 +96,7 @@ var ClangDiagnosticsProvider = (function () {
     }
   }, {
     key: '_runDiagnosticsImpl',
-    decorators: [(0, _nuclideAnalytics.trackTiming)('nuclide-clang-atom.fetch-diagnostics')],
+    decorators: [(0, (_nuclideAnalytics2 || _nuclideAnalytics()).trackTiming)('nuclide-clang-atom.fetch-diagnostics')],
     value: _asyncToGenerator(function* (textEditor) {
       var _this2 = this;
 
@@ -84,7 +110,7 @@ var ClangDiagnosticsProvider = (function () {
         (function () {
           var disposable = buffer.onDidDestroy(function () {
             _this2.invalidateBuffer(buffer);
-            _this2._hasSubscription['delete'](buffer);
+            _this2._hasSubscription.delete(buffer);
             _this2._subscriptions.remove(disposable);
             disposable.dispose();
           });
@@ -94,13 +120,13 @@ var ClangDiagnosticsProvider = (function () {
       }
 
       try {
-        var diagnostics = yield (0, _libclang.getDiagnostics)(textEditor, !this._openedFiles.has(filePath));
+        var diagnostics = yield (0, (_libclang2 || _libclang()).getDiagnostics)(textEditor, !this._openedFiles.has(filePath));
         this._openedFiles.add(filePath);
         // It's important to make sure that the buffer hasn't already been destroyed.
         if (diagnostics == null || !this._hasSubscription.get(buffer)) {
           return;
         }
-        (0, _nuclideAnalytics.track)('nuclide-clang-atom.fetch-diagnostics', {
+        (0, (_nuclideAnalytics2 || _nuclideAnalytics()).track)('nuclide-clang-atom.fetch-diagnostics', {
           filePath: filePath,
           count: diagnostics.diagnostics.length.toString(),
           accurateFlags: diagnostics.accurateFlags.toString()
@@ -110,14 +136,14 @@ var ClangDiagnosticsProvider = (function () {
         this._providerBase.publishMessageUpdate({ filePathToMessages: filePathToMessages });
         this._bufferDiagnostics.set(buffer, Array.from(filePathToMessages.keys()));
       } catch (error) {
-        (0, _nuclideLogging.getLogger)().error(error);
+        (0, (_nuclideLogging2 || _nuclideLogging()).getLogger)().error(error);
       }
     })
   }, {
     key: '_processDiagnostics',
     value: function _processDiagnostics(data, textEditor) {
       var editorPath = textEditor.getPath();
-      (0, _assert2['default'])(editorPath);
+      (0, (_assert2 || _assert()).default)(editorPath);
       var filePathToMessages = new Map();
       if (data.accurateFlags) {
         data.diagnostics.forEach(function (diagnostic) {
@@ -185,7 +211,7 @@ var ClangDiagnosticsProvider = (function () {
           type: 'Warning',
           filePath: editorPath,
           text: DEFAULT_FLAGS_WARNING,
-          range: new _atom.Range([0, 0], [1, 0])
+          range: new (_atom2 || _atom()).Range([0, 0], [1, 0])
         }]);
       }
 
@@ -203,7 +229,7 @@ var ClangDiagnosticsProvider = (function () {
     key: '_receivedNewUpdateSubscriber',
     value: function _receivedNewUpdateSubscriber(callback) {
       var activeTextEditor = atom.workspace.getActiveTextEditor();
-      if (activeTextEditor && _constants.GRAMMAR_SET.has(activeTextEditor.getGrammar().scopeName)) {
+      if (activeTextEditor && (_constants2 || _constants()).GRAMMAR_SET.has(activeTextEditor.getGrammar().scopeName)) {
         this.runDiagnostics(activeTextEditor);
       }
     }

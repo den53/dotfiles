@@ -9,9 +9,9 @@ var lookupPreferIpv6 = _asyncToGenerator(function* (host) {
   }
 });
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -21,13 +21,15 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
  * the root directory of this source tree.
  */
 
-var _dns = require('dns');
+var _dns2;
 
-var _dns2 = _interopRequireDefault(_dns);
+function _dns() {
+  return _dns2 = _interopRequireDefault(require('dns'));
+}
 
 function lookup(host, family) {
   return new Promise(function (resolve, reject) {
-    _dns2['default'].lookup(host, family, function (error, address) {
+    (_dns2 || _dns()).default.lookup(host, family, function (error, address) {
       if (error) {
         reject(error);
       } else if (address != null) {

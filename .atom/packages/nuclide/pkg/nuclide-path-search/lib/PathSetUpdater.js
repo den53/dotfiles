@@ -12,19 +12,29 @@ Object.defineProperty(exports, '__esModule', {
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _eventKit = require('event-kit');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _assert = require('assert');
+var _eventKit2;
 
-var _assert2 = _interopRequireDefault(_assert);
+function _eventKit() {
+  return _eventKit2 = require('event-kit');
+}
 
-var _nuclideWatchmanHelpers = require('../../nuclide-watchman-helpers');
+var _assert2;
+
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
+
+var _nuclideWatchmanHelpers2;
+
+function _nuclideWatchmanHelpers() {
+  return _nuclideWatchmanHelpers2 = require('../../nuclide-watchman-helpers');
+}
 
 /**
  * This class keeps the PathSets passed to it up to date by using file system
@@ -68,7 +78,7 @@ var PathSetUpdater = (function () {
       subscription.on('change', function (files) {
         return _this._processWatchmanUpdate(subscription.pathFromSubscriptionRootToSubscriptionPath, pathSet, files);
       });
-      return new _eventKit.Disposable(function () {
+      return new (_eventKit2 || _eventKit()).Disposable(function () {
         return _this._stopUpdatingPathSet(pathSet);
       });
     })
@@ -77,7 +87,7 @@ var PathSetUpdater = (function () {
     value: function _stopUpdatingPathSet(pathSet) {
       var subscription = this._pathSetToSubscription.get(pathSet);
       if (subscription) {
-        this._pathSetToSubscription['delete'](pathSet);
+        this._pathSetToSubscription.delete(pathSet);
         this._removeWatchmanSubscription(subscription);
       }
     }
@@ -90,7 +100,7 @@ var PathSetUpdater = (function () {
       if (this._watchmanClient) {
         return;
       }
-      this._watchmanClient = new _nuclideWatchmanHelpers.WatchmanClient();
+      this._watchmanClient = new (_nuclideWatchmanHelpers2 || _nuclideWatchmanHelpers()).WatchmanClient();
     }
   }, {
     key: '_addWatchmanSubscription',
@@ -98,7 +108,7 @@ var PathSetUpdater = (function () {
       if (!this._watchmanClient) {
         this._setupWatcherService();
       }
-      (0, _assert2['default'])(this._watchmanClient);
+      (0, (_assert2 || _assert()).default)(this._watchmanClient);
       return yield this._watchmanClient.watchDirectoryRecursive(localDirectory);
     })
   }, {
@@ -137,7 +147,7 @@ var PathSetUpdater = (function () {
         // PathSetUpdater::startUpdatingPathSet. But the PathSet expects paths
         // relative to the localDirectory. Thus we need to do this adjustment.
         var adjustedPath = pathFromSubscriptionRootToDir ? fileName.slice(pathFromSubscriptionRootToDir.length + 1) : fileName;
-        if (file['new']) {
+        if (file.new) {
           newPaths.push(adjustedPath);
         } else if (!file.exists) {
           deletedPaths.push(adjustedPath);
@@ -156,5 +166,5 @@ var PathSetUpdater = (function () {
   return PathSetUpdater;
 })();
 
-exports['default'] = PathSetUpdater;
-module.exports = exports['default'];
+exports.default = PathSetUpdater;
+module.exports = exports.default;

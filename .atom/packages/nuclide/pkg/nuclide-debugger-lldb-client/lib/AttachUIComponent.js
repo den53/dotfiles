@@ -14,21 +14,35 @@ var _createClass = (function () { function defineProperties(target, props) { for
 
 var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var _reactForAtom = require('react-for-atom');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _classnames = require('classnames');
+var _reactForAtom2;
 
-var _classnames2 = _interopRequireDefault(_classnames);
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
 
-var _nuclideUiLibAtomInput = require('../../nuclide-ui/lib/AtomInput');
+var _classnames2;
 
-var _nuclideUiLibButton = require('../../nuclide-ui/lib/Button');
+function _classnames() {
+  return _classnames2 = _interopRequireDefault(require('classnames'));
+}
+
+var _nuclideUiLibAtomInput2;
+
+function _nuclideUiLibAtomInput() {
+  return _nuclideUiLibAtomInput2 = require('../../nuclide-ui/lib/AtomInput');
+}
+
+var _nuclideUiLibButton2;
+
+function _nuclideUiLibButton() {
+  return _nuclideUiLibButton2 = require('../../nuclide-ui/lib/Button');
+}
 
 var AttachUIComponent = (function (_React$Component) {
   _inherits(AttachUIComponent, _React$Component);
@@ -78,19 +92,19 @@ var AttachUIComponent = (function (_React$Component) {
       var children = this.state.attachTargetInfos.filter(function (item) {
         return filterRegex.test(item.name) || filterRegex.test(item.pid.toString());
       }).map(function (item, index) {
-        return _reactForAtom.React.createElement(
+        return (_reactForAtom2 || _reactForAtom()).React.createElement(
           'tr',
           { key: index + 1,
             align: 'center',
-            className: (0, _classnames2['default'])({ 'attach-selected-row': _this.state.selectedAttachTarget === item }),
+            className: (0, (_classnames2 || _classnames()).default)({ 'attach-selected-row': _this.state.selectedAttachTarget === item }),
             onClick: _this._handleClickTableRow.bind(_this, item),
             onDoubleClick: _this._handleDoubleClickTableRow.bind(_this, index) },
-          _reactForAtom.React.createElement(
+          (_reactForAtom2 || _reactForAtom()).React.createElement(
             'td',
             null,
             item.name
           ),
-          _reactForAtom.React.createElement(
+          (_reactForAtom2 || _reactForAtom()).React.createElement(
             'td',
             null,
             item.pid
@@ -98,63 +112,63 @@ var AttachUIComponent = (function (_React$Component) {
         );
       });
       // TODO: wrap into separate React components.
-      return _reactForAtom.React.createElement(
+      return (_reactForAtom2 || _reactForAtom()).React.createElement(
         'div',
         { className: 'block' },
-        _reactForAtom.React.createElement(_nuclideUiLibAtomInput.AtomInput, {
+        (_reactForAtom2 || _reactForAtom()).React.createElement((_nuclideUiLibAtomInput2 || _nuclideUiLibAtomInput()).AtomInput, {
           placeholderText: 'Search...',
           initialValue: this.state.filterText,
           onDidChange: this._handleFilterTextChange,
           size: 'sm'
         }),
-        _reactForAtom.React.createElement(
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
           'div',
           { style: containerStyle },
-          _reactForAtom.React.createElement(
+          (_reactForAtom2 || _reactForAtom()).React.createElement(
             'table',
             { width: '100%' },
-            _reactForAtom.React.createElement(
+            (_reactForAtom2 || _reactForAtom()).React.createElement(
               'thead',
               null,
-              _reactForAtom.React.createElement(
+              (_reactForAtom2 || _reactForAtom()).React.createElement(
                 'tr',
                 { key: '0', align: 'center' },
-                _reactForAtom.React.createElement(
+                (_reactForAtom2 || _reactForAtom()).React.createElement(
                   'td',
                   null,
                   'Name'
                 ),
-                _reactForAtom.React.createElement(
+                (_reactForAtom2 || _reactForAtom()).React.createElement(
                   'td',
                   null,
                   'PID'
                 )
               )
             ),
-            _reactForAtom.React.createElement(
+            (_reactForAtom2 || _reactForAtom()).React.createElement(
               'tbody',
               { align: 'center' },
               children
             )
           )
         ),
-        _reactForAtom.React.createElement(
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
           'div',
           { className: 'padded text-right' },
-          _reactForAtom.React.createElement(
-            _nuclideUiLibButton.Button,
+          (_reactForAtom2 || _reactForAtom()).React.createElement(
+            (_nuclideUiLibButton2 || _nuclideUiLibButton()).Button,
             { onClick: this._handleCancelButtonClick },
             'Cancel'
           ),
-          _reactForAtom.React.createElement(
-            _nuclideUiLibButton.Button,
+          (_reactForAtom2 || _reactForAtom()).React.createElement(
+            (_nuclideUiLibButton2 || _nuclideUiLibButton()).Button,
             { onClick: this._updateAttachTargetList },
             'Refresh'
           ),
-          _reactForAtom.React.createElement(
-            _nuclideUiLibButton.Button,
+          (_reactForAtom2 || _reactForAtom()).React.createElement(
+            (_nuclideUiLibButton2 || _nuclideUiLibButton()).Button,
             {
-              buttonType: _nuclideUiLibButton.ButtonTypes.PRIMARY,
+              buttonType: (_nuclideUiLibButton2 || _nuclideUiLibButton()).ButtonTypes.PRIMARY,
               onClick: this._handleAttachClick,
               disabled: this.state.selectedAttachTarget === null },
             'Attach'
@@ -216,6 +230,6 @@ var AttachUIComponent = (function (_React$Component) {
   }]);
 
   return AttachUIComponent;
-})(_reactForAtom.React.Component);
+})((_reactForAtom2 || _reactForAtom()).React.Component);
 
 exports.AttachUIComponent = AttachUIComponent;

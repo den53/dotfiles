@@ -4,7 +4,11 @@
  *
  * This source code is licensed under the license found in the LICENSE file in
  * the root directory of this source tree.
+ *
+ * @flow
  */
+
+/* eslint-disable no-unused-vars */
 
 // FIXME(samgoldman) Remove top-level interface once Babel supports
 // `declare interface` syntax.
@@ -18,7 +22,7 @@ interface rx$IObserver<T> {
 // FIXME: Technically at least one of these is required.
 interface PartialObserver<T> {
   next?: (value: T) => mixed;
-  error?: (errror: any) => mixed;
+  error?: (error: any) => mixed;
   complete?: () => mixed;
 }
 
@@ -77,11 +81,11 @@ declare module 'rxjs' {
 
     static interval(period: number): Observable<number>;
 
-    static merge<T,U>(
+    static merge<T, U>(
       source0: Observable<T>,
       source1: Observable<U>,
     ): Observable<T | U>;
-    static merge<T,U,V>(
+    static merge<T, U, V>(
       source0: Observable<T>,
       source1: Observable<U>,
       source2: Observable<V>,
@@ -134,7 +138,7 @@ declare module 'rxjs' {
 
     delay(dueTime: number): Observable<T>;
 
-    distinctUntilChanged(): Observable<T>;
+    distinctUntilChanged(compare?: (x: T, y: T) => boolean): Observable<T>;
 
     filter(predicate: (value: T) => boolean): Observable<T>;
 
@@ -163,9 +167,15 @@ declare module 'rxjs' {
 
     map<U>(f: (value: T) => U): Observable<U>;
 
+    mapTo<U>(value: U): Observable<U>;
+
     merge(other: Observable<T>): Observable<T>;
 
     mergeAll(): T; // assumption: T is Observable
+
+    multicast(
+      subjectOrSubjectFactory: Subject<T> | () => Subject<T>,
+    ): ConnectableObservable<T>;
 
     publish(): ConnectableObservable<T>;
 
@@ -269,6 +279,10 @@ declare module 'rxjs' {
     next(value: T): mixed;
     error(error: any): mixed;
     complete(): mixed;
+
+    // For use in subclasses only:
+    _next(value: T): void;
+    _subscribe(observer: PartialObserver<T>): Subscription;
   }
 
   declare class BehaviorSubject<T> extends Subject<T> {

@@ -4,7 +4,7 @@ Object.defineProperty(exports, '__esModule', {
 
 var getWatchmanBinaryPath = _asyncToGenerator(function* () {
   try {
-    var stats = yield fsPromise.stat(WATCHMAN_DEFAULT_PATH);
+    var stats = yield (_nuclideCommons2 || _nuclideCommons()).fsPromise.stat(WATCHMAN_DEFAULT_PATH);
     // `stats` contains a `mode` property, a number which can be used to determine
     // whether this file is executable. However, the number is platform-dependent.
     if (stats && stats.isFile()) {
@@ -29,8 +29,10 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
  * the root directory of this source tree.
  */
 
-var _require = require('../../nuclide-commons');
+var _nuclideCommons2;
 
-var fsPromise = _require.fsPromise;
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
 
 var WATCHMAN_DEFAULT_PATH = '/usr/local/bin/watchman';

@@ -1,4 +1,4 @@
-
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -8,7 +8,11 @@
  * the root directory of this source tree.
  */
 
-var isMarker = require('./isMarker');
+var _isMarker2;
+
+function _isMarker() {
+  return _isMarker2 = _interopRequireDefault(require('./isMarker'));
+}
 
 /**
  * This returns a list of all the contiguous runs of markers within this set
@@ -18,7 +22,7 @@ function buildRuns(lines) {
   var runs = [];
   var start = null;
   for (var i = 0; i < lines.length; i++) {
-    if (!isMarker(lines[i])) {
+    if (!(0, (_isMarker2 || _isMarker()).default)(lines[i])) {
       if (start != null) {
         runs.push([start, i]);
         start = null;

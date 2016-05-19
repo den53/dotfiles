@@ -1,6 +1,4 @@
-var _nuclideUiLibButton = require('../../nuclide-ui/lib/Button');
-
-var _nuclideUiLibButtonToolbar = require('../../nuclide-ui/lib/ButtonToolbar');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -10,27 +8,49 @@ var _nuclideUiLibButtonToolbar = require('../../nuclide-ui/lib/ButtonToolbar');
  * the root directory of this source tree.
  */
 
-var DebuggerActions = require('./DebuggerActions');
-var DebuggerProcessInfo = require('./DebuggerProcessInfo');
+var _DebuggerActions2;
 
-var _require = require('./DebuggerStore');
+function _DebuggerActions() {
+  return _DebuggerActions2 = _interopRequireDefault(require('./DebuggerActions'));
+}
 
-var DebuggerStore = _require.DebuggerStore;
+var _DebuggerProcessInfo2;
 
-var _require2 = require('react-for-atom');
+function _DebuggerProcessInfo() {
+  return _DebuggerProcessInfo2 = _interopRequireDefault(require('./DebuggerProcessInfo'));
+}
 
-var React = _require2.React;
-var PropTypes = React.PropTypes;
+var _DebuggerStore2;
+
+function _DebuggerStore() {
+  return _DebuggerStore2 = require('./DebuggerStore');
+}
+
+var _reactForAtom2;
+
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
+
+var _nuclideUiLibButton2;
+
+function _nuclideUiLibButton() {
+  return _nuclideUiLibButton2 = require('../../nuclide-ui/lib/Button');
+}
+
+var _nuclideUiLibButtonToolbar2;
+
+function _nuclideUiLibButtonToolbar() {
+  return _nuclideUiLibButtonToolbar2 = require('../../nuclide-ui/lib/ButtonToolbar');
+}
 
 /**
  * View for setting up a new debugging session.
  */
-var DebuggerSessionSelector = React.createClass({
-  displayName: 'DebuggerSessionSelector',
-
+var DebuggerSessionSelector = (_reactForAtom2 || _reactForAtom()).React.createClass({
   propTypes: {
-    actions: PropTypes.instanceOf(DebuggerActions).isRequired,
-    store: PropTypes.instanceOf(DebuggerStore).isRequired
+    actions: (_reactForAtom2 || _reactForAtom()).React.PropTypes.instanceOf((_DebuggerActions2 || _DebuggerActions()).default).isRequired,
+    store: (_reactForAtom2 || _reactForAtom()).React.PropTypes.instanceOf((_DebuggerStore2 || _DebuggerStore()).DebuggerStore).isRequired
   },
 
   getInitialState: function getInitialState() {
@@ -56,27 +76,27 @@ var DebuggerSessionSelector = React.createClass({
   },
 
   render: function render() {
-    return React.createElement(
+    return (_reactForAtom2 || _reactForAtom()).React.createElement(
       'section',
       { className: 'padded' },
-      React.createElement(
+      (_reactForAtom2 || _reactForAtom()).React.createElement(
         'h2',
         null,
         'Attach to Process'
       ),
-      React.createElement(
+      (_reactForAtom2 || _reactForAtom()).React.createElement(
         'div',
         { className: 'form' },
-        React.createElement(
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
           'div',
           { className: 'form-group' },
-          React.createElement(
+          (_reactForAtom2 || _reactForAtom()).React.createElement(
             'select',
             {
               className: 'form-control',
               onChange: this._handleSelectProcess,
               value: this.state.selectedProcess == null ? null : this.state.processes.indexOf(this.state.selectedProcess) },
-            React.createElement(
+            (_reactForAtom2 || _reactForAtom()).React.createElement(
               'option',
               { disabled: true },
               'Process ID'
@@ -84,19 +104,19 @@ var DebuggerSessionSelector = React.createClass({
             this._renderProcessChoices()
           )
         ),
-        React.createElement(
-          _nuclideUiLibButtonToolbar.ButtonToolbar,
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
+          (_nuclideUiLibButtonToolbar2 || _nuclideUiLibButtonToolbar()).ButtonToolbar,
           { className: 'form-group' },
-          React.createElement(
-            _nuclideUiLibButton.Button,
+          (_reactForAtom2 || _reactForAtom()).React.createElement(
+            (_nuclideUiLibButton2 || _nuclideUiLibButton()).Button,
             {
-              buttonType: _nuclideUiLibButton.ButtonTypes.PRIMARY,
+              buttonType: (_nuclideUiLibButton2 || _nuclideUiLibButton()).ButtonTypes.PRIMARY,
               onClick: this._handleClick,
               disabled: this.state.selectedProcess === null },
             'Attach'
           ),
-          React.createElement(
-            _nuclideUiLibButton.Button,
+          (_reactForAtom2 || _reactForAtom()).React.createElement(
+            (_nuclideUiLibButton2 || _nuclideUiLibButton()).Button,
             { onClick: this._updateProcessList },
             'Refresh List'
           )
@@ -116,7 +136,7 @@ var DebuggerSessionSelector = React.createClass({
 
   _renderProcessChoices: function _renderProcessChoices() {
     return this.state.processes.map(function (item, index) {
-      return React.createElement(
+      return (_reactForAtom2 || _reactForAtom()).React.createElement(
         'option',
         { key: item.toString(), value: index },
         item.toString()

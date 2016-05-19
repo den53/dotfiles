@@ -12,26 +12,40 @@ Object.defineProperty(exports, '__esModule', {
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _atom = require('atom');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _rxjs = require('rxjs');
+var _atom2;
 
-var _assert = require('assert');
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var _assert2 = _interopRequireDefault(_assert);
+var _rxjs2;
 
-var _nuclideCommons = require('../../nuclide-commons');
+function _rxjs() {
+  return _rxjs2 = require('rxjs');
+}
+
+var _assert2;
+
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
+
+var _nuclideCommons2;
+
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
 
 var BusySignalProviderBase = (function () {
   function BusySignalProviderBase() {
     _classCallCheck(this, BusySignalProviderBase);
 
     this._nextId = 0;
-    this._messages = new _rxjs.Subject();
+    this._messages = new (_rxjs2 || _rxjs()).Subject();
     this.messages = this._messages;
   }
 
@@ -57,7 +71,7 @@ var BusySignalProviderBase = (function () {
           displayedDisposable = null;
         }
       };
-      return new _atom.CompositeDisposable(atom.workspace.observeActivePaneItem(function (item) {
+      return new (_atom2 || _atom()).CompositeDisposable(atom.workspace.observeActivePaneItem(function (item) {
         if (item != null && typeof item.getPath === 'function' && item.getPath() === options.onlyForFile) {
           if (displayedDisposable == null) {
             displayedDisposable = _this._displayMessage(message);
@@ -67,7 +81,7 @@ var BusySignalProviderBase = (function () {
         }
       }),
       // We can't add displayedDisposable directly because its value may change.
-      new _atom.Disposable(disposeDisplayed));
+      new (_atom2 || _atom()).Disposable(disposeDisplayed));
     }
   }, {
     key: '_displayMessage',
@@ -80,7 +94,7 @@ var BusySignalProviderBase = (function () {
       var done = _nextMessagePair2.done;
 
       this._messages.next(busy);
-      return new _atom.Disposable(function () {
+      return new (_atom2 || _atom()).Disposable(function () {
         _this2._messages.next(done);
       });
     }
@@ -114,7 +128,7 @@ var BusySignalProviderBase = (function () {
       var removeMessage = messageRemover.dispose.bind(messageRemover);
       try {
         var returnValue = f();
-        (0, _assert2['default'])(_nuclideCommons.promises.isPromise(returnValue));
+        (0, (_assert2 || _assert()).default)((_nuclideCommons2 || _nuclideCommons()).promises.isPromise(returnValue));
         returnValue.then(removeMessage, removeMessage);
         return returnValue;
       } catch (e) {

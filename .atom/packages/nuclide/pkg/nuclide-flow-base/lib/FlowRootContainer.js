@@ -16,11 +16,23 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _rxjs = require('rxjs');
+var _rxjs2;
 
-var _FlowHelpers = require('./FlowHelpers');
+function _rxjs() {
+  return _rxjs2 = require('rxjs');
+}
 
-var _FlowRoot = require('./FlowRoot');
+var _FlowHelpers2;
+
+function _FlowHelpers() {
+  return _FlowHelpers2 = require('./FlowHelpers');
+}
+
+var _FlowRoot2;
+
+function _FlowRoot() {
+  return _FlowRoot2 = require('./FlowRoot');
+}
 
 var FlowRootContainer = (function () {
   function FlowRootContainer() {
@@ -32,7 +44,7 @@ var FlowRootContainer = (function () {
 
     // No need to dispose of this subscription since we want to keep it for the entire life of this
     // object. When this object is garbage collected the subject should be too.
-    this._flowRoot$ = new _rxjs.Subject();
+    this._flowRoot$ = new (_rxjs2 || _rxjs()).Subject();
     this._flowRoot$.subscribe(function (flowRoot) {
       _this._flowRootMap.set(flowRoot.getPathToRoot(), flowRoot);
     });
@@ -41,14 +53,14 @@ var FlowRootContainer = (function () {
   _createClass(FlowRootContainer, [{
     key: 'getRootForPath',
     value: _asyncToGenerator(function* (path) {
-      var rootPath = yield (0, _FlowHelpers.findFlowConfigDir)(path);
+      var rootPath = yield (0, (_FlowHelpers2 || _FlowHelpers()).findFlowConfigDir)(path);
       if (rootPath == null) {
         return null;
       }
 
       var instance = this._flowRootMap.get(rootPath);
       if (!instance) {
-        instance = new _FlowRoot.FlowRoot(rootPath);
+        instance = new (_FlowRoot2 || _FlowRoot()).FlowRoot(rootPath);
         this._flowRoot$.next(instance);
       }
       return instance;

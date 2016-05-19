@@ -14,23 +14,41 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _nuclideAtomHelpers = require('../../nuclide-atom-helpers');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _NavigationStack = require('./NavigationStack');
+var _nuclideAtomHelpers2;
 
-var _assert = require('assert');
+function _nuclideAtomHelpers() {
+  return _nuclideAtomHelpers2 = require('../../nuclide-atom-helpers');
+}
 
-var _assert2 = _interopRequireDefault(_assert);
+var _NavigationStack2;
 
-var _nuclideRemoteUri = require('../../nuclide-remote-uri');
+function _NavigationStack() {
+  return _NavigationStack2 = require('./NavigationStack');
+}
 
-var _Location = require('./Location');
+var _assert2;
+
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
+
+var _nuclideRemoteUri2;
+
+function _nuclideRemoteUri() {
+  return _nuclideRemoteUri2 = require('../../nuclide-remote-uri');
+}
+
+var _Location2;
+
+function _Location() {
+  return _Location2 = require('./Location');
+}
 
 function log(message) {}
 // Uncomment this to debug
@@ -79,7 +97,7 @@ var NavigationStackController = (function () {
   function NavigationStackController() {
     _classCallCheck(this, NavigationStackController);
 
-    this._navigationStack = new _NavigationStack.NavigationStack();
+    this._navigationStack = new (_NavigationStack2 || _NavigationStack()).NavigationStack();
     this._isNavigating = false;
     this._inActivate = false;
     this._lastLocation = null;
@@ -96,10 +114,10 @@ var NavigationStackController = (function () {
       var previousEditor = this._navigationStack.getCurrentEditor();
       if (previousEditor === editor) {
         var previousLocation = this._navigationStack.getCurrent();
-        (0, _assert2['default'])(previousLocation != null && previousLocation.type === 'editor');
+        (0, (_assert2 || _assert()).default)(previousLocation != null && previousLocation.type === 'editor');
         this._lastLocation = _extends({}, previousLocation);
       }
-      this._navigationStack.attemptUpdate((0, _Location.getLocationOfEditor)(editor));
+      this._navigationStack.attemptUpdate((0, (_Location2 || _Location()).getLocationOfEditor)(editor));
     }
   }, {
     key: 'updatePosition',
@@ -146,7 +164,7 @@ var NavigationStackController = (function () {
       // nav stack entry.
       if (!this._inActivate && this._lastLocation != null && this._lastLocation.editor === editor && this._navigationStack.getCurrentEditor() === editor) {
         this._navigationStack.attemptUpdate(this._lastLocation);
-        this._navigationStack.push((0, _Location.getLocationOfEditor)(editor));
+        this._navigationStack.push((0, (_Location2 || _Location()).getLocationOfEditor)(editor));
       } else {
         this._updateStackLocation(editor);
       }
@@ -169,9 +187,6 @@ var NavigationStackController = (function () {
     key: 'onOptInNavigation',
     value: function onOptInNavigation(editor) {
       log('onOptInNavigation ' + editor.getPath());
-
-      // Usually the setPosition would come before the onOptInNavigation
-      if (this._lastLocation == null) {}
       // Opt-in navigation is handled in the same way as a file open with no preceeding activation
       this.onOpen(editor);
     }
@@ -183,27 +198,27 @@ var NavigationStackController = (function () {
     value: function removePath(removedPath, remainingDirectories) {
       log('Removing path ' + removedPath + ' remaining: ' + JSON.stringify(remainingDirectories));
       this._navigationStack.filter(function (location) {
-        var uri = (0, _Location.getPathOfLocation)(location);
-        return uri == null || !(0, _nuclideRemoteUri.contains)(removedPath, uri) || remainingDirectories.find(function (directory) {
-          return (0, _nuclideRemoteUri.contains)(directory, uri);
+        var uri = (0, (_Location2 || _Location()).getPathOfLocation)(location);
+        return uri == null || !(0, (_nuclideRemoteUri2 || _nuclideRemoteUri()).contains)(removedPath, uri) || remainingDirectories.find(function (directory) {
+          return (0, (_nuclideRemoteUri2 || _nuclideRemoteUri()).contains)(directory, uri);
         }) != null;
       });
     }
   }, {
     key: '_navigateTo',
     value: _asyncToGenerator(function* (location) {
-      (0, _assert2['default'])(!this._isNavigating);
+      (0, (_assert2 || _assert()).default)(!this._isNavigating);
       if (location == null) {
         return;
       }
 
       this._isNavigating = true;
       try {
-        var editor = yield (0, _Location.editorOfLocation)(location);
+        var editor = yield (0, (_Location2 || _Location()).editorOfLocation)(location);
         // Note that this will not actually update the scroll position
         // The scroll position update will happen on the next tick.
         log('navigating to: ' + location.scrollTop + ' ' + JSON.stringify(location.bufferPosition));
-        (0, _nuclideAtomHelpers.setPositionAndScroll)(editor, location.bufferPosition, location.scrollTop);
+        (0, (_nuclideAtomHelpers2 || _nuclideAtomHelpers()).setPositionAndScroll)(editor, location.bufferPosition, location.scrollTop);
       } finally {
         this._isNavigating = false;
       }

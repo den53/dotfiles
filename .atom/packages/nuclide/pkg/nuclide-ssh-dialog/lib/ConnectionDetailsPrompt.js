@@ -6,11 +6,11 @@ var _createClass = (function () { function defineProperties(target, props) { for
 
 var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -20,13 +20,23 @@ function _inherits(subClass, superClass) { if (typeof superClass !== 'function' 
  * the root directory of this source tree.
  */
 
-var _ConnectionDetailsForm = require('./ConnectionDetailsForm');
+var _ConnectionDetailsForm2;
 
-var _ConnectionDetailsForm2 = _interopRequireDefault(_ConnectionDetailsForm);
+function _ConnectionDetailsForm() {
+  return _ConnectionDetailsForm2 = _interopRequireDefault(require('./ConnectionDetailsForm'));
+}
 
-var _nuclideUiLibMutableListSelector = require('../../nuclide-ui/lib/MutableListSelector');
+var _nuclideUiLibMutableListSelector2;
 
-var _reactForAtom = require('react-for-atom');
+function _nuclideUiLibMutableListSelector() {
+  return _nuclideUiLibMutableListSelector2 = require('../../nuclide-ui/lib/MutableListSelector');
+}
+
+var _reactForAtom2;
+
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
 
 /**
  * This component contains the entire view in which the user inputs their
@@ -106,21 +116,21 @@ var ConnectionDetailsPrompt = (function (_React$Component) {
 
       var idOfSelectedItem = this.props.indexOfSelectedConnectionProfile == null ? null : String(this.props.indexOfSelectedConnectionProfile);
 
-      return _reactForAtom.React.createElement(
+      return (_reactForAtom2 || _reactForAtom()).React.createElement(
         'div',
         { className: 'nuclide-connection-details-prompt container-fluid' },
-        _reactForAtom.React.createElement(
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
           'div',
           { className: 'row', style: { display: 'flex' } },
-          _reactForAtom.React.createElement(
+          (_reactForAtom2 || _reactForAtom()).React.createElement(
             'div',
             { className: 'connection-profiles col-xs-3 inset-panel' },
-            _reactForAtom.React.createElement(
+            (_reactForAtom2 || _reactForAtom()).React.createElement(
               'h6',
               null,
               'Profiles'
             ),
-            _reactForAtom.React.createElement(_nuclideUiLibMutableListSelector.MutableListSelector, {
+            (_reactForAtom2 || _reactForAtom()).React.createElement((_nuclideUiLibMutableListSelector2 || _nuclideUiLibMutableListSelector()).MutableListSelector, {
               items: listSelectorItems,
               idOfSelectedItem: idOfSelectedItem,
               onItemClicked: this._boundOnProfileClicked,
@@ -128,10 +138,10 @@ var ConnectionDetailsPrompt = (function (_React$Component) {
               onDeleteButtonClicked: this._boundOnDeleteProfileClicked
             })
           ),
-          _reactForAtom.React.createElement(
+          (_reactForAtom2 || _reactForAtom()).React.createElement(
             'div',
             { className: 'connection-details-form col-xs-9' },
-            _reactForAtom.React.createElement(_ConnectionDetailsForm2['default'], {
+            (_reactForAtom2 || _reactForAtom()).React.createElement((_ConnectionDetailsForm2 || _ConnectionDetailsForm()).default, {
               ref: 'connection-details-form',
               initialUsername: prefilledConnectionParams.username,
               initialServer: prefilledConnectionParams.server,
@@ -165,10 +175,10 @@ var ConnectionDetailsPrompt = (function (_React$Component) {
   }]);
 
   return ConnectionDetailsPrompt;
-})(_reactForAtom.React.Component);
+})((_reactForAtom2 || _reactForAtom()).React.Component);
 
-exports['default'] = ConnectionDetailsPrompt;
-module.exports = exports['default'];
+exports.default = ConnectionDetailsPrompt;
+module.exports = exports.default;
 
 // The initial list of connection profiles that will be displayed.
 // Whenever a user add/removes profiles via the child NuclideListSelector,

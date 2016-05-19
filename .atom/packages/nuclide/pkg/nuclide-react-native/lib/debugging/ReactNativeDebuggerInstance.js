@@ -8,13 +8,13 @@ var _createClass = (function () { function defineProperties(target, props) { for
 
 var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -24,25 +24,45 @@ function _inherits(subClass, superClass) { if (typeof superClass !== 'function' 
  * the root directory of this source tree.
  */
 
-var _nuclideCommons = require('../../../nuclide-commons');
+var _nuclideCommons2;
 
-var _nuclideDebuggerAtom = require('../../../nuclide-debugger-atom');
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../../nuclide-commons');
+}
 
-var _nuclideReactNativeNodeExecutorLibDebuggerProxyClient = require('../../../nuclide-react-native-node-executor/lib/DebuggerProxyClient');
+var _nuclideDebuggerAtom2;
 
-var _rxjs = require('rxjs');
+function _nuclideDebuggerAtom() {
+  return _nuclideDebuggerAtom2 = require('../../../nuclide-debugger-atom');
+}
 
-var _rxjs2 = _interopRequireDefault(_rxjs);
+var _nuclideReactNativeNodeExecutorLibDebuggerProxyClient2;
 
-var _ws = require('ws');
+function _nuclideReactNativeNodeExecutorLibDebuggerProxyClient() {
+  return _nuclideReactNativeNodeExecutorLibDebuggerProxyClient2 = require('../../../nuclide-react-native-node-executor/lib/DebuggerProxyClient');
+}
 
-var _ws2 = _interopRequireDefault(_ws);
+var _rxjs2;
+
+function _rxjs() {
+  return _rxjs2 = _interopRequireDefault(require('rxjs'));
+}
+
+var _ws2;
+
+function _ws() {
+  return _ws2 = _interopRequireDefault(require('ws'));
+}
 
 // $FlowIssue: Flow doesn't recognize this nested module.
 
-var _rxjsObservableUsing = require('rxjs/observable/using');
+var _rxjsObservableUsing2;
 
-var observableFromSubscribeFunction = _nuclideCommons.event.observableFromSubscribeFunction;
+function _rxjsObservableUsing() {
+  return _rxjsObservableUsing2 = require('rxjs/observable/using');
+}
+
+var observableFromSubscribeFunction = (_nuclideCommons2 || _nuclideCommons()).event.observableFromSubscribeFunction;
 
 var PORT = 38913;
 
@@ -70,11 +90,11 @@ var ReactNativeDebuggerInstance = (function (_DebuggerInstance) {
       didConnect = resolve;
     });
 
-    var session$ = _rxjs2['default'].Observable.create(function (observer) {
+    var session$ = (_rxjs2 || _rxjs()).default.Observable.create(function (observer) {
       return(
         // `Session` is particular about what order everything is closed in, so we manage it carefully
         // here.
-        new _nuclideCommons.CompositeSubscription(uiConnection$.combineLatest(pid$).switchMap(function (_ref) {
+        new (_nuclideCommons2 || _nuclideCommons()).CompositeSubscription(uiConnection$.combineLatest(pid$).switchMap(function (_ref) {
           var _ref2 = _slicedToArray(_ref, 2);
 
           var ws = _ref2[0];
@@ -84,7 +104,7 @@ var ReactNativeDebuggerInstance = (function (_DebuggerInstance) {
       );
     });
 
-    this._subscriptions = new _nuclideCommons.CompositeSubscription(
+    this._subscriptions = new (_nuclideCommons2 || _nuclideCommons()).CompositeSubscription(
     // Tell the user if we can't connect to the debugger UI.
     uiConnection$.subscribe(null, function (err) {
       atom.notifications.addError('Error connecting to debugger UI.', {
@@ -120,11 +140,11 @@ var ReactNativeDebuggerInstance = (function (_DebuggerInstance) {
   }]);
 
   return ReactNativeDebuggerInstance;
-})(_nuclideDebuggerAtom.DebuggerInstance);
+})((_nuclideDebuggerAtom2 || _nuclideDebuggerAtom()).DebuggerInstance);
 
 exports.ReactNativeDebuggerInstance = ReactNativeDebuggerInstance;
-var pid$ = (0, _rxjsObservableUsing.using)(function () {
-  var client = new _nuclideReactNativeNodeExecutorLibDebuggerProxyClient.DebuggerProxyClient();
+var pid$ = (0, (_rxjsObservableUsing2 || _rxjsObservableUsing()).using)(function () {
+  var client = new (_nuclideReactNativeNodeExecutorLibDebuggerProxyClient2 || _nuclideReactNativeNodeExecutorLibDebuggerProxyClient()).DebuggerProxyClient();
   client.connect();
   return {
     client: client,
@@ -141,9 +161,9 @@ var pid$ = (0, _rxjsObservableUsing.using)(function () {
  * Connections from the Chrome UI. There will only be one connection at a time. This stream won't
  * complete unless the connection closes.
  */
-var uiConnection$ = (0, _rxjsObservableUsing.using)(function () {
+var uiConnection$ = (0, (_rxjsObservableUsing2 || _rxjsObservableUsing()).using)(function () {
   // TODO(natthu): Assign random port instead.
-  var server = new _ws2['default'].Server({ port: PORT });
+  var server = new (_ws2 || _ws()).default.Server({ port: PORT });
   return {
     server: server,
     unsubscribe: function unsubscribe() {
@@ -152,7 +172,7 @@ var uiConnection$ = (0, _rxjsObservableUsing.using)(function () {
   };
 }, function (_ref4) {
   var server = _ref4.server;
-  return _rxjs2['default'].Observable.merge(_rxjs2['default'].Observable.fromEvent(server, 'error').flatMap(_rxjs2['default'].Observable['throw']), _rxjs2['default'].Observable.fromEvent(server, 'connection')).takeUntil(_rxjs2['default'].Observable.fromEvent(server, 'close'));
+  return (_rxjs2 || _rxjs()).default.Observable.merge((_rxjs2 || _rxjs()).default.Observable.fromEvent(server, 'error').flatMap((_rxjs2 || _rxjs()).default.Observable.throw), (_rxjs2 || _rxjs()).default.Observable.fromEvent(server, 'connection')).takeUntil((_rxjs2 || _rxjs()).default.Observable.fromEvent(server, 'close'));
 }).publish();
 
 function createSessionStream(ws, debugPort) {
@@ -162,7 +182,7 @@ function createSessionStream(ws, debugPort) {
     preload: false
   };
 
-  return _rxjs2['default'].Observable.create(function (observer) {
+  return (_rxjs2 || _rxjs()).default.Observable.create(function (observer) {
     // Creating a new Session is actually side-effecty.
 
     var _require = require('../../../nuclide-debugger-node/lib/Session');

@@ -10,7 +10,7 @@ Object.defineProperty(exports, '__esModule', {
  * the root directory of this source tree.
  */
 
-exports['default'] = findPaneAndItem;
+exports.default = findPaneAndItem;
 
 /**
  * Finds the first item that matches the predicate in the workspace and its parent. It's necessary
@@ -27,4 +27,4 @@ function findPaneAndItem(predicate) {
   }
 }
 
-module.exports = exports['default'];
+module.exports = exports.default;

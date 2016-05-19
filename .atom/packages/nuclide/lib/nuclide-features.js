@@ -10,9 +10,13 @@ Object.defineProperty(exports, '__esModule', {
  * the root directory of this source tree.
  */
 
-var _eventKit = require('event-kit');
+var _eventKit2;
 
-var emitter = new _eventKit.Emitter();
+function _eventKit() {
+  return _eventKit2 = require('event-kit');
+}
+
+var emitter = new (_eventKit2 || _eventKit()).Emitter();
 
 var nuclideFeatures = {
   dispose: function dispose() {

@@ -54,7 +54,7 @@ var ReactNativeServerActions = (function () {
   return ReactNativeServerActions;
 })();
 
-exports['default'] = ReactNativeServerActions;
+exports.default = ReactNativeServerActions;
 
 ReactNativeServerActions.ActionType = Object.freeze({
   START_NODE_EXECUTOR_SERVER: 'START_NODE_EXECUTOR_SERVER',
@@ -62,4 +62,4 @@ ReactNativeServerActions.ActionType = Object.freeze({
   STOP_SERVER: 'STOP_SERVER',
   RESTART_SERVER: 'RESTART_SERVER'
 });
-module.exports = exports['default'];
+module.exports = exports.default;

@@ -13,16 +13,18 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
  * the root directory of this source tree.
  */
 
-var _semver = require('semver');
+var _semver2;
 
-var _semver2 = _interopRequireDefault(_semver);
+function _semver() {
+  return _semver2 = _interopRequireDefault(require('semver'));
+}
 
 function isVersionOrLater(packageName, version) {
   var pkg = atom.packages.getLoadedPackage(packageName);
   if (pkg == null || pkg.metadata == null || pkg.metadata.version == null) {
     return false;
   }
-  return _semver2['default'].gte(pkg.metadata.version, version);
+  return (_semver2 || _semver()).default.gte(pkg.metadata.version, version);
 }
 
 function farEndPriority(priority) {

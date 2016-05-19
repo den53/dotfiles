@@ -5,19 +5,19 @@
 var doSearchDirectory = _asyncToGenerator(function* (directoryUri, query) {
   var search = fileSearchers[directoryUri];
   if (search === undefined) {
-    var directory = remoteUri.parse(directoryUri).path;
+    var directory = (_nuclideRemoteUri2 || _nuclideRemoteUri()).default.parse(directoryUri).path;
 
-    var exists = yield fsPromise.exists(directory);
+    var exists = yield (_nuclideCommons2 || _nuclideCommons()).fsPromise.exists(directory);
     if (!exists) {
       throw new Error('Could not find directory to search : ' + directory);
     }
 
-    var stat = yield fsPromise.stat(directory);
+    var stat = yield (_nuclideCommons2 || _nuclideCommons()).fsPromise.stat(directory);
     if (!stat.isDirectory()) {
       throw new Error('Provided path is not a directory : ' + directory);
     }
 
-    search = yield fileSearchForDirectory(directoryUri);
+    search = yield (0, (_nuclidePathSearch2 || _nuclidePathSearch()).fileSearchForDirectory)(directoryUri);
     fileSearchers[directoryUri] = search;
   }
 
@@ -26,7 +26,7 @@ var doSearchDirectory = _asyncToGenerator(function* (directoryUri, query) {
 
 var getSearchProviders = _asyncToGenerator(function* (cwd) {
   var checkAvailability = _asyncToGenerator(function* (providerName) {
-    (0, _assert2['default'])(providers);
+    (0, (_assert2 || _assert()).default)(providers);
     var isAvailable = yield providers[providerName].isAvailable(cwd);
     return isAvailable ? { name: providerName } : null;
   });
@@ -45,23 +45,19 @@ var getSearchProviders = _asyncToGenerator(function* (cwd) {
 });
 
 var doSearchQuery = _asyncToGenerator(function* (cwd, provider, query) {
-  (0, _assert2['default'])(providers);
+  (0, (_assert2 || _assert()).default)(providers);
   var currentProvider = providers[provider];
   if (!currentProvider) {
     throw new Error('Invalid provider: ' + provider);
   }
-  (0, _assert2['default'])(currentProvider != null);
+  (0, (_assert2 || _assert()).default)(currentProvider != null);
   var results = yield currentProvider.query(cwd, query);
   return { results: results };
 });
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
-var _assert = require('assert');
-
-var _assert2 = _interopRequireDefault(_assert);
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -71,15 +67,29 @@ var _assert2 = _interopRequireDefault(_assert);
  * the root directory of this source tree.
  */
 
-var _require = require('../../../nuclide-commons');
+var _assert2;
 
-var fsPromise = _require.fsPromise;
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
-var _require2 = require('../../../nuclide-path-search');
+var _nuclideCommons2;
 
-var fileSearchForDirectory = _require2.fileSearchForDirectory;
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../../nuclide-commons');
+}
 
-var remoteUri = require('../../../nuclide-remote-uri');
+var _nuclidePathSearch2;
+
+function _nuclidePathSearch() {
+  return _nuclidePathSearch2 = require('../../../nuclide-path-search');
+}
+
+var _nuclideRemoteUri2;
+
+function _nuclideRemoteUri() {
+  return _nuclideRemoteUri2 = _interopRequireDefault(require('../../../nuclide-remote-uri'));
+}
 
 var providers = undefined;
 

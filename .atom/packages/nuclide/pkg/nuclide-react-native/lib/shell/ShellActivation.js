@@ -14,7 +14,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * the root directory of this source tree.
  */
 
-var _ShellMessageManager = require('./ShellMessageManager');
+var _ShellMessageManager2;
+
+function _ShellMessageManager() {
+  return _ShellMessageManager2 = require('./ShellMessageManager');
+}
 
 var ShellActivation = (function () {
   function ShellActivation() {
@@ -26,7 +30,7 @@ var ShellActivation = (function () {
     //     'nuclide-react-native:reload-app': () => this._reload(),
     //   }),
     // );
-    this._shellManager = new _ShellMessageManager.ShellMessageManager();
+    this._shellManager = new (_ShellMessageManager2 || _ShellMessageManager()).ShellMessageManager();
   }
 
   _createClass(ShellActivation, [{

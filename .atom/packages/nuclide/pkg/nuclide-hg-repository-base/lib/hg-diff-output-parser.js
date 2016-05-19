@@ -1,8 +1,10 @@
+
+
+/**
+ * Parses the output of `hg diff --unified 0`.
+ */
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var _os = require('os');
-
-var _os2 = _interopRequireDefault(_os);
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -17,13 +19,15 @@ var _os2 = _interopRequireDefault(_os);
  * Explained here: http://www.gnu.org/software/diffutils/manual/html_node/Detailed-Unified.html
  * and here: http://www.artima.com/weblogs/viewpost.jsp?thread=164293.
  */
-
-/**
- * Parses the output of `hg diff --unified 0`.
- */
 var HUNK_DIFF_REGEX = /@@ .* @@/g;
 var HUNK_OLD_INFO_REGEX = /\-([0-9]+)((?:,[0-9]+)?)/;
 var HUNK_NEW_INFO_REGEX = /\+([0-9]+)((?:,[0-9]+)?)/;
+
+var _os2;
+
+function _os() {
+  return _os2 = _interopRequireDefault(require('os'));
+}
 
 function parseHgDiffUnifiedOutput(output) {
   var diffInfo = {
@@ -77,7 +81,7 @@ function parseMultiFileHgDiffUnifiedOutput(output) {
 
   for (var diffOutputForFile of diffOutputs) {
     // First, extract the file name. The first line of the string should be the file path.
-    var newLineChar = _os2['default'].EOL;
+    var newLineChar = (_os2 || _os()).default.EOL;
     var firstNewline = diffOutputForFile.indexOf(newLineChar);
     var filePath = diffOutputForFile.slice(0, firstNewline);
     filePath = filePath.trim();

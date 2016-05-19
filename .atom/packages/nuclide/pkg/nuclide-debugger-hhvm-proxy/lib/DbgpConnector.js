@@ -4,31 +4,7 @@ Object.defineProperty(exports, '__esModule', {
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-/*
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- */
-
-var _net = require('net');
-
-var _net2 = _interopRequireDefault(_net);
-
-var _utils = require('./utils');
-
-var _utils2 = _interopRequireDefault(_utils);
-
-var _eventKit = require('event-kit');
-
-var _DbgpMessageHandler = require('./DbgpMessageHandler');
-
-var _ConnectionUtils = require('./ConnectionUtils');
 
 /**
  * xdebugAttachPort is the port to listen for dbgp connections on.
@@ -41,6 +17,46 @@ var _ConnectionUtils = require('./ConnectionUtils');
  * and pid filters connections by process id (appid in the dbgp terminology).
  * Note that 0 pid also does not filter on process id.
  */
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+/*
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the license found in the LICENSE file in
+ * the root directory of this source tree.
+ */
+
+var _net2;
+
+function _net() {
+  return _net2 = _interopRequireDefault(require('net'));
+}
+
+var _utils2;
+
+function _utils() {
+  return _utils2 = _interopRequireDefault(require('./utils'));
+}
+
+var _eventKit2;
+
+function _eventKit() {
+  return _eventKit2 = require('event-kit');
+}
+
+var _DbgpMessageHandler2;
+
+function _DbgpMessageHandler() {
+  return _DbgpMessageHandler2 = require('./DbgpMessageHandler');
+}
+
+var _ConnectionUtils2;
+
+function _ConnectionUtils() {
+  return _ConnectionUtils2 = require('./ConnectionUtils');
+}
 
 var DBGP_ATTACH_EVENT = 'dbgp-attach-event';
 var DBGP_CLOSE_EVENT = 'dbgp-close-event';
@@ -63,8 +79,8 @@ var DbgpConnector = (function () {
     _classCallCheck(this, DbgpConnector);
 
     this._server = null;
-    this._emitter = new _eventKit.Emitter();
-    this._messageHandler = (0, _DbgpMessageHandler.getDbgpMessageHandlerInstance)();
+    this._emitter = new (_eventKit2 || _eventKit()).Emitter();
+    this._messageHandler = (0, (_DbgpMessageHandler2 || _DbgpMessageHandler()).getDbgpMessageHandlerInstance)();
     this._port = port;
   }
 
@@ -88,17 +104,17 @@ var DbgpConnector = (function () {
     value: function listen() {
       var _this = this;
 
-      _utils2['default'].log('Creating debug server on port ' + this._port);
+      (_utils2 || _utils()).default.log('Creating debug server on port ' + this._port);
 
-      var server = _net2['default'].createServer();
+      var server = (_net2 || _net()).default.createServer();
 
       server.on('close', function (socket) {
-        return _utils2['default'].log('Closing port ' + _this._port);
+        return (_utils2 || _utils()).default.log('Closing port ' + _this._port);
       });
       server.listen(this._port, undefined, // Hostname.
       undefined, // Backlog -- the maximum length of the queue of pending connections.
       function () {
-        return _utils2['default'].log('Listening on port ' + _this._port);
+        return (_utils2 || _utils()).default.log('Listening on port ' + _this._port);
       });
 
       server.on('error', function (error) {
@@ -108,7 +124,7 @@ var DbgpConnector = (function () {
         return _this._onSocketConnection(socket);
       });
       server.on('close', function () {
-        _utils2['default'].log('DBGP Server closed.');
+        (_utils2 || _utils()).default.log('DBGP Server closed.');
       });
 
       this._server = server;
@@ -118,7 +134,7 @@ var DbgpConnector = (function () {
     value: function _onSocketConnection(socket) {
       var _this2 = this;
 
-      _utils2['default'].log('Connection on port ' + this._port);
+      (_utils2 || _utils()).default.log('Connection on port ' + this._port);
       if (!this._checkListening(socket, 'Connection')) {
         return;
       }
@@ -131,12 +147,12 @@ var DbgpConnector = (function () {
     value: function _onServerError(error) {
       var errorMessage = undefined;
       if (error.code === 'EADDRINUSE') {
-        errorMessage = 'Can\'t start debugging because port ' + this._port + ' is being used by another process. ' + 'Try running \'killall node\' on your devserver and then restarting Nuclide.';
+        errorMessage = 'Can\'t start debugging because port ' + this._port + ' is being used by another process. ' + "Try running 'killall node' on your devserver and then restarting Nuclide.";
       } else {
         errorMessage = 'Unknown debugger socket error: ' + error.code + '.';
       }
 
-      _utils2['default'].logError(errorMessage);
+      (_utils2 || _utils()).default.logError(errorMessage);
       this._emitter.emit(DBGP_ERROR_EVENT, errorMessage);
 
       this.dispose();
@@ -152,12 +168,12 @@ var DbgpConnector = (function () {
       try {
         messages = this._messageHandler.parseMessages(data.toString());
       } catch (error) {
-        (0, _ConnectionUtils.failConnection)(socket, 'Non XML connection string: ' + data.toString() + '. Discarding connection.');
+        (0, (_ConnectionUtils2 || _ConnectionUtils()).failConnection)(socket, 'Non XML connection string: ' + data.toString() + '. Discarding connection.');
         return;
       }
 
       if (messages.length !== 1) {
-        (0, _ConnectionUtils.failConnection)(socket, 'Expected a single connection message. Got ' + messages.length);
+        (0, (_ConnectionUtils2 || _ConnectionUtils()).failConnection)(socket, 'Expected a single connection message. Got ' + messages.length);
         return;
       }
 
@@ -172,7 +188,7 @@ var DbgpConnector = (function () {
     key: '_checkListening',
     value: function _checkListening(socket, message) {
       if (!this.isListening()) {
-        _utils2['default'].log('Ignoring ' + message + ' on port ' + this._port + ' after stopped connection.');
+        (_utils2 || _utils()).default.log('Ignoring ' + message + ' on port ' + this._port + ' after stopped connection.');
         return false;
       }
       return true;
@@ -180,7 +196,7 @@ var DbgpConnector = (function () {
   }, {
     key: 'isListening',
     value: function isListening() {
-      return !!this._server;
+      return Boolean(this._server);
     }
   }, {
     key: 'dispose',

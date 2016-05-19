@@ -10,6 +10,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
  * All rights reserved.
@@ -18,19 +20,25 @@ function _inherits(subClass, superClass) { if (typeof superClass !== 'function' 
  * the root directory of this source tree.
  */
 
-var _require = require('./LazyTreeNode');
+var _LazyTreeNode2;
 
-var LazyTreeNode = _require.LazyTreeNode;
+function _LazyTreeNode() {
+  return _LazyTreeNode2 = require('./LazyTreeNode');
+}
 
-var _require2 = require('react-for-atom');
+var _reactForAtom2;
 
-var PureRenderMixin = _require2.PureRenderMixin;
-var React = _require2.React;
-var ReactDOM = _require2.ReactDOM;
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
 
-var classnames = require('classnames');
+var _classnames2;
 
-var PropTypes = React.PropTypes;
+function _classnames() {
+  return _classnames2 = _interopRequireDefault(require('classnames'));
+}
+
+var PropTypes = (_reactForAtom2 || _reactForAtom()).React.PropTypes;
 
 var INDENT_IN_PX = 10;
 var INDENT_PER_LEVEL_IN_PX = 15;
@@ -54,8 +62,9 @@ var TreeNodeComponent = (function (_React$Component) {
       isLoading: PropTypes.bool.isRequired,
       isSelected: PropTypes.bool.isRequired,
       label: PropTypes.string.isRequired,
+      labelElement: PropTypes.element,
       labelClassName: PropTypes.string.isRequired,
-      node: PropTypes.instanceOf(LazyTreeNode).isRequired,
+      node: PropTypes.instanceOf((_LazyTreeNode2 || _LazyTreeNode()).LazyTreeNode).isRequired,
       onClickArrow: PropTypes.func.isRequired,
       onClick: PropTypes.func.isRequired,
       onDoubleClick: PropTypes.func.isRequired,
@@ -78,7 +87,7 @@ var TreeNodeComponent = (function (_React$Component) {
   _createClass(TreeNodeComponent, [{
     key: 'shouldComponentUpdate',
     value: function shouldComponentUpdate(nextProps, nextState) {
-      return PureRenderMixin.shouldComponentUpdate.call(this, nextProps, nextState);
+      return (_reactForAtom2 || _reactForAtom()).PureRenderMixin.shouldComponentUpdate.call(this, nextProps, nextState);
     }
   }, {
     key: 'render',
@@ -102,7 +111,7 @@ var TreeNodeComponent = (function (_React$Component) {
       if (this.props.isContainer) {
         if (this.props.isExpanded) {
           if (this.props.isLoading) {
-            arrow = React.createElement(
+            arrow = (_reactForAtom2 || _reactForAtom()).React.createElement(
               'span',
               { className: 'nuclide-tree-component-item-arrow-spinner' },
               SPINNER
@@ -115,20 +124,20 @@ var TreeNodeComponent = (function (_React$Component) {
         }
       }
 
-      return React.createElement(
+      return (_reactForAtom2 || _reactForAtom()).React.createElement(
         'div',
         {
-          className: classnames(rowClassNameObj),
+          className: (0, (_classnames2 || _classnames()).default)(rowClassNameObj),
           style: itemStyle,
           onClick: this._onClick,
           onDoubleClick: this._onDoubleClick,
           onMouseDown: this._onMouseDown },
-        React.createElement(
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
           'span',
           { className: 'nuclide-tree-component-item-arrow', ref: 'arrow' },
           arrow
         ),
-        React.createElement(
+        this.props.labelElement != null ? this.props.labelElement : (_reactForAtom2 || _reactForAtom()).React.createElement(
           'span',
           {
             className: this.props.labelClassName,
@@ -143,7 +152,7 @@ var TreeNodeComponent = (function (_React$Component) {
   }, {
     key: '_onClick',
     value: function _onClick(event) {
-      if (ReactDOM.findDOMNode(this.refs['arrow']).contains(event.target)) {
+      if ((_reactForAtom2 || _reactForAtom()).ReactDOM.findDOMNode(this.refs['arrow']).contains(event.target)) {
         this.props.onClickArrow(event, this.props.node);
       } else {
         this.props.onClick(event, this.props.node);
@@ -162,6 +171,6 @@ var TreeNodeComponent = (function (_React$Component) {
   }]);
 
   return TreeNodeComponent;
-})(React.Component);
+})((_reactForAtom2 || _reactForAtom()).React.Component);
 
 exports.TreeNodeComponent = TreeNodeComponent;

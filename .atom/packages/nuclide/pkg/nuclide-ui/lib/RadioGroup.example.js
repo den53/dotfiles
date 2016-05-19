@@ -18,11 +18,23 @@ function _inherits(subClass, superClass) { if (typeof superClass !== 'function' 
  * the root directory of this source tree.
  */
 
-var _reactForAtom = require('react-for-atom');
+var _reactForAtom2;
 
-var _Block = require('./Block');
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
 
-var _RadioGroup = require('./RadioGroup');
+var _Block2;
+
+function _Block() {
+  return _Block2 = require('./Block');
+}
+
+var _RadioGroup2;
+
+function _RadioGroup() {
+  return _RadioGroup2 = require('./RadioGroup');
+}
 
 var labels = ['choose', 'from', 'one of', 'several', 'options'];
 
@@ -49,10 +61,10 @@ var RadioGroupExample = (function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
-      return _reactForAtom.React.createElement(
-        _Block.Block,
+      return (_reactForAtom2 || _reactForAtom()).React.createElement(
+        (_Block2 || _Block()).Block,
         null,
-        _reactForAtom.React.createElement(_RadioGroup.RadioGroup, {
+        (_reactForAtom2 || _reactForAtom()).React.createElement((_RadioGroup2 || _RadioGroup()).RadioGroup, {
           selectedIndex: this.state.selectedIndex,
           optionLabels: labels,
           onSelectedChange: this.onSelectedChange
@@ -62,7 +74,7 @@ var RadioGroupExample = (function (_React$Component) {
   }]);
 
   return RadioGroupExample;
-})(_reactForAtom.React.Component);
+})((_reactForAtom2 || _reactForAtom()).React.Component);
 
 var RadioGroupExamples = {
   sectionName: 'RadioGroup',

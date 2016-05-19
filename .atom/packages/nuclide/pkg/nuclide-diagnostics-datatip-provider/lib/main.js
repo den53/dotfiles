@@ -13,10 +13,10 @@ Object.defineProperty(exports, '__esModule', {
 var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i['return']) _i['return'](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError('Invalid attempt to destructure non-iterable instance'); } }; })();
 
 var datatip = _asyncToGenerator(function* (editor, position) {
-  if (!(yield (0, _nuclideCommons.passesGK)(GK_DEBUGGER_DATATIPS, GK_TIMEOUT))) {
+  if (!(yield (0, (_nuclideCommons2 || _nuclideCommons()).passesGK)(GK_DIAGNOSTICS_DATATIPS, 0))) {
     return null;
   }
-  (0, _assert2['default'])(fileDiagnostics);
+  (0, (_assert2 || _assert()).default)(fileDiagnostics);
   var messagesForFile = fileDiagnostics.get(editor);
   if (messagesForFile == null) {
     return null;
@@ -33,9 +33,9 @@ var datatip = _asyncToGenerator(function* (editor, position) {
   var message = _messagesAtPosition[0];
   var range = message.range;
 
-  (0, _assert2['default'])(range);
+  (0, (_assert2 || _assert()).default)(range);
   return {
-    component: (0, _DiagnosticsDatatipComponent.makeDiagnosticsDatatipComponent)(message),
+    component: (0, (_DiagnosticsDatatipComponent2 || _DiagnosticsDatatipComponent()).makeDiagnosticsDatatipComponent)(message),
     pinnable: false,
     range: range
   };
@@ -47,22 +47,35 @@ exports.activate = activate;
 exports.consumeDiagnosticUpdates = consumeDiagnosticUpdates;
 exports.deactivate = deactivate;
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
-var _atom = require('atom');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _assert = require('assert');
+var _atom2;
 
-var _assert2 = _interopRequireDefault(_assert);
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var _DiagnosticsDatatipComponent = require('./DiagnosticsDatatipComponent');
+var _assert2;
 
-var _nuclideCommons = require('../../nuclide-commons');
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
-var GK_DEBUGGER_DATATIPS = 'nuclide_diagnostics_datatips';
-var GK_TIMEOUT = 1000;
+var _DiagnosticsDatatipComponent2;
+
+function _DiagnosticsDatatipComponent() {
+  return _DiagnosticsDatatipComponent2 = require('./DiagnosticsDatatipComponent');
+}
+
+var _nuclideCommons2;
+
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
+
+var GK_DIAGNOSTICS_DATATIPS = 'nuclide_diagnostics_datatips';
 
 var DATATIP_PACKAGE_NAME = 'nuclide-diagnostics-datatip';
 
@@ -80,9 +93,9 @@ function getDatatipProvider() {
 
 function consumeDatatipService(service) {
   var datatipProvider = getDatatipProvider();
-  (0, _assert2['default'])(disposables);
+  (0, (_assert2 || _assert()).default)(disposables);
   service.addProvider(datatipProvider);
-  var disposable = new _atom.Disposable(function () {
+  var disposable = new (_atom2 || _atom()).Disposable(function () {
     return service.removeProvider(datatipProvider);
   });
   disposables.add(disposable);
@@ -93,21 +106,21 @@ var disposables = null;
 var fileDiagnostics = null;
 
 function activate(state) {
-  disposables = new _atom.CompositeDisposable();
+  disposables = new (_atom2 || _atom()).CompositeDisposable();
   fileDiagnostics = new WeakMap();
 }
 
 function consumeDiagnosticUpdates(diagnosticUpdater) {
-  (0, _assert2['default'])(disposables);
+  (0, (_assert2 || _assert()).default)(disposables);
   disposables.add(atom.workspace.observeTextEditors(function (editor) {
-    (0, _assert2['default'])(fileDiagnostics);
+    (0, (_assert2 || _assert()).default)(fileDiagnostics);
     var filePath = editor.getPath();
     if (!filePath) {
       return;
     }
     fileDiagnostics.set(editor, []);
     var callback = function callback(update) {
-      (0, _assert2['default'])(fileDiagnostics);
+      (0, (_assert2 || _assert()).default)(fileDiagnostics);
       fileDiagnostics.set(editor, update.messages);
     };
     var disposable = diagnosticUpdater.onFileMessagesDidUpdate(callback, filePath);
@@ -115,10 +128,10 @@ function consumeDiagnosticUpdates(diagnosticUpdater) {
     editor.onDidDestroy(function () {
       disposable.dispose();
       if (fileDiagnostics != null) {
-        fileDiagnostics['delete'](editor);
+        fileDiagnostics.delete(editor);
       }
     });
-    (0, _assert2['default'])(disposables);
+    (0, (_assert2 || _assert()).default)(disposables);
     disposables.add(disposable);
   }));
 }

@@ -24,14 +24,14 @@ var getInstance = _asyncToGenerator(function* (file) {
     return null;
   }
 
-  var dotMerlinPath = yield _nuclideCommons.fsPromise.findNearestFile('.merlin', file);
+  var dotMerlinPath = yield (_nuclideCommons2 || _nuclideCommons()).fsPromise.findNearestFile('.merlin', file);
 
   var options = {
-    cwd: dotMerlinPath ? _path2['default'].dirname(dotMerlinPath) : '.'
+    cwd: dotMerlinPath ? (_path2 || _path()).default.dirname(dotMerlinPath) : '.'
   };
 
   logger.info('Spawning new ocamlmerlin process');
-  var process = yield (0, _nuclideCommons.safeSpawn)(merlinPath, flags, options);
+  var process = yield (0, (_nuclideCommons2 || _nuclideCommons()).safeSpawn)(merlinPath, flags, options);
   merlinProcessInstance = new MerlinProcess(process);
 
   if (dotMerlinPath) {
@@ -54,7 +54,7 @@ exports.getInstance = getInstance;
 
 var isInstalled = _asyncToGenerator(function* (merlinPath) {
   if (isInstalledCache == null) {
-    var result = yield (0, _nuclideCommons.checkOutput)('which', [merlinPath]);
+    var result = yield (0, (_nuclideCommons2 || _nuclideCommons()).checkOutput)('which', [merlinPath]);
     isInstalledCache = result.exitCode === 0;
     if (!isInstalledCache) {
       logger.info('ocamlmerlin not installed');
@@ -63,21 +63,29 @@ var isInstalled = _asyncToGenerator(function* (merlinPath) {
   return isInstalledCache;
 });
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _path = require('path');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _path2 = _interopRequireDefault(_path);
+var _path2;
 
-var _readline = require('readline');
+function _path() {
+  return _path2 = _interopRequireDefault(require('path'));
+}
 
-var _readline2 = _interopRequireDefault(_readline);
+var _readline2;
 
-var _nuclideCommons = require('../../nuclide-commons');
+function _readline() {
+  return _readline2 = _interopRequireDefault(require('readline'));
+}
+
+var _nuclideCommons2;
+
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
 
 var logger = require('../../nuclide-logging').getLogger();
 
@@ -99,7 +107,7 @@ var MerlinProcess = (function () {
     _classCallCheck(this, MerlinProcess);
 
     this._proc = proc;
-    this._promiseQueue = new _nuclideCommons.PromiseQueue();
+    this._promiseQueue = new (_nuclideCommons2 || _nuclideCommons()).PromiseQueue();
     this._running = true;
     this._proc.on('exit', function (code, signal) {
       _this._running = false;
@@ -193,7 +201,7 @@ var MerlinProcess = (function () {
       var _this5 = this;
 
       return yield this._promiseQueue.submit(function (resolve, reject) {
-        _this5.runSingleCommand(['type', 'enclosing', 'at', { line: line + 1, col: col }]).then(resolve)['catch'](reject);
+        _this5.runSingleCommand(['type', 'enclosing', 'at', { line: line + 1, col: col }]).then(resolve).catch(reject);
       });
     })
   }, {
@@ -202,7 +210,7 @@ var MerlinProcess = (function () {
       var _this6 = this;
 
       return yield this._promiseQueue.submit(function (resolve, reject) {
-        _this6.runSingleCommand(['complete', 'prefix', prefix, 'at', { line: line + 1, col: col + 1 }]).then(resolve)['catch'](reject);
+        _this6.runSingleCommand(['complete', 'prefix', prefix, 'at', { line: line + 1, col: col + 1 }]).then(resolve).catch(reject);
       });
     })
   }, {
@@ -211,7 +219,7 @@ var MerlinProcess = (function () {
       var _this7 = this;
 
       return yield this._promiseQueue.submit(function (resolve, reject) {
-        _this7.runSingleCommand(['errors']).then(resolve)['catch'](reject);
+        _this7.runSingleCommand(['errors']).then(resolve).catch(reject);
       });
     })
 
@@ -228,7 +236,7 @@ var MerlinProcess = (function () {
       var stdout = this._proc.stdout;
 
       return new Promise(function (resolve, reject) {
-        var reader = _readline2['default'].createInterface({
+        var reader = (_readline2 || _readline()).default.createInterface({
           input: stdout,
           terminal: false
         });

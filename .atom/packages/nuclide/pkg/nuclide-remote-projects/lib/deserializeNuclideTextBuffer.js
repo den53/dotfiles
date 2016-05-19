@@ -15,10 +15,12 @@
 // remote connection is reestablished, nuclide-remote-projects will convert
 // the TextBuffer to NuclideTextBuffer.
 
-var _require = require('atom');
+var _atom2;
 
-var TextBuffer = _require.TextBuffer;
+function _atom() {
+  return _atom2 = require('atom');
+}
 
 module.exports = function (state, params) {
-  return TextBuffer.deserialize(state, params);
+  return (_atom2 || _atom()).TextBuffer.deserialize(state, params);
 };

@@ -15,23 +15,56 @@ exports.getHyperclickProvider = getHyperclickProvider;
 exports.getQuickOpenProvider = getQuickOpenProvider;
 exports.deactivate = deactivate;
 
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _HyperclickHelpers2;
+
+function _HyperclickHelpers() {
+  return _HyperclickHelpers2 = _interopRequireDefault(require('./HyperclickHelpers'));
+}
+
+var _QuickOpenHelpers2;
+
+function _QuickOpenHelpers() {
+  return _QuickOpenHelpers2 = _interopRequireDefault(require('./QuickOpenHelpers'));
+}
+
 function activate(state) {}
 
 function getHyperclickProvider() {
-  var _require = require('./HyperclickProvider');
-
-  var HyperclickProvider = _require.HyperclickProvider;
-
-  var provider = new HyperclickProvider();
   return {
     priority: 1, // Should be lower than all language-specific providers.
     providerName: 'nuclide-remote-ctags',
-    getSuggestionForWord: provider.getSuggestionForWord.bind(provider)
+    getSuggestionForWord: function getSuggestionForWord(editor, text, range) {
+      return (_HyperclickHelpers2 || _HyperclickHelpers()).default.getSuggestionForWord(editor, text, range);
+    }
   };
 }
 
 function getQuickOpenProvider() {
-  return require('./QuickOpenProvider');
+  return {
+    getProviderType: function getProviderType() {
+      return 'DIRECTORY';
+    },
+    getName: function getName() {
+      return 'CtagsSymbolProvider';
+    },
+    isRenderable: function isRenderable() {
+      return true;
+    },
+    getTabTitle: function getTabTitle() {
+      return 'Ctags';
+    },
+    isEligibleForDirectory: function isEligibleForDirectory(directory) {
+      return (_QuickOpenHelpers2 || _QuickOpenHelpers()).default.isEligibleForDirectory(directory);
+    },
+    getComponentForItem: function getComponentForItem(item) {
+      return (_QuickOpenHelpers2 || _QuickOpenHelpers()).default.getComponentForItem(item);
+    },
+    executeQuery: function executeQuery(query, directory) {
+      return (_QuickOpenHelpers2 || _QuickOpenHelpers()).default.executeQuery(query, directory);
+    }
+  };
 }
 
 function deactivate() {}

@@ -14,38 +14,65 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _assert = require('assert');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _assert2 = _interopRequireDefault(_assert);
+var _assert2;
 
-var _os = require('os');
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
-var _os2 = _interopRequireDefault(_os);
+var _os2;
 
-var _rxjs = require('rxjs');
+function _os() {
+  return _os2 = _interopRequireDefault(require('os'));
+}
 
-var _nuclideLogging = require('../../nuclide-logging');
+var _rxjs2;
 
-var _nuclideAnalytics = require('../../nuclide-analytics');
+function _rxjs() {
+  return _rxjs2 = require('rxjs');
+}
 
-var _nuclideCommons = require('../../nuclide-commons');
+var _nuclideLogging2;
 
-var _FlowHelpers = require('./FlowHelpers');
+function _nuclideLogging() {
+  return _nuclideLogging2 = require('../../nuclide-logging');
+}
 
-var _FlowConstants = require('./FlowConstants');
+var logger = (0, (_nuclideLogging2 || _nuclideLogging()).getLogger)();
+
+var _nuclideAnalytics2;
+
+function _nuclideAnalytics() {
+  return _nuclideAnalytics2 = require('../../nuclide-analytics');
+}
+
+var _nuclideCommons2;
+
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
+
+var _FlowHelpers2;
+
+function _FlowHelpers() {
+  return _FlowHelpers2 = require('./FlowHelpers');
+}
+
+var _FlowConstants2;
+
+function _FlowConstants() {
+  return _FlowConstants2 = require('./FlowConstants');
+}
 
 // Names modeled after https://github.com/facebook/flow/blob/master/src/common/flowExitStatus.ml
-
-var logger = (0, _nuclideLogging.getLogger)();
-
 var FLOW_RETURN_CODES = {
   ok: 0,
   serverInitializing: 1,
@@ -69,26 +96,26 @@ var FlowProcess = (function () {
 
     _classCallCheck(this, FlowProcess);
 
-    this._serverStatus = new _rxjs.BehaviorSubject(_FlowConstants.ServerStatus.UNKNOWN);
+    this._serverStatus = new (_rxjs2 || _rxjs()).BehaviorSubject((_FlowConstants2 || _FlowConstants()).ServerStatus.UNKNOWN);
     this._root = root;
 
     this._serverStatus.filter(function (x) {
-      return x === _FlowConstants.ServerStatus.NOT_RUNNING;
+      return x === (_FlowConstants2 || _FlowConstants()).ServerStatus.NOT_RUNNING;
     }).subscribe(function () {
       _this._startFlowServer();
       _this._pingServer();
     });
     function isBusyOrInit(status) {
-      return status === _FlowConstants.ServerStatus.BUSY || status === _FlowConstants.ServerStatus.INIT;
+      return status === (_FlowConstants2 || _FlowConstants()).ServerStatus.BUSY || status === (_FlowConstants2 || _FlowConstants()).ServerStatus.INIT;
     }
     this._serverStatus.filter(isBusyOrInit).subscribe(function () {
       _this._pingServer();
     });
 
     this._serverStatus.filter(function (status) {
-      return status === _FlowConstants.ServerStatus.FAILED;
+      return status === (_FlowConstants2 || _FlowConstants()).ServerStatus.FAILED;
     }).subscribe(function () {
-      (0, _nuclideAnalytics.track)('flow-server-failed');
+      (0, (_nuclideAnalytics2 || _nuclideAnalytics()).track)('flow-server-failed');
     });
   }
 
@@ -96,7 +123,7 @@ var FlowProcess = (function () {
     key: 'dispose',
     value: function dispose() {
       this._serverStatus.complete();
-      if (this._startedServer && (0, _FlowHelpers.getStopFlowOnExit)()) {
+      if (this._startedServer && (0, (_FlowHelpers2 || _FlowHelpers()).getStopFlowOnExit)()) {
         // The default, SIGTERM, does not reliably kill the flow servers.
         this._startedServer.kill('SIGKILL');
       }
@@ -109,8 +136,8 @@ var FlowProcess = (function () {
   }, {
     key: 'allowServerRestart',
     value: function allowServerRestart() {
-      if (this._serverStatus.getValue() === _FlowConstants.ServerStatus.FAILED) {
-        this._serverStatus.next(_FlowConstants.ServerStatus.UNKNOWN);
+      if (this._serverStatus.getValue() === (_FlowConstants2 || _FlowConstants()).ServerStatus.FAILED) {
+        this._serverStatus.next((_FlowConstants2 || _FlowConstants()).ServerStatus.UNKNOWN);
       }
     }
   }, {
@@ -129,7 +156,7 @@ var FlowProcess = (function () {
       var suppressErrors = arguments.length <= 3 || arguments[3] === undefined ? false : arguments[3];
 
       var maxRetries = waitForServer ? EXEC_FLOW_RETRIES : 0;
-      if (this._serverStatus.getValue() === _FlowConstants.ServerStatus.FAILED) {
+      if (this._serverStatus.getValue() === (_FlowConstants2 || _FlowConstants()).ServerStatus.FAILED) {
         return null;
       }
       for (var i = 0;; i++) {
@@ -138,7 +165,7 @@ var FlowProcess = (function () {
           args, options);
           return result;
         } catch (e) {
-          var couldRetry = [_FlowConstants.ServerStatus.NOT_RUNNING, _FlowConstants.ServerStatus.INIT, _FlowConstants.ServerStatus.BUSY].indexOf(this._serverStatus.getValue()) !== -1;
+          var couldRetry = [(_FlowConstants2 || _FlowConstants()).ServerStatus.NOT_RUNNING, (_FlowConstants2 || _FlowConstants()).ServerStatus.INIT, (_FlowConstants2 || _FlowConstants()).ServerStatus.BUSY].indexOf(this._serverStatus.getValue()) !== -1;
           if (i < maxRetries && couldRetry) {
             yield this._serverIsReady(); // eslint-disable-line babel/no-await-in-loop
             // Then try again.
@@ -155,6 +182,7 @@ var FlowProcess = (function () {
         }
       }
       // otherwise flow complains
+      // eslint-disable-next-line no-unreachable
       return null;
     })
 
@@ -164,12 +192,12 @@ var FlowProcess = (function () {
     value: _asyncToGenerator(function* () {
       var _this2 = this;
 
-      var pathToFlow = (0, _FlowHelpers.getPathToFlow)();
+      var pathToFlow = (0, (_FlowHelpers2 || _FlowHelpers()).getPathToFlow)();
       // `flow server` will start a server in the foreground. asyncExecute
       // will not resolve the promise until the process exits, which in this
       // case is never. We need to use spawn directly to get access to the
       // ChildProcess object.
-      var serverProcess = yield (0, _nuclideCommons.safeSpawn)( // eslint-disable-line babel/no-await-in-loop
+      var serverProcess = yield (0, (_nuclideCommons2 || _nuclideCommons()).safeSpawn)( // eslint-disable-line babel/no-await-in-loop
       pathToFlow, ['server', '--from', 'nuclide', '--max-workers', this._getMaxWorkers().toString(), this._root]);
       var logIt = function logIt(data) {
         var pid = serverProcess.pid;
@@ -187,7 +215,7 @@ var FlowProcess = (function () {
         // pattern.
         if (code === 2 && signal === null) {
           logger.error('Flow server unexpectedly exited', _this2._root);
-          _this2._serverStatus.next(_FlowConstants.ServerStatus.FAILED);
+          _this2._serverStatus.next((_FlowConstants2 || _FlowConstants()).ServerStatus.FAILED);
         }
       });
       this._startedServer = serverProcess;
@@ -223,28 +251,28 @@ var FlowProcess = (function () {
     value: function _updateServerStatus(result) {
       var status = undefined;
       if (result == null) {
-        status = _FlowConstants.ServerStatus.NOT_INSTALLED;
+        status = (_FlowConstants2 || _FlowConstants()).ServerStatus.NOT_INSTALLED;
       } else {
         switch (result.exitCode) {
           case FLOW_RETURN_CODES.ok:
           // falls through
           case FLOW_RETURN_CODES.typeError:
-            status = _FlowConstants.ServerStatus.READY;
+            status = (_FlowConstants2 || _FlowConstants()).ServerStatus.READY;
             break;
           case FLOW_RETURN_CODES.serverInitializing:
-            status = _FlowConstants.ServerStatus.INIT;
+            status = (_FlowConstants2 || _FlowConstants()).ServerStatus.INIT;
             break;
           case FLOW_RETURN_CODES.noServerRunning:
-            status = _FlowConstants.ServerStatus.NOT_RUNNING;
+            status = (_FlowConstants2 || _FlowConstants()).ServerStatus.NOT_RUNNING;
             break;
           case FLOW_RETURN_CODES.outOfRetries:
-            status = _FlowConstants.ServerStatus.BUSY;
+            status = (_FlowConstants2 || _FlowConstants()).ServerStatus.BUSY;
             break;
           case FLOW_RETURN_CODES.buildIdMismatch:
             // If the version doesn't match, the server is automatically killed and the client
             // returns 9.
             logger.info('Killed flow server with incorrect version in', this._root);
-            status = _FlowConstants.ServerStatus.NOT_RUNNING;
+            status = (_FlowConstants2 || _FlowConstants()).ServerStatus.NOT_RUNNING;
             break;
           case FLOW_RETURN_CODES.unexpectedArgument:
             // If we issued an unexpected argument we have learned nothing about the state of the Flow
@@ -252,14 +280,14 @@ var FlowProcess = (function () {
             return;
           default:
             logger.error('Unknown return code from Flow: ' + result.exitCode);
-            status = _FlowConstants.ServerStatus.UNKNOWN;
+            status = (_FlowConstants2 || _FlowConstants()).ServerStatus.UNKNOWN;
         }
       }
-      (0, _assert2['default'])(status != null);
+      (0, (_assert2 || _assert()).default)(status != null);
       var currentStatus = this._serverStatus.getValue();
       // Avoid duplicate updates and avoid moving the status away from FAILED, to let any existing
       // work die out when the server fails.
-      if (status !== currentStatus && currentStatus !== _FlowConstants.ServerStatus.FAILED) {
+      if (status !== currentStatus && currentStatus !== (_FlowConstants2 || _FlowConstants()).ServerStatus.FAILED) {
         this._serverStatus.next(status);
       }
     }
@@ -279,11 +307,11 @@ var FlowProcess = (function () {
       });
       for (var i = 0; !stateChanged && i < tries; i++) {
         /* eslint-disable babel/no-await-in-loop */
-        yield this._rawExecFlow(['status'])['catch'](function () {
+        yield this._rawExecFlow(['status']).catch(function () {
           return null;
         });
         // Wait 1 second
-        yield _rxjs.Observable.of(null).delay(1000).toPromise();
+        yield (_rxjs2 || _rxjs()).Observable.of(null).delay(1000).toPromise();
         /* eslint-enable babel/no-await-in-loop */
       }
     })
@@ -296,10 +324,10 @@ var FlowProcess = (function () {
     key: '_serverIsReady',
     value: function _serverIsReady() {
       return this._serverStatus.filter(function (x) {
-        return x === _FlowConstants.ServerStatus.READY;
+        return x === (_FlowConstants2 || _FlowConstants()).ServerStatus.READY;
       }).map(function () {
         return true;
-      }).race(_rxjs.Observable.of(false).delay(SERVER_READY_TIMEOUT_MS))
+      }).race((_rxjs2 || _rxjs()).Observable.of(false).delay(SERVER_READY_TIMEOUT_MS))
       // If the stream is completed timeout will not return its default value and we will see an
       // EmptyError. So, provide a defaultValue here so the promise resolves.
       .first(null, null, false).toPromise();
@@ -311,7 +339,7 @@ var FlowProcess = (function () {
   }, {
     key: '_getFlowExecOptions',
     value: _asyncToGenerator(function* () {
-      var installed = yield (0, _FlowHelpers.isFlowInstalled)();
+      var installed = yield (0, (_FlowHelpers2 || _FlowHelpers()).isFlowInstalled)();
       if (installed) {
         return {
           cwd: this._root
@@ -323,7 +351,7 @@ var FlowProcess = (function () {
   }, {
     key: '_getMaxWorkers',
     value: function _getMaxWorkers() {
-      return Math.max(_os2['default'].cpus().length - 1, 1);
+      return Math.max((_os2 || _os()).default.cpus().length - 1, 1);
     }
 
     /**
@@ -342,8 +370,8 @@ var FlowProcess = (function () {
       var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 
       args = [].concat(_toConsumableArray(args), ['--from', 'nuclide']);
-      var pathToFlow = (0, _FlowHelpers.getPathToFlow)();
-      return yield (0, _nuclideCommons.asyncExecute)(pathToFlow, args, options);
+      var pathToFlow = (0, (_FlowHelpers2 || _FlowHelpers()).getPathToFlow)();
+      return yield (0, (_nuclideCommons2 || _nuclideCommons()).asyncExecute)(pathToFlow, args, options);
     })
   }]);
 

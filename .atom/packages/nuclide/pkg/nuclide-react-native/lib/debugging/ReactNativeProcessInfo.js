@@ -18,9 +18,17 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var _nuclideDebuggerAtom = require('../../../nuclide-debugger-atom');
+var _nuclideDebuggerAtom2;
 
-var _ReactNativeDebuggerInstance = require('./ReactNativeDebuggerInstance');
+function _nuclideDebuggerAtom() {
+  return _nuclideDebuggerAtom2 = require('../../../nuclide-debugger-atom');
+}
+
+var _ReactNativeDebuggerInstance2;
+
+function _ReactNativeDebuggerInstance() {
+  return _ReactNativeDebuggerInstance2 = require('./ReactNativeDebuggerInstance');
+}
 
 var ReactNativeProcessInfo = (function (_DebuggerProcessInfo) {
   _inherits(ReactNativeProcessInfo, _DebuggerProcessInfo);
@@ -36,7 +44,7 @@ var ReactNativeProcessInfo = (function (_DebuggerProcessInfo) {
     value: function debug() {
       // This is the port that the V8 debugger usually listens on.
       // TODO(matthewwithanm): Provide a way to override this in the UI.
-      return Promise.resolve(new _ReactNativeDebuggerInstance.ReactNativeDebuggerInstance(this, 5858));
+      return Promise.resolve(new (_ReactNativeDebuggerInstance2 || _ReactNativeDebuggerInstance()).ReactNativeDebuggerInstance(this, 5858));
     }
   }, {
     key: 'compareDetails',
@@ -51,6 +59,6 @@ var ReactNativeProcessInfo = (function (_DebuggerProcessInfo) {
   }]);
 
   return ReactNativeProcessInfo;
-})(_nuclideDebuggerAtom.DebuggerProcessInfo);
+})((_nuclideDebuggerAtom2 || _nuclideDebuggerAtom()).DebuggerProcessInfo);
 
 exports.ReactNativeProcessInfo = ReactNativeProcessInfo;

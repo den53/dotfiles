@@ -1,6 +1,8 @@
 Object.defineProperty(exports, '__esModule', {
   value: true
 });
+exports.attachEvent = attachEvent;
+exports.observableFromSubscribeFunction = observableFromSubscribeFunction;
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -10,12 +12,17 @@ Object.defineProperty(exports, '__esModule', {
  * the root directory of this source tree.
  */
 
-exports.attachEvent = attachEvent;
-exports.observableFromSubscribeFunction = observableFromSubscribeFunction;
+var _eventKit2;
 
-var _eventKit = require('event-kit');
+function _eventKit() {
+  return _eventKit2 = require('event-kit');
+}
 
-var _rxjs = require('rxjs');
+var _rxjs2;
+
+function _rxjs() {
+  return _rxjs2 = require('rxjs');
+}
 
 /**
  * Add an event listener an return a disposable for removing it. Note that this function assumes
@@ -25,13 +32,13 @@ var _rxjs = require('rxjs');
 
 function attachEvent(emitter, eventName, callback) {
   emitter.addListener(eventName, callback);
-  return new _eventKit.Disposable(function () {
+  return new (_eventKit2 || _eventKit()).Disposable(function () {
     emitter.removeListener(eventName, callback);
   });
 }
 
 function observableFromSubscribeFunction(fn) {
-  return _rxjs.Observable.create(function (observer) {
+  return (_rxjs2 || _rxjs()).Observable.create(function (observer) {
     var disposable = fn(observer.next.bind(observer));
     return function () {
       disposable.dispose();

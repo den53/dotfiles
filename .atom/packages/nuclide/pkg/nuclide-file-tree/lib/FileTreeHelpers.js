@@ -12,25 +12,41 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
  * the root directory of this source tree.
  */
 
-var _atom = require('atom');
+var _atom2;
 
-var _nuclideRemoteConnection = require('../../nuclide-remote-connection');
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var _nuclideRemoteUri = require('../../nuclide-remote-uri');
+var _atom4;
 
-var _nuclideRemoteUri2 = _interopRequireDefault(_nuclideRemoteUri);
+function _atom3() {
+  return _atom4 = require('atom');
+}
 
-var _path = require('path');
+var _nuclideRemoteConnection2;
 
-var _path2 = _interopRequireDefault(_path);
+function _nuclideRemoteConnection() {
+  return _nuclideRemoteConnection2 = require('../../nuclide-remote-connection');
+}
 
-var _url = require('url');
+var _nuclideRemoteUri2;
 
-var _url2 = _interopRequireDefault(_url);
+function _nuclideRemoteUri() {
+  return _nuclideRemoteUri2 = _interopRequireDefault(require('../../nuclide-remote-uri'));
+}
 
-var _crypto = require('crypto');
+var _url2;
 
-var _crypto2 = _interopRequireDefault(_crypto);
+function _url() {
+  return _url2 = _interopRequireDefault(require('url'));
+}
+
+var _crypto2;
+
+function _crypto() {
+  return _crypto2 = _interopRequireDefault(require('crypto'));
+}
 
 /*
  * Returns a string with backslashes replaced by two backslashes for use with strings passed to the
@@ -41,28 +57,33 @@ function escapeBackslash(str) {
 }
 
 function dirPathToKey(path) {
-  return path.replace(new RegExp(escapeBackslash(_path2['default'].sep) + '+$'), '') + _path2['default'].sep;
+  var pathModule = (_nuclideRemoteUri2 || _nuclideRemoteUri()).default.pathModuleFor(path);
+  return path.replace(new RegExp(escapeBackslash(pathModule.sep) + '+$'), '') + pathModule.sep;
 }
 
 function isDirKey(key) {
-  return key.slice(-1) === _path2['default'].sep;
+  var pathModule = (_nuclideRemoteUri2 || _nuclideRemoteUri()).default.pathModuleFor(key);
+  return key.slice(-1) === pathModule.sep;
 }
 
 function keyToName(key) {
+  var pathModule = (_nuclideRemoteUri2 || _nuclideRemoteUri()).default.pathModuleFor(key);
   var path = keyToPath(key);
-  var index = path.lastIndexOf(_path2['default'].sep);
+  var index = path.lastIndexOf(pathModule.sep);
   return index === -1 ? path : path.slice(index + 1);
 }
 
 function keyToPath(key) {
-  return key.replace(new RegExp(escapeBackslash(_path2['default'].sep) + '+$'), '');
+  var pathModule = (_nuclideRemoteUri2 || _nuclideRemoteUri()).default.pathModuleFor(key);
+  return key.replace(new RegExp(escapeBackslash(pathModule.sep) + '+$'), '');
 }
 
 function getParentKey(key) {
+  var pathModule = (_nuclideRemoteUri2 || _nuclideRemoteUri()).default.pathModuleFor(key);
   var path = keyToPath(key);
-  var parsed = _nuclideRemoteUri2['default'].parse(path);
-  parsed.pathname = _path2['default'].join(parsed.pathname, '..');
-  var parentPath = _url2['default'].format(parsed);
+  var parsed = (_nuclideRemoteUri2 || _nuclideRemoteUri()).default.parse(path);
+  parsed.pathname = pathModule.join(parsed.pathname, '..');
+  var parentPath = (_url2 || _url()).default.format(parsed);
   return dirPathToKey(parentPath);
 }
 
@@ -98,14 +119,14 @@ function getDirectoryByKey(key) {
   var path = keyToPath(key);
   if (!isDirKey(key)) {
     return null;
-  } else if (_nuclideRemoteUri2['default'].isRemote(path)) {
-    var connection = _nuclideRemoteConnection.RemoteConnection.getForUri(path);
+  } else if ((_nuclideRemoteUri2 || _nuclideRemoteUri()).default.isRemote(path)) {
+    var connection = (_nuclideRemoteConnection2 || _nuclideRemoteConnection()).RemoteConnection.getForUri(path);
     if (connection == null) {
       return null;
     }
-    return new _nuclideRemoteConnection.RemoteDirectory(connection.getConnection(), path);
+    return new (_nuclideRemoteConnection2 || _nuclideRemoteConnection()).RemoteDirectory(connection.getConnection(), path);
   } else {
-    return new _atom.Directory(path);
+    return new (_atom2 || _atom()).Directory(path);
   }
 }
 
@@ -113,15 +134,15 @@ function getFileByKey(key) {
   var path = keyToPath(key);
   if (isDirKey(key)) {
     return null;
-  } else if (_nuclideRemoteUri2['default'].isRemote(path)) {
-    var connection = _nuclideRemoteConnection.RemoteConnection.getForUri(path);
+  } else if ((_nuclideRemoteUri2 || _nuclideRemoteUri()).default.isRemote(path)) {
+    var connection = (_nuclideRemoteConnection2 || _nuclideRemoteConnection()).RemoteConnection.getForUri(path);
     if (connection == null) {
       return;
     }
 
-    return new _nuclideRemoteConnection.RemoteFile(connection.getConnection(), path);
+    return new (_nuclideRemoteConnection2 || _nuclideRemoteConnection()).RemoteFile(connection.getConnection(), path);
   } else {
-    return new _atom.File(path);
+    return new (_atom4 || _atom3()).File(path);
   }
 }
 
@@ -132,8 +153,8 @@ function getEntryByKey(key) {
 function getDisplayTitle(key) {
   var path = keyToPath(key);
 
-  if (_nuclideRemoteUri2['default'].isRemote(path)) {
-    var connection = _nuclideRemoteConnection.RemoteConnection.getForUri(path);
+  if ((_nuclideRemoteUri2 || _nuclideRemoteUri()).default.isRemote(path)) {
+    var connection = (_nuclideRemoteConnection2 || _nuclideRemoteConnection()).RemoteConnection.getForUri(path);
 
     if (connection != null) {
       return connection.getDisplayTitle();
@@ -143,7 +164,13 @@ function getDisplayTitle(key) {
 
 // Sometimes remote directories are instantiated as local directories but with invalid paths.
 function isValidDirectory(directory) {
-  return !isLocalEntry(directory) || _path2['default'].isAbsolute(directory.getPath());
+  if (!isLocalEntry(directory)) {
+    return true;
+  }
+
+  var dirPath = directory.getPath();
+  var pathModule = (_nuclideRemoteUri2 || _nuclideRemoteUri()).default.pathModuleFor(dirPath);
+  return pathModule.isAbsolute(dirPath);
 }
 
 function isLocalEntry(entry) {
@@ -156,7 +183,7 @@ function isContextClick(event) {
 }
 
 function buildHashKey(nodeKey) {
-  return _crypto2['default'].createHash('MD5').update(nodeKey).digest('base64');
+  return (_crypto2 || _crypto()).default.createHash('MD5').update(nodeKey).digest('base64');
 }
 
 module.exports = {

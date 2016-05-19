@@ -15,22 +15,49 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
  * the root directory of this source tree.
  */
 
-var _assert = require('assert');
+var _types = require('./types');
 
-var _assert2 = _interopRequireDefault(_assert);
+Object.defineProperty(exports, 'Datatip', {
+  enumerable: true,
+  get: function get() {
+    return _types.Datatip;
+  }
+});
+Object.defineProperty(exports, 'DatatipProvider', {
+  enumerable: true,
+  get: function get() {
+    return _types.DatatipProvider;
+  }
+});
+Object.defineProperty(exports, 'DatatipService', {
+  enumerable: true,
+  get: function get() {
+    return _types.DatatipService;
+  }
+});
 
-var _DatatipManager = require('./DatatipManager');
+var _assert2;
+
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
+
+var _DatatipManager2;
+
+function _DatatipManager() {
+  return _DatatipManager2 = require('./DatatipManager');
+}
 
 var datatipManager = null;
 
 function activate(state) {
   if (datatipManager == null) {
-    datatipManager = new _DatatipManager.DatatipManager();
+    datatipManager = new (_DatatipManager2 || _DatatipManager()).DatatipManager();
   }
 }
 
 function provideDatatipService() {
-  (0, _assert2['default'])(datatipManager);
+  (0, (_assert2 || _assert()).default)(datatipManager);
   return datatipManager;
 }
 

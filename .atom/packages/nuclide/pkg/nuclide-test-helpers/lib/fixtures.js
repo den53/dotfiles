@@ -11,12 +11,12 @@
  */
 
 var copyFixture = _asyncToGenerator(function* (fixtureName, dirname) {
-  var tempDir = yield (0, _tempdir.mkdir)(fixtureName);
+  var tempDir = yield (0, (_tempdir2 || _tempdir()).mkdir)(fixtureName);
 
   // Recursively copy the contents of the fixture to the temp directory.
   yield new Promise(function (resolve, reject) {
-    var sourceDirectory = _path2['default'].join(dirname, 'fixtures', fixtureName);
-    _fsExtra2['default'].copy(sourceDirectory, tempDir, function (err) {
+    var sourceDirectory = (_path2 || _path()).default.join(dirname, 'fixtures', fixtureName);
+    (_fsExtra2 || _fsExtra()).default.copy(sourceDirectory, tempDir, function (err) {
       if (err) {
         reject(err);
       } else {
@@ -28,9 +28,9 @@ var copyFixture = _asyncToGenerator(function* (fixtureName, dirname) {
   return tempDir;
 });
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -40,15 +40,23 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
  * the root directory of this source tree.
  */
 
-var _fsExtra = require('fs-extra');
+var _fsExtra2;
 
-var _fsExtra2 = _interopRequireDefault(_fsExtra);
+function _fsExtra() {
+  return _fsExtra2 = _interopRequireDefault(require('fs-extra'));
+}
 
-var _path = require('path');
+var _path2;
 
-var _path2 = _interopRequireDefault(_path);
+function _path() {
+  return _path2 = _interopRequireDefault(require('path'));
+}
 
-var _tempdir = require('./tempdir');
+var _tempdir2;
+
+function _tempdir() {
+  return _tempdir2 = require('./tempdir');
+}
 
 module.exports = {
   copyFixture: copyFixture

@@ -8,13 +8,28 @@
  * the root directory of this source tree.
  */
 
-var FirstNode = require('../utils/FirstNode');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var getUndeclaredIdentifiers = require('../utils/getUndeclaredIdentifiers');
-var getUndeclaredJSXIdentifiers = require('../utils/getUndeclaredJSXIdentifiers');
+var _utilsFirstNode2;
+
+function _utilsFirstNode() {
+  return _utilsFirstNode2 = _interopRequireDefault(require('../utils/FirstNode'));
+}
+
+var _utilsGetUndeclaredIdentifiers2;
+
+function _utilsGetUndeclaredIdentifiers() {
+  return _utilsGetUndeclaredIdentifiers2 = _interopRequireDefault(require('../utils/getUndeclaredIdentifiers'));
+}
+
+var _utilsGetUndeclaredJSXIdentifiers2;
+
+function _utilsGetUndeclaredJSXIdentifiers() {
+  return _utilsGetUndeclaredJSXIdentifiers2 = _interopRequireDefault(require('../utils/getUndeclaredJSXIdentifiers'));
+}
 
 function addMissingRequires(root, options) {
-  var first = FirstNode.get(root);
+  var first = (_utilsFirstNode2 || _utilsFirstNode()).default.get(root);
   if (!first) {
     return;
   }
@@ -23,13 +38,13 @@ function addMissingRequires(root, options) {
   var moduleMap = options.moduleMap;
 
   // Add the missing requires.
-  getUndeclaredIdentifiers(root, options).forEach(function (name) {
+  (0, (_utilsGetUndeclaredIdentifiers2 || _utilsGetUndeclaredIdentifiers()).default)(root, options).forEach(function (name) {
     var node = moduleMap.getRequire(name, { sourcePath: options.sourcePath });
     _first.insertBefore(node);
   });
 
   // Add missing JSX requires.
-  getUndeclaredJSXIdentifiers(root, options).forEach(function (name) {
+  (0, (_utilsGetUndeclaredJSXIdentifiers2 || _utilsGetUndeclaredJSXIdentifiers()).default)(root, options).forEach(function (name) {
     var node = moduleMap.getRequire(name, {
       sourcePath: options.sourcePath,
       jsxIdentifier: true

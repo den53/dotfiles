@@ -23,22 +23,43 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
  * the root directory of this source tree.
  */
 
-var _nuclideUiLibButton = require('../../nuclide-ui/lib/Button');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _nuclideUiLibButtonGroup = require('../../nuclide-ui/lib/ButtonGroup');
+var _nuclideUiLibAtomInput2;
 
-var _require = require('../../nuclide-ui/lib/AtomInput');
+function _nuclideUiLibAtomInput() {
+  return _nuclideUiLibAtomInput2 = require('../../nuclide-ui/lib/AtomInput');
+}
 
-var AtomInput = _require.AtomInput;
+var _nuclideUiLibDropdown2;
 
-var _require2 = require('../../nuclide-ui/lib/Dropdown');
+function _nuclideUiLibDropdown() {
+  return _nuclideUiLibDropdown2 = require('../../nuclide-ui/lib/Dropdown');
+}
 
-var Dropdown = _require2.Dropdown;
+var _reactForAtom2;
 
-var _require3 = require('react-for-atom');
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
 
-var React = _require3.React;
-var PropTypes = React.PropTypes;
+var _nuclideUiLibButton2;
+
+function _nuclideUiLibButton() {
+  return _nuclideUiLibButton2 = require('../../nuclide-ui/lib/Button');
+}
+
+var _nuclideUiLibButtonGroup2;
+
+function _nuclideUiLibButtonGroup() {
+  return _nuclideUiLibButtonGroup2 = require('../../nuclide-ui/lib/ButtonGroup');
+}
+
+var _ProjectStore2;
+
+function _ProjectStore() {
+  return _ProjectStore2 = _interopRequireDefault(require('./ProjectStore'));
+}
 
 var WEB_SERVER_OPTION = { label: 'WebServer', value: 0 };
 var SCRIPT_OPTION = { label: 'Script', value: 1 };
@@ -54,7 +75,8 @@ var HhvmToolbar = (function (_React$Component) {
   _createClass(HhvmToolbar, null, [{
     key: 'propTypes',
     value: {
-      targetFilePath: PropTypes.string.isRequired
+      targetFilePath: (_reactForAtom2 || _reactForAtom()).React.PropTypes.string.isRequired,
+      projectStore: (_reactForAtom2 || _reactForAtom()).React.PropTypes.instanceOf((_ProjectStore2 || _ProjectStore()).default).isRequired
     },
     enumerable: true
   }]);
@@ -68,9 +90,23 @@ var HhvmToolbar = (function (_React$Component) {
     };
     this._debug = this._debug.bind(this);
     this._handleDropdownChange = this._handleDropdownChange.bind(this);
+    this._updateLastScriptCommand = this._updateLastScriptCommand.bind(this);
+    this._getLastScriptCommand = this._getLastScriptCommand.bind(this);
   }
 
   _createClass(HhvmToolbar, [{
+    key: '_updateLastScriptCommand',
+    value: function _updateLastScriptCommand(command) {
+      if (this._isDebugScript(this.state.selectedIndex)) {
+        this.props.projectStore.updateLastScriptCommand(command);
+      }
+    }
+  }, {
+    key: '_getLastScriptCommand',
+    value: function _getLastScriptCommand(filePath) {
+      return this.props.projectStore.getLastScriptCommand(filePath);
+    }
+  }, {
     key: '_getMenuItems',
     value: function _getMenuItems() {
       return this._isTargetLaunchable(this.props.targetFilePath) ? DEBUG_OPTIONS : NO_LAUNCH_DEBUG_OPTIONS;
@@ -97,10 +133,10 @@ var HhvmToolbar = (function (_React$Component) {
     value: function render() {
       var debugTarget = this._getDebugTarget(this.state.selectedIndex, this.props.targetFilePath);
       var isDebugScript = this._isDebugScript(this.state.selectedIndex);
-      return React.createElement(
+      return (_reactForAtom2 || _reactForAtom()).React.createElement(
         'div',
         { className: 'buck-toolbar hhvm-toolbar block padded' },
-        React.createElement(Dropdown, {
+        (_reactForAtom2 || _reactForAtom()).React.createElement((_nuclideUiLibDropdown2 || _nuclideUiLibDropdown()).Dropdown, {
           className: 'inline-block',
           menuItems: this._getMenuItems(),
           selectedIndex: this.state.selectedIndex,
@@ -108,21 +144,22 @@ var HhvmToolbar = (function (_React$Component) {
           ref: 'dropdown',
           size: 'sm'
         }),
-        React.createElement(
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
           'div',
           { className: 'inline-block', style: { width: '500px' } },
-          React.createElement(AtomInput, {
+          (_reactForAtom2 || _reactForAtom()).React.createElement((_nuclideUiLibAtomInput2 || _nuclideUiLibAtomInput()).AtomInput, {
             ref: 'debugTarget',
             initialValue: debugTarget,
             disabled: !isDebugScript,
+            onDidChange: this._updateLastScriptCommand,
             size: 'sm'
           })
         ),
-        React.createElement(
-          _nuclideUiLibButtonGroup.ButtonGroup,
-          { size: _nuclideUiLibButtonGroup.ButtonGroupSizes.SMALL, className: 'inline-block' },
-          React.createElement(
-            _nuclideUiLibButton.Button,
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
+          (_nuclideUiLibButtonGroup2 || _nuclideUiLibButtonGroup()).ButtonGroup,
+          { size: (_nuclideUiLibButtonGroup2 || _nuclideUiLibButtonGroup()).ButtonGroupSizes.SMALL, className: 'inline-block' },
+          (_reactForAtom2 || _reactForAtom()).React.createElement(
+            (_nuclideUiLibButton2 || _nuclideUiLibButton()).Button,
             { onClick: this._debug },
             isDebugScript ? 'Launch' : 'Attach'
           )
@@ -138,9 +175,15 @@ var HhvmToolbar = (function (_React$Component) {
     key: '_getDebugTarget',
     value: function _getDebugTarget(index, targetFilePath) {
       var remoteUri = require('../../nuclide-remote-uri');
-      var hostName = remoteUri.getHostname(targetFilePath);
-      var remoteFilePath = remoteUri.getPath(targetFilePath);
-      return this._isDebugScript(index) ? remoteFilePath : hostName;
+      if (this._isDebugScript(index)) {
+        var targetPath = remoteUri.getPath(targetFilePath);
+        var lastScriptCommand = this._getLastScriptCommand(targetPath);
+        if (lastScriptCommand === '') {
+          return targetPath;
+        }
+        return lastScriptCommand;
+      }
+      return remoteUri.getHostname(targetFilePath);
     }
   }, {
     key: '_handleDropdownChange',
@@ -163,15 +206,15 @@ var HhvmToolbar = (function (_React$Component) {
       if (this._isDebugScript(this.state.selectedIndex)) {
         var scriptTarget = this.refs['debugTarget'].getText();
 
-        var _require4 = require('../../nuclide-debugger-hhvm/lib/LaunchProcessInfo');
+        var _require = require('../../nuclide-debugger-hhvm/lib/LaunchProcessInfo');
 
-        var LaunchProcessInfo = _require4.LaunchProcessInfo;
+        var LaunchProcessInfo = _require.LaunchProcessInfo;
 
         processInfo = new LaunchProcessInfo(this.props.targetFilePath, scriptTarget);
       } else {
-        var _require5 = require('../../nuclide-debugger-hhvm/lib/AttachProcessInfo');
+        var _require2 = require('../../nuclide-debugger-hhvm/lib/AttachProcessInfo');
 
-        var AttachProcessInfo = _require5.AttachProcessInfo;
+        var AttachProcessInfo = _require2.AttachProcessInfo;
 
         processInfo = new AttachProcessInfo(this.props.targetFilePath);
       }
@@ -180,6 +223,6 @@ var HhvmToolbar = (function (_React$Component) {
   }]);
 
   return HhvmToolbar;
-})(React.Component);
+})((_reactForAtom2 || _reactForAtom()).React.Component);
 
 module.exports = HhvmToolbar;

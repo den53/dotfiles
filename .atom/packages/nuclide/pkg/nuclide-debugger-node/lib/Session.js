@@ -2,8 +2,6 @@ Object.defineProperty(exports, '__esModule', {
   value: true
 });
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
  * All rights reserved.
@@ -12,13 +10,19 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
  * the root directory of this source tree.
  */
 
-var _VendorLibNodeInspectorLibSession = require('../VendorLib/node-inspector/lib/session');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _VendorLibNodeInspectorLibSession2 = _interopRequireDefault(_VendorLibNodeInspectorLibSession);
+var _VendorLibNodeInspectorLibSession2;
 
-var _util = require('util');
+function _VendorLibNodeInspectorLibSession() {
+  return _VendorLibNodeInspectorLibSession2 = _interopRequireDefault(require('../VendorLib/node-inspector/lib/session'));
+}
 
-var _util2 = _interopRequireDefault(_util);
+var _util2;
+
+function _util() {
+  return _util2 = _interopRequireDefault(require('util'));
+}
 
 /**
  * A custom version of node-inspector's Session that ignores commands that we don't support. (We
@@ -26,11 +30,11 @@ var _util2 = _interopRequireDefault(_util);
  * modifications we've made to the source.)
  */
 function CustomSession(config, debuggerPort, wsConnection) {
-  _VendorLibNodeInspectorLibSession2['default'].call(this, config, debuggerPort, wsConnection);
+  (_VendorLibNodeInspectorLibSession2 || _VendorLibNodeInspectorLibSession()).default.call(this, config, debuggerPort, wsConnection);
   this.frontendCommandHandler._registerNoopCommands('Emulation.canEmulate', 'Network.setMonitoringXHREnabled', 'Worker.enable', 'ServiceWorker.enable', 'Emulation.setScriptExecutionDisabled', 'Page.setOverlayMessage');
 }
 
-_util2['default'].inherits(CustomSession, _VendorLibNodeInspectorLibSession2['default']);
+(_util2 || _util()).default.inherits(CustomSession, (_VendorLibNodeInspectorLibSession2 || _VendorLibNodeInspectorLibSession()).default);
 
 var Session = CustomSession;
 exports.Session = Session;

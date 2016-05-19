@@ -4,9 +4,9 @@ Object.defineProperty(exports, '__esModule', {
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -16,23 +16,35 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * the root directory of this source tree.
  */
 
-var _assert = require('assert');
+var _assert2;
 
-var _assert2 = _interopRequireDefault(_assert);
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
-var _ws = require('ws');
+var _ws2;
 
-var _ws2 = _interopRequireDefault(_ws);
+function _ws() {
+  return _ws2 = _interopRequireDefault(require('ws'));
+}
 
-var _events = require('events');
+var _events2;
 
-var _http = require('http');
+function _events() {
+  return _events2 = require('events');
+}
 
-var _http2 = _interopRequireDefault(_http);
+var _http2;
 
-var _ChildManager = require('./ChildManager');
+function _http() {
+  return _http2 = _interopRequireDefault(require('http'));
+}
 
-var _ChildManager2 = _interopRequireDefault(_ChildManager);
+var _ChildManager2;
+
+function _ChildManager() {
+  return _ChildManager2 = _interopRequireDefault(require('./ChildManager'));
+}
 
 var REACT_NATIVE_LAUNCH_DEVTOOLS_URL = '/launch-chrome-devtools';
 var REACT_NATIVE_DEBUGGER_PROXY_URL = '/debugger-proxy';
@@ -44,7 +56,7 @@ var ExecutorServer = (function () {
     this._initWebServer(port);
     this._initWebSocketServer();
     this._children = new Set();
-    this._emitter = new _events.EventEmitter();
+    this._emitter = new (_events2 || _events()).EventEmitter();
   }
 
   _createClass(ExecutorServer, [{
@@ -55,7 +67,7 @@ var ExecutorServer = (function () {
   }, {
     key: '_initWebServer',
     value: function _initWebServer(port) {
-      this._webServer = _http2['default'].createServer(function (req, res) {
+      this._webServer = (_http2 || _http()).default.createServer(function (req, res) {
         if (req.url === REACT_NATIVE_LAUNCH_DEVTOOLS_URL) {
           res.end('OK');
         }
@@ -67,7 +79,7 @@ var ExecutorServer = (function () {
     value: function _initWebSocketServer() {
       var _this = this;
 
-      this._webSocketServer = new _ws2['default'].Server({
+      this._webSocketServer = new (_ws2 || _ws()).default.Server({
         server: this._webServer,
         path: REACT_NATIVE_DEBUGGER_PROXY_URL
       });
@@ -75,13 +87,13 @@ var ExecutorServer = (function () {
         var onReply = function onReply(replyID, result) {
           ws.send(JSON.stringify({ replyID: replyID, result: result }));
         };
-        var childManager = new _ChildManager2['default'](onReply, _this._emitter);
+        var childManager = new (_ChildManager2 || _ChildManager()).default(onReply, _this._emitter);
         _this._children.add(childManager);
 
         var cleanup = function cleanup() {
           if (childManager) {
             childManager.killChild();
-            _this._children['delete'](childManager);
+            _this._children.delete(childManager);
             childManager = null;
             onReply = null;
           }
@@ -93,7 +105,7 @@ var ExecutorServer = (function () {
             return cleanup();
           }
 
-          (0, _assert2['default'])(childManager);
+          (0, (_assert2 || _assert()).default)(childManager);
           childManager.handleMessage(messageObj);
         });
 
@@ -116,5 +128,5 @@ var ExecutorServer = (function () {
   return ExecutorServer;
 })();
 
-exports['default'] = ExecutorServer;
-module.exports = exports['default'];
+exports.default = ExecutorServer;
+module.exports = exports.default;

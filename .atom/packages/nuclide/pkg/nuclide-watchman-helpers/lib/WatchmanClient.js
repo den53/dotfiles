@@ -6,11 +6,11 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -20,25 +20,43 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * the root directory of this source tree.
  */
 
-var _path = require('path');
+var _path2;
 
-var _path2 = _interopRequireDefault(_path);
+function _path() {
+  return _path2 = _interopRequireDefault(require('path'));
+}
 
-var _fbWatchman = require('fb-watchman');
+var _fbWatchman2;
 
-var _fbWatchman2 = _interopRequireDefault(_fbWatchman);
+function _fbWatchman() {
+  return _fbWatchman2 = _interopRequireDefault(require('fb-watchman'));
+}
 
-var _nuclideCommons = require('../../nuclide-commons');
+var _nuclideCommons2;
 
-var _path3 = require('./path');
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
 
-var _WatchmanSubscription = require('./WatchmanSubscription');
+var _path4;
 
-var _WatchmanSubscription2 = _interopRequireDefault(_WatchmanSubscription);
+function _path3() {
+  return _path4 = require('./path');
+}
 
-var _nuclideLogging = require('../../nuclide-logging');
+var _WatchmanSubscription2;
 
-var logger = (0, _nuclideLogging.getLogger)();
+function _WatchmanSubscription() {
+  return _WatchmanSubscription2 = _interopRequireDefault(require('./WatchmanSubscription'));
+}
+
+var _nuclideLogging2;
+
+function _nuclideLogging() {
+  return _nuclideLogging2 = require('../../nuclide-logging');
+}
+
+var logger = (0, (_nuclideLogging2 || _nuclideLogging()).getLogger)();
 var WATCHMAN_SETTLE_TIME_MS = 2500;
 
 var WatchmanClient = (function () {
@@ -48,7 +66,7 @@ var WatchmanClient = (function () {
     _classCallCheck(this, WatchmanClient);
 
     this._initWatchmanClient();
-    this._serializedReconnect = _nuclideCommons.promises.serializeAsyncCall(function () {
+    this._serializedReconnect = (_nuclideCommons2 || _nuclideCommons()).promises.serializeAsyncCall(function () {
       return _this._reconnectClient();
     });
     this._subscriptions = new Map();
@@ -92,8 +110,8 @@ var WatchmanClient = (function () {
   }, {
     key: '_createClientPromise',
     value: _asyncToGenerator(function* () {
-      return new _fbWatchman2['default'].Client({
-        watchmanBinaryPath: yield (0, _path3.getWatchmanBinaryPath)()
+      return new (_fbWatchman2 || _fbWatchman()).default.Client({
+        watchmanBinaryPath: yield (0, (_path4 || _path3()).getWatchmanBinaryPath)()
       });
     })
   }, {
@@ -113,7 +131,7 @@ var WatchmanClient = (function () {
         yield _this3._watchProject(subscription.path);
         // We have already missed the change events from the disconnect time,
         // watchman could have died, so the last clock result is not valid.
-        yield _nuclideCommons.promises.awaitMilliSeconds(WATCHMAN_SETTLE_TIME_MS);
+        yield (_nuclideCommons2 || _nuclideCommons()).promises.awaitMilliSeconds(WATCHMAN_SETTLE_TIME_MS);
         // Register the subscriptions after the filesystem settles.
         subscription.options.since = yield _this3._clock(subscription.root);
         yield _this3._subscribe(subscription.root, subscription.name, subscription.options);
@@ -122,17 +140,17 @@ var WatchmanClient = (function () {
   }, {
     key: '_getSubscription',
     value: function _getSubscription(entryPath) {
-      return this._subscriptions.get(_path2['default'].normalize(entryPath));
+      return this._subscriptions.get((_path2 || _path()).default.normalize(entryPath));
     }
   }, {
     key: '_setSubscription',
     value: function _setSubscription(entryPath, subscription) {
-      this._subscriptions.set(_path2['default'].normalize(entryPath), subscription);
+      this._subscriptions.set((_path2 || _path()).default.normalize(entryPath), subscription);
     }
   }, {
     key: '_deleteSubscription',
     value: function _deleteSubscription(entryPath) {
-      this._subscriptions['delete'](_path2['default'].normalize(entryPath));
+      this._subscriptions.delete((_path2 || _path()).default.normalize(entryPath));
     }
   }, {
     key: '_onSubscriptionResult',
@@ -177,7 +195,7 @@ var WatchmanClient = (function () {
             options.expression = ['dirname', relativePath];
           }
           // relativePath is undefined if watchRoot is the same as directoryPath.
-          var _subscription = new _WatchmanSubscription2['default'](
+          var _subscription = new (_WatchmanSubscription2 || _WatchmanSubscription()).default(
           /*subscriptionRoot*/watchRoot,
           /*pathFromSubscriptionRootToSubscriptionPath*/relativePath,
           /*subscriptionPath*/localDirectoryPath,
@@ -193,7 +211,7 @@ var WatchmanClient = (function () {
   }, {
     key: 'hasSubscription',
     value: function hasSubscription(entryPath) {
-      return !!this._getSubscription(entryPath);
+      return Boolean(this._getSubscription(entryPath));
     }
   }, {
     key: 'unwatch',
@@ -317,7 +335,7 @@ var WatchmanClient = (function () {
           client.command(args, function (error, response) {
             return error ? reject(error) : resolve(response);
           });
-        })['catch'](reject);
+        }).catch(reject);
       });
     }
   }]);

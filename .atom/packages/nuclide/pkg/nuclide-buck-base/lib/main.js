@@ -8,9 +8,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
  * the root directory of this source tree.
  */
 
-var _path = require('path');
+var _path2;
 
-var _path2 = _interopRequireDefault(_path);
+function _path() {
+  return _path2 = _interopRequireDefault(require('path'));
+}
 
 module.exports = Object.defineProperties({
 
@@ -18,7 +20,7 @@ module.exports = Object.defineProperties({
     // TODO(mbolin): Buck does have an option where the user can customize the
     // name of the build file: https://github.com/facebook/buck/issues/238.
     // This function will not work for those who use that option.
-    return _path2['default'].basename(filePath) === 'BUCK';
+    return (_path2 || _path()).default.basename(filePath) === 'BUCK';
   }
 }, {
   BuckProject: {

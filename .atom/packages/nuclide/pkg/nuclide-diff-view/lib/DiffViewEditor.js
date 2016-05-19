@@ -16,9 +16,17 @@ var _createClass = (function () { function defineProperties(target, props) { for
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _atom = require('atom');
+var _atom2;
 
-var _reactForAtom = require('react-for-atom');
+function _atom() {
+  return _atom2 = require('atom');
+}
+
+var _reactForAtom2;
+
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
 
 /**
  * The DiffViewEditor manages the lifecycle of the two editors used in the diff view,
@@ -53,7 +61,7 @@ var DiffViewEditor = (function () {
           scrollToRow: _this._scrollToRow.bind(_this)
         });
         var container = document.createElement('div');
-        _reactForAtom.ReactDOM.render(node, container);
+        (_reactForAtom2 || _reactForAtom()).ReactDOM.render(node, container);
         // an overlay marker at a buffer range with row x renders under row x + 1
         // so, use range at bufferRow - 1 to actually display at bufferRow
         var range = [[bufferRow - 1, 0], [bufferRow - 1, 0]];
@@ -134,7 +142,7 @@ var DiffViewEditor = (function () {
   }, {
     key: '_createLineMarker',
     value: function _createLineMarker(lineNumber, type) {
-      var range = new _atom.Range([lineNumber, 0], [lineNumber + 1, 0]);
+      var range = new (_atom2 || _atom()).Range([lineNumber, 0], [lineNumber + 1, 0]);
       var marker = this._editor.markBufferRange(range, { invalidate: 'never' });
       this._editor.decorateMarker(marker, { type: 'highlight', 'class': 'diff-view-' + type });
       return marker;
@@ -155,8 +163,11 @@ var DiffViewEditor = (function () {
 
         var blockItem = document.createElement('div');
         blockItem.style.minHeight = offsetLines * lineHeight + 'px';
+        blockItem.className = 'nuclide-diff-view-block-offset';
         var marker = this._editor.markBufferPosition([lineNumber, 0], { invalidate: 'never' });
-        this._editor.decorateMarker(marker, { type: 'block', item: blockItem, position: 'before' });
+        // The position should be `after` if the offset is at the end of the file.
+        var position = lineNumber >= this._editor.getLineCount() - 1 ? 'after' : 'before';
+        this._editor.decorateMarker(marker, { type: 'block', item: blockItem, position: position });
         this._offsetMarkers.push(marker);
       }
     }
@@ -187,5 +198,5 @@ var DiffViewEditor = (function () {
   return DiffViewEditor;
 })();
 
-exports['default'] = DiffViewEditor;
-module.exports = exports['default'];
+exports.default = DiffViewEditor;
+module.exports = exports.default;

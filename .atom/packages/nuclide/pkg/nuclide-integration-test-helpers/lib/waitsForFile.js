@@ -14,9 +14,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
  * the root directory of this source tree.
  */
 
-var _path = require('path');
+var _path2;
 
-var _path2 = _interopRequireDefault(_path);
+function _path() {
+  return _path2 = _interopRequireDefault(require('path'));
+}
 
 /**
  * Waits for the specified file to become the active text editor.
@@ -35,7 +37,7 @@ function waitsForFile(filename) {
     if (editorPath == null) {
       return false;
     }
-    return _path2['default'].basename(editorPath) === filename;
+    return (_path2 || _path()).default.basename(editorPath) === filename;
   });
 }
 
@@ -52,6 +54,6 @@ function waitsForFilePosition(filename, row, column) {
       return false;
     }
     var pos = editor.getCursorBufferPosition();
-    return _path2['default'].basename(editorPath) === filename && pos.row === row && pos.column === column;
+    return (_path2 || _path()).default.basename(editorPath) === filename && pos.row === row && pos.column === column;
   });
 }

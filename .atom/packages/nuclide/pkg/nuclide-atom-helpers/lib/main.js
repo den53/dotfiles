@@ -1,4 +1,6 @@
-
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -17,6 +19,9 @@ function requireFromCache(id) {
   }
   return requireCache[id];
 }
+
+// A map of targets to command maps. We use an object (instead of a Map) to be more consistent with
+// Atom's API. See <https://atom.io/docs/api/v1.2.0/CommandRegistry#instance-add>
 
 module.exports = Object.defineProperties({}, {
   projects: {
@@ -85,20 +90,6 @@ module.exports = Object.defineProperties({}, {
   loadBufferForUri: {
     get: function get() {
       return requireFromCache('./text-editor').loadBufferForUri;
-    },
-    configurable: true,
-    enumerable: true
-  },
-  observeActiveEditorsDebounced: {
-    get: function get() {
-      return requireFromCache('./text-editor').observeActiveEditorsDebounced;
-    },
-    configurable: true,
-    enumerable: true
-  },
-  observeEditorChangesDebounced: {
-    get: function get() {
-      return requireFromCache('./text-editor').observeEditorChangesDebounced;
     },
     configurable: true,
     enumerable: true
@@ -239,6 +230,20 @@ module.exports = Object.defineProperties({}, {
   addTooltip: {
     get: function get() {
       return requireFromCache('./tooltip').addTooltip;
+    },
+    configurable: true,
+    enumerable: true
+  },
+  getUiTreePathFromTargetEvent: {
+    get: function get() {
+      return requireFromCache('./ui-tree-path').getUiTreePathFromTargetEvent;
+    },
+    configurable: true,
+    enumerable: true
+  },
+  syncAtomCommands: {
+    get: function get() {
+      return requireFromCache('./sync-atom-commands').syncAtomCommands;
     },
     configurable: true,
     enumerable: true

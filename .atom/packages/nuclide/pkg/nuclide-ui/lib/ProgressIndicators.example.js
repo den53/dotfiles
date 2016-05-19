@@ -10,64 +10,80 @@ Object.defineProperty(exports, '__esModule', {
  * the root directory of this source tree.
  */
 
-var _reactForAtom = require('react-for-atom');
+var _reactForAtom2;
 
-var _Block = require('./Block');
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
 
-var _ProgressBar = require('./ProgressBar');
+var _Block2;
 
-var _LoadingSpinner = require('./LoadingSpinner');
+function _Block() {
+  return _Block2 = require('./Block');
+}
+
+var _ProgressBar2;
+
+function _ProgressBar() {
+  return _ProgressBar2 = require('./ProgressBar');
+}
+
+var _LoadingSpinner2;
+
+function _LoadingSpinner() {
+  return _LoadingSpinner2 = require('./LoadingSpinner');
+}
 
 var ProgressBarExample = function ProgressBarExample() {
-  return _reactForAtom.React.createElement(
+  return (_reactForAtom2 || _reactForAtom()).React.createElement(
     'div',
     null,
-    _reactForAtom.React.createElement(
-      _Block.Block,
+    (_reactForAtom2 || _reactForAtom()).React.createElement(
+      (_Block2 || _Block()).Block,
       null,
-      _reactForAtom.React.createElement(_ProgressBar.ProgressBar, null)
+      (_reactForAtom2 || _reactForAtom()).React.createElement((_ProgressBar2 || _ProgressBar()).ProgressBar, null)
     ),
-    _reactForAtom.React.createElement(
-      _Block.Block,
+    (_reactForAtom2 || _reactForAtom()).React.createElement(
+      (_Block2 || _Block()).Block,
       null,
-      _reactForAtom.React.createElement(_ProgressBar.ProgressBar, { max: 100, value: 0 })
+      (_reactForAtom2 || _reactForAtom()).React.createElement((_ProgressBar2 || _ProgressBar()).ProgressBar, { max: 100, value: 0 })
     ),
-    _reactForAtom.React.createElement(
-      _Block.Block,
+    (_reactForAtom2 || _reactForAtom()).React.createElement(
+      (_Block2 || _Block()).Block,
       null,
-      _reactForAtom.React.createElement(_ProgressBar.ProgressBar, { max: 100, value: 50 })
+      (_reactForAtom2 || _reactForAtom()).React.createElement((_ProgressBar2 || _ProgressBar()).ProgressBar, { max: 100, value: 50 })
     ),
-    _reactForAtom.React.createElement(
-      _Block.Block,
+    (_reactForAtom2 || _reactForAtom()).React.createElement(
+      (_Block2 || _Block()).Block,
       null,
-      _reactForAtom.React.createElement(_ProgressBar.ProgressBar, { max: 100, value: 100 })
+      (_reactForAtom2 || _reactForAtom()).React.createElement((_ProgressBar2 || _ProgressBar()).ProgressBar, { max: 100, value: 100 })
     )
   );
 };
 
 var LoadingSpinnerExample = function LoadingSpinnerExample() {
-  return _reactForAtom.React.createElement(
+  return (_reactForAtom2 || _reactForAtom()).React.createElement(
     'div',
     null,
-    _reactForAtom.React.createElement(
-      _Block.Block,
+    (_reactForAtom2 || _reactForAtom()).React.createElement(
+      (_Block2 || _Block()).Block,
       null,
-      _reactForAtom.React.createElement(_LoadingSpinner.LoadingSpinner, { size: 'EXTRA_SMALL' })
+      (_reactForAtom2 || _reactForAtom()).React.createElement((_LoadingSpinner2 || _LoadingSpinner()).LoadingSpinner, { size: 'EXTRA_SMALL' })
     ),
-    _reactForAtom.React.createElement(
-      _Block.Block,
+    (_reactForAtom2 || _reactForAtom()).React.createElement(
+      (_Block2 || _Block()).Block,
       null,
-      _reactForAtom.React.createElement(_LoadingSpinner.LoadingSpinner, { size: 'SMALL' })
+      (_reactForAtom2 || _reactForAtom()).React.createElement((_LoadingSpinner2 || _LoadingSpinner()).LoadingSpinner, { size: 'SMALL' })
     ),
-    _reactForAtom.React.createElement(
-      _Block.Block,
+    (_reactForAtom2 || _reactForAtom()).React.createElement(
+      (_Block2 || _Block()).Block,
       null,
-      _reactForAtom.React.createElement(_LoadingSpinner.LoadingSpinner, { size: 'MEDIUM' })
+      (_reactForAtom2 || _reactForAtom()).React.createElement((_LoadingSpinner2 || _LoadingSpinner()).LoadingSpinner, { size: 'MEDIUM' })
     ),
-    _reactForAtom.React.createElement(
-      _Block.Block,
+    (_reactForAtom2 || _reactForAtom()).React.createElement(
+      (_Block2 || _Block()).Block,
       null,
-      _reactForAtom.React.createElement(_LoadingSpinner.LoadingSpinner, { size: 'LARGE' })
+      (_reactForAtom2 || _reactForAtom()).React.createElement((_LoadingSpinner2 || _LoadingSpinner()).LoadingSpinner, { size: 'LARGE' })
     )
   );
 };

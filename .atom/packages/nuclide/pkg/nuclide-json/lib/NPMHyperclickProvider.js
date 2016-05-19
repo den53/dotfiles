@@ -15,19 +15,29 @@ exports.getPackageUrlForRange = getPackageUrlForRange;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _semver = require('semver');
+var _semver2;
 
-var _semver2 = _interopRequireDefault(_semver);
+function _semver() {
+  return _semver2 = _interopRequireDefault(require('semver'));
+}
 
-var _path = require('path');
+var _path2;
 
-var _path2 = _interopRequireDefault(_path);
+function _path() {
+  return _path2 = _interopRequireDefault(require('path'));
+}
 
-var _shell = require('shell');
+var _shell2;
 
-var _shell2 = _interopRequireDefault(_shell);
+function _shell() {
+  return _shell2 = _interopRequireDefault(require('shell'));
+}
 
-var _parsing = require('./parsing');
+var _parsing2;
+
+function _parsing() {
+  return _parsing2 = require('./parsing');
+}
 
 var DEPENDENCY_PROPERTIES = new Set(['dependencies', 'devDependencies', 'optionalDependencies']);
 
@@ -58,7 +68,7 @@ function getSuggestionForWord(textEditor, text, range) {
   var suggestion = {
     range: range,
     callback: function callback() {
-      _shell2['default'].openExternal(packageUrl);
+      (_shell2 || _shell()).default.openExternal(packageUrl);
     }
   };
   return Promise.resolve(suggestion);
@@ -82,11 +92,11 @@ function getPackageUrlForRange(json, token, range) {
 function isPackageJson(textEditor) {
   var scopeName = textEditor.getGrammar().scopeName;
   var filePath = textEditor.getPath();
-  return scopeName === 'source.json' && filePath != null && _path2['default'].basename(filePath) === 'package.json';
+  return scopeName === 'source.json' && filePath != null && (_path2 || _path()).default.basename(filePath) === 'package.json';
 }
 
 function getPackageUrl(packageName, version) {
-  if (_semver2['default'].valid(version)) {
+  if ((_semver2 || _semver()).default.valid(version)) {
     return 'https://www.npmjs.com/package/' + packageName + '/';
   }
 
@@ -111,7 +121,7 @@ function getPackageUrl(packageName, version) {
 
 // Return the version string, if it exists
 function getDependencyVersion(json, range) {
-  var ast = (0, _parsing.parseJSON)(json);
+  var ast = (0, (_parsing2 || _parsing()).parseJSON)(json);
   if (ast == null) {
     // parse error
     return null;
@@ -140,9 +150,9 @@ function getPathToNodeForRange(objectExpression, range) {
     return null;
   }
   for (var property of properties) {
-    var propertyRange = (0, _parsing.babelLocToRange)(property.loc);
+    var propertyRange = (0, (_parsing2 || _parsing()).babelLocToRange)(property.loc);
     if (propertyRange.containsRange(range)) {
-      var keyRange = (0, _parsing.babelLocToRange)(property.key.loc);
+      var keyRange = (0, (_parsing2 || _parsing()).babelLocToRange)(property.key.loc);
       if (keyRange.isEqual(range)) {
         return [property];
       }

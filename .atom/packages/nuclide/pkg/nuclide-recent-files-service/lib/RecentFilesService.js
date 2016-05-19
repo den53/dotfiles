@@ -2,12 +2,6 @@ Object.defineProperty(exports, '__esModule', {
   value: true
 });
 
-var _createDecoratedClass = (function () { function defineProperties(target, descriptors, initializers) { for (var i = 0; i < descriptors.length; i++) { var descriptor = descriptors[i]; var decorators = descriptor.decorators; var key = descriptor.key; delete descriptor.key; delete descriptor.decorators; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor || descriptor.initializer) descriptor.writable = true; if (decorators) { for (var f = 0; f < decorators.length; f++) { var decorator = decorators[f]; if (typeof decorator === 'function') { descriptor = decorator(target, key, descriptor) || descriptor; } else { throw new TypeError('The decorator for method ' + descriptor.key + ' is of the invalid type ' + typeof decorator); } } if (descriptor.initializer !== undefined) { initializers[key] = descriptor; continue; } } Object.defineProperty(target, key, descriptor); } } return function (Constructor, protoProps, staticProps, protoInitializers, staticInitializers) { if (protoProps) defineProperties(Constructor.prototype, protoProps, protoInitializers); if (staticProps) defineProperties(Constructor, staticProps, staticInitializers); return Constructor; }; })();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-var _nuclideAnalytics = require('../../nuclide-analytics');
-
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
  * All rights reserved.
@@ -16,11 +10,27 @@ var _nuclideAnalytics = require('../../nuclide-analytics');
  * the root directory of this source tree.
  */
 
-var _require = require('atom');
+var _createDecoratedClass = (function () { function defineProperties(target, descriptors, initializers) { for (var i = 0; i < descriptors.length; i++) { var descriptor = descriptors[i]; var decorators = descriptor.decorators; var key = descriptor.key; delete descriptor.key; delete descriptor.decorators; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor || descriptor.initializer) descriptor.writable = true; if (decorators) { for (var f = 0; f < decorators.length; f++) { var decorator = decorators[f]; if (typeof decorator === 'function') { descriptor = decorator(target, key, descriptor) || descriptor; } else { throw new TypeError('The decorator for method ' + descriptor.key + ' is of the invalid type ' + typeof decorator); } } if (descriptor.initializer !== undefined) { initializers[key] = descriptor; continue; } } Object.defineProperty(target, key, descriptor); } } return function (Constructor, protoProps, staticProps, protoInitializers, staticInitializers) { if (protoProps) defineProperties(Constructor.prototype, protoProps, protoInitializers); if (staticProps) defineProperties(Constructor, staticProps, staticInitializers); return Constructor; }; })();
 
-var CompositeDisposable = _require.CompositeDisposable;
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var onWorkspaceDidStopChangingActivePaneItem = require('../../nuclide-atom-helpers').atomEventDebounce.onWorkspaceDidStopChangingActivePaneItem;
+var _atom2;
+
+function _atom() {
+  return _atom2 = require('atom');
+}
+
+var _nuclideAtomHelpers2;
+
+function _nuclideAtomHelpers() {
+  return _nuclideAtomHelpers2 = require('../../nuclide-atom-helpers');
+}
+
+var _nuclideAnalytics2;
+
+function _nuclideAnalytics() {
+  return _nuclideAnalytics2 = require('../../nuclide-analytics');
+}
 
 var RecentFilesService = (function () {
   function RecentFilesService(state) {
@@ -35,8 +45,8 @@ var RecentFilesService = (function () {
         _this._fileList.set(fileItem.path, fileItem.timestamp);
       }, null);
     }
-    this._subscriptions = new CompositeDisposable();
-    this._subscriptions.add(onWorkspaceDidStopChangingActivePaneItem(function (item) {
+    this._subscriptions = new (_atom2 || _atom()).CompositeDisposable();
+    this._subscriptions.add((_nuclideAtomHelpers2 || _nuclideAtomHelpers()).atomEventDebounce.onWorkspaceDidStopChangingActivePaneItem(function (item) {
       // Not all `item`s are instances of TextEditor (e.g. the diff view).
       if (!item || typeof item.getPath !== 'function') {
         return;
@@ -52,7 +62,7 @@ var RecentFilesService = (function () {
     key: 'touchFile',
     value: function touchFile(path) {
       // Delete first to force a new insertion.
-      this._fileList['delete'](path);
+      this._fileList.delete(path);
       this._fileList.set(path, Date.now());
     }
 
@@ -61,7 +71,7 @@ var RecentFilesService = (function () {
      */
   }, {
     key: 'getRecentFiles',
-    decorators: [(0, _nuclideAnalytics.trackTiming)()],
+    decorators: [(0, (_nuclideAnalytics2 || _nuclideAnalytics()).trackTiming)()],
     value: function getRecentFiles() {
       return Array.from(this._fileList).reverse().map(function (pair) {
         return {

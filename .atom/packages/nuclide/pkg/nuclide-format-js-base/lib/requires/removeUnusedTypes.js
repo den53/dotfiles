@@ -8,20 +8,46 @@
  * the root directory of this source tree.
  */
 
-var getDeclaredIdentifiers = require('../utils/getDeclaredIdentifiers');
-var getDeclaredTypes = require('../utils/getDeclaredTypes');
-var getNonDeclarationTypes = require('../utils/getNonDeclarationTypes');
-var isGlobal = require('../utils/isGlobal');
-var jscs = require('jscodeshift');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var match = jscs.match;
+var _utilsGetDeclaredIdentifiers2;
+
+function _utilsGetDeclaredIdentifiers() {
+  return _utilsGetDeclaredIdentifiers2 = _interopRequireDefault(require('../utils/getDeclaredIdentifiers'));
+}
+
+var _utilsGetDeclaredTypes2;
+
+function _utilsGetDeclaredTypes() {
+  return _utilsGetDeclaredTypes2 = _interopRequireDefault(require('../utils/getDeclaredTypes'));
+}
+
+var _utilsGetNonDeclarationTypes2;
+
+function _utilsGetNonDeclarationTypes() {
+  return _utilsGetNonDeclarationTypes2 = _interopRequireDefault(require('../utils/getNonDeclarationTypes'));
+}
+
+var _utilsIsGlobal2;
+
+function _utilsIsGlobal() {
+  return _utilsIsGlobal2 = _interopRequireDefault(require('../utils/isGlobal'));
+}
+
+var _jscodeshift2;
+
+function _jscodeshift() {
+  return _jscodeshift2 = _interopRequireDefault(require('jscodeshift'));
+}
+
+var match = (_jscodeshift2 || _jscodeshift()).default.match;
 
 // These are the things we should try to remove.
 var CONFIG = [
 // import type Foo from 'Foo';
 {
-  searchTerms: [jscs.ImportDeclaration, { importKind: 'type' }],
-  filters: [isGlobal],
+  searchTerms: [(_jscodeshift2 || _jscodeshift()).default.ImportDeclaration, { importKind: 'type' }],
+  filters: [(_utilsIsGlobal2 || _utilsIsGlobal()).default],
   getNames: function getNames(node) {
     return node.specifiers.map(function (specifier) {
       return specifier.local.name;
@@ -30,9 +56,9 @@ var CONFIG = [
 }];
 
 function removeUnusedTypes(root, options) {
-  var declared = getDeclaredIdentifiers(root, options);
-  var used = getNonDeclarationTypes(root, options);
-  var nonTypeImport = getDeclaredTypes(root, options, [function (path) {
+  var declared = (0, (_utilsGetDeclaredIdentifiers2 || _utilsGetDeclaredIdentifiers()).default)(root, options);
+  var used = (0, (_utilsGetNonDeclarationTypes2 || _utilsGetNonDeclarationTypes()).default)(root, options);
+  var nonTypeImport = (0, (_utilsGetDeclaredTypes2 || _utilsGetDeclaredTypes()).default)(root, options, [function (path) {
     return !isTypeImportDeclaration(path.node);
   }]);
   // Remove things based on the config.

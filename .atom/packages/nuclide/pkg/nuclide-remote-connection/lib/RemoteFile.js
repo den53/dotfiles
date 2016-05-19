@@ -12,33 +12,49 @@ Object.defineProperty(exports, '__esModule', {
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _assert = require('assert');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _assert2 = _interopRequireDefault(_assert);
+var _assert2;
 
-var _path = require('path');
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
-var _path2 = _interopRequireDefault(_path);
+var _path2;
 
-var _crypto = require('crypto');
+function _path() {
+  return _path2 = _interopRequireDefault(require('path'));
+}
 
-var _crypto2 = _interopRequireDefault(_crypto);
+var _crypto2;
 
-var _atom = require('atom');
+function _crypto() {
+  return _crypto2 = _interopRequireDefault(require('crypto'));
+}
 
-var _nuclideRemoteUri = require('../../nuclide-remote-uri');
+var _atom2;
 
-var _nuclideRemoteUri2 = _interopRequireDefault(_nuclideRemoteUri);
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var _nuclideLogging = require('../../nuclide-logging');
+var _nuclideRemoteUri2;
 
-var logger = (0, _nuclideLogging.getLogger)();
+function _nuclideRemoteUri() {
+  return _nuclideRemoteUri2 = _interopRequireDefault(require('../../nuclide-remote-uri'));
+}
+
+var _nuclideLogging2;
+
+function _nuclideLogging() {
+  return _nuclideLogging2 = require('../../nuclide-logging');
+}
+
+var logger = (0, (_nuclideLogging2 || _nuclideLogging()).getLogger)();
 
 /* Mostly implements https://atom.io/docs/api/latest/File */
 
@@ -50,13 +66,13 @@ var RemoteFile = (function () {
 
     this._server = server;
 
-    var _remoteUri$parse = _nuclideRemoteUri2['default'].parse(remotePath);
+    var _default$parse = (_nuclideRemoteUri2 || _nuclideRemoteUri()).default.parse(remotePath);
 
-    var localPath = _remoteUri$parse.path;
+    var localPath = _default$parse.path;
 
     this._localPath = localPath;
     this._path = remotePath;
-    this._emitter = new _atom.Emitter();
+    this._emitter = new (_atom2 || _atom()).Emitter();
     this._subscriptionCount = 0;
     this._deleted = false;
     this._symlink = symlink;
@@ -112,9 +128,11 @@ var RemoteFile = (function () {
         }
       }, function (error) {
         logger.error('Failed to subscribe RemoteFile:', _this._path, error);
+        _this._watchSubscription = null;
       }, function () {
         // Nothing needs to be done if the root directory watch has ended.
         logger.debug('watchFile ended: ' + _this._path);
+        _this._watchSubscription = null;
       });
     }
   }, {
@@ -128,14 +146,14 @@ var RemoteFile = (function () {
     value: function _handleNativeRenameEvent(newPath) {
       this._unsubscribeFromNativeChangeEvents();
 
-      var _remoteUri$parse2 = _nuclideRemoteUri2['default'].parse(this._path);
+      var _default$parse2 = (_nuclideRemoteUri2 || _nuclideRemoteUri()).default.parse(this._path);
 
-      var protocol = _remoteUri$parse2.protocol;
-      var host = _remoteUri$parse2.host;
+      var protocol = _default$parse2.protocol;
+      var host = _default$parse2.host;
 
       this._localPath = newPath;
-      (0, _assert2['default'])(protocol);
-      (0, _assert2['default'])(host);
+      (0, (_assert2 || _assert()).default)(protocol);
+      (0, (_assert2 || _assert()).default)(host);
       this._path = protocol + '//' + host + this._localPath;
       this._subscribeToNativeChangeEvents();
       this._emitter.emit('did-rename');
@@ -159,7 +177,7 @@ var RemoteFile = (function () {
     value: function _trackUnsubscription(subscription) {
       var _this2 = this;
 
-      return new _atom.Disposable(function () {
+      return new (_atom2 || _atom()).Disposable(function () {
         subscription.dispose();
         _this2._didRemoveSubscription();
       });
@@ -221,14 +239,14 @@ var RemoteFile = (function () {
         return this._digest;
       }
       yield this.read();
-      (0, _assert2['default'])(this._digest);
+      (0, (_assert2 || _assert()).default)(this._digest);
       return this._digest;
     })
   }, {
     key: '_setDigest',
     value: function _setDigest(contents) {
-      var hash = _crypto2['default'].createHash('sha1').update(contents || '');
-      (0, _assert2['default'])(hash);
+      var hash = (_crypto2 || _crypto()).default.createHash('sha1').update(contents || '');
+      (0, (_assert2 || _assert()).default)(hash);
       this._digest = hash.digest('hex');
     }
   }, {
@@ -262,13 +280,13 @@ var RemoteFile = (function () {
       if (this._realpath == null) {
         this._realpath = yield this._getFileSystemService().realpath(this._localPath);
       }
-      (0, _assert2['default'])(this._realpath);
+      (0, (_assert2 || _assert()).default)(this._realpath);
       return this._realpath;
     })
   }, {
     key: 'getBaseName',
     value: function getBaseName() {
-      return _path2['default'].basename(this._path);
+      return (_path2 || _path()).default.basename(this._path);
     }
   }, {
     key: 'create',
@@ -330,15 +348,15 @@ var RemoteFile = (function () {
   }, {
     key: 'getParent',
     value: function getParent() {
-      var _remoteUri$parse3 = _nuclideRemoteUri2['default'].parse(this._path);
+      var _default$parse3 = (_nuclideRemoteUri2 || _nuclideRemoteUri()).default.parse(this._path);
 
-      var localPath = _remoteUri$parse3.path;
-      var protocol = _remoteUri$parse3.protocol;
-      var host = _remoteUri$parse3.host;
+      var localPath = _default$parse3.path;
+      var protocol = _default$parse3.protocol;
+      var host = _default$parse3.host;
 
-      (0, _assert2['default'])(protocol);
-      (0, _assert2['default'])(host);
-      var directoryPath = protocol + '//' + host + _path2['default'].dirname(localPath);
+      (0, (_assert2 || _assert()).default)(protocol);
+      (0, (_assert2 || _assert()).default)(host);
+      var directoryPath = protocol + '//' + host + (_path2 || _path()).default.dirname(localPath);
       var remoteConnection = this._server.getRemoteConnectionForUri(this._path);
       var hgRepositoryDescription = remoteConnection != null ? remoteConnection.getHgRepositoryDescription() : null;
       return this._server.createDirectory(directoryPath, hgRepositoryDescription);

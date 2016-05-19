@@ -18,33 +18,17 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var _reactForAtom = require('react-for-atom');
+var _reactForAtom2;
 
-function renderObject(evaluationResult) {
-  var _type = evaluationResult._type;
-  var _description = evaluationResult._description;
-
-  return _type === 'object' ? _description : null;
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
 }
 
-function renderNullish(evaluationResult) {
-  var _type = evaluationResult._type;
+var _DebuggerValueComponent2;
 
-  return _type === 'undefined' || _type === 'null' ? _type : null;
+function _DebuggerValueComponent() {
+  return _DebuggerValueComponent2 = require('./DebuggerValueComponent');
 }
-
-function renderString(evaluationResult) {
-  var _type = evaluationResult._type;
-  var value = evaluationResult.value;
-
-  return _type === 'string' ? '"' + value + '"' : null;
-}
-
-function renderDefault(evaluationResult) {
-  return evaluationResult.value;
-}
-
-var valueRenderers = [renderObject, renderString, renderNullish, renderDefault];
 
 var DebuggerDatatipComponent = (function (_React$Component) {
   _inherits(DebuggerDatatipComponent, _React$Component);
@@ -62,32 +46,22 @@ var DebuggerDatatipComponent = (function (_React$Component) {
       var expression = _props.expression;
       var evaluationResult = _props.evaluationResult;
 
-      var displayValue = undefined;
-      for (var renderer of valueRenderers) {
-        displayValue = renderer(evaluationResult);
-        if (displayValue != null) {
-          break;
-        }
-      }
-      if (displayValue == null || displayValue === '') {
-        displayValue = '(N/A)';
-      }
-      return _reactForAtom.React.createElement(
+      return (_reactForAtom2 || _reactForAtom()).React.createElement(
         'div',
         { className: 'nuclide-debugger-datatip' },
         expression,
         ':',
         ' ',
-        _reactForAtom.React.createElement(
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
           'span',
           { className: 'nuclide-debugger-datatip-value' },
-          displayValue
+          (_reactForAtom2 || _reactForAtom()).React.createElement((_DebuggerValueComponent2 || _DebuggerValueComponent()).DebuggerValueComponent, { evaluationResult: evaluationResult })
         )
       );
     }
   }]);
 
   return DebuggerDatatipComponent;
-})(_reactForAtom.React.Component);
+})((_reactForAtom2 || _reactForAtom()).React.Component);
 
 exports.DebuggerDatatipComponent = DebuggerDatatipComponent;

@@ -1,4 +1,4 @@
-
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -8,7 +8,11 @@
  * the root directory of this source tree.
  */
 
-var invariant = require('assert');
+var _assert2;
+
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
 /**
  * Utility to make it easier to register a file extension with a grammar,
@@ -30,7 +34,7 @@ function registerGrammarForFileExtension(scopeName, extension) {
   if (!customFileTypes || typeof customFileTypes !== 'object') {
     customFileTypes = {};
   }
-  invariant(customFileTypes);
+  (0, (_assert2 || _assert()).default)(customFileTypes);
   var customFileType = customFileTypes[scopeName];
   if (!Array.isArray(customFileType)) {
     customFileType = [];

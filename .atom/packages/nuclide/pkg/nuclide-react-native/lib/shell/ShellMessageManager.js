@@ -4,9 +4,9 @@ Object.defineProperty(exports, '__esModule', {
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -16,9 +16,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * the root directory of this source tree.
  */
 
-var _ws = require('ws');
+var _ws2;
 
-var _ws2 = _interopRequireDefault(_ws);
+function _ws() {
+  return _ws2 = _interopRequireDefault(require('ws'));
+}
 
 var EXECUTOR_PORT = 8081;
 var WS_URL = 'ws://localhost:' + EXECUTOR_PORT + '/message?role=interface&name=Nuclide';
@@ -38,7 +40,7 @@ var ShellMessageManager = (function () {
       if (this._ws == null) {
         (function () {
           // Currently, use cases only require a simple fire-and-forget interaction
-          var ws = new _ws2['default'](_this._url);
+          var ws = new (_ws2 || _ws()).default(_this._url);
           _this._ws = ws;
           ws.onopen = function () {
             ws.send(JSON.stringify(message));

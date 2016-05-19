@@ -16,39 +16,60 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Immutable = require('immutable');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _require = require('react-for-atom');
+var _immutable2;
 
-var React = _require.React;
+function _immutable() {
+  return _immutable2 = _interopRequireDefault(require('immutable'));
+}
 
-var HomeFeatureComponent = require('./HomeFeatureComponent');
-var NuclideLogo = require('./NuclideLogo');
+var _reactForAtom2;
 
-var featureConfig = require('../../nuclide-feature-config');
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
 
-var DEFAULT_WELCOME = React.createElement(
+var _HomeFeatureComponent2;
+
+function _HomeFeatureComponent() {
+  return _HomeFeatureComponent2 = _interopRequireDefault(require('./HomeFeatureComponent'));
+}
+
+var _NuclideLogo2;
+
+function _NuclideLogo() {
+  return _NuclideLogo2 = _interopRequireDefault(require('./NuclideLogo'));
+}
+
+var _nuclideFeatureConfig2;
+
+function _nuclideFeatureConfig() {
+  return _nuclideFeatureConfig2 = _interopRequireDefault(require('../../nuclide-feature-config'));
+}
+
+var DEFAULT_WELCOME = (_reactForAtom2 || _reactForAtom()).React.createElement(
   'div',
   null,
-  React.createElement(
+  (_reactForAtom2 || _reactForAtom()).React.createElement(
     'p',
     null,
     'Thanks for trying Nuclide, Facebook\'s',
-    React.createElement('br', null),
+    (_reactForAtom2 || _reactForAtom()).React.createElement('br', null),
     'unified developer environment.'
   ),
-  React.createElement(
+  (_reactForAtom2 || _reactForAtom()).React.createElement(
     'p',
     null,
     'We would love your feedback and contributions to continue to make it better. Please raise issues and pull-requests directly on our ',
-    React.createElement(
+    (_reactForAtom2 || _reactForAtom()).React.createElement(
       'a',
       { href: 'https://github.com/facebook/nuclide' },
       'GitHub repo'
     ),
     '.'
   ),
-  React.createElement(
+  (_reactForAtom2 || _reactForAtom()).React.createElement(
     'p',
     null,
     'Thank you!'
@@ -77,7 +98,7 @@ function createHomePaneItem(allHomeFragmentsStream) {
 
       _get(Object.getPrototypeOf(HomePaneItem.prototype), 'constructor', this).apply(this, args);
       this.state = {
-        allHomeFragments: Immutable.Set()
+        allHomeFragments: (_immutable2 || _immutable()).default.Set()
       };
     }
 
@@ -90,7 +111,7 @@ function createHomePaneItem(allHomeFragmentsStream) {
           return _this.setState({ allHomeFragments: allHomeFragments });
         });
 
-        featureConfig.set('nuclide-home.showHome', true);
+        (_nuclideFeatureConfig2 || _nuclideFeatureConfig()).default.set('nuclide-home.showHome', true);
       }
     }, {
       key: 'render',
@@ -105,31 +126,31 @@ function createHomePaneItem(allHomeFragmentsStream) {
           var feature = fragment.feature;
 
           if (welcome) {
-            welcomes.push(React.createElement(
+            welcomes.push((_reactForAtom2 || _reactForAtom()).React.createElement(
               'div',
               { key: welcomes.length },
               welcome
             ));
           }
           if (feature) {
-            features.push(React.createElement(HomeFeatureComponent, _extends({ key: features.length }, feature)));
+            features.push((_reactForAtom2 || _reactForAtom()).React.createElement((_HomeFeatureComponent2 || _HomeFeatureComponent()).default, _extends({ key: features.length }, feature)));
           }
         });
 
-        var containers = [React.createElement(
+        var containers = [(_reactForAtom2 || _reactForAtom()).React.createElement(
           'div',
           { key: 'welcome', className: 'nuclide-home-container' },
-          React.createElement(
+          (_reactForAtom2 || _reactForAtom()).React.createElement(
             'section',
             { className: 'text-center' },
-            React.createElement(NuclideLogo, { className: 'nuclide-home-logo' }),
-            React.createElement(
+            (_reactForAtom2 || _reactForAtom()).React.createElement((_NuclideLogo2 || _NuclideLogo()).default, { className: 'nuclide-home-logo' }),
+            (_reactForAtom2 || _reactForAtom()).React.createElement(
               'h1',
               { className: 'nuclide-home-title' },
               'Welcome to Nuclide'
             )
           ),
-          React.createElement(
+          (_reactForAtom2 || _reactForAtom()).React.createElement(
             'section',
             { className: 'text-center' },
             welcomes.length > 0 ? welcomes : DEFAULT_WELCOME
@@ -137,7 +158,7 @@ function createHomePaneItem(allHomeFragmentsStream) {
         )];
 
         if (features.length > 0) {
-          containers.push(React.createElement(
+          containers.push((_reactForAtom2 || _reactForAtom()).React.createElement(
             'div',
             { key: 'features', className: 'nuclide-home-container' },
             features
@@ -146,7 +167,7 @@ function createHomePaneItem(allHomeFragmentsStream) {
 
         return(
           // Re-use styles from the Atom welcome pane where possible.
-          React.createElement(
+          (_reactForAtom2 || _reactForAtom()).React.createElement(
             'div',
             { className: 'nuclide-home pane-item padded nuclide-home-containers' },
             containers
@@ -173,7 +194,7 @@ function createHomePaneItem(allHomeFragmentsStream) {
     }, {
       key: 'componentWillUnmount',
       value: function componentWillUnmount() {
-        featureConfig.set('nuclide-home.showHome', false);
+        (_nuclideFeatureConfig2 || _nuclideFeatureConfig()).default.set('nuclide-home.showHome', false);
 
         if (this._homeFragmentsSubscription) {
           this._homeFragmentsSubscription.unsubscribe();
@@ -182,7 +203,7 @@ function createHomePaneItem(allHomeFragmentsStream) {
     }]);
 
     return HomePaneItem;
-  })(React.Component);
+  })((_reactForAtom2 || _reactForAtom()).React.Component);
 
   return HomePaneItem;
 }

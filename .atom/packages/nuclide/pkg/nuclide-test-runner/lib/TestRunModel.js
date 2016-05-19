@@ -2,6 +2,12 @@ var _createClass = (function () { function defineProperties(target, props) { for
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
+/**
+ * Status codes returned in the "status" field of the testing utility's JSON response.
+ */
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
  * All rights reserved.
@@ -10,10 +16,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * the root directory of this source tree.
  */
 
-/**
- * Status codes returned in the "status" field of the testing utility's JSON response.
- */
-var Ansi = require('./Ansi');
+var _Ansi2;
+
+function _Ansi() {
+  return _Ansi2 = _interopRequireDefault(require('./Ansi'));
+}
 
 var Status = Object.freeze({
   PASSED: 1,
@@ -24,18 +31,18 @@ var Status = Object.freeze({
 });
 
 var StatusSymbol = {};
-StatusSymbol[Status.PASSED] = Ansi.GREEN + '✓' + Ansi.RESET;
-StatusSymbol[Status.FAILED] = Ansi.RED + '✗' + Ansi.RESET;
-StatusSymbol[Status.SKIPPED] = Ansi.YELLOW + '?' + Ansi.RESET;
-StatusSymbol[Status.FATAL] = Ansi.RED + '✘' + Ansi.RESET;
-StatusSymbol[Status.TIMEOUT] = Ansi.BLUE + '✉' + Ansi.RESET;
+StatusSymbol[Status.PASSED] = (_Ansi2 || _Ansi()).default.GREEN + '✓' + (_Ansi2 || _Ansi()).default.RESET;
+StatusSymbol[Status.FAILED] = (_Ansi2 || _Ansi()).default.RED + '✗' + (_Ansi2 || _Ansi()).default.RESET;
+StatusSymbol[Status.SKIPPED] = (_Ansi2 || _Ansi()).default.YELLOW + '?' + (_Ansi2 || _Ansi()).default.RESET;
+StatusSymbol[Status.FATAL] = (_Ansi2 || _Ansi()).default.RED + '✘' + (_Ansi2 || _Ansi()).default.RESET;
+StatusSymbol[Status.TIMEOUT] = (_Ansi2 || _Ansi()).default.BLUE + '✉' + (_Ansi2 || _Ansi()).default.RESET;
 
 var StatusMessage = {};
-StatusMessage[Status.PASSED] = Ansi.GREEN + '(PASS)' + Ansi.RESET;
-StatusMessage[Status.FAILED] = Ansi.RED + '(FAIL)' + Ansi.RESET;
-StatusMessage[Status.SKIPPED] = Ansi.YELLOW + '(SKIP)' + Ansi.RESET;
-StatusMessage[Status.FATAL] = Ansi.RED + '(FATAL)' + Ansi.RESET;
-StatusMessage[Status.TIMEOUT] = Ansi.BLUE + '(TIMEOUT)' + Ansi.RESET;
+StatusMessage[Status.PASSED] = (_Ansi2 || _Ansi()).default.GREEN + '(PASS)' + (_Ansi2 || _Ansi()).default.RESET;
+StatusMessage[Status.FAILED] = (_Ansi2 || _Ansi()).default.RED + '(FAIL)' + (_Ansi2 || _Ansi()).default.RESET;
+StatusMessage[Status.SKIPPED] = (_Ansi2 || _Ansi()).default.YELLOW + '(SKIP)' + (_Ansi2 || _Ansi()).default.RESET;
+StatusMessage[Status.FATAL] = (_Ansi2 || _Ansi()).default.RED + '(FATAL)' + (_Ansi2 || _Ansi()).default.RESET;
+StatusMessage[Status.TIMEOUT] = (_Ansi2 || _Ansi()).default.BLUE + '(TIMEOUT)' + (_Ansi2 || _Ansi()).default.RESET;
 
 var TestRunModel = (function () {
   _createClass(TestRunModel, null, [{

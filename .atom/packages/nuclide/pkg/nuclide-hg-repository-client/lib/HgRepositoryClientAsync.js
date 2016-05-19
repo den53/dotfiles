@@ -16,7 +16,11 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _nuclideHgRepositoryBaseLibHgConstants = require('../../nuclide-hg-repository-base/lib/hg-constants');
+var _nuclideHgRepositoryBaseLibHgConstants2;
+
+function _nuclideHgRepositoryBaseLibHgConstants() {
+  return _nuclideHgRepositoryBaseLibHgConstants2 = require('../../nuclide-hg-repository-base/lib/hg-constants');
+}
 
 /*
  * Delegate to the passed in HgRepositoryClient.
@@ -38,6 +42,17 @@ var HgRepositoryClientAsync = (function () {
     key: 'getWorkingDirectory',
     value: function getWorkingDirectory() {
       return this._client.getWorkingDirectory();
+    }
+
+    /**
+     * That extends the `GitRepositoryAsync` implementation which takes a single file path.
+     * Here, it's possible to pass an array of file paths to revert/checkout-head.
+     */
+  }, {
+    key: 'checkoutHead',
+    value: function checkoutHead(filePathsArg) {
+      var filePaths = Array.isArray(filePathsArg) ? filePathsArg : [filePathsArg];
+      return this._client._service.revert(filePaths);
     }
   }, {
     key: 'checkoutReference',
@@ -77,29 +92,9 @@ var HgRepositoryClientAsync = (function () {
     }
   }, {
     key: 'getDiffStats',
-    value: _asyncToGenerator(function* (filePath) {
-      var cleanStats = { added: 0, deleted: 0 };
-      if (!filePath) {
-        return cleanStats;
-      }
-
-      // Check the cache.
-      var cachedDiffInfo = this._client._hgDiffCache[filePath];
-      if (cachedDiffInfo) {
-        return { added: cachedDiffInfo.added, deleted: cachedDiffInfo.deleted };
-      }
-
-      // Fall back to a fetch.
-      var fetchedPathToDiffInfo = yield this._client._updateDiffInfo([filePath]);
-      if (fetchedPathToDiffInfo) {
-        var diffInfo = fetchedPathToDiffInfo.get(filePath);
-        if (diffInfo != null) {
-          return { added: diffInfo.added, deleted: diffInfo.deleted };
-        }
-      }
-
-      return cleanStats;
-    })
+    value: function getDiffStats(filePath) {
+      return Promise.resolve(this._client.getDiffStats(filePath));
+    }
 
     /**
      * Recommended method to use to get the line diffs of files in this repo.
@@ -108,29 +103,9 @@ var HgRepositoryClientAsync = (function () {
      */
   }, {
     key: 'getLineDiffs',
-    value: _asyncToGenerator(function* (filePath) {
-      var lineDiffs = [];
-      if (!filePath) {
-        return lineDiffs;
-      }
-
-      // Check the cache.
-      var cachedDiffInfo = this._client._hgDiffCache[filePath];
-      if (cachedDiffInfo) {
-        return cachedDiffInfo.lineDiffs;
-      }
-
-      // Fall back to a fetch.
-      var fetchedPathToDiffInfo = yield this._client._updateDiffInfo([filePath]);
-      if (fetchedPathToDiffInfo != null) {
-        var diffInfo = fetchedPathToDiffInfo.get(filePath);
-        if (diffInfo != null) {
-          return diffInfo.lineDiffs;
-        }
-      }
-
-      return lineDiffs;
-    })
+    value: function getLineDiffs(filePath) {
+      return Promise.resolve(this._client.getLineDiffs(filePath));
+    }
   }, {
     key: 'refreshStatus',
     value: _asyncToGenerator(function* () {
@@ -139,9 +114,14 @@ var HgRepositoryClientAsync = (function () {
         return projPath.startsWith(repoRoot);
       });
       yield this._client.getStatuses(repoProjects, {
-        hgStatusOption: _nuclideHgRepositoryBaseLibHgConstants.HgStatusOption.ONLY_NON_IGNORED
+        hgStatusOption: (_nuclideHgRepositoryBaseLibHgConstants2 || _nuclideHgRepositoryBaseLibHgConstants()).HgStatusOption.ONLY_NON_IGNORED
       });
     })
+  }, {
+    key: 'getHeadCommitMessage',
+    value: function getHeadCommitMessage() {
+      return this._client._service.getHeadCommitMessage();
+    }
 
     /**
      * Return relative paths to status code number values object.
@@ -171,22 +151,22 @@ var HgRepositoryClientAsync = (function () {
   }, {
     key: 'isStatusIgnored',
     value: function isStatusIgnored(status) {
-      return status === _nuclideHgRepositoryBaseLibHgConstants.StatusCodeNumber.IGNORED;
+      return status === (_nuclideHgRepositoryBaseLibHgConstants2 || _nuclideHgRepositoryBaseLibHgConstants()).StatusCodeNumber.IGNORED;
     }
   }, {
     key: 'isStatusModified',
     value: function isStatusModified(status) {
-      return status === _nuclideHgRepositoryBaseLibHgConstants.StatusCodeNumber.MODIFIED;
+      return status === (_nuclideHgRepositoryBaseLibHgConstants2 || _nuclideHgRepositoryBaseLibHgConstants()).StatusCodeNumber.MODIFIED;
     }
   }, {
     key: 'isStatusDeleted',
     value: function isStatusDeleted(status) {
-      return status === _nuclideHgRepositoryBaseLibHgConstants.StatusCodeNumber.MISSING || status === _nuclideHgRepositoryBaseLibHgConstants.StatusCodeNumber.REMOVED;
+      return status === (_nuclideHgRepositoryBaseLibHgConstants2 || _nuclideHgRepositoryBaseLibHgConstants()).StatusCodeNumber.MISSING || status === (_nuclideHgRepositoryBaseLibHgConstants2 || _nuclideHgRepositoryBaseLibHgConstants()).StatusCodeNumber.REMOVED;
     }
   }, {
     key: 'isStatusNew',
     value: function isStatusNew(status) {
-      return status === _nuclideHgRepositoryBaseLibHgConstants.StatusCodeNumber.ADDED || status === _nuclideHgRepositoryBaseLibHgConstants.StatusCodeNumber.UNTRACKED;
+      return status === (_nuclideHgRepositoryBaseLibHgConstants2 || _nuclideHgRepositoryBaseLibHgConstants()).StatusCodeNumber.ADDED || status === (_nuclideHgRepositoryBaseLibHgConstants2 || _nuclideHgRepositoryBaseLibHgConstants()).StatusCodeNumber.UNTRACKED;
     }
   }, {
     key: 'onDidChangeStatus',
@@ -203,5 +183,5 @@ var HgRepositoryClientAsync = (function () {
   return HgRepositoryClientAsync;
 })();
 
-exports['default'] = HgRepositoryClientAsync;
-module.exports = exports['default'];
+exports.default = HgRepositoryClientAsync;
+module.exports = exports.default;

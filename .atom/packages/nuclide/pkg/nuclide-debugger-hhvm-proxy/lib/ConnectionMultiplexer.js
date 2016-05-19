@@ -4,11 +4,11 @@ Object.defineProperty(exports, '__esModule', {
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -18,35 +18,71 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * the root directory of this source tree.
  */
 
-var _utils = require('./utils');
+var _utils2;
 
-var _utils2 = _interopRequireDefault(_utils);
+function _utils() {
+  return _utils2 = _interopRequireDefault(require('./utils'));
+}
 
-var _helpers = require('./helpers');
+var _helpers2;
 
-var _Connection = require('./Connection');
+function _helpers() {
+  return _helpers2 = require('./helpers');
+}
 
-var _config = require('./config');
+var _Connection2;
 
-var _ConnectionUtils = require('./ConnectionUtils');
+function _Connection() {
+  return _Connection2 = require('./Connection');
+}
 
-var _DbgpSocket = require('./DbgpSocket');
+var _config2;
 
-var _events = require('events');
+function _config() {
+  return _config2 = require('./config');
+}
 
-var _assert = require('assert');
+var _ConnectionUtils2;
 
-var _assert2 = _interopRequireDefault(_assert);
+function _ConnectionUtils() {
+  return _ConnectionUtils2 = require('./ConnectionUtils');
+}
 
-var _ClientCallback = require('./ClientCallback');
+var _BreakpointStore2;
 
-var _require = require('./BreakpointStore');
+function _BreakpointStore() {
+  return _BreakpointStore2 = require('./BreakpointStore');
+}
 
-var BreakpointStore = _require.BreakpointStore;
+var _DbgpConnector2;
 
-var _require2 = require('./DbgpConnector');
+function _DbgpConnector() {
+  return _DbgpConnector2 = require('./DbgpConnector');
+}
 
-var DbgpConnector = _require2.DbgpConnector;
+var _DbgpSocket2;
+
+function _DbgpSocket() {
+  return _DbgpSocket2 = require('./DbgpSocket');
+}
+
+var _events2;
+
+function _events() {
+  return _events2 = require('events');
+}
+
+var _assert2;
+
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
+
+var _ClientCallback2;
+
+function _ClientCallback() {
+  return _ClientCallback2 = require('./ClientCallback');
+}
 
 var CONNECTION_MUX_STATUS_EVENT = 'connection-mux-status';
 
@@ -85,15 +121,15 @@ var ConnectionMultiplexer = (function () {
     _classCallCheck(this, ConnectionMultiplexer);
 
     this._clientCallback = clientCallback;
-    this._status = _DbgpSocket.STATUS_STARTING;
-    this._connectionStatusEmitter = new _events.EventEmitter();
+    this._status = (_DbgpSocket2 || _DbgpSocket()).STATUS_STARTING;
+    this._connectionStatusEmitter = new (_events2 || _events()).EventEmitter();
     this._enabledConnection = null;
     this._dummyConnection = null;
     this._connections = new Map();
     this._attachConnector = null;
     this._launchConnector = null;
     this._dummyRequestProcess = null;
-    this._breakpointStore = new BreakpointStore();
+    this._breakpointStore = new (_BreakpointStore2 || _BreakpointStore()).BreakpointStore();
     this._launchedScriptProcess = null;
     this._launchedScriptProcessPromise = null;
   }
@@ -108,15 +144,15 @@ var ConnectionMultiplexer = (function () {
     value: function listen() {
       var _this = this;
 
-      var _getConfig = (0, _config.getConfig)();
+      var _ref = (0, (_config2 || _config()).getConfig)();
 
-      var xdebugAttachPort = _getConfig.xdebugAttachPort;
-      var xdebugLaunchingPort = _getConfig.xdebugLaunchingPort;
-      var launchScriptPath = _getConfig.launchScriptPath;
+      var xdebugAttachPort = _ref.xdebugAttachPort;
+      var xdebugLaunchingPort = _ref.xdebugLaunchingPort;
+      var launchScriptPath = _ref.launchScriptPath;
 
       if (launchScriptPath == null) {
         // When in attach mode we are guaranteed that the two ports are not equal.
-        (0, _assert2['default'])(xdebugAttachPort !== xdebugLaunchingPort, 'xdebug ports are equal in attach mode');
+        (0, (_assert2 || _assert()).default)(xdebugAttachPort !== xdebugLaunchingPort, 'xdebug ports are equal in attach mode');
         // In this case we need to listen for incoming connections to attach to, as well as on the
         // port that the dummy connection will use.
         this._attachConnector = this._setupConnector(xdebugAttachPort, this._disposeAttachConnector.bind(this));
@@ -126,17 +162,17 @@ var ConnectionMultiplexer = (function () {
       // used to listen for the script's xdebug requests.
       this._launchConnector = this._setupConnector(xdebugLaunchingPort, this._disposeLaunchConnector.bind(this));
 
-      this._status = _DbgpSocket.STATUS_RUNNING;
+      this._status = (_DbgpSocket2 || _DbgpSocket()).STATUS_RUNNING;
 
       this._clientCallback.sendUserMessage('console', {
         level: 'warning',
         text: 'Pre-loading, please wait...'
       });
-      this._dummyRequestProcess = (0, _ConnectionUtils.sendDummyRequest)();
+      this._dummyRequestProcess = (0, (_ConnectionUtils2 || _ConnectionUtils()).sendDummyRequest)();
 
       if (launchScriptPath != null) {
         this._launchedScriptProcessPromise = new Promise(function (resolve) {
-          _this._launchedScriptProcess = (0, _helpers.launchPhpScriptWithXDebugEnabled)(launchScriptPath, function (text) {
+          _this._launchedScriptProcess = (0, (_helpers2 || _helpers()).launchPhpScriptWithXDebugEnabled)(launchScriptPath, function (text) {
             _this._clientCallback.sendUserMessage('outputWindow', { level: 'info', text: text });
             resolve();
           });
@@ -146,7 +182,7 @@ var ConnectionMultiplexer = (function () {
   }, {
     key: '_setupConnector',
     value: function _setupConnector(port, disposeConnector) {
-      var connector = new DbgpConnector(port);
+      var connector = new (_DbgpConnector2 || _DbgpConnector()).DbgpConnector(port);
       connector.onAttach(this._onAttach.bind(this));
       connector.onClose(disposeConnector);
       connector.onError(this._handleAttachError.bind(this));
@@ -158,19 +194,19 @@ var ConnectionMultiplexer = (function () {
     value: _asyncToGenerator(function* (socket) {
       var _this2 = this;
 
-      _utils2['default'].log('ConnectionMultiplexer successfully got dummy connection.');
-      var dummyConnection = new _Connection.Connection(socket);
+      (_utils2 || _utils()).default.log('ConnectionMultiplexer successfully got dummy connection.');
+      var dummyConnection = new (_Connection2 || _Connection()).Connection(socket);
       yield this._handleSetupForConnection(dummyConnection);
 
       // Continue from loader breakpoint to hit xdebug_break()
       // which will load whole www repo for evaluation if possible.
-      yield dummyConnection.sendContinuationCommand(_DbgpSocket.COMMAND_RUN);
+      yield dummyConnection.sendContinuationCommand((_DbgpSocket2 || _DbgpSocket()).COMMAND_RUN);
       dummyConnection.onStatus(function (status, message) {
         switch (status) {
-          case _DbgpSocket.STATUS_STDOUT:
+          case (_DbgpSocket2 || _DbgpSocket()).STATUS_STDOUT:
             _this2._sendOutput(message, 'log');
             break;
-          case _DbgpSocket.STATUS_STDERR:
+          case (_DbgpSocket2 || _DbgpSocket()).STATUS_STDERR:
             _this2._sendOutput(message, 'info');
             break;
         }
@@ -197,15 +233,15 @@ var ConnectionMultiplexer = (function () {
       var socket = params.socket;
       var message = params.message;
 
-      if (!(0, _ConnectionUtils.isCorrectConnection)(message)) {
-        (0, _ConnectionUtils.failConnection)(socket, 'Discarding connection ' + JSON.stringify(message));
+      if (!(0, (_ConnectionUtils2 || _ConnectionUtils()).isCorrectConnection)(message)) {
+        (0, (_ConnectionUtils2 || _ConnectionUtils()).failConnection)(socket, 'Discarding connection ' + JSON.stringify(message));
         return;
       }
-      if ((0, _ConnectionUtils.isDummyConnection)(message)) {
+      if ((0, (_ConnectionUtils2 || _ConnectionUtils()).isDummyConnection)(message)) {
         yield this._handleDummyConnection(socket);
       } else {
         yield* (function* () {
-          var connection = new _Connection.Connection(socket);
+          var connection = new (_Connection2 || _Connection()).Connection(socket);
           _this3._breakpointStore.addConnection(connection);
           yield _this3._handleSetupForConnection(connection);
 
@@ -218,7 +254,7 @@ var ConnectionMultiplexer = (function () {
 
               _this3._connectionOnStatus.apply(_this3, [connection, status].concat(args));
             }),
-            status: _DbgpSocket.STATUS_STARTING
+            status: (_DbgpSocket2 || _DbgpSocket()).STATUS_STARTING
           };
           _this3._connections.set(connection, info);
 
@@ -226,8 +262,8 @@ var ConnectionMultiplexer = (function () {
           try {
             status = yield connection.getStatus();
           } catch (e) {
-            _utils2['default'].logError('Error getting initial connection status: ' + e.message);
-            status = _DbgpSocket.STATUS_ERROR;
+            (_utils2 || _utils()).default.logError('Error getting initial connection status: ' + e.message);
+            status = (_DbgpSocket2 || _DbgpSocket()).STATUS_ERROR;
           }
           _this3._connectionOnStatus(connection, status);
         })();
@@ -236,39 +272,39 @@ var ConnectionMultiplexer = (function () {
   }, {
     key: '_connectionOnStatus',
     value: function _connectionOnStatus(connection, status) {
-      _utils2['default'].log('Mux got status: ' + status + ' on connection ' + connection.getId());
+      (_utils2 || _utils()).default.log('Mux got status: ' + status + ' on connection ' + connection.getId());
       var connectionInfo = this._connections.get(connection);
-      (0, _assert2['default'])(connectionInfo != null);
+      (0, (_assert2 || _assert()).default)(connectionInfo != null);
 
       switch (status) {
-        case _DbgpSocket.STATUS_STARTING:
+        case (_DbgpSocket2 || _DbgpSocket()).STATUS_STARTING:
           // Starting status has no stack.
           // step before reporting initial status to get to the first instruction.
           // TODO: Use loader breakpoint configuration to choose between step/run.
           connectionInfo.status = status;
-          connection.sendContinuationCommand(_DbgpSocket.COMMAND_RUN);
+          connection.sendContinuationCommand((_DbgpSocket2 || _DbgpSocket()).COMMAND_RUN);
           return;
-        case _DbgpSocket.STATUS_STOPPING:
+        case (_DbgpSocket2 || _DbgpSocket()).STATUS_STOPPING:
           // TODO: May want to enable post-mortem features?
           connectionInfo.status = status;
-          connection.sendContinuationCommand(_DbgpSocket.COMMAND_RUN); // TODO: Change to COMMAND_STOP: t10862085
+          connection.sendContinuationCommand((_DbgpSocket2 || _DbgpSocket()).COMMAND_RUN); // TODO: Change to COMMAND_STOP: t10862085
           return;
-        case _DbgpSocket.STATUS_RUNNING:
+        case (_DbgpSocket2 || _DbgpSocket()).STATUS_RUNNING:
           connectionInfo.status = status;
           if (connection === this._enabledConnection) {
             this._disableConnection();
           }
           break;
-        case _DbgpSocket.STATUS_BREAK:
+        case (_DbgpSocket2 || _DbgpSocket()).STATUS_BREAK:
           connectionInfo.status = status;
           if (connection === this._enabledConnection) {
             // This can happen when we step.
-            _utils2['default'].log('Mux break on enabled connection');
-            this._emitStatus(_DbgpSocket.STATUS_BREAK);
+            (_utils2 || _utils()).default.log('Mux break on enabled connection');
+            this._emitStatus((_DbgpSocket2 || _DbgpSocket()).STATUS_BREAK);
             return;
           }
           break;
-        case _DbgpSocket.STATUS_ERROR:
+        case (_DbgpSocket2 || _DbgpSocket()).STATUS_ERROR:
           var message = 'The debugger encountered a problem and the connection had to be shut down.';
           if (arguments[2] != null) {
             message = message + '  Error message: ' + arguments[2];
@@ -279,15 +315,15 @@ var ConnectionMultiplexer = (function () {
           });
           this._removeConnection(connection);
           break;
-        case _DbgpSocket.STATUS_STOPPED:
-        case _DbgpSocket.STATUS_END:
+        case (_DbgpSocket2 || _DbgpSocket()).STATUS_STOPPED:
+        case (_DbgpSocket2 || _DbgpSocket()).STATUS_END:
           connectionInfo.status = status;
           this._removeConnection(connection);
           break;
-        case _DbgpSocket.STATUS_STDOUT:
+        case (_DbgpSocket2 || _DbgpSocket()).STATUS_STDOUT:
           this._sendOutput(arguments[2], 'log');
           break;
-        case _DbgpSocket.STATUS_STDERR:
+        case (_DbgpSocket2 || _DbgpSocket()).STATUS_STDERR:
           this._sendOutput(arguments[2], 'info');
           break;
       }
@@ -305,18 +341,18 @@ var ConnectionMultiplexer = (function () {
   }, {
     key: '_updateStatus',
     value: function _updateStatus() {
-      if (this._status === _DbgpSocket.STATUS_END) {
+      if (this._status === (_DbgpSocket2 || _DbgpSocket()).STATUS_END) {
         return;
       }
 
-      if (this._status === _DbgpSocket.STATUS_BREAK) {
-        _utils2['default'].log('Mux already in break status');
+      if (this._status === (_DbgpSocket2 || _DbgpSocket()).STATUS_BREAK) {
+        (_utils2 || _utils()).default.log('Mux already in break status');
         return;
       }
 
       // now check if we can move from running to break...
       for (var connectionInfo of this._connections.values()) {
-        if (connectionInfo.status === _DbgpSocket.STATUS_BREAK) {
+        if (connectionInfo.status === (_DbgpSocket2 || _DbgpSocket()).STATUS_BREAK) {
           this._enableConnection(connectionInfo.connection);
           break;
         }
@@ -325,9 +361,9 @@ var ConnectionMultiplexer = (function () {
   }, {
     key: '_enableConnection',
     value: function _enableConnection(connection) {
-      _utils2['default'].log('Mux enabling connection');
+      (_utils2 || _utils()).default.log('Mux enabling connection');
       this._enabledConnection = connection;
-      this._setStatus(_DbgpSocket.STATUS_BREAK);
+      this._setStatus((_DbgpSocket2 || _DbgpSocket()).STATUS_BREAK);
     }
   }, {
     key: '_setStatus',
@@ -353,7 +389,7 @@ var ConnectionMultiplexer = (function () {
   }, {
     key: 'runtimeEvaluate',
     value: _asyncToGenerator(function* (expression) {
-      _utils2['default'].log('runtimeEvaluate() on dummy connection for: ' + expression);
+      (_utils2 || _utils()).default.log('runtimeEvaluate() on dummy connection for: ' + expression);
       if (this._dummyConnection != null) {
         // Global runtime evaluation on dummy connection does not care about
         // which frame it is being evaluated on so choose top frame here.
@@ -446,7 +482,7 @@ var ConnectionMultiplexer = (function () {
   }, {
     key: 'getProperties',
     value: function getProperties(remoteId) {
-      if (this._enabledConnection && this._status === _DbgpSocket.STATUS_BREAK) {
+      if (this._enabledConnection && this._status === (_DbgpSocket2 || _DbgpSocket()).STATUS_BREAK) {
         return this._enabledConnection.getProperties(remoteId);
       } else if (this._dummyConnection) {
         return this._dummyConnection.getProperties(remoteId);
@@ -458,10 +494,10 @@ var ConnectionMultiplexer = (function () {
     key: '_removeConnection',
     value: function _removeConnection(connection) {
       var info = this._connections.get(connection);
-      (0, _assert2['default'])(info != null);
+      (0, (_assert2 || _assert()).default)(info != null);
       info.onStatusDisposable.dispose();
       connection.dispose();
-      this._connections['delete'](connection);
+      this._connections.delete(connection);
 
       if (connection === this._enabledConnection) {
         this._disableConnection();
@@ -471,9 +507,9 @@ var ConnectionMultiplexer = (function () {
   }, {
     key: '_disableConnection',
     value: function _disableConnection() {
-      _utils2['default'].log('Mux disabling connection');
+      (_utils2 || _utils()).default.log('Mux disabling connection');
       this._enabledConnection = null;
-      this._setStatus(_DbgpSocket.STATUS_RUNNING);
+      this._setStatus((_DbgpSocket2 || _DbgpSocket()).STATUS_RUNNING);
     }
   }, {
     key: '_disposeAttachConnector',
@@ -500,7 +536,7 @@ var ConnectionMultiplexer = (function () {
   }, {
     key: '_checkForEnd',
     value: _asyncToGenerator(function* () {
-      if (this._connections.size === 0 && (this._attachConnector == null || this._launchConnector == null || (0, _config.getConfig)().endDebugWhenNoRequests)) {
+      if (this._connections.size === 0 && (this._attachConnector == null || this._launchConnector == null || (0, (_config2 || _config()).getConfig)().endDebugWhenNoRequests)) {
 
         // TODO: When HHVM handles the 'stop' message correctly, we don't need to await this promise,
         //       and we can delete this if check.  See: D3192728
@@ -509,7 +545,7 @@ var ConnectionMultiplexer = (function () {
           this._launchedScriptProcessPromise = null;
         }
 
-        this._setStatus(_DbgpSocket.STATUS_END);
+        this._setStatus((_DbgpSocket2 || _DbgpSocket()).STATUS_END);
       }
     })
   }, {
@@ -526,7 +562,7 @@ var ConnectionMultiplexer = (function () {
       // Stdout/err commands.
       var stdoutRequestSucceeded = yield connection.sendStdoutRequest();
       if (!stdoutRequestSucceeded) {
-        _utils2['default'].logError('HHVM returned failure for a stdout request');
+        (_utils2 || _utils()).default.logError('HHVM returned failure for a stdout request');
         this._clientCallback.sendUserMessage('outputWindow', {
           level: 'error',
           text: 'HHVM failed to redirect stdout, so no output will be sent to the output window.'
@@ -540,12 +576,12 @@ var ConnectionMultiplexer = (function () {
       // returning hierarchical data.
       var setFeatureSucceeded = yield connection.setFeature('max_depth', '5');
       if (!setFeatureSucceeded) {
-        _utils2['default'].logError('HHVM returned failure for setting feature max_depth');
+        (_utils2 || _utils()).default.logError('HHVM returned failure for setting feature max_depth');
       }
       // show_hidden allows the client to request data from private class members.
       setFeatureSucceeded = yield connection.setFeature('show_hidden', '1');
       if (!setFeatureSucceeded) {
-        _utils2['default'].logError('HHVM returned failure for setting feature show_hidden');
+        (_utils2 || _utils()).default.logError('HHVM returned failure for setting feature show_hidden');
       }
     })
   }, {

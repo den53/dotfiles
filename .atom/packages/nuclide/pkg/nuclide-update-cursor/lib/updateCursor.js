@@ -1,4 +1,4 @@
-
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -8,8 +8,17 @@
  * the root directory of this source tree.
  */
 
-var getPosition = require('./getPosition');
-var getRawPosition = require('./getRawPosition');
+var _getPosition2;
+
+function _getPosition() {
+  return _getPosition2 = _interopRequireDefault(require('./getPosition'));
+}
+
+var _getRawPosition2;
+
+function _getRawPosition() {
+  return _getRawPosition2 = _interopRequireDefault(require('./getRawPosition'));
+}
 
 // Accuracy determines how many tokens we look for to guess the position.
 var ACCURACIES = [15, 4, 1];
@@ -31,7 +40,7 @@ function updateCursor(startSource, startPosition, endSource) {
 }
 
 function maybeUpdateCursorWithAccuracy(startSource, startPosition, endSource, accuracy) {
-  var rawStartPosition = getRawPosition(startSource, startPosition);
+  var rawStartPosition = (0, (_getRawPosition2 || _getRawPosition()).default)(startSource, startPosition);
   var regexParts = [];
   var inWord = false;
   for (var i = rawStartPosition - 1, found = 0; i >= 0 && found < accuracy; i--) {
@@ -76,7 +85,7 @@ function maybeUpdateCursorWithAccuracy(startSource, startPosition, endSource, ac
     return null;
   }
   var rawEndPosition = result[0].length + result.index;
-  return getPosition(endSource, rawEndPosition);
+  return (0, (_getPosition2 || _getPosition()).default)(endSource, rawEndPosition);
 }
 
 module.exports = updateCursor;

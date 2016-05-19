@@ -1,4 +1,4 @@
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -8,11 +8,19 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
  * the root directory of this source tree.
  */
 
-var _atom = require('atom');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _path = require('path');
+var _atom2;
 
-var _path2 = _interopRequireDefault(_path);
+function _atom() {
+  return _atom2 = require('atom');
+}
+
+var _path2;
+
+function _path() {
+  return _path2 = _interopRequireDefault(require('path'));
+}
 
 /**
  * @param repository Either a GitRepository or HgRepositoryClient.
@@ -27,7 +35,7 @@ function repositoryContainsPath(repository, filePath) {
   }
 
   if (repository.getType() === 'git') {
-    var rootGitProjectDirectory = new _atom.Directory(workingDirectoryPath);
+    var rootGitProjectDirectory = new (_atom2 || _atom()).Directory(workingDirectoryPath);
     return rootGitProjectDirectory.contains(filePath);
   } else if (repository.getType() === 'hg') {
     var hgRepository = repository;
@@ -42,7 +50,7 @@ function repositoryContainsPath(repository, filePath) {
  * @return Whether the file paths are equal, accounting for trailing slashes.
  */
 function pathsAreEqual(filePath1, filePath2) {
-  return _path2['default'].normalize(filePath1 + _path2['default'].sep) === _path2['default'].normalize(filePath2 + _path2['default'].sep);
+  return (_path2 || _path()).default.normalize(filePath1 + (_path2 || _path()).default.sep) === (_path2 || _path()).default.normalize(filePath2 + (_path2 || _path()).default.sep);
 }
 
 module.exports = repositoryContainsPath;

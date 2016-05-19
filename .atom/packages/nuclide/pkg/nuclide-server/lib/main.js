@@ -1,29 +1,32 @@
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
 
 // Swallow the error while runing in open sourced version.
 
 var main = _asyncToGenerator(function* (args) {
-  var serverStartTimer = (0, _nuclideAnalytics.startTracking)('nuclide-server:start');
+  var serverStartTimer = (0, (_nuclideAnalytics2 || _nuclideAnalytics()).startTracking)('nuclide-server:start');
   process.on('SIGHUP', function () {});
 
   try {
     setupServer();
     var port = args.port;
-    var key = args.key;
-    var cert = args.cert;
-    var ca = args.ca;
+    var _key = args.key;
+    var _cert = args.cert;
+    var _ca = args.ca;
 
-    if (key && cert && ca) {
-      key = _fs2['default'].readFileSync(key);
-      cert = _fs2['default'].readFileSync(cert);
-      ca = _fs2['default'].readFileSync(ca);
+    if (_key && _cert && _ca) {
+      _key = (_fs2 || _fs()).default.readFileSync(_key);
+      _cert = (_fs2 || _fs()).default.readFileSync(_cert);
+      _ca = (_fs2 || _fs()).default.readFileSync(_ca);
     }
-    var server = new _NuclideServer2['default']({
+    var server = new (_NuclideServer2 || _NuclideServer()).default({
       port: port,
-      serverKey: key,
-      serverCertificate: cert,
-      certificateAuthorityCertificate: ca,
+      serverKey: _key,
+      serverCertificate: _cert,
+      certificateAuthorityCertificate: _ca,
       trackEventLoop: true
-    }, _serviceframeworkIndex2['default'].loadServicesConfig());
+    }, (0, (_services2 || _services()).loadServicesConfig)());
     yield server.connect();
     serverStartTimer.onSuccess();
     logger.info('NuclideServer started on port ' + port + '.');
@@ -31,19 +34,19 @@ var main = _asyncToGenerator(function* (args) {
     logger.info('Server ready time: ' + process.uptime() * 1000 + 'ms');
   } catch (e) {
     // Ensure logging is configured.
-    yield (0, _nuclideLogging.initialUpdateConfig)();
+    yield (0, (_nuclideLogging2 || _nuclideLogging()).initialUpdateConfig)();
     yield serverStartTimer.onError(e);
     logger.fatal(e);
-    (0, _nuclideLogging.flushLogsAndAbort)();
+    (0, (_nuclideLogging2 || _nuclideLogging()).flushLogsAndAbort)();
   }
 }
 
 // This should never happen because the server must be started with stderr redirected to a log file.
 );
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -53,25 +56,39 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
  * the root directory of this source tree.
  */
 
-var _fs = require('fs');
+var _fs2;
 
-var _fs2 = _interopRequireDefault(_fs);
+function _fs() {
+  return _fs2 = _interopRequireDefault(require('fs'));
+}
 
-var _nuclideLogging = require('../../nuclide-logging');
+var _nuclideLogging2;
 
-var _nuclideAnalytics = require('../../nuclide-analytics');
+function _nuclideLogging() {
+  return _nuclideLogging2 = require('../../nuclide-logging');
+}
 
-var _NuclideServer = require('./NuclideServer');
+var _nuclideAnalytics2;
 
-var _NuclideServer2 = _interopRequireDefault(_NuclideServer);
+function _nuclideAnalytics() {
+  return _nuclideAnalytics2 = require('../../nuclide-analytics');
+}
 
-var _serviceframeworkIndex = require('./serviceframework/index');
+var _NuclideServer2;
 
-var _serviceframeworkIndex2 = _interopRequireDefault(_serviceframeworkIndex);
+function _NuclideServer() {
+  return _NuclideServer2 = _interopRequireDefault(require('./NuclideServer'));
+}
+
+var _services2;
+
+function _services() {
+  return _services2 = require('./services');
+}
 
 var DEFAULT_PORT = 9090;
 
-var logger = (0, _nuclideLogging.getLogger)();
+var logger = (0, (_nuclideLogging2 || _nuclideLogging()).getLogger)();
 
 function setupServer() {
   try {
@@ -88,7 +105,7 @@ process.on('uncaughtException', function (err) {
   logger.fatal('uncaughtException:', err);
   // According to the docs, we need to close our server when this happens once we logged or
   // handled it: https://nodejs.org/api/process.html#process_event_uncaughtexception
-  (0, _nuclideLogging.flushLogsAndAbort)();
+  (0, (_nuclideLogging2 || _nuclideLogging()).flushLogsAndAbort)();
 });
 
 // This works in io.js as of v2.4.0 (possibly earlier versions, as well). Support for this was
@@ -102,6 +119,6 @@ process.on('unhandledRejection', function (error, promise) {
   logger.error('Unhandled promise rejection ' + promise + '. Error:', error);
 });
 
-var argv = require('yargs')['default']('port', DEFAULT_PORT).argv;
+var argv = require('yargs').default('port', DEFAULT_PORT).argv;
 
 main(argv);

@@ -2,6 +2,26 @@ Object.defineProperty(exports, '__esModule', {
   value: true
 });
 
+var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i['return']) _i['return'](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError('Invalid attempt to destructure non-iterable instance'); } }; })();
+
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+exports.observeStream = observeStream;
+exports.splitStream = splitStream;
+exports.bufferUntil = bufferUntil;
+exports.cacheWhileSubscribed = cacheWhileSubscribed;
+exports.diffSets = diffSets;
+exports.reconcileSetDiffs = reconcileSetDiffs;
+exports.toggle = toggle;
+
+function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
  * All rights reserved.
@@ -10,25 +30,35 @@ Object.defineProperty(exports, '__esModule', {
  * the root directory of this source tree.
  */
 
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+var _assert2;
 
-exports.observeStream = observeStream;
-exports.splitStream = splitStream;
-exports.bufferUntil = bufferUntil;
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+var _rxjs2;
 
-var _rxjs = require('rxjs');
+function _rxjs() {
+  return _rxjs2 = require('rxjs');
+}
+
+// $FlowFixMe(matthewwithanm): Replace this with Observable.prototype.pairwise when we upgrade
+
+var _rxjsOperatorPairwise2;
+
+function _rxjsOperatorPairwise() {
+  return _rxjsOperatorPairwise2 = require('rxjs/operator/pairwise');
+}
 
 /**
  * Observe a stream like stdout or stderr.
  */
 
 function observeStream(stream) {
-  var error = _rxjs.Observable.fromEvent(stream, 'error').flatMap(_rxjs.Observable['throw']);
-  return _rxjs.Observable.fromEvent(stream, 'data').map(function (data) {
+  var error = (_rxjs2 || _rxjs()).Observable.fromEvent(stream, 'error').flatMap((_rxjs2 || _rxjs()).Observable.throw);
+  return (_rxjs2 || _rxjs()).Observable.fromEvent(stream, 'data').map(function (data) {
     return data.toString();
-  }).merge(error).takeUntil(_rxjs.Observable.fromEvent(stream, 'end').race(error));
+  }).merge(error).takeUntil((_rxjs2 || _rxjs()).Observable.fromEvent(stream, 'end').race(error));
 }
 
 /**
@@ -39,7 +69,7 @@ function observeStream(stream) {
  */
 
 function splitStream(input) {
-  return _rxjs.Observable.create(function (observer) {
+  return (_rxjs2 || _rxjs()).Observable.create(function (observer) {
     var current = '';
 
     function onEnd() {
@@ -88,7 +118,7 @@ var CompositeSubscription = (function () {
 
     _classCallCheck(this, CompositeSubscription);
 
-    this._subscription = new _rxjs.Subscription();
+    this._subscription = new (_rxjs2 || _rxjs()).Subscription();
 
     for (var _len = arguments.length, subscriptions = Array(_len), _key = 0; _key < _len; _key++) {
       subscriptions[_key] = arguments[_key];
@@ -115,7 +145,7 @@ var CompositeSubscription = (function () {
 exports.CompositeSubscription = CompositeSubscription;
 
 function bufferUntil(stream, condition) {
-  return _rxjs.Observable.create(function (observer) {
+  return (_rxjs2 || _rxjs()).Observable.create(function (observer) {
     var buffer = null;
     var flush = function flush() {
       if (buffer != null) {
@@ -140,3 +170,176 @@ function bufferUntil(stream, condition) {
     });
   });
 }
+
+/**
+ * Like Observable.prototype.cache(1) except it forgets the cached value when there are no
+ * subscribers. This is useful so that if consumers unsubscribe and then subscribe much later, they
+ * do not get an ancient cached value.
+ *
+ * This is intended to be used with cold Observables. If you have a hot Observable, `cache(1)` will
+ * be just fine because the hot Observable will continue producing values even when there are no
+ * subscribers, so you can be assured that the cached values are up-to-date.
+ *
+ * Completion and error semantics are usnpec'd. If you are using this with Observables that
+ * complete, come up with coherent completion semantics and implement them.
+ */
+
+function cacheWhileSubscribed(input) {
+  // cache() is implemented as publishBehavior().refCount
+  //
+  // publishBehavior() is implemented as multiCast(new ReplaySubject())
+  //
+  // So, we need our own Subject that implements the semantics we want.
+  return input.multicast(new CacheWhileSubscribedSubject()).refCount();
+}
+
+// Based on the implementation of ReplaySubject:
+// http://reactivex.io/rxjs/file/es6/ReplaySubject.js.html#lineNumber7
+
+var CacheWhileSubscribedSubject = (function (_Subject) {
+  _inherits(CacheWhileSubscribedSubject, _Subject);
+
+  function CacheWhileSubscribedSubject() {
+    _classCallCheck(this, CacheWhileSubscribedSubject);
+
+    _get(Object.getPrototypeOf(CacheWhileSubscribedSubject.prototype), 'constructor', this).call(this);
+    this._cachedValue = null;
+    this._hasCachedValue = false;
+    this._subscriberCount = 0;
+  }
+
+  _createClass(CacheWhileSubscribedSubject, [{
+    key: '_setCachedValue',
+    value: function _setCachedValue(value) {
+      if (this._subscriberCount === 0) {
+        return;
+      }
+      this._cachedValue = value;
+      this._hasCachedValue = true;
+    }
+  }, {
+    key: '_clearCachedValue',
+    value: function _clearCachedValue() {
+      this._cachedValue = null;
+      this._hasCachedValue = false;
+    }
+  }, {
+    key: '_next',
+    value: function _next(value) {
+      this._setCachedValue(value);
+      _get(Object.getPrototypeOf(CacheWhileSubscribedSubject.prototype), '_next', this).call(this, value);
+    }
+  }, {
+    key: '_subscribe',
+    value: function _subscribe(subscriber) {
+      var _this2 = this;
+
+      this._incrementSubscriberCount();
+      if (this._hasCachedValue && !subscriber.isUnsubscribed) {
+        subscriber.next(this._cachedValue);
+      }
+      return _get(Object.getPrototypeOf(CacheWhileSubscribedSubject.prototype), '_subscribe', this).call(this, subscriber).add(function () {
+        return _this2._decrementSubscriberCount();
+      });
+    }
+  }, {
+    key: '_incrementSubscriberCount',
+    value: function _incrementSubscriberCount() {
+      this._subscriberCount++;
+    }
+  }, {
+    key: '_decrementSubscriberCount',
+    value: function _decrementSubscriberCount() {
+      this._subscriberCount--;
+      if (this._subscriberCount === 0) {
+        this._clearCachedValue();
+      }
+    }
+  }]);
+
+  return CacheWhileSubscribedSubject;
+})((_rxjs2 || _rxjs()).Subject);
+
+function subtractSet(a, b) {
+  var result = new Set();
+  a.forEach(function (value) {
+    if (!b.has(value)) {
+      result.add(value);
+    }
+  });
+  return result;
+}
+
+/**
+ * Shallowly compare two Sets.
+ */
+function setsAreEqual(a, b) {
+  if (a.size !== b.size) {
+    return false;
+  }
+  for (var _item of a) {
+    if (!b.has(_item)) {
+      return false;
+    }
+  }
+  return true;
+}
+
+/**
+ * Given a stream of sets, return a stream of diffs.
+ * **IMPORTANT:** These sets are assumed to be immutable by convention. Don't mutate them!
+ */
+
+function diffSets(stream) {
+  return (_rxjsOperatorPairwise2 || _rxjsOperatorPairwise()).pairwise.call((_rxjs2 || _rxjs()).Observable.concat((_rxjs2 || _rxjs()).Observable.of(new Set()), // Always start with no items with an empty set
+  stream).distinctUntilChanged(setsAreEqual)).map(function (_ref) {
+    var _ref2 = _slicedToArray(_ref, 2);
+
+    var previous = _ref2[0];
+    var next = _ref2[1];
+    return {
+      added: subtractSet(next, previous),
+      removed: subtractSet(previous, next)
+    };
+  });
+}
+
+/**
+ * Give a stream of diffs, perform an action for each added item and dispose of the returned
+ * disposable when the item is removed.
+ */
+
+function reconcileSetDiffs(diffs, addAction) {
+  var itemsToDisposables = new Map();
+  var disposeItem = function disposeItem(item) {
+    var disposable = itemsToDisposables.get(item);
+    (0, (_assert2 || _assert()).default)(disposable != null);
+    disposable.dispose();
+    itemsToDisposables.delete(item);
+  };
+  var disposeAll = function disposeAll() {
+    itemsToDisposables.forEach(function (disposable) {
+      disposable.dispose();
+    });
+    itemsToDisposables.clear();
+  };
+
+  return new DisposableSubscription(diffs.subscribe(function (diff) {
+    // For every item that got added, perform the add action.
+    diff.added.forEach(function (item) {
+      itemsToDisposables.set(item, addAction(item));
+    });
+
+    // "Undo" the add action for each item that got removed.
+    diff.removed.forEach(disposeItem);
+  }).add(disposeAll));
+}
+
+function toggle(source, toggler) {
+  return toggler.distinctUntilChanged().switchMap(function (enabled) {
+    return enabled ? source : (_rxjs2 || _rxjs()).Observable.empty();
+  });
+}
+
+// undefined, null, etc. are valid values so we have to store the information about whether we
+// have a cached result separately.

@@ -18,43 +18,55 @@ function _inherits(subClass, superClass) { if (typeof superClass !== 'function' 
  * the root directory of this source tree.
  */
 
-var _reactForAtom = require('react-for-atom');
+var _reactForAtom2;
 
-var _Block = require('./Block');
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
 
-var _Tabs = require('./Tabs');
+var _Block2;
+
+function _Block() {
+  return _Block2 = require('./Block');
+}
+
+var _Tabs2;
+
+function _Tabs() {
+  return _Tabs2 = require('./Tabs');
+}
 
 var tabs = [{
   name: 'one',
-  tabContent: _reactForAtom.React.createElement(
+  tabContent: (_reactForAtom2 || _reactForAtom()).React.createElement(
     'div',
     null,
     'One'
   )
 }, {
   name: 'two',
-  tabContent: _reactForAtom.React.createElement(
+  tabContent: (_reactForAtom2 || _reactForAtom()).React.createElement(
     'div',
     null,
     'Two'
   )
 }, {
   name: 'three',
-  tabContent: _reactForAtom.React.createElement(
+  tabContent: (_reactForAtom2 || _reactForAtom()).React.createElement(
     'div',
     null,
     'Three'
   )
 }, {
   name: 'four',
-  tabContent: _reactForAtom.React.createElement(
+  tabContent: (_reactForAtom2 || _reactForAtom()).React.createElement(
     'div',
     null,
     'Four'
   )
 }, {
   name: 'five',
-  tabContent: _reactForAtom.React.createElement(
+  tabContent: (_reactForAtom2 || _reactForAtom()).React.createElement(
     'div',
     null,
     'Five'
@@ -86,16 +98,16 @@ var TabExample = (function (_React$Component) {
     value: function render() {
       var activeTabName = this.state.activeTabName;
 
-      return _reactForAtom.React.createElement(
-        _Block.Block,
+      return (_reactForAtom2 || _reactForAtom()).React.createElement(
+        (_Block2 || _Block()).Block,
         null,
-        _reactForAtom.React.createElement(_Tabs.Tabs, {
+        (_reactForAtom2 || _reactForAtom()).React.createElement((_Tabs2 || _Tabs()).Tabs, {
           tabs: tabs,
           activeTabName: activeTabName,
           triggeringEvent: 'onClick',
           onActiveTabChange: this.handleTabChange
         }),
-        _reactForAtom.React.createElement(
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
           'div',
           { style: { padding: '2em 0 2em 0' } },
           'Showing content for tab "',
@@ -107,7 +119,7 @@ var TabExample = (function (_React$Component) {
   }]);
 
   return TabExample;
-})(_reactForAtom.React.Component);
+})((_reactForAtom2 || _reactForAtom()).React.Component);
 
 var TabExamples = {
   sectionName: 'Tabs',

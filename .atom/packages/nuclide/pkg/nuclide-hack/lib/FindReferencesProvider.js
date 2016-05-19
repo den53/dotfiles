@@ -1,5 +1,5 @@
 var doFindReferences = _asyncToGenerator(function* (textEditor, position) /*FindReferencesReturn*/{
-  var result = yield (0, _nuclideAtomHelpers.withLoadingNotification)(findReferences(textEditor, position.row, position.column), 'Loading references from Hack server...');
+  var result = yield (0, (_nuclideAtomHelpers2 || _nuclideAtomHelpers()).withLoadingNotification)(findReferences(textEditor, position.row, position.column), 'Loading references from Hack server...');
   if (!result) {
     return { type: 'error', message: 'Only classes/functions/methods are supported.' };
   }
@@ -39,7 +39,7 @@ var doFindReferences = _asyncToGenerator(function* (textEditor, position) /*Find
 
 var findReferences = _asyncToGenerator(function* (editor, line, column) {
   var filePath = editor.getPath();
-  var hackLanguage = yield (0, _HackLanguage.getHackLanguageForUri)(filePath);
+  var hackLanguage = yield (0, (_HackLanguage2 || _HackLanguage()).getHackLanguageForUri)(filePath);
   if (!hackLanguage || !filePath) {
     return null;
   }
@@ -61,25 +61,41 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 // We can't pull in nuclide-find-references as a dependency, unfortunately.
 // import type {FindReferencesReturn} from 'nuclide-find-references';
 
-var _nuclideHackCommon = require('../../nuclide-hack-common');
+var _nuclideHackCommon2;
 
-var _nuclideAnalytics = require('../../nuclide-analytics');
+function _nuclideHackCommon() {
+  return _nuclideHackCommon2 = require('../../nuclide-hack-common');
+}
 
-var _nuclideAtomHelpers = require('../../nuclide-atom-helpers');
+var _nuclideAnalytics2;
 
-var _HackLanguage = require('./HackLanguage');
+function _nuclideAnalytics() {
+  return _nuclideAnalytics2 = require('../../nuclide-analytics');
+}
+
+var _nuclideAtomHelpers2;
+
+function _nuclideAtomHelpers() {
+  return _nuclideAtomHelpers2 = require('../../nuclide-atom-helpers');
+}
+
+var _HackLanguage2;
+
+function _HackLanguage() {
+  return _HackLanguage2 = require('./HackLanguage');
+}
 
 module.exports = {
   isEditorSupported: _asyncToGenerator(function* (textEditor) {
     var fileUri = textEditor.getPath();
-    if (!fileUri || !_nuclideHackCommon.HACK_GRAMMARS_SET.has(textEditor.getGrammar().scopeName)) {
+    if (!fileUri || !(_nuclideHackCommon2 || _nuclideHackCommon()).HACK_GRAMMARS_SET.has(textEditor.getGrammar().scopeName)) {
       return false;
     }
     return true;
   }),
 
   findReferences: function findReferences(editor, position) {
-    return (0, _nuclideAnalytics.trackOperationTiming)('hack:findReferences', function () {
+    return (0, (_nuclideAnalytics2 || _nuclideAnalytics()).trackOperationTiming)('hack:findReferences', function () {
       return doFindReferences(editor, position);
     });
   }

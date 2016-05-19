@@ -14,11 +14,11 @@ Object.defineProperty(exports, '__esModule', {
  */
 
 var copyMercurialFixture = _asyncToGenerator(function* (fixtureName) {
-  var repo = yield _nuclideTestHelpers.fixtures.copyFixture(fixtureName, _path2['default'].join(__dirname, '../spec'));
-  var pathToHg = _path2['default'].join(repo, '.hg-rename');
-  (0, _assert2['default'])((0, _fsPlus.existsSync)(pathToHg), 'Directory: ' + pathToHg + ' was not found.');
-  (0, _fsPlus.moveSync)(pathToHg, _path2['default'].join(repo, '.hg'));
-  return (0, _fsPlus.absolute)(repo);
+  var repo = yield (_nuclideTestHelpers2 || _nuclideTestHelpers()).fixtures.copyFixture(fixtureName, (_path2 || _path()).default.join(__dirname, '../spec'));
+  var pathToHg = (_path2 || _path()).default.join(repo, '.hg-rename');
+  (0, (_assert2 || _assert()).default)((0, (_fsPlus2 || _fsPlus()).existsSync)(pathToHg), 'Directory: ' + pathToHg + ' was not found.');
+  (0, (_fsPlus2 || _fsPlus()).moveSync)(pathToHg, (_path2 || _path()).default.join(repo, '.hg'));
+  return (0, (_fsPlus2 || _fsPlus()).absolute)(repo);
 }
 
 /**
@@ -40,15 +40,15 @@ exports.setLocalProject = setLocalProject;
  */
 
 var copyFixture = _asyncToGenerator(function* (fixtureName) {
-  var fixturePath = yield _nuclideTestHelpers.fixtures.copyFixture(fixtureName, _path2['default'].join(__dirname, '../spec'));
-  return (0, _fsPlus.absolute)(fixturePath);
+  var fixturePath = yield (_nuclideTestHelpers2 || _nuclideTestHelpers()).fixtures.copyFixture(fixtureName, (_path2 || _path()).default.join(__dirname, '../spec'));
+  return (0, (_fsPlus2 || _fsPlus()).absolute)(fixturePath);
 });
 
 exports.copyFixture = copyFixture;
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -58,17 +58,29 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
  * the root directory of this source tree.
  */
 
-var _assert = require('assert');
+var _assert2;
 
-var _assert2 = _interopRequireDefault(_assert);
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
-var _fsPlus = require('fs-plus');
+var _fsPlus2;
 
-var _nuclideTestHelpers = require('../../nuclide-test-helpers');
+function _fsPlus() {
+  return _fsPlus2 = require('fs-plus');
+}
 
-var _path = require('path');
+var _nuclideTestHelpers2;
 
-var _path2 = _interopRequireDefault(_path);
+function _nuclideTestHelpers() {
+  return _nuclideTestHelpers2 = require('../../nuclide-test-helpers');
+}
+
+var _path2;
+
+function _path() {
+  return _path2 = _interopRequireDefault(require('path'));
+}
 
 function setLocalProject(projectPath) {
   if (Array.isArray(projectPath)) {

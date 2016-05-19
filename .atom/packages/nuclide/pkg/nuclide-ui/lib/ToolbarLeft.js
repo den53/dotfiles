@@ -10,10 +10,14 @@ Object.defineProperty(exports, '__esModule', {
  * the root directory of this source tree.
  */
 
-var _reactForAtom = require('react-for-atom');
+var _reactForAtom2;
+
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
 
 var ToolbarLeft = function ToolbarLeft(props) {
-  return _reactForAtom.React.createElement(
+  return (_reactForAtom2 || _reactForAtom()).React.createElement(
     'div',
     { className: 'nuclide-ui-toolbar__left' },
     props.children

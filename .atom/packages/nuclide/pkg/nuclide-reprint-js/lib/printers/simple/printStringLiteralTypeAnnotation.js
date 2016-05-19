@@ -8,10 +8,16 @@
  * the root directory of this source tree.
  */
 
-var escapeStringLiteral = require('../../utils/escapeStringLiteral');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _utilsEscapeStringLiteral2;
+
+function _utilsEscapeStringLiteral() {
+  return _utilsEscapeStringLiteral2 = _interopRequireDefault(require('../../utils/escapeStringLiteral'));
+}
 
 function printStringLiteralTypeAnnotation(print, node) {
-  return [escapeStringLiteral(node.value, { quotes: 'single' })];
+  return [(0, (_utilsEscapeStringLiteral2 || _utilsEscapeStringLiteral()).default)(node.value, { quotes: 'single' })];
 }
 
 module.exports = printStringLiteralTypeAnnotation;

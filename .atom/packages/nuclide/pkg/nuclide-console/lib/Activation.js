@@ -8,47 +8,65 @@ var _createClass = (function () { function defineProperties(target, props) { for
  * the root directory of this source tree.
  */
 
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+var _nuclideCommons2;
 
-var _nuclideCommons = require('../../nuclide-commons');
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
 
-var _atom = require('atom');
+var _atom2;
 
-var _ActionTypes = require('./ActionTypes');
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var ActionTypes = _interopRequireWildcard(_ActionTypes);
+var _ActionTypes2;
 
-var _Commands = require('./Commands');
+function _ActionTypes() {
+  return _ActionTypes2 = _interopRequireWildcard(require('./ActionTypes'));
+}
 
-var _Commands2 = _interopRequireDefault(_Commands);
+var _Commands2;
 
-var _createConsoleGadget = require('./createConsoleGadget');
+function _Commands() {
+  return _Commands2 = _interopRequireDefault(require('./Commands'));
+}
 
-var _createConsoleGadget2 = _interopRequireDefault(_createConsoleGadget);
+var _uiCreateConsoleGadget2;
 
-var _createStateStream = require('./createStateStream');
+function _uiCreateConsoleGadget() {
+  return _uiCreateConsoleGadget2 = _interopRequireDefault(require('./ui/createConsoleGadget'));
+}
 
-var _createStateStream2 = _interopRequireDefault(_createStateStream);
+var _createStateStream2;
 
-var _nuclideFeatureConfig = require('../../nuclide-feature-config');
+function _createStateStream() {
+  return _createStateStream2 = _interopRequireDefault(require('./createStateStream'));
+}
 
-var _nuclideFeatureConfig2 = _interopRequireDefault(_nuclideFeatureConfig);
+var _nuclideFeatureConfig2;
 
-var _OutputService = require('./OutputService');
+function _nuclideFeatureConfig() {
+  return _nuclideFeatureConfig2 = _interopRequireDefault(require('../../nuclide-feature-config'));
+}
 
-var _OutputService2 = _interopRequireDefault(_OutputService);
+var _assert2;
 
-var _assert = require('assert');
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
-var _assert2 = _interopRequireDefault(_assert);
+var _rxjs2;
 
-var _rxjs = require('rxjs');
-
-var _rxjs2 = _interopRequireDefault(_rxjs);
+function _rxjs() {
+  return _rxjs2 = _interopRequireDefault(require('rxjs'));
+}
 
 var Activation = (function () {
   function Activation(rawState) {
@@ -56,15 +74,14 @@ var Activation = (function () {
 
     _classCallCheck(this, Activation);
 
-    var action$ = new _rxjs2['default'].Subject();
+    var action$ = new (_rxjs2 || _rxjs()).default.Subject();
     var initialState = deserializeAppState(rawState);
-    this._state$ = new _rxjs2['default'].BehaviorSubject(initialState);
-    (0, _createStateStream2['default'])(action$.asObservable(), initialState).sampleTime(100).subscribe(this._state$);
-    this._commands = new _Commands2['default'](action$, function () {
+    this._state$ = new (_rxjs2 || _rxjs()).default.BehaviorSubject(initialState);
+    (0, (_createStateStream2 || _createStateStream()).default)(action$.asObservable(), initialState).sampleTime(100).subscribe(this._state$);
+    this._commands = new (_Commands2 || _Commands()).default(action$, function () {
       return _this._state$.getValue();
     });
-    this._outputService = new _OutputService2['default'](this._commands);
-    this._disposables = new _atom.CompositeDisposable(atom.contextMenu.add({
+    this._disposables = new (_atom2 || _atom()).CompositeDisposable(atom.contextMenu.add({
       '.nuclide-console-record': [{
         label: 'Copy Message',
         command: 'nuclide-console:copy-message'
@@ -75,13 +92,13 @@ var Activation = (function () {
         return;
       }
       atom.clipboard.write(el.innerText);
-    }), _nuclideFeatureConfig2['default'].observe('nuclide-console.maximumMessageCount', function (maxMessageCount) {
+    }), (_nuclideFeatureConfig2 || _nuclideFeatureConfig()).default.observe('nuclide-console.maximumMessageCount', function (maxMessageCount) {
       return _this._commands.setMaxMessageCount(maxMessageCount);
     }),
 
     // Action side-effects
-    new _nuclideCommons.DisposableSubscription(action$.subscribe(function (action) {
-      if (action.type !== ActionTypes.EXECUTE) {
+    new (_nuclideCommons2 || _nuclideCommons()).DisposableSubscription(action$.subscribe(function (action) {
+      if (action.type !== (_ActionTypes2 || _ActionTypes()).EXECUTE) {
         return;
       }
       var _action$payload = action.payload;
@@ -90,7 +107,7 @@ var Activation = (function () {
 
       var executors = _this._state$.getValue().executors;
       var executor = executors.get(executorId);
-      (0, _assert2['default'])(executor);
+      (0, (_assert2 || _assert()).default)(executor);
       executor.execute(code);
     })));
   }
@@ -103,25 +120,66 @@ var Activation = (function () {
   }, {
     key: 'consumeGadgetsService',
     value: function consumeGadgetsService(gadgetsApi) {
-      var OutputGadget = (0, _createConsoleGadget2['default'])(this._state$.asObservable(), this._commands);
-      return gadgetsApi.registerGadget(OutputGadget);
+      var OutputGadget = (0, (_uiCreateConsoleGadget2 || _uiCreateConsoleGadget()).default)(this._state$.asObservable(), this._commands);
+      this._disposables.add(gadgetsApi.registerGadget(OutputGadget));
     }
   }, {
     key: 'provideOutputService',
     value: function provideOutputService() {
+      var _this2 = this;
+
+      if (this._outputService == null) {
+        (function () {
+          // Create a local, nullable reference so that the service consumers don't keep the `Commands`
+          // instance in memory.
+          var commands = _this2._commands;
+          _this2._disposables.add(new (_atom2 || _atom()).Disposable(function () {
+            commands = null;
+          }));
+
+          _this2._outputService = {
+            registerOutputProvider: function registerOutputProvider(outputProvider) {
+              if (commands != null) {
+                commands.registerOutputProvider(outputProvider);
+              }
+              return new (_atom2 || _atom()).Disposable(function () {
+                if (commands != null) {
+                  commands.removeSource(outputProvider.source);
+                }
+              });
+            }
+          };
+        })();
+      }
       return this._outputService;
     }
   }, {
     key: 'provideRegisterExecutor',
     value: function provideRegisterExecutor() {
-      var _this2 = this;
+      var _this3 = this;
 
-      return function (executor) {
-        _this2._commands.registerExecutor(executor);
-        return new _atom.Disposable(function () {
-          _this2._commands.unregisterExecutor(executor);
-        });
-      };
+      if (this._registerExecutorFunction == null) {
+        (function () {
+          // Create a local, nullable reference so that the service consumers don't keep the `Commands`
+          // instance in memory.
+          var commands = _this3._commands;
+          _this3._disposables.add(new (_atom2 || _atom()).Disposable(function () {
+            commands = null;
+          }));
+
+          _this3._registerExecutorFunction = function (executor) {
+            if (commands != null) {
+              commands.registerExecutor(executor);
+            }
+            return new (_atom2 || _atom()).Disposable(function () {
+              if (commands != null) {
+                commands.unregisterExecutor(executor);
+              }
+            });
+          };
+        })();
+      }
+      return this._registerExecutorFunction;
     }
   }, {
     key: 'serialize',

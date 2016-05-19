@@ -1,3 +1,9 @@
+
+
+/**
+ * Converts a dbgp value to a Chrome RemoteObject.
+ */
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
@@ -8,21 +14,30 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
  * the root directory of this source tree.
  */
 
-var _utils = require('./utils');
+var _utils2;
 
-var _utils2 = _interopRequireDefault(_utils);
+function _utils() {
+  return _utils2 = _interopRequireDefault(require('./utils'));
+}
 
-var _helpers = require('./helpers');
+var _helpers2;
 
-var _ObjectId = require('./ObjectId');
+function _helpers() {
+  return _helpers2 = require('./helpers');
+}
 
-var _assert = require('assert');
+var _ObjectId2;
 
-var _assert2 = _interopRequireDefault(_assert);
+function _ObjectId() {
+  return _ObjectId2 = require('./ObjectId');
+}
 
-/**
- * Converts a dbgp value to a Chrome RemoteObject.
- */
+var _assert2;
+
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
+
 function convertValue(contextId, dbgpProperty) {
   switch (dbgpProperty.$.type) {
     case 'string':
@@ -34,7 +49,9 @@ function convertValue(contextId, dbgpProperty) {
     case 'bool':
       return convertBoolValue(dbgpProperty);
     case 'null':
-      return convertNullValue(dbgpProperty);
+      return getNullValue();
+    case 'undefined':
+      return getUndefinedValue();
     case 'array':
       return convertArrayValue(contextId, dbgpProperty);
     case 'object':
@@ -49,7 +66,7 @@ function convertStringValue(dbgpProperty) {
   var value = undefined;
   if (dbgpProperty.hasOwnProperty('_')) {
     // $FlowFixMe(peterhal)
-    value = dbgpProperty.$.encoding === 'base64' ? (0, _helpers.base64Decode)(dbgpProperty._) : 'TODO: Non-base64 encoded string: ' + JSON.stringify(dbgpProperty);
+    value = dbgpProperty.$.encoding === 'base64' ? (0, (_helpers2 || _helpers()).base64Decode)(dbgpProperty._) : 'TODO: Non-base64 encoded string: ' + JSON.stringify(dbgpProperty);
   } else {
     // zero length strings have no dbgpProperty._ property
     value = '';
@@ -78,7 +95,7 @@ function convertFloatValue(dbgpProperty) {
 }
 
 function convertBoolValue(dbgpProperty) {
-  (0, _assert2['default'])(dbgpProperty._ != null);
+  (0, (_assert2 || _assert()).default)(dbgpProperty._ != null);
   var value = dbgpProperty.$.encoding === 'base64' ? 'TODO: Base64 encoded bool: ' + JSON.stringify(dbgpProperty) : toBool(dbgpProperty._);
   return {
     type: 'boolean',
@@ -86,11 +103,18 @@ function convertBoolValue(dbgpProperty) {
   };
 }
 
-function convertNullValue(dbgpProperty) {
+function getNullValue() {
   return {
     type: 'undefined',
     subtype: 'null',
     value: null
+  };
+}
+
+function getUndefinedValue() {
+  return {
+    type: 'undefined',
+    value: undefined
   };
 }
 
@@ -129,18 +153,18 @@ function getAggregateRemoteObjectId(contextId, dbgpProperty) {
   if (pagesize !== 0) {
     pageCount = Math.trunc((numchildren + pagesize - 1) / pagesize) || 0;
   }
-  _utils2['default'].log('numchildren: ' + numchildren + ' pagesize: ' + pagesize + ' pageCount ' + pageCount);
+  (_utils2 || _utils()).default.log('numchildren: ' + numchildren + ' pagesize: ' + pagesize + ' pageCount ' + pageCount);
   if (pageCount > 1) {
     var elementRange = {
       pagesize: pagesize,
       startIndex: 0,
       count: numchildren
     };
-    (0, _assert2['default'])(dbgpProperty.$.fullname != null);
-    return (0, _ObjectId.remoteObjectIdOfObjectId)((0, _ObjectId.pagedObjectId)(contextId, dbgpProperty.$.fullname, elementRange));
+    (0, (_assert2 || _assert()).default)(dbgpProperty.$.fullname != null);
+    return (0, (_ObjectId2 || _ObjectId()).remoteObjectIdOfObjectId)((0, (_ObjectId2 || _ObjectId()).pagedObjectId)(contextId, dbgpProperty.$.fullname, elementRange));
   } else {
-    (0, _assert2['default'])(dbgpProperty.$.fullname != null);
-    return (0, _ObjectId.remoteObjectIdOfObjectId)((0, _ObjectId.singlePageObjectId)(contextId, dbgpProperty.$.fullname, 0));
+    (0, (_assert2 || _assert()).default)(dbgpProperty.$.fullname != null);
+    return (0, (_ObjectId2 || _ObjectId()).remoteObjectIdOfObjectId)((0, (_ObjectId2 || _ObjectId()).singlePageObjectId)(contextId, dbgpProperty.$.fullname, 0));
   }
 }
 

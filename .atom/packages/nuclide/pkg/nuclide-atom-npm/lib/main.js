@@ -1,6 +1,6 @@
 var loadStyles = _asyncToGenerator(function* (stylesPath) {
   // TODO(jjiaa): If possible, check that `stylesPath` is also a directory.
-  if (!(yield fsPromise.exists(stylesPath))) {
+  if (!(yield (_nuclideCommons2 || _nuclideCommons()).fsPromise.exists(stylesPath))) {
     return;
   }
 
@@ -9,13 +9,13 @@ var loadStyles = _asyncToGenerator(function* (stylesPath) {
   //
   // The stylesheets will be loaded asynchronously, so there might be a slight
   // visual glitch if the widget is drawn before the stylesheets are loaded.
-  (yield fsPromise.readdir(stylesPath)).filter(function (filePath) {
+  (yield (_nuclideCommons2 || _nuclideCommons()).fsPromise.readdir(stylesPath)).filter(function (filePath) {
     return filePath.endsWith('.less') || filePath.endsWith('.css');
   })
   // Styles should be loaded in alphabetical order according to
   // https://atom.io/docs/v0.186.0/creating-a-package
   .sort().map(function (filePath) {
-    return atom.themes.requireStylesheet(path.join(stylesPath, filePath));
+    return atom.themes.requireStylesheet((_path2 || _path()).default.join(stylesPath, filePath));
   });
 }
 
@@ -27,6 +27,8 @@ var loadStyles = _asyncToGenerator(function* (stylesPath) {
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
  * All rights reserved.
@@ -35,19 +37,31 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
  * the root directory of this source tree.
  */
 
-var fs = require('fs-plus');
-var path = require('path');
+var _fsPlus2;
 
-var _require = require('../../nuclide-commons');
+function _fsPlus() {
+  return _fsPlus2 = _interopRequireDefault(require('fs-plus'));
+}
 
-var fsPromise = _require.fsPromise;
+var _path2;
+
+function _path() {
+  return _path2 = _interopRequireDefault(require('path'));
+}
+
+var _nuclideCommons2;
+
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
+
 function loadGrammarsSync(packagePath) {
-  var grammarsDir = path.join(packagePath, 'grammars');
-  if (!fs.isDirectorySync(grammarsDir)) {
+  var grammarsDir = (_path2 || _path()).default.join(packagePath, 'grammars');
+  if (!(_fsPlus2 || _fsPlus()).default.isDirectorySync(grammarsDir)) {
     return;
   }
 
-  fs.traverseTreeSync(grammarsDir, function (file) {
+  (_fsPlus2 || _fsPlus()).default.traverseTreeSync(grammarsDir, function (file) {
     return atom.grammars.loadGrammarSync(file);
   }, function (directory) {
     return null;
@@ -65,10 +79,10 @@ module.exports = {
 
     if (!nuclide[mainFilename]) {
       // $FlowIgnore
-      nuclide[mainFilename] = require(path.join(libPath, mainFilename));
+      nuclide[mainFilename] = require((_path2 || _path()).default.join(libPath, mainFilename));
 
-      var packagePath = path.dirname(libPath);
-      loadStyles(path.join(packagePath, 'styles'));
+      var packagePath = (_path2 || _path()).default.dirname(libPath);
+      loadStyles((_path2 || _path()).default.join(packagePath, 'styles'));
 
       loadGrammarsSync(packagePath);
     }

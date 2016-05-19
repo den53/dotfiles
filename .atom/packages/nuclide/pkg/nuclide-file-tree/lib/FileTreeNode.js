@@ -6,9 +6,9 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -18,22 +18,29 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * the root directory of this source tree.
  */
 
-var _FileTreeHelpers = require('./FileTreeHelpers');
+var _FileTreeHelpers2;
 
-var _nuclideRemoteUri = require('../../nuclide-remote-uri');
+function _FileTreeHelpers() {
+  return _FileTreeHelpers2 = require('./FileTreeHelpers');
+}
 
-var _immutable = require('immutable');
+var _nuclideRemoteUri2;
 
-var _immutable2 = _interopRequireDefault(_immutable);
+function _nuclideRemoteUri() {
+  return _nuclideRemoteUri2 = require('../../nuclide-remote-uri');
+}
 
-var _path = require('path');
+var _immutable2;
 
-var _path2 = _interopRequireDefault(_path);
+function _immutable() {
+  return _immutable2 = _interopRequireDefault(require('immutable'));
+}
 
-var _nuclideHgRepositoryBaseLibHgConstants = require('../../nuclide-hg-repository-base/lib/hg-constants');
+var _nuclideHgRepositoryBaseLibHgConstants2;
 
-// Ideally the type here would be FileTreeChildNodeOptions & {rootUri},
-// but flow doesn't handle it well
+function _nuclideHgRepositoryBaseLibHgConstants() {
+  return _nuclideHgRepositoryBaseLibHgConstants2 = require('../../nuclide-hg-repository-base/lib/hg-constants');
+}
 
 var DEFAULT_OPTIONS = {
   isExpanded: false,
@@ -41,7 +48,7 @@ var DEFAULT_OPTIONS = {
   isLoading: false,
   isCwd: false,
   isTracked: false,
-  children: new _immutable2['default'].OrderedMap(),
+  children: new (_immutable2 || _immutable()).default.OrderedMap(),
   connectionTitle: '',
   subscription: null,
   highlightedText: '',
@@ -52,10 +59,6 @@ var DEFAULT_OPTIONS = {
 * OVERVIEW
 *   The FileTreeNode class is almost entirely immutable. Except for the parent and the sibling
 * links no properties are to be updated after the creation.
-*
-*   An instance can either be created by calling the constructor which accepts multiple options and
-* the configuration, or by calling a `createChild()` method. The createChild() inherits the
-* configuration instance and many of the options from the instance it was created from.
 *
 *   The class contains multiple derived fields. The derived fields are calculated from the options,
 * from the configuration values and even from chieldren's properties. Once calculated the properties
@@ -95,11 +98,9 @@ var DEFAULT_OPTIONS = {
 *   Just like the parent property, some operations require an ability to find siblings easily.
 * The previous and the next sibling properties are too set when a child is assigned to its parent.
 *
-*   Some of the properties are derived from the properties of children. For example when editing a
-* Working set all ancestors of a selected node must have either partial or a complete selection.
-* This is something done with the help of the children-derived fields. Additional example is the
-* .containsSelection property - having it allows efficient selection removal from the entire tree
-* or one of its branches.
+*   Some of the properties are derived from the properties of children. For example, it is
+* beneficial to know whether a node contains a selected node in its sub-tree and the size of the
+* visible sub-tree.
 *
 *   All property derivation and links set-up is done with one traversal only over the children.
 *
@@ -121,7 +122,7 @@ var FileTreeNode = (function () {
     * of FileTreeNode instances
     */
     value: function childrenFromArray(children) {
-      return new _immutable2['default'].OrderedMap(children.map(function (child) {
+      return new (_immutable2 || _immutable()).default.OrderedMap(children.map(function (child) {
         return [child.name, child];
       }));
     }
@@ -346,21 +347,6 @@ var FileTreeNode = (function () {
     }
 
     /**
-    * Creates a decendant node that inherits many of the properties (rootUri, repo, etc)
-    * The created node does not have to be a direct decendant and moreover it is not assigned
-    * automatically in any way to the list of current node children.
-    */
-  }, {
-    key: 'createChild',
-    value: function createChild(options) {
-      return new FileTreeNode(_extends({}, this._buildOptions(), {
-        isCwd: false,
-        connectionTitle: '',
-        children: new _immutable2['default'].OrderedMap()
-      }, options), this.conf);
-    }
-
-    /**
     * Used to modify several properties at once and skip unnecessary construction of intermediate
     * instances. For example:
     * const newNode = node.set({isExpanded: true, isSelected: false});
@@ -471,7 +457,8 @@ var FileTreeNode = (function () {
       }
 
       var subUri = uri.slice(this.uri.length);
-      var childNamePath = subUri.split(_path2['default'].sep).filter(function (part) {
+      var pathModule = (0, (_nuclideRemoteUri2 || _nuclideRemoteUri()).pathModuleFor)(uri);
+      var childNamePath = subUri.split(pathModule.sep).filter(function (part) {
         return part !== '';
       });
       return this._findLastByNamePath(childNamePath);
@@ -492,16 +479,15 @@ var FileTreeNode = (function () {
         return null;
       }
 
-      if (this.isContainer && this.isExpanded && !this.children.isEmpty()) {
+      if (this.shownChildrenBelow > 1) {
         return this.children.find(function (c) {
           return c.shouldBeShown;
         });
       }
 
-      /* eslint-disable consistent-this */
       // Not really an alias, but an iterating reference
+      // eslint-disable-next-line consistent-this
       var it = this;
-      /* eslint-enable consistent-this */
       while (it != null) {
         var nextShownSibling = it.findNextShownSibling();
         if (nextShownSibling != null) {
@@ -516,10 +502,7 @@ var FileTreeNode = (function () {
   }, {
     key: 'findNextShownSibling',
     value: function findNextShownSibling() {
-      /* eslint-disable consistent-this */
-      // Not really an alias, but an iterating reference
       var it = this.nextSibling;
-      /* eslint-enable consistent-this */
       while (it != null && !it.shouldBeShown) {
         it = it.nextSibling;
       }
@@ -552,10 +535,7 @@ var FileTreeNode = (function () {
   }, {
     key: 'findPrevShownSibling',
     value: function findPrevShownSibling() {
-      /* eslint-disable consistent-this */
-      // Not really an alias, but an iterating reference
       var it = this.prevSibling;
-      /* eslint-enable consistent-this */
       while (it != null && !it.shouldBeShown) {
         it = it.prevSibling;
       }
@@ -604,7 +584,7 @@ var FileTreeNode = (function () {
   }, {
     key: '_buildDerivedFields',
     value: function _buildDerivedFields(uri, rootUri, conf) {
-      var isContainer = (0, _FileTreeHelpers.isDirKey)(uri);
+      var isContainer = (0, (_FileTreeHelpers2 || _FileTreeHelpers()).isDirKey)(uri);
       var rootVcsStatuses = conf.vcsStatuses[rootUri] || {};
       var repo = conf.reposByRoot[rootUri];
       var isIgnored = this._deriveIsIgnored(uri, rootUri, repo, conf);
@@ -612,15 +592,15 @@ var FileTreeNode = (function () {
 
       return {
         isRoot: uri === rootUri,
-        name: (0, _FileTreeHelpers.keyToName)(uri),
-        hashKey: (0, _FileTreeHelpers.buildHashKey)(uri),
+        name: (0, (_FileTreeHelpers2 || _FileTreeHelpers()).keyToName)(uri),
+        hashKey: (0, (_FileTreeHelpers2 || _FileTreeHelpers()).buildHashKey)(uri),
         isContainer: isContainer,
         relativePath: uri.slice(rootUri.length),
-        localPath: (0, _FileTreeHelpers.keyToPath)((0, _nuclideRemoteUri.isRemote)(uri) ? (0, _nuclideRemoteUri.parse)(uri).pathname : uri),
+        localPath: (0, (_FileTreeHelpers2 || _FileTreeHelpers()).keyToPath)((0, (_nuclideRemoteUri2 || _nuclideRemoteUri()).isRemote)(uri) ? (0, (_nuclideRemoteUri2 || _nuclideRemoteUri()).parse)(uri).pathname : uri),
         isIgnored: isIgnored,
         shouldBeShown: this._deriveShouldBeShown(uri, rootUri, isContainer, repo, conf, isIgnored),
         shouldBeSoftened: this._deriveShouldBeSoftened(uri, isContainer, conf),
-        vcsStatusCode: rootVcsStatuses[uri] || _nuclideHgRepositoryBaseLibHgConstants.StatusCodeNumber.CLEAN,
+        vcsStatusCode: rootVcsStatuses[uri] || (_nuclideHgRepositoryBaseLibHgConstants2 || _nuclideHgRepositoryBaseLibHgConstants()).StatusCodeNumber.CLEAN,
         repo: repo,
         checkedStatus: checkedStatus
       };
@@ -729,7 +709,7 @@ var FileTreeNode = (function () {
         return false;
       }
 
-      if (props.children !== undefined && props.children !== this.children && !_immutable2['default'].is(this.children, props.children)) {
+      if (props.children !== undefined && props.children !== this.children && !(_immutable2 || _immutable()).default.is(this.children, props.children)) {
         return false;
       }
 

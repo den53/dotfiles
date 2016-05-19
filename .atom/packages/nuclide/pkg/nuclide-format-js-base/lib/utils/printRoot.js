@@ -1,6 +1,4 @@
-
-
-var NewLine = require('./NewLine');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -9,6 +7,12 @@ var NewLine = require('./NewLine');
  * This source code is licensed under the license found in the LICENSE file in
  * the root directory of this source tree.
  */
+
+var _NewLine2;
+
+function _NewLine() {
+  return _NewLine2 = _interopRequireDefault(require('./NewLine'));
+}
 
 function printRoot(root) {
   // Print the new source.
@@ -20,7 +24,7 @@ function printRoot(root) {
   var first = lines.length - 1;
   var last = 0;
   for (var i = 0; i < lines.length; i++) {
-    if (lines[i].indexOf(NewLine.literal) !== -1) {
+    if (lines[i].indexOf((_NewLine2 || _NewLine()).default.literal) !== -1) {
       first = Math.min(first, i);
       last = Math.max(last, i);
     }
@@ -32,14 +36,14 @@ function printRoot(root) {
   }).join('\n');
 
   // Remove the NewLine markers.
-  output = NewLine.replace(output);
+  output = (_NewLine2 || _NewLine()).default.replace(output);
 
   // Remove new lines at the start.
   output = output.replace(/^\n{1,}/, '');
 
   // Make sure there is a new line at the end.
   if (!/^[\w\W]*\n$/.test(output)) {
-    output = output + '\n';
+    output += '\n';
   }
 
   return output;

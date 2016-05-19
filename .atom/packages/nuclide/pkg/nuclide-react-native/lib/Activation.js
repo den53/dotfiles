@@ -14,19 +14,35 @@ var _createClass = (function () { function defineProperties(target, props) { for
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _debuggingDebuggingActivation = require('./debugging/DebuggingActivation');
+var _debuggingDebuggingActivation2;
 
-var _packagerPackagerActivation = require('./packager/PackagerActivation');
+function _debuggingDebuggingActivation() {
+  return _debuggingDebuggingActivation2 = require('./debugging/DebuggingActivation');
+}
 
-var _shellShellActivation = require('./shell/ShellActivation');
+var _packagerPackagerActivation2;
 
-var _atom = require('atom');
+function _packagerPackagerActivation() {
+  return _packagerPackagerActivation2 = require('./packager/PackagerActivation');
+}
+
+var _shellShellActivation2;
+
+function _shellShellActivation() {
+  return _shellShellActivation2 = require('./shell/ShellActivation');
+}
+
+var _atom2;
+
+function _atom() {
+  return _atom2 = require('atom');
+}
 
 var Activation = (function () {
   function Activation(state) {
     _classCallCheck(this, Activation);
 
-    this._disposables = new _atom.CompositeDisposable(this._debuggingActivation = new _debuggingDebuggingActivation.DebuggingActivation(), new _packagerPackagerActivation.PackagerActivation(), new _shellShellActivation.ShellActivation());
+    this._disposables = new (_atom2 || _atom()).CompositeDisposable(this._debuggingActivation = new (_debuggingDebuggingActivation2 || _debuggingDebuggingActivation()).DebuggingActivation(), new (_packagerPackagerActivation2 || _packagerPackagerActivation()).PackagerActivation(), new (_shellShellActivation2 || _shellShellActivation()).ShellActivation());
   }
 
   _createClass(Activation, [{

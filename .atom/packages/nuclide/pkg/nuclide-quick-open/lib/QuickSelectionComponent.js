@@ -10,66 +10,84 @@ Object.defineProperty(exports, '__esModule', {
  * the root directory of this source tree.
  */
 
+var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i['return']) _i['return'](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError('Invalid attempt to destructure non-iterable instance'); } }; })();
+
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
 var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var _SearchResultManager = require('./SearchResultManager');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _SearchResultManager2 = _interopRequireDefault(_SearchResultManager);
+var _nuclideUiLibAtomInput2;
 
-var _require = require('../../nuclide-ui/lib/AtomInput');
+function _nuclideUiLibAtomInput() {
+  return _nuclideUiLibAtomInput2 = require('../../nuclide-ui/lib/AtomInput');
+}
 
-var AtomInput = _require.AtomInput;
+var _nuclideUiLibTabs2;
 
-var _require2 = require('../../nuclide-ui/lib/Tabs');
+function _nuclideUiLibTabs() {
+  return _nuclideUiLibTabs2 = require('../../nuclide-ui/lib/Tabs');
+}
 
-var Tabs = _require2.Tabs;
+var _atom2;
 
-var _require3 = require('atom');
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var CompositeDisposable = _require3.CompositeDisposable;
-var Emitter = _require3.Emitter;
+var _nuclideCommons2;
 
-var _require4 = require('../../nuclide-commons');
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
 
-var debounce = _require4.debounce;
-var object = _require4.object;
+var _reactForAtom2;
 
-var _require5 = require('react-for-atom');
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
 
-var React = _require5.React;
-var ReactDOM = _require5.ReactDOM;
+var _SearchResultManager2;
 
-var searchResultManager = _SearchResultManager2['default'].getInstance();
-var PropTypes = React.PropTypes;
+function _SearchResultManager() {
+  return _SearchResultManager2 = _interopRequireDefault(require('./SearchResultManager'));
+}
 
-var classnames = require('classnames');
+var _classnames2;
 
-var _require6 = require('./searchResultHelpers');
+function _classnames() {
+  return _classnames2 = _interopRequireDefault(require('classnames'));
+}
 
-var filterEmptyResults = _require6.filterEmptyResults;
+var _searchResultHelpers2;
 
-var _require7 = require('../../nuclide-remote-uri');
+function _searchResultHelpers() {
+  return _searchResultHelpers2 = require('./searchResultHelpers');
+}
 
-var nuclideUriToDisplayString = _require7.nuclideUriToDisplayString;
+var _nuclideRemoteUri2;
+
+function _nuclideRemoteUri() {
+  return _nuclideRemoteUri2 = require('../../nuclide-remote-uri');
+}
+
+var searchResultManager = (_SearchResultManager2 || _SearchResultManager()).default.getInstance();
 
 /**
  * Determine what the applicable shortcut for a given action is within this component's context.
  * For example, this will return different keybindings on windows vs linux.
  */
 function _findKeybindingForAction(action, target) {
-  var _require8 = require('../../nuclide-keystroke-label');
+  var _require = require('../../nuclide-keystroke-label');
 
-  var humanizeKeystroke = _require8.humanizeKeystroke;
+  var humanizeKeystroke = _require.humanizeKeystroke;
 
   var matchingKeyBindings = atom.keymaps.findKeyBindings({
     command: action,
@@ -77,6 +95,17 @@ function _findKeybindingForAction(action, target) {
   });
   var keystroke = matchingKeyBindings.length && matchingKeyBindings[0].keystrokes || '';
   return humanizeKeystroke(keystroke);
+}
+
+function sortServiceNames(names) {
+  return names.sort(function (serviceName1, serviceName2) {
+    var provider1 = searchResultManager.getProviderByName(serviceName1);
+    var provider2 = searchResultManager.getProviderByName(serviceName2);
+    if (provider1.priority == null || provider2.priority == null || provider1.priority === provider2.priority) {
+      return provider1.name.localeCompare(provider2.name);
+    }
+    return provider1.priority - provider2.priority;
+  });
 }
 
 var QuickSelectionComponent = (function (_React$Component) {
@@ -88,8 +117,8 @@ var QuickSelectionComponent = (function (_React$Component) {
     _classCallCheck(this, QuickSelectionComponent);
 
     _get(Object.getPrototypeOf(QuickSelectionComponent.prototype), 'constructor', this).call(this, props);
-    this._emitter = new Emitter();
-    this._subscriptions = new CompositeDisposable();
+    this._emitter = new (_atom2 || _atom()).Emitter();
+    this._subscriptions = new (_atom2 || _atom()).CompositeDisposable();
     this._boundSelect = function () {
       return _this.select();
     };
@@ -150,7 +179,7 @@ var QuickSelectionComponent = (function (_React$Component) {
     value: function componentDidMount() {
       var _this3 = this;
 
-      this._modalNode = ReactDOM.findDOMNode(this);
+      this._modalNode = (_reactForAtom2 || _reactForAtom()).ReactDOM.findDOMNode(this);
       this._subscriptions.add(atom.commands.add(this._modalNode, 'core:move-to-bottom', this.handleMoveToBottom.bind(this)), atom.commands.add(this._modalNode, 'core:move-to-top', this.handleMoveToTop.bind(this)), atom.commands.add(this._modalNode, 'core:move-down', this.handleMoveDown.bind(this)), atom.commands.add(this._modalNode, 'core:move-up', this.handleMoveUp.bind(this)), atom.commands.add(this._modalNode, 'core:confirm', this.select.bind(this)));
 
       var inputTextEditor = this.getInputTextEditor();
@@ -217,7 +246,7 @@ var QuickSelectionComponent = (function (_React$Component) {
     value: function _updateQueryHandler() {
       var _this4 = this;
 
-      this._debouncedQueryHandler = debounce(function () {
+      this._debouncedQueryHandler = (0, (_nuclideCommons2 || _nuclideCommons()).debounce)(function () {
         return _this4.setKeyboardQuery(_this4.getInputTextEditor().getModel().getText());
       }, this.getProvider().debounceDelay || 0, false);
     }
@@ -237,11 +266,25 @@ var QuickSelectionComponent = (function (_React$Component) {
       var _this5 = this;
 
       var updatedResults = searchResultManager.getResults(this.refs['queryInput'].getText(), activeProviderName);
+
+      var _sortServiceNames = sortServiceNames(Object.keys(updatedResults));
+
+      var _sortServiceNames2 = _slicedToArray(_sortServiceNames, 1);
+
+      var topProviderName = _sortServiceNames2[0];
+
       this.setState({
         resultsByService: updatedResults
       }, function () {
-        if (!_this5.state.hasUserSelection) {
-          _this5.moveSelectionToTop();
+        if (!_this5.state.hasUserSelection && topProviderName != null && _this5.state.resultsByService[topProviderName] != null) {
+          (function () {
+            var topProviderResults = _this5.state.resultsByService[topProviderName].results;
+            if (!Object.keys(topProviderResults).some(function (dirName) {
+              return topProviderResults[dirName].loading;
+            })) {
+              _this5.moveSelectionToTop();
+            }
+          })();
         }
       });
     }
@@ -286,8 +329,8 @@ var QuickSelectionComponent = (function (_React$Component) {
   }, {
     key: '_getCurrentResultContext',
     value: function _getCurrentResultContext() {
-      var nonEmptyResults = filterEmptyResults(this.state.resultsByService);
-      var serviceNames = Object.keys(nonEmptyResults);
+      var nonEmptyResults = (0, (_searchResultHelpers2 || _searchResultHelpers()).filterEmptyResults)(this.state.resultsByService);
+      var serviceNames = sortServiceNames(Object.keys(nonEmptyResults));
       var currentServiceIndex = serviceNames.indexOf(this.state.selectedService);
       var currentService = nonEmptyResults[this.state.selectedService];
 
@@ -386,7 +429,7 @@ var QuickSelectionComponent = (function (_React$Component) {
       if (!(this.refs && this.refs['selectionList'])) {
         return;
       }
-      var listNode = ReactDOM.findDOMNode(this.refs['selectionList']);
+      var listNode = (_reactForAtom2 || _reactForAtom()).ReactDOM.findDOMNode(this.refs['selectionList']);
       var selectedNode = listNode.getElementsByClassName('selected')[0];
       // false is passed for @centerIfNeeded parameter, which defaults to true.
       // Passing false causes the minimum necessary scroll to occur, so the selection sticks to the
@@ -416,8 +459,8 @@ var QuickSelectionComponent = (function (_React$Component) {
   }, {
     key: '_getOuterResults',
     value: function _getOuterResults(arrayOperation) {
-      var nonEmptyResults = filterEmptyResults(this.state.resultsByService);
-      var serviceName = arrayOperation.call(Object.keys(nonEmptyResults));
+      var nonEmptyResults = (0, (_searchResultHelpers2 || _searchResultHelpers()).filterEmptyResults)(this.state.resultsByService);
+      var serviceName = arrayOperation.call(sortServiceNames(Object.keys(nonEmptyResults)));
       if (!serviceName) {
         return null;
       }
@@ -499,7 +542,7 @@ var QuickSelectionComponent = (function (_React$Component) {
   }, {
     key: 'getInputTextEditor',
     value: function getInputTextEditor() {
-      return ReactDOM.findDOMNode(this.refs['queryInput']);
+      return (_reactForAtom2 || _reactForAtom()).ReactDOM.findDOMNode(this.refs['queryInput']);
     }
   }, {
     key: 'clear',
@@ -558,7 +601,7 @@ var QuickSelectionComponent = (function (_React$Component) {
         var keyBinding = null; //TODO
         var humanizedKeybinding = _findKeybindingForAction(tab.action || '', _this7._modalNode);
         if (humanizedKeybinding !== '') {
-          keyBinding = React.createElement(
+          keyBinding = (_reactForAtom2 || _reactForAtom()).React.createElement(
             'kbd',
             { className: 'key-binding' },
             humanizedKeybinding
@@ -566,7 +609,7 @@ var QuickSelectionComponent = (function (_React$Component) {
         }
         return _extends({}, tab, {
           name: tab.name,
-          tabContent: React.createElement(
+          tabContent: (_reactForAtom2 || _reactForAtom()).React.createElement(
             'span',
             null,
             tab.title,
@@ -574,10 +617,10 @@ var QuickSelectionComponent = (function (_React$Component) {
           )
         });
       });
-      return React.createElement(
+      return (_reactForAtom2 || _reactForAtom()).React.createElement(
         'div',
         { className: 'omnisearch-tabs' },
-        React.createElement(Tabs, {
+        (_reactForAtom2 || _reactForAtom()).React.createElement((_nuclideUiLibTabs2 || _nuclideUiLibTabs()).Tabs, {
           tabs: tabs,
           activeTabName: this.state.activeTab.name,
           onActiveTabChange: this._boundHandleTabChange
@@ -587,10 +630,10 @@ var QuickSelectionComponent = (function (_React$Component) {
   }, {
     key: '_renderEmptyMessage',
     value: function _renderEmptyMessage(message) {
-      return React.createElement(
+      return (_reactForAtom2 || _reactForAtom()).React.createElement(
         'ul',
         { className: 'background-message centered' },
-        React.createElement(
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
           'li',
           null,
           message
@@ -619,7 +662,7 @@ var QuickSelectionComponent = (function (_React$Component) {
       var numTotalResultsRendered = 0;
       var isOmniSearchActive = this.state.activeTab.name === 'OmniSearchResultProvider';
       var numQueriesOutstanding = 0;
-      var serviceNames = Object.keys(this.state.resultsByService);
+      var serviceNames = sortServiceNames(Object.keys(this.state.resultsByService));
       var services = serviceNames.map(function (serviceName) {
         var numResultsForService = 0;
         var directories = _this8.state.resultsByService[serviceName].results;
@@ -632,30 +675,30 @@ var QuickSelectionComponent = (function (_React$Component) {
             numQueriesOutstanding++;
             if (!isOmniSearchActive) {
               numTotalResultsRendered++;
-              message = React.createElement(
+              message = (_reactForAtom2 || _reactForAtom()).React.createElement(
                 'span',
                 null,
-                React.createElement('span', { className: 'loading loading-spinner-tiny inline-block' }),
+                (_reactForAtom2 || _reactForAtom()).React.createElement('span', { className: 'loading loading-spinner-tiny inline-block' }),
                 'Loading...'
               );
             }
           } else if (resultsForDirectory.error && !isOmniSearchActive) {
-            message = React.createElement(
+            message = (_reactForAtom2 || _reactForAtom()).React.createElement(
               'span',
               null,
-              React.createElement('span', { className: 'icon icon-circle-slash' }),
+              (_reactForAtom2 || _reactForAtom()).React.createElement('span', { className: 'icon icon-circle-slash' }),
               'Error: ',
-              React.createElement(
+              (_reactForAtom2 || _reactForAtom()).React.createElement(
                 'pre',
                 null,
                 resultsForDirectory.error
               )
             );
           } else if (resultsForDirectory.results.length === 0 && !isOmniSearchActive) {
-            message = React.createElement(
+            message = (_reactForAtom2 || _reactForAtom()).React.createElement(
               'span',
               null,
-              React.createElement('span', { className: 'icon icon-x' }),
+              (_reactForAtom2 || _reactForAtom()).React.createElement('span', { className: 'icon icon-x' }),
               'No results'
             );
           }
@@ -663,10 +706,10 @@ var QuickSelectionComponent = (function (_React$Component) {
             numResultsForService++;
             numTotalResultsRendered++;
             var isSelected = serviceName === _this8.state.selectedService && dirName === _this8.state.selectedDirectory && itemIndex === _this8.state.selectedItemIndex;
-            return React.createElement(
+            return (_reactForAtom2 || _reactForAtom()).React.createElement(
               'li',
               {
-                className: classnames({
+                className: (0, (_classnames2 || _classnames()).default)({
                   'quick-open-result-item': true,
                   'list-item': true,
                   selected: isSelected
@@ -681,22 +724,22 @@ var QuickSelectionComponent = (function (_React$Component) {
           //hide folders if only 1 level would be shown, or if no results were found
           var showDirectories = directoryNames.length > 1 && (!isOmniSearchActive || resultsForDirectory.results.length > 0);
           if (showDirectories) {
-            directoryLabel = React.createElement(
+            directoryLabel = (_reactForAtom2 || _reactForAtom()).React.createElement(
               'div',
               { className: 'list-item' },
-              React.createElement(
+              (_reactForAtom2 || _reactForAtom()).React.createElement(
                 'span',
                 { className: 'icon icon-file-directory' },
-                nuclideUriToDisplayString(dirName)
+                (0, (_nuclideRemoteUri2 || _nuclideRemoteUri()).nuclideUriToDisplayString)(dirName)
               )
             );
           }
-          return React.createElement(
+          return (_reactForAtom2 || _reactForAtom()).React.createElement(
             'li',
-            { className: classnames({ 'list-nested-item': showDirectories }), key: dirName },
+            { className: (0, (_classnames2 || _classnames()).default)({ 'list-nested-item': showDirectories }), key: dirName },
             directoryLabel,
             message,
-            React.createElement(
+            (_reactForAtom2 || _reactForAtom()).React.createElement(
               'ul',
               { className: 'list-tree' },
               itemComponents
@@ -705,20 +748,20 @@ var QuickSelectionComponent = (function (_React$Component) {
         });
         var serviceLabel = null;
         if (isOmniSearchActive && numResultsForService > 0) {
-          serviceLabel = React.createElement(
+          serviceLabel = (_reactForAtom2 || _reactForAtom()).React.createElement(
             'div',
             { className: 'list-item' },
-            React.createElement(
+            (_reactForAtom2 || _reactForAtom()).React.createElement(
               'span',
               { className: 'icon icon-gear' },
               serviceTitle
             )
           );
-          return React.createElement(
+          return (_reactForAtom2 || _reactForAtom()).React.createElement(
             'li',
             { className: 'list-nested-item', key: serviceName },
             serviceLabel,
-            React.createElement(
+            (_reactForAtom2 || _reactForAtom()).React.createElement(
               'ul',
               { className: 'list-tree' },
               directoriesForService
@@ -728,14 +771,12 @@ var QuickSelectionComponent = (function (_React$Component) {
         return directoriesForService;
       });
       var noResultsMessage = null;
-      if (object.isEmpty(this.state.resultsByService)) {
+      if ((_nuclideCommons2 || _nuclideCommons()).object.isEmpty(this.state.resultsByService)) {
         noResultsMessage = this._renderEmptyMessage('Search away!');
       } else if (numTotalResultsRendered === 0) {
-        noResultsMessage = this._renderEmptyMessage(React.createElement(
+        noResultsMessage = this._renderEmptyMessage((_reactForAtom2 || _reactForAtom()).React.createElement(
           'span',
           null,
-          '¯\\_(ツ)_/¯',
-          React.createElement('br', null),
           'No results'
         ));
       }
@@ -743,26 +784,26 @@ var QuickSelectionComponent = (function (_React$Component) {
       var promptText = currentProvider && currentProvider.prompt || '';
       var omniSearchStatus = null;
       if (isOmniSearchActive && numQueriesOutstanding > 0) {
-        omniSearchStatus = React.createElement(
+        omniSearchStatus = (_reactForAtom2 || _reactForAtom()).React.createElement(
           'span',
           null,
-          React.createElement('span', { className: 'loading loading-spinner-tiny inline-block' }),
+          (_reactForAtom2 || _reactForAtom()).React.createElement('span', { className: 'loading loading-spinner-tiny inline-block' }),
           'Loading...'
         );
       }
-      return React.createElement(
+      return (_reactForAtom2 || _reactForAtom()).React.createElement(
         'div',
         { className: 'select-list omnisearch-modal', ref: 'modal' },
-        React.createElement(AtomInput, { ref: 'queryInput', placeholderText: promptText }),
+        (_reactForAtom2 || _reactForAtom()).React.createElement((_nuclideUiLibAtomInput2 || _nuclideUiLibAtomInput()).AtomInput, { ref: 'queryInput', placeholderText: promptText }),
         this._renderTabs(),
-        React.createElement(
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
           'div',
           { className: 'omnisearch-results', style: { maxHeight: this.props.maxScrollableAreaHeight } },
           noResultsMessage,
-          React.createElement(
+          (_reactForAtom2 || _reactForAtom()).React.createElement(
             'div',
             { className: 'omnisearch-pane' },
-            React.createElement(
+            (_reactForAtom2 || _reactForAtom()).React.createElement(
               'ul',
               { className: 'list-tree', ref: 'selectionList' },
               services,
@@ -775,19 +816,19 @@ var QuickSelectionComponent = (function (_React$Component) {
   }]);
 
   return QuickSelectionComponent;
-})(React.Component);
+})((_reactForAtom2 || _reactForAtom()).React.Component);
 
-exports['default'] = QuickSelectionComponent;
+exports.default = QuickSelectionComponent;
 
 QuickSelectionComponent.propTypes = {
-  activeProvider: PropTypes.shape({
-    action: PropTypes.string.isRequired,
-    debounceDelay: PropTypes.number.isRequired,
-    name: PropTypes.string.isRequired,
-    prompt: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired
+  activeProvider: (_reactForAtom2 || _reactForAtom()).React.PropTypes.shape({
+    action: (_reactForAtom2 || _reactForAtom()).React.PropTypes.string.isRequired,
+    debounceDelay: (_reactForAtom2 || _reactForAtom()).React.PropTypes.number.isRequired,
+    name: (_reactForAtom2 || _reactForAtom()).React.PropTypes.string.isRequired,
+    prompt: (_reactForAtom2 || _reactForAtom()).React.PropTypes.string.isRequired,
+    title: (_reactForAtom2 || _reactForAtom()).React.PropTypes.string.isRequired
   }).isRequired,
-  onProviderChange: PropTypes.func,
-  maxScrollableAreaHeight: PropTypes.number
+  onProviderChange: (_reactForAtom2 || _reactForAtom()).React.PropTypes.func,
+  maxScrollableAreaHeight: (_reactForAtom2 || _reactForAtom()).React.PropTypes.number
 };
-module.exports = exports['default'];
+module.exports = exports.default;

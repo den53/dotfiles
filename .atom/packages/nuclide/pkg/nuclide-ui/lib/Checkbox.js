@@ -18,7 +18,11 @@ function _inherits(subClass, superClass) { if (typeof superClass !== 'function' 
  * the root directory of this source tree.
  */
 
-var _reactForAtom = require('react-for-atom');
+var _reactForAtom2;
+
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
 
 /**
  * A checkbox component with an input checkbox and a label. We restrict the label to a string
@@ -54,7 +58,7 @@ var Checkbox = (function (_React$Component) {
   }, {
     key: 'shouldComponentUpdate',
     value: function shouldComponentUpdate(nextProps, nextState) {
-      return _reactForAtom.PureRenderMixin.shouldComponentUpdate.call(this, nextProps, nextState);
+      return (_reactForAtom2 || _reactForAtom()).PureRenderMixin.shouldComponentUpdate.call(this, nextProps, nextState);
     }
   }, {
     key: 'componentDidUpdate',
@@ -77,15 +81,15 @@ var Checkbox = (function (_React$Component) {
   }, {
     key: '_setIndeterminate',
     value: function _setIndeterminate() {
-      _reactForAtom.ReactDOM.findDOMNode(this.refs['input']).indeterminate = this.props.indeterminate;
+      (_reactForAtom2 || _reactForAtom()).ReactDOM.findDOMNode(this.refs['input']).indeterminate = this.props.indeterminate;
     }
   }, {
     key: 'render',
     value: function render() {
-      return _reactForAtom.React.createElement(
+      return (_reactForAtom2 || _reactForAtom()).React.createElement(
         'label',
         { className: 'nuclide-ui-checkbox-label', onClick: this.props.onClick },
-        _reactForAtom.React.createElement('input', {
+        (_reactForAtom2 || _reactForAtom()).React.createElement('input', {
           checked: this.props.checked,
           className: 'nuclide-ui-checkbox',
           disabled: this.props.disabled,
@@ -100,6 +104,6 @@ var Checkbox = (function (_React$Component) {
   }]);
 
   return Checkbox;
-})(_reactForAtom.React.Component);
+})((_reactForAtom2 || _reactForAtom()).React.Component);
 
 exports.Checkbox = Checkbox;

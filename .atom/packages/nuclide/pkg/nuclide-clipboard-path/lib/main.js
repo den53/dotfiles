@@ -2,8 +2,6 @@ Object.defineProperty(exports, '__esModule', {
   value: true
 });
 
-var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i['return']) _i['return'](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError('Invalid attempt to destructure non-iterable instance'); } }; })();
-
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
 exports.activate = activate;
@@ -21,11 +19,29 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
  * the root directory of this source tree.
  */
 
-var _atom = require('atom');
+var _atom2;
 
-var _nuclideRemoteUri = require('../../nuclide-remote-uri');
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var _nuclideAnalytics = require('../../nuclide-analytics');
+var _nuclideRemoteUri2;
+
+function _nuclideRemoteUri() {
+  return _nuclideRemoteUri2 = require('../../nuclide-remote-uri');
+}
+
+var _nuclideAtomHelpers2;
+
+function _nuclideAtomHelpers() {
+  return _nuclideAtomHelpers2 = require('../../nuclide-atom-helpers');
+}
+
+var _nuclideAnalytics2;
+
+function _nuclideAnalytics() {
+  return _nuclideAnalytics2 = require('../../nuclide-analytics');
+}
 
 function copyAbsolutePath() {
   trackOperation('copyAbsolutePath', function () {
@@ -33,7 +49,7 @@ function copyAbsolutePath() {
     if (!uri) {
       return;
     }
-    copyToClipboard('Copied absolute path', (0, _nuclideRemoteUri.getPath)(uri));
+    copyToClipboard('Copied absolute path', (0, (_nuclideRemoteUri2 || _nuclideRemoteUri()).getPath)(uri));
   });
 }
 
@@ -44,11 +60,11 @@ function copyProjectRelativePath() {
       return;
     }
 
-    var projectRelativePath = getAtomProjectRelativePath(uri);
+    var projectRelativePath = (_nuclideAtomHelpers2 || _nuclideAtomHelpers()).projects.getAtomProjectRelativePath(uri);
     if (projectRelativePath) {
       copyToClipboard('Copied project relative path', projectRelativePath);
     } else {
-      copyToClipboard('Path not contained in any open project.\nCopied absolute path', (0, _nuclideRemoteUri.getPath)(uri));
+      copyToClipboard('Path not contained in any open project.\nCopied absolute path', (0, (_nuclideRemoteUri2 || _nuclideRemoteUri()).getPath)(uri));
     }
   });
 }
@@ -76,27 +92,13 @@ function copyRepositoryRelativePath() {
     }
 
     // Lastly, project and absolute.
-    var projectRelativePath = getAtomProjectRelativePath(uri);
+    var projectRelativePath = (_nuclideAtomHelpers2 || _nuclideAtomHelpers()).projects.getAtomProjectRelativePath(uri);
     if (projectRelativePath) {
       copyToClipboard('Copied project relative path', projectRelativePath);
     } else {
-      copyToClipboard('Path not contained in any repository.\nCopied absolute path', (0, _nuclideRemoteUri.getPath)(uri));
+      copyToClipboard('Path not contained in any repository.\nCopied absolute path', (0, (_nuclideRemoteUri2 || _nuclideRemoteUri()).getPath)(uri));
     }
   }));
-}
-
-function getAtomProjectRelativePath(path) {
-  var _atom$project$relativizePath = atom.project.relativizePath(path);
-
-  var _atom$project$relativizePath2 = _slicedToArray(_atom$project$relativizePath, 2);
-
-  var projectPath = _atom$project$relativizePath2[0];
-  var relativePath = _atom$project$relativizePath2[1];
-
-  if (!projectPath) {
-    return null;
-  }
-  return relativePath;
 }
 
 function getRepositoryRelativePath(path) {
@@ -136,7 +138,7 @@ function getCurrentNuclideUri() {
 }
 
 function trackOperation(eventName, operation) {
-  (0, _nuclideAnalytics.trackOperationTiming)('nuclide-clipboard-path:' + eventName, operation);
+  (0, (_nuclideAnalytics2 || _nuclideAnalytics()).trackOperationTiming)('nuclide-clipboard-path:' + eventName, operation);
 }
 
 function notify(message) {
@@ -147,7 +149,7 @@ var Activation = (function () {
   function Activation(state) {
     _classCallCheck(this, Activation);
 
-    this._subscriptions = new _atom.CompositeDisposable();
+    this._subscriptions = new (_atom2 || _atom()).CompositeDisposable();
     this._subscriptions.add(atom.commands.add('atom-workspace', 'nuclide-clipboard-path:copy-absolute-path', copyAbsolutePath));
     this._subscriptions.add(atom.commands.add('atom-workspace', 'nuclide-clipboard-path:copy-repository-relative-path', copyRepositoryRelativePath));
     this._subscriptions.add(atom.commands.add('atom-workspace', 'nuclide-clipboard-path:copy-project-relative-path', copyProjectRelativePath));

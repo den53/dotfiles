@@ -8,7 +8,13 @@
  * the root directory of this source tree.
  */
 
-var markers = require('../constants/markers');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _constantsMarkers2;
+
+function _constantsMarkers() {
+  return _constantsMarkers2 = _interopRequireDefault(require('../constants/markers'));
+}
 
 /**
  * This resolves all markers. We are guaranteed to have a single remaining
@@ -19,31 +25,31 @@ function resolveAll(lines, options) {
   // indentation to already have been taken into account when breaking, just not
   // resolved yet.
   lines = lines.map(function (line) {
-    if (line === markers.hardBreak) {
+    if (line === (_constantsMarkers2 || _constantsMarkers()).default.hardBreak) {
       return '\n';
-    } else if (line === markers.multiHardBreak) {
+    } else if (line === (_constantsMarkers2 || _constantsMarkers()).default.multiHardBreak) {
       return '\n';
-    } else if (line === markers.noBreak) {
+    } else if (line === (_constantsMarkers2 || _constantsMarkers()).default.noBreak) {
       return '';
-    } else if (line === markers.openScope) {
+    } else if (line === (_constantsMarkers2 || _constantsMarkers()).default.openScope) {
       return '';
-    } else if (line === markers.scopeIndent) {
+    } else if (line === (_constantsMarkers2 || _constantsMarkers()).default.scopeIndent) {
       return '';
-    } else if (line === markers.scopeBreak) {
+    } else if (line === (_constantsMarkers2 || _constantsMarkers()).default.scopeBreak) {
       return '';
-    } else if (line === markers.scopeSpaceBreak) {
+    } else if (line === (_constantsMarkers2 || _constantsMarkers()).default.scopeSpaceBreak) {
       return ' ';
-    } else if (line === markers.scopeComma) {
+    } else if (line === (_constantsMarkers2 || _constantsMarkers()).default.scopeComma) {
       return '';
-    } else if (line === markers.scopeDedent) {
+    } else if (line === (_constantsMarkers2 || _constantsMarkers()).default.scopeDedent) {
       return '';
-    } else if (line === markers.closeScope) {
+    } else if (line === (_constantsMarkers2 || _constantsMarkers()).default.closeScope) {
       return '';
-    } else if (line === markers.comma) {
+    } else if (line === (_constantsMarkers2 || _constantsMarkers()).default.comma) {
       return ',';
-    } else if (line === markers.space) {
+    } else if (line === (_constantsMarkers2 || _constantsMarkers()).default.space) {
       return ' ';
-    } else if (line === markers.empty) {
+    } else if (line === (_constantsMarkers2 || _constantsMarkers()).default.empty) {
       return '';
     } else {
       return line;
@@ -58,9 +64,9 @@ function resolveAll(lines, options) {
   var result = [];
   for (var i = 0; i < lines.length; i++) {
     var end = result.length > 0 ? result[result.length - 1] : null;
-    if (lines[i] === markers.indent) {
+    if (lines[i] === (_constantsMarkers2 || _constantsMarkers()).default.indent) {
       indent++;
-    } else if (lines[i] === markers.dedent) {
+    } else if (lines[i] === (_constantsMarkers2 || _constantsMarkers()).default.dedent) {
       indent--;
     } else if (end && /\n$/.test(end)) {
       result.push(tabString.repeat(indent) + lines[i]);

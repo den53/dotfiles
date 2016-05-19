@@ -16,25 +16,27 @@ exports.consumeOutputService = consumeOutputService;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _assert = require('assert');
+var _assert2;
 
-var _assert2 = _interopRequireDefault(_assert);
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
 var activation = null;
 
 function activate(state) {
-  (0, _assert2['default'])(activation == null);
+  (0, (_assert2 || _assert()).default)(activation == null);
   var Activation = require('./Activation');
   activation = new Activation(state);
 }
 
 function deactivate() {
-  (0, _assert2['default'])(activation);
+  (0, (_assert2 || _assert()).default)(activation);
   activation.dispose();
   activation = null;
 }
 
 function consumeOutputService(api) {
-  (0, _assert2['default'])(activation);
+  (0, (_assert2 || _assert()).default)(activation);
   return activation.consumeOutputService(api);
 }

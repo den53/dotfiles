@@ -17,24 +17,36 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 exports.observeSettings = observeSettings;
 exports.calculateOptions = calculateOptions;
 
-var featureConfig = require('../../nuclide-feature-config');
-var formatJSBase = require('../../nuclide-format-js-base');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _nuclideFeatureConfig2;
+
+function _nuclideFeatureConfig() {
+  return _nuclideFeatureConfig2 = _interopRequireDefault(require('../../nuclide-feature-config'));
+}
+
+var _nuclideFormatJsBase2;
+
+function _nuclideFormatJsBase() {
+  return _nuclideFormatJsBase2 = _interopRequireDefault(require('../../nuclide-format-js-base'));
+}
 
 // Nuclide package settings used to calculate the module map,
 // the blacklist, and control the plugin behavior.
-var createModuleMap = formatJSBase.createModuleMap;
+
+var createModuleMap = (_nuclideFormatJsBase2 || _nuclideFormatJsBase()).default.createModuleMap;
 
 // We need this in array formats.
-var defaultAliases = Array.from(formatJSBase.defaultAliases);
-var defaultBuiltIns = Array.from(formatJSBase.defaultBuiltIns);
-var defaultBuiltInTypes = Array.from(formatJSBase.defaultBuiltInTypes);
+var defaultAliases = Array.from((_nuclideFormatJsBase2 || _nuclideFormatJsBase()).default.defaultAliases);
+var defaultBuiltIns = Array.from((_nuclideFormatJsBase2 || _nuclideFormatJsBase()).default.defaultBuiltIns);
+var defaultBuiltInTypes = Array.from((_nuclideFormatJsBase2 || _nuclideFormatJsBase()).default.defaultBuiltInTypes);
 
 /**
  * Observes the relevant Nuclide package settings.
  */
 
 function observeSettings(callback) {
-  return featureConfig.observe('nuclide-format-js', function (settings) {
+  return (_nuclideFeatureConfig2 || _nuclideFeatureConfig()).default.observe('nuclide-format-js', function (settings) {
     return callback(_extends({}, settings, {
       aliases: fixAliases(settings.aliases)
     }));

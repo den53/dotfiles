@@ -18,19 +18,47 @@ function _inherits(subClass, superClass) { if (typeof superClass !== 'function' 
  * the root directory of this source tree.
  */
 
-var _nuclideDebuggerAtom = require('../../nuclide-debugger-atom');
+var _nuclideDebuggerAtom2;
 
-var _reactForAtom = require('react-for-atom');
+function _nuclideDebuggerAtom() {
+  return _nuclideDebuggerAtom2 = require('../../nuclide-debugger-atom');
+}
 
-var _flux = require('flux');
+var _reactForAtom2;
 
-var _LaunchAttachStore = require('./LaunchAttachStore');
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
 
-var _LaunchUIComponent = require('./LaunchUIComponent');
+var _flux2;
 
-var _AttachUIComponent = require('./AttachUIComponent');
+function _flux() {
+  return _flux2 = require('flux');
+}
 
-var _LaunchAttachActions = require('./LaunchAttachActions');
+var _LaunchAttachStore2;
+
+function _LaunchAttachStore() {
+  return _LaunchAttachStore2 = require('./LaunchAttachStore');
+}
+
+var _LaunchUIComponent2;
+
+function _LaunchUIComponent() {
+  return _LaunchUIComponent2 = require('./LaunchUIComponent');
+}
+
+var _AttachUIComponent2;
+
+function _AttachUIComponent() {
+  return _AttachUIComponent2 = require('./AttachUIComponent');
+}
+
+var _LaunchAttachActions2;
+
+function _LaunchAttachActions() {
+  return _LaunchAttachActions2 = require('./LaunchAttachActions');
+}
 
 var LLDBLaunchAttachProvider = (function (_DebuggerLaunchAttachProvider) {
   _inherits(LLDBLaunchAttachProvider, _DebuggerLaunchAttachProvider);
@@ -39,9 +67,9 @@ var LLDBLaunchAttachProvider = (function (_DebuggerLaunchAttachProvider) {
     _classCallCheck(this, LLDBLaunchAttachProvider);
 
     _get(Object.getPrototypeOf(LLDBLaunchAttachProvider.prototype), 'constructor', this).call(this, debuggingTypeName, targetUri);
-    this._dispatcher = new _flux.Dispatcher();
-    this._actions = new _LaunchAttachActions.LaunchAttachActions(this._dispatcher, this.getTargetUri());
-    this._store = new _LaunchAttachStore.LaunchAttachStore(this._dispatcher);
+    this._dispatcher = new (_flux2 || _flux()).Dispatcher();
+    this._actions = new (_LaunchAttachActions2 || _LaunchAttachActions()).LaunchAttachActions(this._dispatcher, this.getTargetUri());
+    this._store = new (_LaunchAttachStore2 || _LaunchAttachStore()).LaunchAttachStore(this._dispatcher);
   }
 
   _createClass(LLDBLaunchAttachProvider, [{
@@ -53,10 +81,10 @@ var LLDBLaunchAttachProvider = (function (_DebuggerLaunchAttachProvider) {
     key: 'getComponent',
     value: function getComponent(action) {
       if (action === 'Launch') {
-        return _reactForAtom.React.createElement(_LaunchUIComponent.LaunchUIComponent, { store: this._store, actions: this._actions });
+        return (_reactForAtom2 || _reactForAtom()).React.createElement((_LaunchUIComponent2 || _LaunchUIComponent()).LaunchUIComponent, { store: this._store, actions: this._actions });
       } else if (action === 'Attach') {
         this._actions.updateAttachTargetList();
-        return _reactForAtom.React.createElement(_AttachUIComponent.AttachUIComponent, { store: this._store, actions: this._actions });
+        return (_reactForAtom2 || _reactForAtom()).React.createElement((_AttachUIComponent2 || _AttachUIComponent()).AttachUIComponent, { store: this._store, actions: this._actions });
       } else {
         return null;
       }
@@ -69,6 +97,6 @@ var LLDBLaunchAttachProvider = (function (_DebuggerLaunchAttachProvider) {
   }]);
 
   return LLDBLaunchAttachProvider;
-})(_nuclideDebuggerAtom.DebuggerLaunchAttachProvider);
+})((_nuclideDebuggerAtom2 || _nuclideDebuggerAtom()).DebuggerLaunchAttachProvider);
 
 exports.LLDBLaunchAttachProvider = LLDBLaunchAttachProvider;

@@ -24,14 +24,14 @@ var hgAsyncExecute = _asyncToGenerator(function* (args, options) {
   var cmd = undefined;
   if (options['TTY_OUTPUT']) {
     cmd = 'script';
-    args = (0, _nuclideCommons.createArgsForScriptCommand)('hg', args);
+    args = (0, (_nuclideCommons2 || _nuclideCommons()).createArgsForScriptCommand)('hg', args);
   } else {
     cmd = 'hg';
   }
   try {
-    return yield (0, _nuclideCommons.asyncExecute)(cmd, args, options);
+    return yield (0, (_nuclideCommons2 || _nuclideCommons()).asyncExecute)(cmd, args, options);
   } catch (e) {
-    (0, _nuclideLogging.getLogger)().error('Error executing hg command: ' + JSON.stringify(args) + ' ' + ('options: ' + JSON.stringify(options) + ' ' + JSON.stringify(e)));
+    (0, (_nuclideLogging2 || _nuclideLogging()).getLogger)().error('Error executing hg command: ' + JSON.stringify(args) + ' ' + ('options: ' + JSON.stringify(options) + ' ' + JSON.stringify(e)));
     throw e;
   }
 });
@@ -48,6 +48,14 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
  * the root directory of this source tree.
  */
 
-var _nuclideCommons = require('../../nuclide-commons');
+var _nuclideCommons2;
 
-var _nuclideLogging = require('../../nuclide-logging');
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
+
+var _nuclideLogging2;
+
+function _nuclideLogging() {
+  return _nuclideLogging2 = require('../../nuclide-logging');
+}

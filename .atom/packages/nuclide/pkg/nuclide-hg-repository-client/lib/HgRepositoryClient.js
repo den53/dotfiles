@@ -10,30 +10,6 @@ Object.defineProperty(exports, '__esModule', {
  * the root directory of this source tree.
  */
 
-var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i['return']) _i['return'](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError('Invalid attempt to destructure non-iterable instance'); } }; })();
-
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-var _atom = require('atom');
-
-var _HgRepositoryClientAsync = require('./HgRepositoryClientAsync');
-
-var _HgRepositoryClientAsync2 = _interopRequireDefault(_HgRepositoryClientAsync);
-
-var _nuclideHgRepositoryBaseLibHgConstants = require('../../nuclide-hg-repository-base/lib/hg-constants');
-
-var _nuclideCommons = require('../../nuclide-commons');
-
-var _nuclideCommonsLibPaths = require('../../nuclide-commons/lib/paths');
-
-var _utils = require('./utils');
-
 /**
  *
  * Section: HgRepositoryClient
@@ -48,7 +24,53 @@ var _utils = require('./utils');
  * in addition to providing asynchronous methods for some getters.
  */
 
-var serializeAsyncCall = _nuclideCommons.promises.serializeAsyncCall;
+var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i['return']) _i['return'](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError('Invalid attempt to destructure non-iterable instance'); } }; })();
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _atom2;
+
+function _atom() {
+  return _atom2 = require('atom');
+}
+
+var _HgRepositoryClientAsync2;
+
+function _HgRepositoryClientAsync() {
+  return _HgRepositoryClientAsync2 = _interopRequireDefault(require('./HgRepositoryClientAsync'));
+}
+
+var _nuclideHgRepositoryBaseLibHgConstants2;
+
+function _nuclideHgRepositoryBaseLibHgConstants() {
+  return _nuclideHgRepositoryBaseLibHgConstants2 = require('../../nuclide-hg-repository-base/lib/hg-constants');
+}
+
+var _nuclideCommons2;
+
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
+
+var _nuclideCommonsLibPaths2;
+
+function _nuclideCommonsLibPaths() {
+  return _nuclideCommonsLibPaths2 = require('../../nuclide-commons/lib/paths');
+}
+
+var _utils2;
+
+function _utils() {
+  return _utils2 = require('./utils');
+}
+
+var serializeAsyncCall = (_nuclideCommons2 || _nuclideCommons()).promises.serializeAsyncCall;
 
 /**
  *
@@ -61,11 +83,11 @@ var MAX_INDIVIDUAL_CHANGED_PATHS = 1;
 
 exports.MAX_INDIVIDUAL_CHANGED_PATHS = MAX_INDIVIDUAL_CHANGED_PATHS;
 function filterForOnlyNotIgnored(code) {
-  return code !== _nuclideHgRepositoryBaseLibHgConstants.StatusCodeId.IGNORED;
+  return code !== (_nuclideHgRepositoryBaseLibHgConstants2 || _nuclideHgRepositoryBaseLibHgConstants()).StatusCodeId.IGNORED;
 }
 
 function filterForOnlyIgnored(code) {
-  return code === _nuclideHgRepositoryBaseLibHgConstants.StatusCodeId.IGNORED;
+  return code === (_nuclideHgRepositoryBaseLibHgConstants2 || _nuclideHgRepositoryBaseLibHgConstants()).StatusCodeId.IGNORED;
 }
 
 function filterForAllStatues() {
@@ -77,8 +99,7 @@ var HgRepositoryClient = (function () {
 
     _classCallCheck(this, HgRepositoryClient);
 
-    // $FlowIssue: `async` not able to be annotated on classes
-    this.async = new _HgRepositoryClientAsync2['default'](this);
+    this.async = new (_HgRepositoryClientAsync2 || _HgRepositoryClientAsync()).default(this);
 
     this._path = repoPath;
     this._workingDirectory = options.workingDirectory;
@@ -86,7 +107,7 @@ var HgRepositoryClient = (function () {
     this._originURL = options.originURL;
     this._service = hgService;
 
-    this._emitter = new _atom.Emitter();
+    this._emitter = new (_atom2 || _atom()).Emitter();
     this._disposables = {};
 
     this._hgStatusCache = {};
@@ -114,7 +135,7 @@ var HgRepositoryClient = (function () {
       }
       // TODO (t8227570) Get initial diff stats for this editor, and refresh
       // this information whenever the content of the editor changes.
-      var editorSubscriptions = _this._disposables[filePath] = new _atom.CompositeDisposable();
+      var editorSubscriptions = _this._disposables[filePath] = new (_atom2 || _atom()).CompositeDisposable();
       editorSubscriptions.add(editor.onDidSave(function (event) {
         _this._updateDiffInfo([event.path]);
       }));
@@ -148,7 +169,6 @@ var HgRepositoryClient = (function () {
     };
     // Get updates that tell the HgRepositoryClient when to clear its caches.
     this._service.observeFilesDidChange().subscribe(onFilesChanges);
-    this._service.observeHgIgnoreFileDidChange().subscribe(this._serializedRefreshStatusesCache);
     this._service.observeHgRepoStateDidChange().subscribe(this._serializedRefreshStatusesCache);
     this._service.observeHgBookmarkDidChange().subscribe(this.fetchCurrentBookmark.bind(this));
   }
@@ -245,7 +265,6 @@ var HgRepositoryClient = (function () {
     value: function getShortHead(filePath) {
       if (!this._currentBookmark) {
         // Kick off a fetch to get the current bookmark. This is async.
-        // $FlowIssue: `async` not able to be annotated on classes
         this.async.getShortHead();
         return '';
       }
@@ -331,7 +350,7 @@ var HgRepositoryClient = (function () {
       if (!cachedPathStatus) {
         return false;
       } else {
-        return this.isStatusModified(_nuclideHgRepositoryBaseLibHgConstants.StatusCodeIdToNumber[cachedPathStatus]);
+        return this.isStatusModified((_nuclideHgRepositoryBaseLibHgConstants2 || _nuclideHgRepositoryBaseLibHgConstants()).StatusCodeIdToNumber[cachedPathStatus]);
       }
     }
 
@@ -347,7 +366,7 @@ var HgRepositoryClient = (function () {
       if (!cachedPathStatus) {
         return false;
       } else {
-        return this.isStatusNew(_nuclideHgRepositoryBaseLibHgConstants.StatusCodeIdToNumber[cachedPathStatus]);
+        return this.isStatusNew((_nuclideHgRepositoryBaseLibHgConstants2 || _nuclideHgRepositoryBaseLibHgConstants()).StatusCodeIdToNumber[cachedPathStatus]);
       }
     }
 
@@ -368,7 +387,7 @@ var HgRepositoryClient = (function () {
       if (!cachedPathStatus) {
         return this._isPathWithinHgRepo(filePath);
       } else {
-        return this.isStatusIgnored(_nuclideHgRepositoryBaseLibHgConstants.StatusCodeIdToNumber[cachedPathStatus]);
+        return this.isStatusIgnored((_nuclideHgRepositoryBaseLibHgConstants2 || _nuclideHgRepositoryBaseLibHgConstants()).StatusCodeIdToNumber[cachedPathStatus]);
       }
     }
 
@@ -399,13 +418,13 @@ var HgRepositoryClient = (function () {
     key: 'getDirectoryStatus',
     value: function getDirectoryStatus(directoryPath) {
       if (!directoryPath) {
-        return _nuclideHgRepositoryBaseLibHgConstants.StatusCodeNumber.CLEAN;
+        return (_nuclideHgRepositoryBaseLibHgConstants2 || _nuclideHgRepositoryBaseLibHgConstants()).StatusCodeNumber.CLEAN;
       }
-      var directoryPathWithSeparator = (0, _nuclideCommonsLibPaths.ensureTrailingSeparator)(directoryPath);
+      var directoryPathWithSeparator = (0, (_nuclideCommonsLibPaths2 || _nuclideCommonsLibPaths()).ensureTrailingSeparator)(directoryPath);
       if (this._modifiedDirectoryCache.has(directoryPathWithSeparator)) {
-        return _nuclideHgRepositoryBaseLibHgConstants.StatusCodeNumber.MODIFIED;
+        return (_nuclideHgRepositoryBaseLibHgConstants2 || _nuclideHgRepositoryBaseLibHgConstants()).StatusCodeNumber.MODIFIED;
       }
-      return _nuclideHgRepositoryBaseLibHgConstants.StatusCodeNumber.CLEAN;
+      return (_nuclideHgRepositoryBaseLibHgConstants2 || _nuclideHgRepositoryBaseLibHgConstants()).StatusCodeNumber.CLEAN;
     }
 
     // We don't want to do any synchronous 'hg status' calls. Just use cached values.
@@ -418,39 +437,36 @@ var HgRepositoryClient = (function () {
     key: 'getCachedPathStatus',
     value: function getCachedPathStatus(filePath) {
       if (!filePath) {
-        return _nuclideHgRepositoryBaseLibHgConstants.StatusCodeNumber.CLEAN;
+        return (_nuclideHgRepositoryBaseLibHgConstants2 || _nuclideHgRepositoryBaseLibHgConstants()).StatusCodeNumber.CLEAN;
       }
       var cachedStatus = this._hgStatusCache[filePath];
       if (cachedStatus) {
-        return _nuclideHgRepositoryBaseLibHgConstants.StatusCodeIdToNumber[cachedStatus];
+        return (_nuclideHgRepositoryBaseLibHgConstants2 || _nuclideHgRepositoryBaseLibHgConstants()).StatusCodeIdToNumber[cachedStatus];
       }
-      return _nuclideHgRepositoryBaseLibHgConstants.StatusCodeNumber.CLEAN;
+      return (_nuclideHgRepositoryBaseLibHgConstants2 || _nuclideHgRepositoryBaseLibHgConstants()).StatusCodeNumber.CLEAN;
     }
   }, {
     key: 'getAllPathStatuses',
     value: function getAllPathStatuses() {
       var pathStatuses = Object.create(null);
       for (var _filePath in this._hgStatusCache) {
-        pathStatuses[_filePath] = _nuclideHgRepositoryBaseLibHgConstants.StatusCodeIdToNumber[this._hgStatusCache[_filePath]];
+        pathStatuses[_filePath] = (_nuclideHgRepositoryBaseLibHgConstants2 || _nuclideHgRepositoryBaseLibHgConstants()).StatusCodeIdToNumber[this._hgStatusCache[_filePath]];
       }
       return pathStatuses;
     }
   }, {
     key: 'isStatusModified',
     value: function isStatusModified(status) {
-      // $FlowIssue: `async` not able to be annotated on classes
       return this.async.isStatusModified(status);
     }
   }, {
     key: 'isStatusNew',
     value: function isStatusNew(status) {
-      // $FlowIssue: `async` not able to be annotated on classes
       return this.async.isStatusNew(status);
     }
   }, {
     key: 'isStatusIgnored',
     value: function isStatusIgnored(status) {
-      // $FlowIssue: `async` not able to be annotated on classes
       return this.async.isStatusIgnored(status);
     }
 
@@ -483,7 +499,7 @@ var HgRepositoryClient = (function () {
           if (!isRelavantStatus(statusId)) {
             return;
           }
-          statusMap.set(filePath, _nuclideHgRepositoryBaseLibHgConstants.StatusCodeIdToNumber[statusId]);
+          statusMap.set(filePath, (_nuclideHgRepositoryBaseLibHgConstants2 || _nuclideHgRepositoryBaseLibHgConstants()).StatusCodeIdToNumber[statusId]);
         } else {
           pathsWithCacheMiss.push(filePath);
         }
@@ -493,7 +509,7 @@ var HgRepositoryClient = (function () {
       if (pathsWithCacheMiss.length) {
         var newStatusInfo = yield this._updateStatuses(pathsWithCacheMiss, options);
         newStatusInfo.forEach(function (status, filePath) {
-          statusMap.set(filePath, _nuclideHgRepositoryBaseLibHgConstants.StatusCodeIdToNumber[status]);
+          statusMap.set(filePath, (_nuclideHgRepositoryBaseLibHgConstants2 || _nuclideHgRepositoryBaseLibHgConstants()).StatusCodeIdToNumber[status]);
         });
       }
       return statusMap;
@@ -524,23 +540,23 @@ var HgRepositoryClient = (function () {
       statusMapPathToStatusId.forEach(function (newStatusId, filePath) {
 
         var oldStatus = _this4._hgStatusCache[filePath];
-        if (oldStatus && oldStatus !== newStatusId || !oldStatus && newStatusId !== _nuclideHgRepositoryBaseLibHgConstants.StatusCodeId.CLEAN) {
+        if (oldStatus && oldStatus !== newStatusId || !oldStatus && newStatusId !== (_nuclideHgRepositoryBaseLibHgConstants2 || _nuclideHgRepositoryBaseLibHgConstants()).StatusCodeId.CLEAN) {
           statusChangeEvents.push({
             path: filePath,
-            pathStatus: _nuclideHgRepositoryBaseLibHgConstants.StatusCodeIdToNumber[newStatusId]
+            pathStatus: (_nuclideHgRepositoryBaseLibHgConstants2 || _nuclideHgRepositoryBaseLibHgConstants()).StatusCodeIdToNumber[newStatusId]
           });
-          if (newStatusId === _nuclideHgRepositoryBaseLibHgConstants.StatusCodeId.CLEAN) {
+          if (newStatusId === (_nuclideHgRepositoryBaseLibHgConstants2 || _nuclideHgRepositoryBaseLibHgConstants()).StatusCodeId.CLEAN) {
             // Don't bother keeping 'clean' files in the cache.
             delete _this4._hgStatusCache[filePath];
             _this4._removeAllParentDirectoriesFromCache(filePath);
           } else {
             _this4._hgStatusCache[filePath] = newStatusId;
-            if (newStatusId === _nuclideHgRepositoryBaseLibHgConstants.StatusCodeId.MODIFIED) {
+            if (newStatusId === (_nuclideHgRepositoryBaseLibHgConstants2 || _nuclideHgRepositoryBaseLibHgConstants()).StatusCodeId.MODIFIED) {
               _this4._addAllParentDirectoriesToCache(filePath);
             }
           }
         }
-        queriedFiles['delete'](filePath);
+        queriedFiles.delete(filePath);
       });
 
       // If the statuses were fetched for only changed (`hg status`) or
@@ -551,28 +567,28 @@ var HgRepositoryClient = (function () {
       // TODO (jessicalin) Can we make the 'pathStatus' field in the change event optional?
       // Then we can send these events.
       var hgStatusOption = this._getStatusOption(options);
-      if (hgStatusOption === _nuclideHgRepositoryBaseLibHgConstants.HgStatusOption.ONLY_IGNORED) {
+      if (hgStatusOption === (_nuclideHgRepositoryBaseLibHgConstants2 || _nuclideHgRepositoryBaseLibHgConstants()).HgStatusOption.ONLY_IGNORED) {
         queriedFiles.forEach(function (filePath) {
-          if (_this4._hgStatusCache[filePath] === _nuclideHgRepositoryBaseLibHgConstants.StatusCodeId.IGNORED) {
+          if (_this4._hgStatusCache[filePath] === (_nuclideHgRepositoryBaseLibHgConstants2 || _nuclideHgRepositoryBaseLibHgConstants()).StatusCodeId.IGNORED) {
             delete _this4._hgStatusCache[filePath];
           }
         });
-      } else if (hgStatusOption === _nuclideHgRepositoryBaseLibHgConstants.HgStatusOption.ALL_STATUSES) {
+      } else if (hgStatusOption === (_nuclideHgRepositoryBaseLibHgConstants2 || _nuclideHgRepositoryBaseLibHgConstants()).HgStatusOption.ALL_STATUSES) {
         // If HgStatusOption.ALL_STATUSES was passed and a file does not appear in
         // the results, it must mean the file was removed from the filesystem.
         queriedFiles.forEach(function (filePath) {
           var cachedStatusId = _this4._hgStatusCache[filePath];
           delete _this4._hgStatusCache[filePath];
-          if (cachedStatusId === _nuclideHgRepositoryBaseLibHgConstants.StatusCodeId.MODIFIED) {
+          if (cachedStatusId === (_nuclideHgRepositoryBaseLibHgConstants2 || _nuclideHgRepositoryBaseLibHgConstants()).StatusCodeId.MODIFIED) {
             _this4._removeAllParentDirectoriesFromCache(filePath);
           }
         });
       } else {
         queriedFiles.forEach(function (filePath) {
           var cachedStatusId = _this4._hgStatusCache[filePath];
-          if (cachedStatusId !== _nuclideHgRepositoryBaseLibHgConstants.StatusCodeId.IGNORED) {
+          if (cachedStatusId !== (_nuclideHgRepositoryBaseLibHgConstants2 || _nuclideHgRepositoryBaseLibHgConstants()).StatusCodeId.IGNORED) {
             delete _this4._hgStatusCache[filePath];
-            if (cachedStatusId === _nuclideHgRepositoryBaseLibHgConstants.StatusCodeId.MODIFIED) {
+            if (cachedStatusId === (_nuclideHgRepositoryBaseLibHgConstants2 || _nuclideHgRepositoryBaseLibHgConstants()).StatusCodeId.MODIFIED) {
               _this4._removeAllParentDirectoriesFromCache(filePath);
             }
           }
@@ -590,12 +606,12 @@ var HgRepositoryClient = (function () {
   }, {
     key: '_addAllParentDirectoriesToCache',
     value: function _addAllParentDirectoriesToCache(filePath) {
-      (0, _utils.addAllParentDirectoriesToCache)(this._modifiedDirectoryCache, filePath, this._projectDirectory.getParent().getPath());
+      (0, (_utils2 || _utils()).addAllParentDirectoriesToCache)(this._modifiedDirectoryCache, filePath, this._projectDirectory.getParent().getPath());
     }
   }, {
     key: '_removeAllParentDirectoriesFromCache',
     value: function _removeAllParentDirectoriesFromCache(filePath) {
-      (0, _utils.removeAllParentDirectoriesFromCache)(this._modifiedDirectoryCache, filePath, this._projectDirectory.getParent().getPath());
+      (0, (_utils2 || _utils()).removeAllParentDirectoriesFromCache)(this._modifiedDirectoryCache, filePath, this._projectDirectory.getParent().getPath());
     }
 
     /**
@@ -608,9 +624,9 @@ var HgRepositoryClient = (function () {
     value: function _getPredicateForRelevantStatuses(options) {
       var hgStatusOption = this._getStatusOption(options);
 
-      if (hgStatusOption === _nuclideHgRepositoryBaseLibHgConstants.HgStatusOption.ONLY_IGNORED) {
+      if (hgStatusOption === (_nuclideHgRepositoryBaseLibHgConstants2 || _nuclideHgRepositoryBaseLibHgConstants()).HgStatusOption.ONLY_IGNORED) {
         return filterForOnlyIgnored;
-      } else if (hgStatusOption === _nuclideHgRepositoryBaseLibHgConstants.HgStatusOption.ALL_STATUSES) {
+      } else if (hgStatusOption === (_nuclideHgRepositoryBaseLibHgConstants2 || _nuclideHgRepositoryBaseLibHgConstants()).HgStatusOption.ALL_STATUSES) {
         return filterForAllStatues;
       } else {
         return filterForOnlyNotIgnored;
@@ -658,34 +674,6 @@ var HgRepositoryClient = (function () {
      * Section: Retrieving Diffs (async methods)
      *
      */
-
-    /**
-     * @deprecated Use {#async.getDiffStats} instead
-     *
-     * Recommended method to use to get the diff stats of files in this repo.
-     * @param path The file path to get the status for. If a path is not in the
-     *   project, default "clean" stats will be returned.
-     */
-  }, {
-    key: 'getDiffStatsForPath',
-    value: function getDiffStatsForPath(filePath) {
-      // $FlowIssue: `async` not able to be annotated on classes
-      return this.async.getDiffStats(filePath);
-    }
-
-    /**
-     * @deprecated Use {#async.getLineDiffs} instead
-     *
-     * Recommended method to use to get the line diffs of files in this repo.
-     * @param path The absolute file path to get the line diffs for. If the path \
-     *   is not in the project, an empty Array will be returned.
-     */
-  }, {
-    key: 'getLineDiffsForPath',
-    value: function getLineDiffsForPath(filePath) {
-      // $FlowIssue: `async` not able to be annotated on classes
-      return this.async.getLineDiffs(filePath);
-    }
 
     /**
      * Updates the diff information for the given paths, and updates the cache.
@@ -739,7 +727,7 @@ var HgRepositoryClient = (function () {
 
       // The fetched files can now be updated again.
       for (var pathToFetch of pathsToFetch) {
-        this._hgDiffCacheFilesUpdating['delete'](pathToFetch);
+        this._hgDiffCacheFilesUpdating.delete(pathToFetch);
       }
 
       // TODO (t9113913) Ideally, we could send more targeted events that better
@@ -761,7 +749,6 @@ var HgRepositoryClient = (function () {
   }, {
     key: 'fetchCurrentBookmark',
     value: function fetchCurrentBookmark() {
-      // $FlowIssue: `async` not able to be annotated on classes
       return this.async.getShortHead();
     }
 
@@ -793,7 +780,6 @@ var HgRepositoryClient = (function () {
   }, {
     key: 'checkoutRevision',
     value: function checkoutRevision(reference, create) {
-      // $FlowIssue: `async` not able to be annotated on classes
       return this.async.checkoutReference(reference, create);
     }
 
@@ -817,7 +803,7 @@ var HgRepositoryClient = (function () {
         return;
       } else if (relevantChangedPaths.length <= MAX_INDIVIDUAL_CHANGED_PATHS) {
         // Update the statuses individually.
-        yield this._updateStatuses(relevantChangedPaths, { hgStatusOption: _nuclideHgRepositoryBaseLibHgConstants.HgStatusOption.ALL_STATUSES });
+        yield this._updateStatuses(relevantChangedPaths, { hgStatusOption: (_nuclideHgRepositoryBaseLibHgConstants2 || _nuclideHgRepositoryBaseLibHgConstants()).HgStatusOption.ALL_STATUSES });
         yield this._updateDiffInfo(relevantChangedPaths.filter(function (filePath) {
           return _this6._hgDiffCache[filePath];
         }));
@@ -840,7 +826,7 @@ var HgRepositoryClient = (function () {
       // under the HgRepositoryClient's project directory, because when Hg
       // modifies the repo, it doesn't necessarily only modify files that were
       // previously modified.
-      yield this._updateStatuses([this.getProjectDirectory()], { hgStatusOption: _nuclideHgRepositoryBaseLibHgConstants.HgStatusOption.ONLY_NON_IGNORED });
+      yield this._updateStatuses([this.getProjectDirectory()], { hgStatusOption: (_nuclideHgRepositoryBaseLibHgConstants2 || _nuclideHgRepositoryBaseLibHgConstants()).HgStatusOption.ONLY_NON_IGNORED });
       if (pathsInDiffCache.length > 0) {
         yield this._updateDiffInfo(pathsInDiffCache);
       }
@@ -907,18 +893,28 @@ var HgRepositoryClient = (function () {
     }
   }, {
     key: 'commit',
-    value: function commit(message) {
-      return this._service.commit(message);
-    }
+    value: _asyncToGenerator(function* (message) {
+      yield this._service.commit(message);
+      this._clearClientCache();
+    })
   }, {
     key: 'amend',
-    value: function amend(message) {
-      return this._service.amend(message);
-    }
+    value: _asyncToGenerator(function* (message) {
+      yield this._service.amend(message);
+      this._clearClientCache();
+    })
   }, {
     key: 'revert',
     value: function revert(filePaths) {
       return this._service.revert(filePaths);
+    }
+  }, {
+    key: 'log',
+    value: function log(filePaths, limit) {
+      // TODO(mbolin): Return an Observable so that results appear faster.
+      // Unfortunately, `hg log -Tjson` is not Observable-friendly because it will
+      // not parse as JSON until all of the data has been printed to stdout.
+      return this._service.log(filePaths, limit);
     }
   }, {
     key: '_getStatusOption',
@@ -927,6 +923,13 @@ var HgRepositoryClient = (function () {
         return null;
       }
       return options.hgStatusOption;
+    }
+  }, {
+    key: '_clearClientCache',
+    value: function _clearClientCache() {
+      this._hgDiffCache = {};
+      this._hgStatusCache = {};
+      this._emitter.emit('did-change-statuses');
     }
   }]);
 

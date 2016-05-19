@@ -2,6 +2,8 @@ var _createClass = (function () { function defineProperties(target, props) { for
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
  * All rights reserved.
@@ -10,16 +12,23 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * the root directory of this source tree.
  */
 
-var invariant = require('assert');
+var _assert2;
 
-var _require = require('atom');
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
-var Disposable = _require.Disposable;
-var CompositeDisposable = _require.CompositeDisposable;
+var _atom2;
 
-var _require2 = require('../../nuclide-commons');
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var debounce = _require2.debounce;
+var _nuclideCommons2;
+
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
 
 // A reload changes the text in the buffer, so it should trigger a refresh.
 var FILE_CHANGE_EVENTS = ['did-change', 'did-reload', 'did-open'];
@@ -118,10 +127,10 @@ var TextCallbackContainer = (function () {
       } else {
         for (var grammarScope of grammarScopes) {
           var eventMap = this._callbacks.get(grammarScope);
-          invariant(eventMap);
+          (0, (_assert2 || _assert()).default)(eventMap);
           this._removeFromEventMap(eventMap, events, callback);
           if (eventMap.size === 0) {
-            this._callbacks['delete'](grammarScope);
+            this._callbacks.delete(grammarScope);
           }
         }
       }
@@ -143,10 +152,10 @@ var TextCallbackContainer = (function () {
     value: function _removeFromEventMap(eventMap, events, callback) {
       for (var _event2 of events) {
         var callbackSet = eventMap.get(_event2);
-        invariant(callbackSet);
-        callbackSet['delete'](callback);
+        (0, (_assert2 || _assert()).default)(callbackSet);
+        callbackSet.delete(callback);
         if (callbackSet.size === 0) {
-          eventMap['delete'](_event2);
+          eventMap.delete(_event2);
         }
       }
     }
@@ -174,9 +183,9 @@ var TextEventDispatcher = (function () {
       }
       // Sometimes these events get triggered several times in succession
       // (particularly on startup).
-      var debouncedCallback = debounce(callback, 50, true);
+      var debouncedCallback = (0, (_nuclideCommons2 || _nuclideCommons()).debounce)(callback, 50, true);
       this._callbackContainer.addCallback(grammarScopes, events, debouncedCallback);
-      var disposables = new Disposable(function () {
+      var disposables = new (_atom2 || _atom()).Disposable(function () {
         _this._callbackContainer.removeCallback(grammarScopes, events, debouncedCallback);
         if (_this._callbackContainer.isEmpty()) {
           _this._deregisterEditorListeners();
@@ -210,7 +219,7 @@ var TextEventDispatcher = (function () {
       var _this2 = this;
 
       if (!this._editorListenerDisposable) {
-        this._editorListenerDisposable = new CompositeDisposable();
+        this._editorListenerDisposable = new (_atom2 || _atom()).CompositeDisposable();
       }
 
       // Whenever the active pane item changes, we check to see if there are any
@@ -223,7 +232,7 @@ var TextEventDispatcher = (function () {
             for (var _event3 of pendingEvents) {
               _this2._dispatchEvents(currentEditor, _event3);
             }
-            _this2._pendingEvents['delete'](currentEditor.getBuffer());
+            _this2._pendingEvents.delete(currentEditor.getBuffer());
           }
         }
       }));
@@ -276,7 +285,7 @@ var TextEventDispatcher = (function () {
     key: '_getEditorListenerDisposable',
     value: function _getEditorListenerDisposable() {
       var disposable = this._editorListenerDisposable;
-      invariant(disposable, 'TextEventDispatcher disposable is not initialized');
+      (0, (_assert2 || _assert()).default)(disposable, 'TextEventDispatcher disposable is not initialized');
       return disposable;
     }
   }]);

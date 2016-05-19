@@ -9,7 +9,7 @@
  */
 
 function printBooleanLiteralTypeAnnotation(print, node) {
-  return [String(!!node.value)];
+  return [String(Boolean(node.value))];
 }
 
 module.exports = printBooleanLiteralTypeAnnotation;

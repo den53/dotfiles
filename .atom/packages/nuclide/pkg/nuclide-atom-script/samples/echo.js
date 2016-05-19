@@ -29,9 +29,9 @@ Object.defineProperty(exports, '__esModule', {
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
-exports['default'] = _asyncToGenerator(function* (args) {
+exports.default = _asyncToGenerator(function* (args) {
   var message = args.length === 0 ? 'Please pass me an arg!' : args.join(' ');
   console.log(message); // eslint-disable-line no-console
   return 0;
 });
-module.exports = exports['default'];
+module.exports = exports.default;

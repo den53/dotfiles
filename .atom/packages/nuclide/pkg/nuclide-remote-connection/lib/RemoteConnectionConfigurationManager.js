@@ -17,17 +17,25 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
  * the root directory of this source tree.
  */
 
-var _crypto = require('crypto');
+var _crypto2;
 
-var _crypto2 = _interopRequireDefault(_crypto);
+function _crypto() {
+  return _crypto2 = _interopRequireDefault(require('crypto'));
+}
 
-var _assert = require('assert');
+var _assert2;
 
-var _assert2 = _interopRequireDefault(_assert);
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
-var _nuclideLogging = require('../../nuclide-logging');
+var _nuclideLogging2;
 
-var logger = (0, _nuclideLogging.getLogger)();
+function _nuclideLogging() {
+  return _nuclideLogging2 = require('../../nuclide-logging');
+}
+
+var logger = (0, (_nuclideLogging2 || _nuclideLogging()).getLogger)();
 
 /**
  * Version of ServerConnectionConfiguration that uses string instead of Buffer for fields so it can
@@ -84,7 +92,7 @@ function encryptConfig(remoteProjectConfig) {
 
   var replacePassword = _require.replacePassword;
 
-  var sha1 = _crypto2['default'].createHash('sha1');
+  var sha1 = (_crypto2 || _crypto()).default.createHash('sha1');
   sha1.update(remoteProjectConfig.host + ':' + remoteProjectConfig.port);
   var sha1sum = sha1.digest('hex');
 
@@ -92,7 +100,7 @@ function encryptConfig(remoteProjectConfig) {
   var clientCertificate = remoteProjectConfig.clientCertificate;
   var clientKey = remoteProjectConfig.clientKey;
 
-  (0, _assert2['default'])(clientKey);
+  (0, (_assert2 || _assert()).default)(clientKey);
   var realClientKey = clientKey.toString(); // Convert from Buffer to string.
 
   var _encryptString = encryptString(realClientKey);
@@ -105,8 +113,8 @@ function encryptConfig(remoteProjectConfig) {
 
   var clientKeyWithSalt = encryptedString + '.' + salt;
 
-  (0, _assert2['default'])(certificateAuthorityCertificate);
-  (0, _assert2['default'])(clientCertificate);
+  (0, (_assert2 || _assert()).default)(certificateAuthorityCertificate);
+  (0, (_assert2 || _assert()).default)(clientCertificate);
 
   return {
     host: remoteProjectConfig.host,
@@ -127,7 +135,7 @@ function decryptConfig(remoteProjectConfig) {
 
   var getPassword = _require2.getPassword;
 
-  var sha1 = _crypto2['default'].createHash('sha1');
+  var sha1 = (_crypto2 || _crypto()).default.createHash('sha1');
   sha1.update(remoteProjectConfig.host + ':' + remoteProjectConfig.port);
   var sha1sum = sha1.digest('hex');
 
@@ -141,7 +149,7 @@ function decryptConfig(remoteProjectConfig) {
   var clientCertificate = remoteProjectConfig.clientCertificate;
   var clientKey = remoteProjectConfig.clientKey;
 
-  (0, _assert2['default'])(clientKey);
+  (0, (_assert2 || _assert()).default)(clientKey);
 
   var _clientKey$split = clientKey.split('.');
 
@@ -158,11 +166,11 @@ function decryptConfig(remoteProjectConfig) {
   //  "nolint" is to suppress ArcanistPrivateKeyLinter errors
   if (!restoredClientKey.startsWith('-----BEGIN RSA PRIVATE KEY-----')) {
     /*nolint*/
-    (0, _nuclideLogging.getLogger)().error('decrypted client key did not start with expected header: ' + restoredClientKey);
+    (0, (_nuclideLogging2 || _nuclideLogging()).getLogger)().error('decrypted client key did not start with expected header: ' + restoredClientKey);
   }
 
-  (0, _assert2['default'])(certificateAuthorityCertificate);
-  (0, _assert2['default'])(clientCertificate);
+  (0, (_assert2 || _assert()).default)(certificateAuthorityCertificate);
+  (0, (_assert2 || _assert()).default)(clientCertificate);
   return {
     host: remoteProjectConfig.host,
     port: remoteProjectConfig.port,
@@ -173,7 +181,7 @@ function decryptConfig(remoteProjectConfig) {
 }
 
 function decryptString(text, password, salt) {
-  var decipher = _crypto2['default'].createDecipheriv('aes-128-cbc', new Buffer(password, 'base64'), new Buffer(salt, 'base64'));
+  var decipher = (_crypto2 || _crypto()).default.createDecipheriv('aes-128-cbc', new Buffer(password, 'base64'), new Buffer(salt, 'base64'));
 
   var decryptedString = decipher.update(text, 'base64', 'utf8');
   decryptedString += decipher.final('utf8');
@@ -182,10 +190,10 @@ function decryptString(text, password, salt) {
 }
 
 function encryptString(text) {
-  var password = _crypto2['default'].randomBytes(16).toString('base64');
-  var salt = _crypto2['default'].randomBytes(16).toString('base64');
+  var password = (_crypto2 || _crypto()).default.randomBytes(16).toString('base64');
+  var salt = (_crypto2 || _crypto()).default.randomBytes(16).toString('base64');
 
-  var cipher = _crypto2['default'].createCipheriv('aes-128-cbc', new Buffer(password, 'base64'), new Buffer(salt, 'base64'));
+  var cipher = (_crypto2 || _crypto()).default.createCipheriv('aes-128-cbc', new Buffer(password, 'base64'), new Buffer(salt, 'base64'));
 
   var encryptedString = cipher.update(text,
   /* input_encoding */'utf8',

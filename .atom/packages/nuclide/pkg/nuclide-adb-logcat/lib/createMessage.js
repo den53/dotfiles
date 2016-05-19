@@ -10,7 +10,7 @@ Object.defineProperty(exports, '__esModule', {
  * the root directory of this source tree.
  */
 
-exports['default'] = createMessage;
+exports.default = createMessage;
 
 /**
  * Convert a structured logcat entry into the format that nuclide-console wants.
@@ -43,4 +43,4 @@ function priorityToLevel(priority) {
       return 'info';
   }
 }
-module.exports = exports['default'];
+module.exports = exports.default;

@@ -15,9 +15,11 @@ exports.set = set;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _GadgetPlaceholder = require('./GadgetPlaceholder');
+var _GadgetPlaceholder2;
 
-var _GadgetPlaceholder2 = _interopRequireDefault(_GadgetPlaceholder);
+function _GadgetPlaceholder() {
+  return _GadgetPlaceholder2 = _interopRequireDefault(require('./GadgetPlaceholder'));
+}
 
 function get(container) {
   for (var item of container.getItems()) {
@@ -33,7 +35,7 @@ function set(container, value) {
   // destroyed. It would be nice to store the information on the container (Pane, PaneAxis) itself,
   // but Atom doesn't give us a way to persist metadata about those.
   container.getItems().forEach(function (item) {
-    if (!('gadgetId' in item.constructor) && !(item instanceof _GadgetPlaceholder2['default'])) {
+    if (!('gadgetId' in item.constructor) && !(item instanceof (_GadgetPlaceholder2 || _GadgetPlaceholder()).default)) {
       // We don't control this item's serialization so no use in storing the size on it.
       return;
     }

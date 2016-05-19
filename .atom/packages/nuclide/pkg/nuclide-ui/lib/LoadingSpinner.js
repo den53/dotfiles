@@ -12,11 +12,17 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
  * the root directory of this source tree.
  */
 
-var _classnames = require('classnames');
+var _classnames2;
 
-var _classnames2 = _interopRequireDefault(_classnames);
+function _classnames() {
+  return _classnames2 = _interopRequireDefault(require('classnames'));
+}
 
-var _reactForAtom = require('react-for-atom');
+var _reactForAtom2;
+
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
 
 var LoadingSpinnerSizes = Object.freeze({
   EXTRA_SMALL: 'EXTRA_SMALL',
@@ -42,8 +48,8 @@ var LoadingSpinner = function LoadingSpinner(props) {
 
   var safeSize = size != null && LoadingSpinnerSizes.hasOwnProperty(size) ? size : LoadingSpinnerSizes.MEDIUM;
   var sizeClassname = LoadingSpinnerClassnames[safeSize];
-  var newClassName = (0, _classnames2['default'])(className, 'loading', sizeClassname);
-  return _reactForAtom.React.createElement('div', { className: newClassName });
+  var newClassName = (0, (_classnames2 || _classnames()).default)(className, 'loading', sizeClassname);
+  return (_reactForAtom2 || _reactForAtom()).React.createElement('div', { className: newClassName });
 };
 exports.LoadingSpinner = LoadingSpinner;
 

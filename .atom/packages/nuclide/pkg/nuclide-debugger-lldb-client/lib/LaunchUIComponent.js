@@ -18,11 +18,23 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var _reactForAtom = require('react-for-atom');
+var _reactForAtom2;
 
-var _nuclideUiLibAtomInput = require('../../nuclide-ui/lib/AtomInput');
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
 
-var _nuclideUiLibButton = require('../../nuclide-ui/lib/Button');
+var _nuclideUiLibAtomInput2;
+
+function _nuclideUiLibAtomInput() {
+  return _nuclideUiLibAtomInput2 = require('../../nuclide-ui/lib/AtomInput');
+}
+
+var _nuclideUiLibButton2;
+
+function _nuclideUiLibButton() {
+  return _nuclideUiLibButton2 = require('../../nuclide-ui/lib/Button');
+}
 
 var LaunchUIComponent = (function (_React$Component) {
   _inherits(LaunchUIComponent, _React$Component);
@@ -40,41 +52,41 @@ var LaunchUIComponent = (function (_React$Component) {
       // TODO: smart fill the working directory textbox.
       // TODO: make tab stop between textbox work.
       // Reserve tabIndex [1~10] to header portion of the UI so we start from "11" here.
-      return _reactForAtom.React.createElement(
+      return (_reactForAtom2 || _reactForAtom()).React.createElement(
         'div',
         { className: 'block' },
-        _reactForAtom.React.createElement(
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
           'label',
           null,
           'Executable: '
         ),
-        _reactForAtom.React.createElement(_nuclideUiLibAtomInput.AtomInput, {
+        (_reactForAtom2 || _reactForAtom()).React.createElement((_nuclideUiLibAtomInput2 || _nuclideUiLibAtomInput()).AtomInput, {
           ref: 'launchExecutable',
           tabIndex: '11',
           placeholderText: 'Input the executable path you want to launch'
         }),
-        _reactForAtom.React.createElement(
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
           'label',
           null,
           'Arguments: '
         ),
-        _reactForAtom.React.createElement(_nuclideUiLibAtomInput.AtomInput, {
+        (_reactForAtom2 || _reactForAtom()).React.createElement((_nuclideUiLibAtomInput2 || _nuclideUiLibAtomInput()).AtomInput, {
           ref: 'launchArguments',
           tabIndex: '12',
           placeholderText: 'Arguments to the executable'
         }),
-        _reactForAtom.React.createElement(
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
           'label',
           null,
           'Working directory: '
         ),
-        _reactForAtom.React.createElement(_nuclideUiLibAtomInput.AtomInput, {
+        (_reactForAtom2 || _reactForAtom()).React.createElement((_nuclideUiLibAtomInput2 || _nuclideUiLibAtomInput()).AtomInput, {
           ref: 'launchWorkingDirectory',
           tabIndex: '13',
           placeholderText: 'Working directory for the launched executable'
         }),
-        _reactForAtom.React.createElement(
-          _nuclideUiLibButton.Button,
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
+          (_nuclideUiLibButton2 || _nuclideUiLibButton()).Button,
           { tabIndex: '14', onClick: this._handleLaunchClick },
           'Launch'
         )
@@ -102,6 +114,6 @@ var LaunchUIComponent = (function (_React$Component) {
   }]);
 
   return LaunchUIComponent;
-})(_reactForAtom.React.Component);
+})((_reactForAtom2 || _reactForAtom()).React.Component);
 
 exports.LaunchUIComponent = LaunchUIComponent;

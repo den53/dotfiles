@@ -14,9 +14,11 @@ exports.convertTypedRegionsToCoverageRegions = convertTypedRegionsToCoverageRegi
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _assert = require('assert');
+var _assert2;
 
-var _assert2 = _interopRequireDefault(_assert);
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
 // A region of untyped code.
 // Currently may not span multiple lines. Consider enabling multi-line regions.
@@ -47,7 +49,7 @@ function convertTypedRegionsToCoverageRegions(regions) {
           // So we just merge them into 1 block.
           _last.end = endColumn;
         } else {
-          (0, _assert2['default'])(type === 'unchecked' || type === 'partial');
+          (0, (_assert2 || _assert()).default)(type === 'unchecked' || type === 'partial');
           results.push({
             type: type,
             line: line,
@@ -59,7 +61,7 @@ function convertTypedRegionsToCoverageRegions(regions) {
     }
 
     var strings = region.text.split('\n');
-    (0, _assert2['default'])(strings.length > 0);
+    (0, (_assert2 || _assert()).default)(strings.length > 0);
 
     // Add message for each line ending in a new line.
     var lines = strings.slice(0, -1);

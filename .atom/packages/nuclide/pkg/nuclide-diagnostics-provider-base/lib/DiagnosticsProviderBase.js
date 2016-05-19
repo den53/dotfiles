@@ -17,10 +17,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var UPDATE_EVENT = 'update';
 var INVALIDATE_EVENT = 'invalidate';
 
-var _require = require('atom');
+var _atom2;
 
-var CompositeDisposable = _require.CompositeDisposable;
-var Emitter = _require.Emitter;
+function _atom() {
+  return _atom2 = require('atom');
+}
 
 function getTextEventDispatcher() {
   return require('../../nuclide-text-event-dispatcher').getInstance();
@@ -33,8 +34,8 @@ var DiagnosticsProviderBase = (function () {
     _classCallCheck(this, DiagnosticsProviderBase);
 
     this._textEventDispatcher = textEventDispatcher;
-    this._emitter = new Emitter();
-    this._disposables = new CompositeDisposable();
+    this._emitter = new (_atom2 || _atom()).Emitter();
+    this._disposables = new (_atom2 || _atom()).CompositeDisposable();
 
     this._textEventCallback = callbackOrNoop(options.onTextEditorEvent);
     this._newUpdateSubscriberCallback = callbackOrNoop(options.onNewUpdateSubscriber);
@@ -42,8 +43,8 @@ var DiagnosticsProviderBase = (function () {
 
     // The Set constructor creates an empty Set if passed null or undefined.
     this._grammarScopes = new Set(options.grammarScopes);
-    this._allGrammarScopes = !!options.enableForAllGrammars;
-    this._subscribeToTextEditorEvent(!!options.shouldRunOnTheFly);
+    this._allGrammarScopes = Boolean(options.enableForAllGrammars);
+    this._subscribeToTextEditorEvent(Boolean(options.shouldRunOnTheFly));
   }
 
   /**

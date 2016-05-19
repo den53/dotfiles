@@ -14,23 +14,39 @@ var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = 
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _nuclideServiceHubPlus = require('../../../nuclide-service-hub-plus');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _nuclideServiceHubPlus2 = _interopRequireDefault(_nuclideServiceHubPlus);
+var _nuclideServiceHubPlus2;
 
-var _ReactNativeDebuggerInstance = require('./ReactNativeDebuggerInstance');
+function _nuclideServiceHubPlus() {
+  return _nuclideServiceHubPlus2 = _interopRequireDefault(require('../../../nuclide-service-hub-plus'));
+}
 
-var _ReactNativeProcessInfo = require('./ReactNativeProcessInfo');
+var _ReactNativeDebuggerInstance2;
 
-var _atom = require('atom');
+function _ReactNativeDebuggerInstance() {
+  return _ReactNativeDebuggerInstance2 = require('./ReactNativeDebuggerInstance');
+}
 
-var _rxjs = require('rxjs');
+var _ReactNativeProcessInfo2;
 
-var _rxjs2 = _interopRequireDefault(_rxjs);
+function _ReactNativeProcessInfo() {
+  return _ReactNativeProcessInfo2 = require('./ReactNativeProcessInfo');
+}
+
+var _atom2;
+
+function _atom() {
+  return _atom2 = require('atom');
+}
+
+var _rxjs2;
+
+function _rxjs() {
+  return _rxjs2 = _interopRequireDefault(require('rxjs'));
+}
 
 /**
  * Connects the executor to the debugger.
@@ -42,11 +58,11 @@ var DebuggingActivation = (function () {
 
     _classCallCheck(this, DebuggingActivation);
 
-    this._disposables = new _atom.CompositeDisposable(atom.commands.add('atom-workspace', {
+    this._disposables = new (_atom2 || _atom()).CompositeDisposable(atom.commands.add('atom-workspace', {
       'nuclide-react-native:start-debugging': function nuclideReactNativeStartDebugging() {
         return _this._startDebugging();
       }
-    }), new _atom.Disposable(function () {
+    }), new (_atom2 || _atom()).Disposable(function () {
       if (_this._startDebuggingSubscription != null) {
         _this._startDebuggingSubscription.unsubscribe();
       }
@@ -70,8 +86,8 @@ var DebuggingActivation = (function () {
       atom.commands.dispatch(workspace, 'nuclide-debugger:stop-debugging');
       atom.commands.dispatch(workspace, 'nuclide-debugger:show');
 
-      var debuggerServiceStream = _rxjs2['default'].Observable.fromPromise(_nuclideServiceHubPlus2['default'].consumeFirstProvider('nuclide-debugger.remote'));
-      var processInfoLists = _rxjs2['default'].Observable.fromPromise(getProcessInfoList());
+      var debuggerServiceStream = (_rxjs2 || _rxjs()).default.Observable.fromPromise((_nuclideServiceHubPlus2 || _nuclideServiceHubPlus()).default.consumeFirstProvider('nuclide-debugger.remote'));
+      var processInfoLists = (_rxjs2 || _rxjs()).default.Observable.fromPromise(getProcessInfoList());
       this._startDebuggingSubscription = debuggerServiceStream.combineLatest(processInfoLists).subscribe(function (_ref) {
         var _ref2 = _slicedToArray(_ref, 2);
 
@@ -90,7 +106,7 @@ var DebuggingActivation = (function () {
       return {
         name: 'React Native',
         getProcessInfoList: getProcessInfoList,
-        ReactNativeDebuggerInstance: _ReactNativeDebuggerInstance.ReactNativeDebuggerInstance
+        ReactNativeDebuggerInstance: (_ReactNativeDebuggerInstance2 || _ReactNativeDebuggerInstance()).ReactNativeDebuggerInstance
       };
     }
   }]);
@@ -112,5 +128,5 @@ function getProcessInfoList() {
   }
 
   var targetUri = currentProjectDir.getPath();
-  return Promise.resolve([new _ReactNativeProcessInfo.ReactNativeProcessInfo(targetUri)]);
+  return Promise.resolve([new (_ReactNativeProcessInfo2 || _ReactNativeProcessInfo()).ReactNativeProcessInfo(targetUri)]);
 }

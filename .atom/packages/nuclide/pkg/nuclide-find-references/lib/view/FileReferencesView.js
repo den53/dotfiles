@@ -8,26 +8,47 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
  * the root directory of this source tree.
  */
 
-var _require = require('react-for-atom');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var React = _require.React;
-var PropTypes = React.PropTypes;
+var _reactForAtom2;
 
-var FilePreview = require('./FilePreview');
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
 
-var _require2 = require('../../../nuclide-remote-uri');
+var _classnames2;
 
-var relative = _require2.relative;
+function _classnames() {
+  return _classnames2 = _interopRequireDefault(require('classnames'));
+}
 
-var FileReferencesView = React.createClass({
-  displayName: 'FileReferencesView',
+var _FilePreview2;
 
+function _FilePreview() {
+  return _FilePreview2 = _interopRequireDefault(require('./FilePreview'));
+}
+
+var _nuclideRemoteUri2;
+
+function _nuclideRemoteUri() {
+  return _nuclideRemoteUri2 = require('../../../nuclide-remote-uri');
+}
+
+var FileReferencesView = (_reactForAtom2 || _reactForAtom()).React.createClass({
   propTypes: {
-    uri: PropTypes.string.isRequired,
-    grammar: PropTypes.object.isRequired,
-    previewText: PropTypes.arrayOf(PropTypes.string).isRequired,
-    refGroups: PropTypes.arrayOf(PropTypes.object /*ReferenceGroup*/).isRequired,
-    basePath: PropTypes.string.isRequired
+    uri: (_reactForAtom2 || _reactForAtom()).React.PropTypes.string.isRequired,
+    grammar: (_reactForAtom2 || _reactForAtom()).React.PropTypes.object.isRequired,
+    previewText: (_reactForAtom2 || _reactForAtom()).React.PropTypes.arrayOf((_reactForAtom2 || _reactForAtom()).React.PropTypes.string).isRequired,
+    refGroups: (_reactForAtom2 || _reactForAtom()).React.PropTypes.arrayOf((_reactForAtom2 || _reactForAtom()).React.PropTypes.object /*ReferenceGroup*/).isRequired,
+    basePath: (_reactForAtom2 || _reactForAtom()).React.PropTypes.string.isRequired,
+    clickCallback: (_reactForAtom2 || _reactForAtom()).React.PropTypes.func.isRequired,
+    isSelected: (_reactForAtom2 || _reactForAtom()).React.PropTypes.bool.isRequired
+  },
+
+  getInitialState: function getInitialState() {
+    return {
+      isExpanded: true
+    };
   },
 
   _onRefClick: function _onRefClick(ref) {
@@ -38,6 +59,13 @@ var FileReferencesView = React.createClass({
   },
 
   _onFileClick: function _onFileClick() {
+    this.props.clickCallback();
+    this.setState({
+      isExpanded: !this.state.isExpanded
+    });
+  },
+
+  _onFileNameClick: function _onFileNameClick() {
     atom.workspace.open(this.props.uri);
   },
 
@@ -55,19 +83,19 @@ var FileReferencesView = React.createClass({
         }
         var caller = undefined;
         if (ref.name) {
-          caller = React.createElement(
+          caller = (_reactForAtom2 || _reactForAtom()).React.createElement(
             'span',
             null,
             ' ',
             'in ',
-            React.createElement(
+            (_reactForAtom2 || _reactForAtom()).React.createElement(
               'code',
               null,
               ref.name
             )
           );
         }
-        return React.createElement(
+        return (_reactForAtom2 || _reactForAtom()).React.createElement(
           'div',
           {
             key: j,
@@ -80,32 +108,44 @@ var FileReferencesView = React.createClass({
         );
       });
 
-      return React.createElement(
-        'div',
+      return (_reactForAtom2 || _reactForAtom()).React.createElement(
+        'li',
         { key: group.startLine, className: 'nuclide-find-references-ref' },
         ranges,
-        React.createElement(FilePreview, _extends({
+        (_reactForAtom2 || _reactForAtom()).React.createElement((_FilePreview2 || _FilePreview()).default, _extends({
           grammar: _this.props.grammar,
           text: previewText
         }, group))
       );
     });
+    var outerClassName = (0, (_classnames2 || _classnames()).default)('nuclide-find-references-file list-nested-item', {
+      'collapsed': !this.state.isExpanded,
+      'expanded': this.state.isExpanded,
+      'selected': this.props.isSelected
+    });
 
-    return React.createElement(
-      'div',
-      { className: 'nuclide-find-references-file' },
-      React.createElement(
+    return (_reactForAtom2 || _reactForAtom()).React.createElement(
+      'li',
+      { className: '' + outerClassName,
+        onClick: this._onFileClick },
+      (_reactForAtom2 || _reactForAtom()).React.createElement(
         'div',
-        { className: 'nuclide-find-references-filename' },
-        React.createElement(
+        { className: 'nuclide-find-references-filename list-item' },
+        (_reactForAtom2 || _reactForAtom()).React.createElement('span', { className: 'icon-file-text icon' }),
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
           'a',
-          { onClick: this._onFileClick },
-          relative(this.props.basePath, this.props.uri)
+          { onClick: this._onFileNameClick },
+          (0, (_nuclideRemoteUri2 || _nuclideRemoteUri()).relative)(this.props.basePath, this.props.uri)
+        ),
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
+          'span',
+          { className: 'nuclide-find-references-ref-count badge badge-small' },
+          groups.length
         )
       ),
-      React.createElement(
-        'div',
-        { className: 'nuclide-find-references-refs' },
+      (_reactForAtom2 || _reactForAtom()).React.createElement(
+        'ul',
+        { className: 'nuclide-find-references-refs list-tree' },
         groups
       )
     );

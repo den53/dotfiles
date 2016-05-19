@@ -2,8 +2,6 @@ var _createClass = (function () { function defineProperties(target, props) { for
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _nuclideAnalytics = require('../../nuclide-analytics');
-
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
  * All rights reserved.
@@ -12,10 +10,17 @@ var _nuclideAnalytics = require('../../nuclide-analytics');
  * the root directory of this source tree.
  */
 
-var _require = require('atom');
+var _atom2;
 
-var Point = _require.Point;
-var Range = _require.Range;
+function _atom() {
+  return _atom2 = require('atom');
+}
+
+var _nuclideAnalytics2;
+
+function _nuclideAnalytics() {
+  return _nuclideAnalytics2 = require('../../nuclide-analytics');
+}
 
 var GRAMMARS = ['source.objc', 'source.objcpp'];
 
@@ -41,9 +46,9 @@ var ObjectiveCBracketBalancer = (function () {
 
       this._editingSubscriptionsMap = new Map();
 
-      var _require2 = require('../../nuclide-atom-helpers');
+      var _require = require('../../nuclide-atom-helpers');
 
-      var observeLanguageTextEditors = _require2.observeLanguageTextEditors;
+      var observeLanguageTextEditors = _require.observeLanguageTextEditors;
 
       this._languageListener = observeLanguageTextEditors(GRAMMARS, function (textEditor) {
         return _this._enableInTextEditor(textEditor);
@@ -70,7 +75,7 @@ var ObjectiveCBracketBalancer = (function () {
     key: '_enableInTextEditor',
     value: function _enableInTextEditor(textEditor) {
       var insertTextSubscription = textEditor.onDidInsertText(function (event) {
-        (0, _nuclideAnalytics.trackOperationTiming)('objc:balance-bracket', function () {
+        (0, (_nuclideAnalytics2 || _nuclideAnalytics()).trackOperationTiming)('objc:balance-bracket', function () {
           var range = event.range;
           var text = event.text;
 
@@ -91,13 +96,13 @@ var ObjectiveCBracketBalancer = (function () {
       var subscription = this._editingSubscriptionsMap.get(textEditor);
       if (subscription) {
         subscription.dispose();
-        this._editingSubscriptionsMap['delete'](textEditor);
+        this._editingSubscriptionsMap.delete(textEditor);
       }
     }
   }], [{
     key: 'getOpenBracketInsertPosition',
     value: function getOpenBracketInsertPosition(buffer, closeBracketPosition) {
-      var closeBracketText = buffer.getTextInRange(Range.fromObject([closeBracketPosition, closeBracketPosition.translate([0, 1])]));
+      var closeBracketText = buffer.getTextInRange((_atom2 || _atom()).Range.fromObject([closeBracketPosition, closeBracketPosition.translate([0, 1])]));
       if (closeBracketText !== ']') {
         throw new Error('The close bracket position must contain a close bracket');
       }
@@ -115,19 +120,19 @@ var ObjectiveCBracketBalancer = (function () {
       for (var i = 0; i < startingLine.length; i++) {
         if (startingLine[i] === '\'') {
           singleQuoteCount++;
-        } else if (startingLine[i] === '\"') {
+        } else if (startingLine[i] === '"') {
           doubleQuoteCount++;
         } else {
           if (singleQuoteCount % 2 === 0 && doubleQuoteCount % 2 === 0) {
             // We are not inside a char nor string literal. Count the brackets.
-            characterCount[startingLine[i]] = characterCount[startingLine[i]] + 1;
+            characterCount[startingLine[i]]++;
           }
         }
       }
 
       var stringLiteralMatch = /@".*"\s.*]/.exec(startingLine);
       if (stringLiteralMatch) {
-        return Point.fromObject([closeBracketPosition.row, stringLiteralMatch.index]);
+        return (_atom2 || _atom()).Point.fromObject([closeBracketPosition.row, stringLiteralMatch.index]);
       } else if (characterCount['['] < characterCount[']']) {
         // Check if we're at the bottom of a multi-line method.
         var multiLineMethodRegex = /^[\s\w\[]*:.*[^;{];?$/;
@@ -147,7 +152,7 @@ var ObjectiveCBracketBalancer = (function () {
           if (targetLine[targetMatch.index] === '[') {
             return null;
           } else {
-            return Point.fromObject([currentRowPlusOne, targetMatch.index]);
+            return (_atom2 || _atom()).Point.fromObject([currentRowPlusOne, targetMatch.index]);
           }
         } else {
           // We need a bracket on this line - at this point it's either
@@ -165,7 +170,7 @@ var ObjectiveCBracketBalancer = (function () {
             column = 0;
           }
 
-          return Point.fromObject([closeBracketPosition.row, column]);
+          return (_atom2 || _atom()).Point.fromObject([closeBracketPosition.row, column]);
         }
       } else {
         return null;

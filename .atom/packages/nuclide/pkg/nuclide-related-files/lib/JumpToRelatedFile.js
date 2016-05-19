@@ -16,7 +16,11 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _nuclideAnalytics = require('../../nuclide-analytics');
+var _nuclideAnalytics2;
+
+function _nuclideAnalytics() {
+  return _nuclideAnalytics2 = require('../../nuclide-analytics');
+}
 
 /**
  * Sets up listeners so the user can jump to related files.
@@ -54,7 +58,7 @@ var JumpToRelatedFile = (function () {
         'nuclide-related-files:jump-to-next-related-file': function nuclideRelatedFilesJumpToNextRelatedFile() {
           var path = textEditor.getPath();
           if (path) {
-            (0, _nuclideAnalytics.trackOperationTiming)('nuclide-related-files:jump-to-next-related-file', _asyncToGenerator(function* () {
+            (0, (_nuclideAnalytics2 || _nuclideAnalytics()).trackOperationTiming)('nuclide-related-files:jump-to-next-related-file', _asyncToGenerator(function* () {
               return _this._open((yield _this.getNextRelatedFile(path)));
             }));
           }
@@ -62,7 +66,7 @@ var JumpToRelatedFile = (function () {
         'nuclide-related-files:jump-to-previous-related-file': function nuclideRelatedFilesJumpToPreviousRelatedFile() {
           var path = textEditor.getPath();
           if (path) {
-            (0, _nuclideAnalytics.trackOperationTiming)('nuclide-related-files:jump-to-previous-related-file', _asyncToGenerator(function* () {
+            (0, (_nuclideAnalytics2 || _nuclideAnalytics()).trackOperationTiming)('nuclide-related-files:jump-to-previous-related-file', _asyncToGenerator(function* () {
               return _this._open((yield _this.getPreviousRelatedFile(path)));
             }));
           }
@@ -78,7 +82,7 @@ var JumpToRelatedFile = (function () {
       var subscription = this._commandSubscriptionsMap.get(textEditor);
       if (subscription) {
         subscription.dispose();
-        this._commandSubscriptionsMap['delete'](textEditor);
+        this._commandSubscriptionsMap.delete(textEditor);
       }
     }
 
@@ -128,5 +132,5 @@ var JumpToRelatedFile = (function () {
   return JumpToRelatedFile;
 })();
 
-exports['default'] = JumpToRelatedFile;
-module.exports = exports['default'];
+exports.default = JumpToRelatedFile;
+module.exports = exports.default;

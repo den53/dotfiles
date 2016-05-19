@@ -8,24 +8,35 @@
  * the root directory of this source tree.
  */
 
-var markers = require('../../constants/markers');
-var wrapStatement = require('../../wrappers/simple/wrapStatement');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _constantsMarkers2;
+
+function _constantsMarkers() {
+  return _constantsMarkers2 = _interopRequireDefault(require('../../constants/markers'));
+}
+
+var _wrappersSimpleWrapStatement2;
+
+function _wrappersSimpleWrapStatement() {
+  return _wrappersSimpleWrapStatement2 = _interopRequireDefault(require('../../wrappers/simple/wrapStatement'));
+}
 
 function printTryStatement(print, node) {
   var wrap = function wrap(x) {
-    return wrapStatement(print, node, x);
+    return (0, (_wrappersSimpleWrapStatement2 || _wrappersSimpleWrapStatement()).default)(print, node, x);
   };
 
-  var parts = [markers.hardBreak, 'try', markers.noBreak, markers.space, print(node.block)];
+  var parts = [(_constantsMarkers2 || _constantsMarkers()).default.hardBreak, 'try', (_constantsMarkers2 || _constantsMarkers()).default.noBreak, (_constantsMarkers2 || _constantsMarkers()).default.space, print(node.block)];
 
   if (node.handler) {
     var handler = node.handler;
-    parts = parts.concat([markers.noBreak, markers.space, print(handler)]);
+    parts = parts.concat([(_constantsMarkers2 || _constantsMarkers()).default.noBreak, (_constantsMarkers2 || _constantsMarkers()).default.space, print(handler)]);
   }
 
   if (node.finalizer) {
     var finalizer = node.finalizer;
-    parts = parts.concat([markers.noBreak, markers.space, 'finally', markers.noBreak, markers.space, print(finalizer)]);
+    parts = parts.concat([(_constantsMarkers2 || _constantsMarkers()).default.noBreak, (_constantsMarkers2 || _constantsMarkers()).default.space, 'finally', (_constantsMarkers2 || _constantsMarkers()).default.noBreak, (_constantsMarkers2 || _constantsMarkers()).default.space, print(finalizer)]);
   }
 
   return wrap(parts);

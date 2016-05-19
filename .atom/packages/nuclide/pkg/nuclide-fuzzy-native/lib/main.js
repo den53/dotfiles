@@ -8,9 +8,13 @@
  * the root directory of this source tree.
  */
 
-var _nuclideLogging = require('../../nuclide-logging');
+var _nuclideLogging2;
 
-var logger = (0, _nuclideLogging.getLogger)();
+function _nuclideLogging() {
+  return _nuclideLogging2 = require('../../nuclide-logging');
+}
+
+var logger = (0, (_nuclideLogging2 || _nuclideLogging()).getLogger)();
 
 // Use the pre-built, native module if available.
 // If not, use the fallback JS implementation.

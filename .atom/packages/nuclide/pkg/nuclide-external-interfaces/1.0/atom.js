@@ -4,9 +4,11 @@
  *
  * This source code is licensed under the license found in the LICENSE file in
  * the root directory of this source tree.
+ *
+ * @flow
  */
 
-/*eslint-disable no-unused-vars */
+/* eslint-disable no-unused-vars */
 
 /**
  * Private Classes
@@ -752,6 +754,11 @@ declare class atom$TextEditorElement extends HTMLElement {
   setScrollTop(scrollTop: number): void;
   getScrollTop(): number;
 
+  setScrollLeft(scrollLeft: number): void;
+  getScrollLeft(): number;
+
+  getScrollHeight(): number;
+
   onDidChangeScrollTop(callback: (scrollTop: number) => mixed): IDisposable;
   onDidChangeScrollLeft(callback: (scrollLeft: number) => mixed): IDisposable;
 
@@ -1307,6 +1314,7 @@ type atom$UnhandledErrorEvent = {
 type AtomGlobal = {
   // Properties
   appVersion: string;
+  atomScriptMode: ?boolean; // Added by nuclide-atom-script.
   clipboard: atom$Clipboard;
   commands: atom$CommandRegistry;
   config: atom$Config;

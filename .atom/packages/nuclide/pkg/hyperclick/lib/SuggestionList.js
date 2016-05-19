@@ -12,13 +12,15 @@ Object.defineProperty(exports, '__esModule', {
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _assert = require('assert');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _assert2 = _interopRequireDefault(_assert);
+var _assert2;
+
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
 var SuggestionList = (function () {
   function SuggestionList() {
@@ -39,7 +41,7 @@ var SuggestionList = (function () {
 
       var range = suggestion.range;
 
-      (0, _assert2['default'])(range);
+      (0, (_assert2 || _assert()).default)(range);
 
       var _ref = Array.isArray(range) ? range[0] : range;
 
@@ -81,5 +83,5 @@ var SuggestionList = (function () {
   return SuggestionList;
 })();
 
-exports['default'] = SuggestionList;
-module.exports = exports['default'];
+exports.default = SuggestionList;
+module.exports = exports.default;

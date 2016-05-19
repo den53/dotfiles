@@ -14,25 +14,43 @@ var _createClass = (function () { function defineProperties(target, props) { for
 
 var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var _assert = require('assert');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _assert2 = _interopRequireDefault(_assert);
+var _assert2;
 
-var _nuclideDebuggerAtom = require('../../nuclide-debugger-atom');
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
-var _LldbDebuggerInstance = require('./LldbDebuggerInstance');
+var _nuclideDebuggerAtom2;
 
-var _nuclideDebuggerCommonLibOutputServiceManager = require('../../nuclide-debugger-common/lib/OutputServiceManager');
+function _nuclideDebuggerAtom() {
+  return _nuclideDebuggerAtom2 = require('../../nuclide-debugger-atom');
+}
 
-var _utils = require('./utils');
+var _LldbDebuggerInstance2;
+
+function _LldbDebuggerInstance() {
+  return _LldbDebuggerInstance2 = require('./LldbDebuggerInstance');
+}
+
+var _nuclideDebuggerCommonLibOutputServiceManager2;
+
+function _nuclideDebuggerCommonLibOutputServiceManager() {
+  return _nuclideDebuggerCommonLibOutputServiceManager2 = require('../../nuclide-debugger-common/lib/OutputServiceManager');
+}
+
+var _utils2;
+
+function _utils() {
+  return _utils2 = require('./utils');
+}
 
 var LaunchProcessInfo = (function (_DebuggerProcessInfo) {
   _inherits(LaunchProcessInfo, _DebuggerProcessInfo);
@@ -53,12 +71,12 @@ var LaunchProcessInfo = (function (_DebuggerProcessInfo) {
       }
 
       var debugSession = null;
-      var outputDisposable = (0, _nuclideDebuggerCommonLibOutputServiceManager.registerOutputWindowLogging)(rpcService.getOutputWindowObservable());
+      var outputDisposable = (0, (_nuclideDebuggerCommonLibOutputServiceManager2 || _nuclideDebuggerCommonLibOutputServiceManager()).registerOutputWindowLogging)(rpcService.getOutputWindowObservable());
       try {
         var connection = yield rpcService.launch(this._launchTargetInfo);
         rpcService.dispose();
         // Start websocket server with Chrome after launch completed.
-        debugSession = new _LldbDebuggerInstance.LldbDebuggerInstance(this, connection, outputDisposable);
+        debugSession = new (_LldbDebuggerInstance2 || _LldbDebuggerInstance()).LldbDebuggerInstance(this, connection, outputDisposable);
         outputDisposable = null;
       } finally {
         if (outputDisposable != null) {
@@ -71,9 +89,9 @@ var LaunchProcessInfo = (function (_DebuggerProcessInfo) {
     key: '_getRpcService',
     value: function _getRpcService() {
       var debuggerConfig = {
-        logLevel: (0, _utils.getConfig)().serverLogLevel,
-        pythonBinaryPath: (0, _utils.getConfig)().pythonBinaryPath,
-        buckConfigRootFile: (0, _utils.getConfig)().buckConfigRootFile
+        logLevel: (0, (_utils2 || _utils()).getConfig)().serverLogLevel,
+        pythonBinaryPath: (0, (_utils2 || _utils()).getConfig)().pythonBinaryPath,
+        buckConfigRootFile: (0, (_utils2 || _utils()).getConfig)().buckConfigRootFile
       };
 
       var _require = require('../../nuclide-client');
@@ -81,12 +99,12 @@ var LaunchProcessInfo = (function (_DebuggerProcessInfo) {
       var getServiceByNuclideUri = _require.getServiceByNuclideUri;
 
       var service = getServiceByNuclideUri('LLDBDebuggerRpcService', this.getTargetUri());
-      (0, _assert2['default'])(service);
+      (0, (_assert2 || _assert()).default)(service);
       return new service.DebuggerRpcService(debuggerConfig);
     }
   }]);
 
   return LaunchProcessInfo;
-})(_nuclideDebuggerAtom.DebuggerProcessInfo);
+})((_nuclideDebuggerAtom2 || _nuclideDebuggerAtom()).DebuggerProcessInfo);
 
 exports.LaunchProcessInfo = LaunchProcessInfo;

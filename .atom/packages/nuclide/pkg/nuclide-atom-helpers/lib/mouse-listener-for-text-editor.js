@@ -2,6 +2,8 @@ var _createClass = (function () { function defineProperties(target, props) { for
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
  * All rights reserved.
@@ -10,14 +12,17 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * the root directory of this source tree.
  */
 
-var invariant = require('assert');
+var _assert2;
 
-var _require = require('atom');
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
-var CompositeDisposable = _require.CompositeDisposable;
-var Disposable = _require.Disposable;
-var Emitter = _require.Emitter;
-var Point = _require.Point;
+var _atom2;
+
+function _atom() {
+  return _atom2 = require('atom');
+}
 
 var DEBOUNCE_TIME = 200;
 
@@ -27,24 +32,24 @@ var WindowMouseListener = (function () {
 
     _classCallCheck(this, WindowMouseListener);
 
-    this._subscriptions = new CompositeDisposable();
+    this._subscriptions = new (_atom2 || _atom()).CompositeDisposable();
 
-    var _require2 = require('../../nuclide-commons');
+    var _require = require('../../nuclide-commons');
 
-    var debounce = _require2.debounce;
+    var debounce = _require.debounce;
 
     var handler = debounce(function (event) {
       return _this._handleMouseMove(event);
     }, DEBOUNCE_TIME,
     /* immediate */true);
     window.addEventListener('mousemove', handler);
-    this._mouseMoveListener = new Disposable(function () {
+    this._mouseMoveListener = new (_atom2 || _atom()).Disposable(function () {
       window.removeEventListener('mousemove', handler);
     });
 
     this._textEditorMouseListenersMap = new Map();
     this._textEditorMouseListenersCountMap = new Map();
-    this._subscriptions.add(new Disposable(function () {
+    this._subscriptions.add(new (_atom2 || _atom()).Disposable(function () {
       _this._textEditorMouseListenersMap.forEach(function (listener) {
         return listener.dispose();
       });
@@ -69,8 +74,8 @@ var WindowMouseListener = (function () {
           mouseListener = new TextEditorMouseListener(textEditor, /* shouldDispose */function () {
             var currentCount = _this2._textEditorMouseListenersCountMap.get(textEditor) || 0;
             if (currentCount === 1) {
-              _this2._textEditorMouseListenersCountMap['delete'](textEditor);
-              _this2._textEditorMouseListenersMap['delete'](textEditor);
+              _this2._textEditorMouseListenersCountMap.delete(textEditor);
+              _this2._textEditorMouseListenersMap.delete(textEditor);
               return true;
             } else {
               _this2._textEditorMouseListenersCountMap.set(textEditor, currentCount - 1);
@@ -82,8 +87,8 @@ var WindowMouseListener = (function () {
           var destroySubscription = textEditor.onDidDestroy(function () {
             // $FlowIssue: There is no way for this to become null.
             mouseListener.dispose();
-            _this2._textEditorMouseListenersMap['delete'](textEditor);
-            _this2._textEditorMouseListenersCountMap['delete'](textEditor);
+            _this2._textEditorMouseListenersMap.delete(textEditor);
+            _this2._textEditorMouseListenersCountMap.delete(textEditor);
             destroySubscription.dispose();
           });
         })();
@@ -118,12 +123,12 @@ var TextEditorMouseListener = (function () {
     this._textEditorView = atom.views.getView(this._textEditor);
 
     this._shouldDispose = shouldDispose;
-    this._subscriptions = new CompositeDisposable();
+    this._subscriptions = new (_atom2 || _atom()).CompositeDisposable();
 
-    this._emitter = new Emitter();
+    this._emitter = new (_atom2 || _atom()).Emitter();
     this._subscriptions.add(this._emitter);
 
-    this._lastPosition = new Point(0, 0);
+    this._lastPosition = new (_atom2 || _atom()).Point(0, 0);
   }
 
   /**
@@ -150,7 +155,7 @@ var TextEditorMouseListener = (function () {
     key: 'screenPositionForMouseEvent',
     value: function screenPositionForMouseEvent(event) {
       var component = this._textEditorView.component;
-      invariant(component);
+      (0, (_assert2 || _assert()).default)(component);
       return component.screenPositionForMouseEvent(event);
     }
   }, {

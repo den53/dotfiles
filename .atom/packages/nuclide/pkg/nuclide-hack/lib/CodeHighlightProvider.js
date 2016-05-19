@@ -6,13 +6,13 @@ var _createClass = (function () { function defineProperties(target, props) { for
 
 var codeHighlightFromEditor = _asyncToGenerator(function* (editor, position) {
   var filePath = editor.getPath();
-  var hackLanguage = yield (0, _HackLanguage.getHackLanguageForUri)(filePath);
+  var hackLanguage = yield (0, (_HackLanguage2 || _HackLanguage()).getHackLanguageForUri)(filePath);
   if (!hackLanguage) {
     return [];
   }
-  (0, _assert2['default'])(filePath != null);
+  (0, (_assert2 || _assert()).default)(filePath != null);
 
-  var id = (0, _utils.getIdentifierAtPosition)(editor, position);
+  var id = (0, (_utils2 || _utils()).getIdentifierAtPosition)(editor, position);
   if (id == null || !id.startsWith('$')) {
     return [];
   }
@@ -20,11 +20,11 @@ var codeHighlightFromEditor = _asyncToGenerator(function* (editor, position) {
   return hackLanguage.highlightSource(filePath, editor.getText(), position.row + 1, position.column);
 });
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -34,13 +34,23 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * the root directory of this source tree.
  */
 
-var _assert = require('assert');
+var _assert2;
 
-var _assert2 = _interopRequireDefault(_assert);
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
-var _HackLanguage = require('./HackLanguage');
+var _HackLanguage2;
 
-var _utils = require('./utils');
+function _HackLanguage() {
+  return _HackLanguage2 = require('./HackLanguage');
+}
+
+var _utils2;
+
+function _utils() {
+  return _utils2 = require('./utils');
+}
 
 var CodeHighlightProvider = (function () {
   function CodeHighlightProvider() {
@@ -57,5 +67,5 @@ var CodeHighlightProvider = (function () {
   return CodeHighlightProvider;
 })();
 
-exports['default'] = CodeHighlightProvider;
-module.exports = exports['default'];
+exports.default = CodeHighlightProvider;
+module.exports = exports.default;

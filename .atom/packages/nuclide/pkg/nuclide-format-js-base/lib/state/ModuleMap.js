@@ -15,19 +15,39 @@ function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defi
  * the root directory of this source tree.
  */
 
-var ModuleMapUtils = require('../utils/ModuleMapUtils');
-var Options = require('../options/Options');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var jscs = require('jscodeshift');
-var oneLineObjectPattern = require('../utils/oneLineObjectPattern');
+var _utilsModuleMapUtils2;
 
-var statement = jscs.template.statement;
+function _utilsModuleMapUtils() {
+  return _utilsModuleMapUtils2 = _interopRequireDefault(require('../utils/ModuleMapUtils'));
+}
+
+var _optionsOptions2;
+
+function _optionsOptions() {
+  return _optionsOptions2 = _interopRequireDefault(require('../options/Options'));
+}
+
+var _jscodeshift2;
+
+function _jscodeshift() {
+  return _jscodeshift2 = _interopRequireDefault(require('jscodeshift'));
+}
+
+var _utilsOneLineObjectPattern2;
+
+function _utilsOneLineObjectPattern() {
+  return _utilsOneLineObjectPattern2 = _interopRequireDefault(require('../utils/oneLineObjectPattern'));
+}
+
+var statement = (_jscodeshift2 || _jscodeshift()).default.template.statement;
 
 var ModuleMap = (function () {
   function ModuleMap(options) {
     _classCallCheck(this, ModuleMap);
 
-    Options.validateModuleMapOptions(options);
+    (_optionsOptions2 || _optionsOptions()).default.validateModuleMapOptions(options);
 
     // Note: If someone maintains a reference to the structure within options
     // they could mutate the ModuleMap's behavior. We could make shallow copies
@@ -45,8 +65,8 @@ var ModuleMap = (function () {
 
     this._defaults = new Map();
     for (filePath of options.paths) {
-      ids = ModuleMapUtils.getIdentifiersFromPath(filePath);
-      var literal = ModuleMapUtils.getLiteralFromPath(filePath);
+      ids = (_utilsModuleMapUtils2 || _utilsModuleMapUtils()).default.getIdentifiersFromPath(filePath);
+      var literal = (_utilsModuleMapUtils2 || _utilsModuleMapUtils()).default.getLiteralFromPath(filePath);
       for (id of ids) {
         set = this._defaults.get(id);
         if (!set) {
@@ -59,7 +79,7 @@ var ModuleMap = (function () {
 
     this._defaultsToRelativize = new Map();
     for (filePath of options.pathsToRelativize) {
-      ids = ModuleMapUtils.getIdentifiersFromPath(filePath);
+      ids = (_utilsModuleMapUtils2 || _utilsModuleMapUtils()).default.getIdentifiersFromPath(filePath);
       for (id of ids) {
         set = this._defaultsToRelativize.get(id);
         if (!set) {
@@ -82,7 +102,7 @@ var ModuleMap = (function () {
   _createClass(ModuleMap, [{
     key: 'getRequire',
     value: function getRequire(id, options) {
-      Options.validateRequireOptions(options);
+      (_optionsOptions2 || _optionsOptions()).default.validateRequireOptions(options);
 
       // Don't import built ins.
       if (!options.typeImport) {
@@ -102,7 +122,7 @@ var ModuleMap = (function () {
       if (this._aliases.has(id)) {
         literal = this._aliases.get(id);
       } else if (options.sourcePath && this._aliasesToRelativize.has(id)) {
-        literal = ModuleMapUtils.relativizeForRequire(options.sourcePath,
+        literal = (_utilsModuleMapUtils2 || _utilsModuleMapUtils()).default.relativizeForRequire(options.sourcePath,
         // $FlowFixMe(kad)
         this._aliasesToRelativize.get(id));
       } else if (this._defaults.has(id) &&
@@ -123,7 +143,7 @@ var ModuleMap = (function () {
         // Set?
         // $FlowFixMe(kad)
         for (var filePath of this._defaultsToRelativize.get(id)) {
-          literal = ModuleMapUtils.relativizeForRequire(nonNullSourcePath, filePath);
+          literal = (_utilsModuleMapUtils2 || _utilsModuleMapUtils()).default.relativizeForRequire(nonNullSourcePath, filePath);
           break;
         }
       } else if (options.jsxIdentifier) {
@@ -136,8 +156,8 @@ var ModuleMap = (function () {
       }
 
       // Create common nodes for printing.
-      var idNode = jscs.identifier(id);
-      var literalNode = jscs.literal(literal);
+      var idNode = (_jscodeshift2 || _jscodeshift()).default.identifier(id);
+      var literalNode = (_jscodeshift2 || _jscodeshift()).default.literal(literal);
 
       // TODO: Support exports and destructuring.
       var destructure = false;
@@ -158,12 +178,12 @@ var ModuleMap = (function () {
         return tmp;
       } else if (destructure && !options.typeImport) {
         // var {foo} = require('foo');
-        var property = jscs.property('init', idNode, idNode);
+        var property = (_jscodeshift2 || _jscodeshift()).default.property('init', idNode, idNode);
         property.shorthand = true;
-        return jscs.variableDeclaration('const', [jscs.variableDeclarator(oneLineObjectPattern(jscs.objectPattern([property])), jscs.callExpression(jscs.identifier('require'), [literalNode]))]);
+        return (_jscodeshift2 || _jscodeshift()).default.variableDeclaration('const', [(_jscodeshift2 || _jscodeshift()).default.variableDeclarator((0, (_utilsOneLineObjectPattern2 || _utilsOneLineObjectPattern()).default)((_jscodeshift2 || _jscodeshift()).default.objectPattern([property])), (_jscodeshift2 || _jscodeshift()).default.callExpression((_jscodeshift2 || _jscodeshift()).default.identifier('require'), [literalNode]))]);
       } else if (!destructure && !options.typeImport) {
         // var foo = require('foo');
-        return jscs.variableDeclaration('const', [jscs.variableDeclarator(idNode, jscs.callExpression(jscs.identifier('require'), [literalNode]))]);
+        return (_jscodeshift2 || _jscodeshift()).default.variableDeclaration('const', [(_jscodeshift2 || _jscodeshift()).default.variableDeclarator(idNode, (_jscodeshift2 || _jscodeshift()).default.callExpression((_jscodeshift2 || _jscodeshift()).default.identifier('require'), [literalNode]))]);
       }
 
       // Can't handle this type of require yet.

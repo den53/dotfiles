@@ -17,14 +17,20 @@ exports.getHomeFragments = getHomeFragments;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _DebuggerProvider = require('./DebuggerProvider');
+var _DebuggerProvider2;
 
-var _DebuggerProvider2 = _interopRequireDefault(_DebuggerProvider);
+function _DebuggerProvider() {
+  return _DebuggerProvider2 = _interopRequireDefault(require('./DebuggerProvider'));
+}
 
-var _nuclideDebuggerCommonLibOutputServiceManager = require('../../nuclide-debugger-common/lib/OutputServiceManager');
+var _nuclideDebuggerCommonLibOutputServiceManager2;
+
+function _nuclideDebuggerCommonLibOutputServiceManager() {
+  return _nuclideDebuggerCommonLibOutputServiceManager2 = require('../../nuclide-debugger-common/lib/OutputServiceManager');
+}
 
 function consumeOutputService(api) {
-  (0, _nuclideDebuggerCommonLibOutputServiceManager.setOutputService)(api);
+  (0, (_nuclideDebuggerCommonLibOutputServiceManager2 || _nuclideDebuggerCommonLibOutputServiceManager()).setOutputService)(api);
 }
 
 function provideNuclideDebuggerHhvm() {
@@ -32,7 +38,7 @@ function provideNuclideDebuggerHhvm() {
 }
 
 function createDebuggerProvider() {
-  return _DebuggerProvider2['default'];
+  return (_DebuggerProvider2 || _DebuggerProvider()).default;
 }
 
 function getHomeFragments() {

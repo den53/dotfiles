@@ -6,11 +6,11 @@ var _createClass = (function () { function defineProperties(target, props) { for
 
 var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -20,33 +20,71 @@ function _inherits(subClass, superClass) { if (typeof superClass !== 'function' 
  * the root directory of this source tree.
  */
 
-var _reactForAtom = require('react-for-atom');
+var _reactForAtom2;
 
-var _atom = require('atom');
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
 
-var _classnames = require('classnames');
+var _atom2;
 
-var _classnames2 = _interopRequireDefault(_classnames);
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var _assert = require('assert');
+var _classnames2;
 
-var _assert2 = _interopRequireDefault(_assert);
+function _classnames() {
+  return _classnames2 = _interopRequireDefault(require('classnames'));
+}
 
-var _nuclideAtomHelpers = require('../../nuclide-atom-helpers');
+var _assert2;
 
-var _WorkingSetSelectionComponent = require('./WorkingSetSelectionComponent');
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
-var _WorkingSetNameAndSaveComponent = require('./WorkingSetNameAndSaveComponent');
+var _nuclideAtomHelpers2;
 
-var _libFileTreeStore = require('../lib/FileTreeStore');
+function _nuclideAtomHelpers() {
+  return _nuclideAtomHelpers2 = require('../../nuclide-atom-helpers');
+}
 
-var _libFileTreeActions = require('../lib/FileTreeActions');
+var _WorkingSetSelectionComponent2;
 
-var _libFileTreeActions2 = _interopRequireDefault(_libFileTreeActions);
+function _WorkingSetSelectionComponent() {
+  return _WorkingSetSelectionComponent2 = require('./WorkingSetSelectionComponent');
+}
 
-var _nuclideWorkingSets = require('../../nuclide-working-sets');
+var _WorkingSetNameAndSaveComponent2;
 
-var _nuclideUiLibButton = require('../../nuclide-ui/lib/Button');
+function _WorkingSetNameAndSaveComponent() {
+  return _WorkingSetNameAndSaveComponent2 = require('./WorkingSetNameAndSaveComponent');
+}
+
+var _libFileTreeStore2;
+
+function _libFileTreeStore() {
+  return _libFileTreeStore2 = require('../lib/FileTreeStore');
+}
+
+var _libFileTreeActions2;
+
+function _libFileTreeActions() {
+  return _libFileTreeActions2 = _interopRequireDefault(require('../lib/FileTreeActions'));
+}
+
+var _nuclideWorkingSets2;
+
+function _nuclideWorkingSets() {
+  return _nuclideWorkingSets2 = require('../../nuclide-working-sets');
+}
+
+var _nuclideUiLibButton2;
+
+function _nuclideUiLibButton() {
+  return _nuclideUiLibButton2 = require('../../nuclide-ui/lib/Button');
+}
 
 var FileTreeToolbarComponent = (function (_React$Component) {
   _inherits(FileTreeToolbarComponent, _React$Component);
@@ -58,7 +96,7 @@ var FileTreeToolbarComponent = (function (_React$Component) {
 
     _get(Object.getPrototypeOf(FileTreeToolbarComponent.prototype), 'constructor', this).call(this, props);
 
-    this._store = _libFileTreeStore.FileTreeStore.getInstance();
+    this._store = (_libFileTreeStore2 || _libFileTreeStore()).FileTreeStore.getInstance();
     this.state = {
       selectionIsActive: false,
       definitionsAreEmpty: props.workingSetsStore.getDefinitions().length === 0,
@@ -67,9 +105,9 @@ var FileTreeToolbarComponent = (function (_React$Component) {
     };
 
     this._inProcessOfClosingSelection = false;
-    this._actions = _libFileTreeActions2['default'].getInstance();
+    this._actions = (_libFileTreeActions2 || _libFileTreeActions()).default.getInstance();
 
-    this._disposables = new _atom.CompositeDisposable();
+    this._disposables = new (_atom2 || _atom()).CompositeDisposable();
     this._disposables.add(props.workingSetsStore.subscribeToDefinitions(function (definitions) {
       var empty = definitions.applicable.length + definitions.notApplicable.length === 0;
       _this.setState({ definitionsAreEmpty: empty });
@@ -102,7 +140,7 @@ var FileTreeToolbarComponent = (function (_React$Component) {
       if (!prevState.selectionIsActive && this.state.selectionIsActive) {
         this._closeWorkingSetsSelector = this._renderWorkingSetSelectionPanel();
       } else if (prevState.selectionIsActive && !this.state.selectionIsActive) {
-        (0, _assert2['default'])(this._closeWorkingSetsSelector);
+        (0, (_assert2 || _assert()).default)(this._closeWorkingSetsSelector);
         this._closeWorkingSetsSelector();
       }
     }
@@ -115,7 +153,7 @@ var FileTreeToolbarComponent = (function (_React$Component) {
 
       var selectWorkingSetButton = undefined;
       if (!this.state.definitionsAreEmpty && !isEditingWorkingSet) {
-        selectWorkingSetButton = _reactForAtom.React.createElement(SelectWorkingSetButton, {
+        selectWorkingSetButton = (_reactForAtom2 || _reactForAtom()).React.createElement(SelectWorkingSetButton, {
           highlight: !workingSet.isEmpty(),
           onClick: this._toggleWorkingSetsSelector,
           onFocus: this._checkIfClosingSelector
@@ -124,7 +162,7 @@ var FileTreeToolbarComponent = (function (_React$Component) {
 
       var workingSetNameAndSave = undefined;
       if (isEditingWorkingSet && !editedWorkingSetIsEmpty) {
-        workingSetNameAndSave = _reactForAtom.React.createElement(_WorkingSetNameAndSaveComponent.WorkingSetNameAndSaveComponent, {
+        workingSetNameAndSave = (_reactForAtom2 || _reactForAtom()).React.createElement((_WorkingSetNameAndSaveComponent2 || _WorkingSetNameAndSaveComponent()).WorkingSetNameAndSaveComponent, {
           isEditing: this.state.isUpdatingExistingWorkingSet,
           initialName: this.state.updatedWorkingSetName,
           onUpdate: this._updateWorkingSet,
@@ -133,23 +171,23 @@ var FileTreeToolbarComponent = (function (_React$Component) {
         });
       }
 
-      return _reactForAtom.React.createElement(
+      return (_reactForAtom2 || _reactForAtom()).React.createElement(
         'div',
         {
-          className: (0, _classnames2['default'])({
+          className: (0, (_classnames2 || _classnames()).default)({
             'nuclide-file-tree-toolbar': true,
             'nuclide-file-tree-toolbar-fader': workingSet.isEmpty() && !this.state.selectionIsActive && !this._store.isEditingWorkingSet()
           }) },
-        _reactForAtom.React.createElement(
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
           'div',
           { className: 'btn-group pull-right' },
           selectWorkingSetButton,
-          _reactForAtom.React.createElement(DefineWorkingSetButton, {
+          (_reactForAtom2 || _reactForAtom()).React.createElement(DefineWorkingSetButton, {
             isActive: isEditingWorkingSet,
             onClick: this._toggleWorkingSetEditMode
           })
         ),
-        _reactForAtom.React.createElement('div', { className: 'clearfix' }),
+        (_reactForAtom2 || _reactForAtom()).React.createElement('div', { className: 'clearfix' }),
         workingSetNameAndSave
       );
     }
@@ -178,12 +216,12 @@ var FileTreeToolbarComponent = (function (_React$Component) {
         }
         closed = true;
 
-        _reactForAtom.ReactDOM.unmountComponentAtNode(reactDiv);
+        (_reactForAtom2 || _reactForAtom()).ReactDOM.unmountComponentAtNode(reactDiv);
         panel.destroy();
         _this2.setState({ selectionIsActive: false });
       };
 
-      _reactForAtom.ReactDOM.render(_reactForAtom.React.createElement(_WorkingSetSelectionComponent.WorkingSetSelectionComponent, {
+      (_reactForAtom2 || _reactForAtom()).ReactDOM.render((_reactForAtom2 || _reactForAtom()).React.createElement((_WorkingSetSelectionComponent2 || _WorkingSetSelectionComponent()).WorkingSetSelectionComponent, {
         workingSetsStore: this.props.workingSetsStore,
         onClose: onClose,
         onEditWorkingSet: this._editWorkingSet
@@ -197,14 +235,14 @@ var FileTreeToolbarComponent = (function (_React$Component) {
       if (this._store.isEditingWorkingSet()) {
         this._finishEditingWorkingSet();
       } else {
-        this._startEditingWorkingSet(new _nuclideWorkingSets.WorkingSet());
+        this._startEditingWorkingSet(new (_nuclideWorkingSets2 || _nuclideWorkingSets()).WorkingSet());
       }
     }
   }, {
     key: '_saveWorkingSet',
     value: function _saveWorkingSet(name) {
       var workingSetsStore = this._store.getWorkingSetsStore();
-      (0, _assert2['default'])(workingSetsStore);
+      (0, (_assert2 || _assert()).default)(workingSetsStore);
 
       var editedWorkingSet = this._store.getEditedWorkingSet();
       this._finishEditingWorkingSet();
@@ -215,7 +253,7 @@ var FileTreeToolbarComponent = (function (_React$Component) {
     key: '_updateWorkingSet',
     value: function _updateWorkingSet(prevName, name) {
       var workingSetsStore = this._store.getWorkingSetsStore();
-      (0, _assert2['default'])(workingSetsStore);
+      (0, (_assert2 || _assert()).default)(workingSetsStore);
       var editedWorkingSet = this._store.getEditedWorkingSet();
       this._finishEditingWorkingSet();
 
@@ -237,7 +275,7 @@ var FileTreeToolbarComponent = (function (_React$Component) {
         updatedWorkingSetName: name,
         selectionIsActive: false
       });
-      this._startEditingWorkingSet(new _nuclideWorkingSets.WorkingSet(uris));
+      this._startEditingWorkingSet(new (_nuclideWorkingSets2 || _nuclideWorkingSets()).WorkingSet(uris));
     }
   }, {
     key: '_startEditingWorkingSet',
@@ -256,7 +294,7 @@ var FileTreeToolbarComponent = (function (_React$Component) {
   }]);
 
   return FileTreeToolbarComponent;
-})(_reactForAtom.React.Component);
+})((_reactForAtom2 || _reactForAtom()).React.Component);
 
 exports.FileTreeToolbarComponent = FileTreeToolbarComponent;
 
@@ -277,11 +315,11 @@ var SelectWorkingSetButton = (function (_React$Component2) {
       var onClick = _props.onClick;
       var onFocus = _props.onFocus;
 
-      return _reactForAtom.React.createElement(
-        _nuclideUiLibButton.Button,
+      return (_reactForAtom2 || _reactForAtom()).React.createElement(
+        (_nuclideUiLibButton2 || _nuclideUiLibButton()).Button,
         {
           selected: highlight,
-          ref: (0, _nuclideAtomHelpers.addTooltip)({
+          ref: (0, (_nuclideAtomHelpers2 || _nuclideAtomHelpers()).addTooltip)({
             title: 'Select Working Sets',
             delay: 500,
             placement: 'bottom',
@@ -289,13 +327,13 @@ var SelectWorkingSetButton = (function (_React$Component2) {
           }),
           onClick: onClick,
           onFocus: onFocus },
-        _reactForAtom.React.createElement('span', { className: 'icon icon-list-unordered nuclide-file-tree-toolbar-icon' })
+        (_reactForAtom2 || _reactForAtom()).React.createElement('span', { className: 'icon icon-list-unordered nuclide-file-tree-toolbar-icon' })
       );
     }
   }]);
 
   return SelectWorkingSetButton;
-})(_reactForAtom.React.Component);
+})((_reactForAtom2 || _reactForAtom()).React.Component);
 
 var DefineWorkingSetButton = (function (_React$Component3) {
   _inherits(DefineWorkingSetButton, _React$Component3);
@@ -313,17 +351,17 @@ var DefineWorkingSetButton = (function (_React$Component3) {
       var isActive = _props2.isActive;
       var onClick = _props2.onClick;
 
-      return _reactForAtom.React.createElement(
-        _nuclideUiLibButton.Button,
+      return (_reactForAtom2 || _reactForAtom()).React.createElement(
+        (_nuclideUiLibButton2 || _nuclideUiLibButton()).Button,
         {
           selected: isActive,
-          ref: (0, _nuclideAtomHelpers.addTooltip)({
+          ref: (0, (_nuclideAtomHelpers2 || _nuclideAtomHelpers()).addTooltip)({
             title: isActive ? 'Cancel' : 'Define a Working Set',
             delay: 500,
             placement: 'bottom'
           }),
           onClick: onClick },
-        _reactForAtom.React.createElement('span', { className: (0, _classnames2['default'])({
+        (_reactForAtom2 || _reactForAtom()).React.createElement('span', { className: (0, (_classnames2 || _classnames()).default)({
             icon: true,
             'icon-plus': !isActive,
             'icon-dash': isActive,
@@ -335,4 +373,4 @@ var DefineWorkingSetButton = (function (_React$Component3) {
   }]);
 
   return DefineWorkingSetButton;
-})(_reactForAtom.React.Component);
+})((_reactForAtom2 || _reactForAtom()).React.Component);

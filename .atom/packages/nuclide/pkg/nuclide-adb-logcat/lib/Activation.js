@@ -8,25 +8,45 @@ var _createClass = (function () { function defineProperties(target, props) { for
  * the root directory of this source tree.
  */
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _nuclideAtomHelpers = require('../../nuclide-atom-helpers');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _createProcessStream = require('./createProcessStream');
+var _nuclideAtomHelpers2;
 
-var _createMessageStream = require('./createMessageStream');
+function _nuclideAtomHelpers() {
+  return _nuclideAtomHelpers2 = require('../../nuclide-atom-helpers');
+}
 
-var _createMessageStream2 = _interopRequireDefault(_createMessageStream);
+var _createProcessStream2;
 
-var _nuclideConsoleLibLogTailer = require('../../nuclide-console/lib/LogTailer');
+function _createProcessStream() {
+  return _createProcessStream2 = require('./createProcessStream');
+}
 
-var _atom = require('atom');
+var _createMessageStream2;
 
-var _rxjs = require('rxjs');
+function _createMessageStream() {
+  return _createMessageStream2 = _interopRequireDefault(require('./createMessageStream'));
+}
 
-var _rxjs2 = _interopRequireDefault(_rxjs);
+var _nuclideConsoleLibLogTailer2;
+
+function _nuclideConsoleLibLogTailer() {
+  return _nuclideConsoleLibLogTailer2 = require('../../nuclide-console/lib/LogTailer');
+}
+
+var _atom2;
+
+function _atom() {
+  return _atom2 = require('atom');
+}
+
+var _rxjs2;
+
+function _rxjs() {
+  return _rxjs2 = _interopRequireDefault(require('rxjs'));
+}
 
 var Activation = (function () {
   function Activation(state) {
@@ -34,8 +54,8 @@ var Activation = (function () {
 
     _classCallCheck(this, Activation);
 
-    var message$ = _rxjs2['default'].Observable.defer(function () {
-      return (0, _createMessageStream2['default'])((0, _createProcessStream.createProcessStream)()
+    var message$ = (_rxjs2 || _rxjs()).default.Observable.defer(function () {
+      return (0, (_createMessageStream2 || _createMessageStream()).default)((0, (_createProcessStream2 || _createProcessStream()).createProcessStream)()
       // Retry 3 times (unless we get a ENOENT)
       .retryWhen(function (errors) {
         return errors.scan(function (errCount, err) {
@@ -44,17 +64,17 @@ var Activation = (function () {
           }
           return errCount + 1;
         }, 0);
-      })['do']({
+      }).do({
         error: function error(err) {
           if (isNoEntError(err)) {
-            var _formatEnoentNotification = (0, _nuclideAtomHelpers.formatEnoentNotification)({
+            var _ref = (0, (_nuclideAtomHelpers2 || _nuclideAtomHelpers()).formatEnoentNotification)({
               feature: 'Tailing Android (adb) logs',
               toolName: 'adb',
               pathSetting: 'nuclide-adb-logcat.pathToAdb'
             });
 
-            var message = _formatEnoentNotification.message;
-            var meta = _formatEnoentNotification.meta;
+            var message = _ref.message;
+            var meta = _ref.meta;
 
             atom.notifications.addError(message, meta);
             return;
@@ -64,14 +84,14 @@ var Activation = (function () {
       }));
     });
 
-    this._logTailer = new _nuclideConsoleLibLogTailer.LogTailer(message$, {
+    this._logTailer = new (_nuclideConsoleLibLogTailer2 || _nuclideConsoleLibLogTailer()).LogTailer(message$, {
       start: 'adb-logcat:start',
       stop: 'adb-logcat:stop',
       restart: 'adb-logcat:restart',
       error: 'adb-logcat:crash'
     });
 
-    this._disposables = new _atom.CompositeDisposable(new _atom.Disposable(function () {
+    this._disposables = new (_atom2 || _atom()).CompositeDisposable(new (_atom2 || _atom()).Disposable(function () {
       _this._logTailer.stop();
     }), atom.commands.add('atom-workspace', {
       'nuclide-adb-logcat:start': function nuclideAdbLogcatStart() {

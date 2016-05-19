@@ -14,9 +14,17 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * the root directory of this source tree.
  */
 
-var _CwdApi = require('./CwdApi');
+var _CwdApi2;
 
-var _atom = require('atom');
+function _CwdApi() {
+  return _CwdApi2 = require('./CwdApi');
+}
+
+var _atom2;
+
+function _atom() {
+  return _atom2 = require('atom');
+}
 
 var Activation = (function () {
   function Activation(rawState) {
@@ -25,8 +33,8 @@ var Activation = (function () {
     var state = rawState || {};
     var initialCwdPath = state.initialCwdPath;
 
-    this._cwdApi = new _CwdApi.CwdApi(initialCwdPath);
-    this._disposables = new _atom.CompositeDisposable(this._cwdApi);
+    this._cwdApi = new (_CwdApi2 || _CwdApi()).CwdApi(initialCwdPath);
+    this._disposables = new (_atom2 || _atom()).CompositeDisposable(this._cwdApi);
   }
 
   _createClass(Activation, [{

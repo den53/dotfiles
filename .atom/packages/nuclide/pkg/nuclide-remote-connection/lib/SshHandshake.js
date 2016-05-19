@@ -2,16 +2,6 @@ Object.defineProperty(exports, '__esModule', {
   value: true
 });
 
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-exports.decorateSshConnectionDelegateWithTracking = decorateSshConnectionDelegateWithTracking;
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
  * All rights reserved.
@@ -20,24 +10,59 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * the root directory of this source tree.
  */
 
-var _ConnectionTracker = require('./ConnectionTracker');
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-var _ConnectionTracker2 = _interopRequireDefault(_ConnectionTracker);
+exports.decorateSshConnectionDelegateWithTracking = decorateSshConnectionDelegateWithTracking;
 
-var SshConnection = require('ssh2').Client;
-var fs = require('fs-plus');
-var net = require('net');
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _ConnectionTracker2;
+
+function _ConnectionTracker() {
+  return _ConnectionTracker2 = _interopRequireDefault(require('./ConnectionTracker'));
+}
+
+var _ssh22;
+
+function _ssh2() {
+  return _ssh22 = require('ssh2');
+}
+
+var _fsPlus2;
+
+function _fsPlus() {
+  return _fsPlus2 = _interopRequireDefault(require('fs-plus'));
+}
+
+var _net2;
+
+function _net() {
+  return _net2 = _interopRequireDefault(require('net'));
+}
+
+var _assert2;
+
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
+
+var _RemoteConnection2;
+
+function _RemoteConnection() {
+  return _RemoteConnection2 = require('./RemoteConnection');
+}
+
+var _nuclideCommons2;
+
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
+
 var logger = require('../../nuclide-logging').getLogger();
-var invariant = require('assert');
-
-var _require = require('./RemoteConnection');
-
-var RemoteConnection = _require.RemoteConnection;
-
-var _require2 = require('../../nuclide-commons');
-
-var fsPromise = _require2.fsPromise;
-var promises = _require2.promises;
 
 // Sync word and regex pattern for parsing command stdout.
 var READY_TIMEOUT_MS = 60 * 1000;
@@ -89,7 +114,7 @@ var SshHandshake = (function () {
     _classCallCheck(this, SshHandshake);
 
     this._delegate = delegate;
-    this._connection = connection ? connection : new SshConnection();
+    this._connection = connection ? connection : new (_ssh22 || _ssh2()).Client();
     this._connection.on('ready', this._onConnect.bind(this));
     this._connection.on('error', this._onSshConnectionError.bind(this));
     this._connection.on('keyboard-interactive', this._onKeyboardInteractive.bind(this));
@@ -124,14 +149,14 @@ var SshHandshake = (function () {
       this._config = config;
       this._willConnect();
 
-      var existingConnection = RemoteConnection.getByHostnameAndPath(this._config.host, this._config.cwd);
+      var existingConnection = (_RemoteConnection2 || _RemoteConnection()).RemoteConnection.getByHostnameAndPath(this._config.host, this._config.cwd);
 
       if (existingConnection) {
         this._didConnect(existingConnection);
         return;
       }
 
-      var connection = yield RemoteConnection.createConnectionBySavedConfig(this._config.host, this._config.cwd, this._config.displayTitle);
+      var connection = yield (_RemoteConnection2 || _RemoteConnection()).RemoteConnection.createConnectionBySavedConfig(this._config.host, this._config.cwd, this._config.displayTitle);
 
       if (connection) {
         this._didConnect(connection);
@@ -175,10 +200,10 @@ var SshHandshake = (function () {
         });
       } else if (config.authMethod === SupportedMethods.PRIVATE_KEY) {
         // We use fs-plus's normalize() function because it will expand the ~, if present.
-        var expandedPath = fs.normalize(config.pathToPrivateKey);
+        var expandedPath = (_fsPlus2 || _fsPlus()).default.normalize(config.pathToPrivateKey);
         var privateKey = null;
         try {
-          privateKey = yield fsPromise.readFile(expandedPath);
+          privateKey = yield (_nuclideCommons2 || _nuclideCommons()).fsPromise.readFile(expandedPath);
         } catch (e) {
           this._error('Failed to read private key', SshHandshake.ErrorType.CANT_READ_PRIVATE_KEY, e);
         }
@@ -218,14 +243,14 @@ var SshHandshake = (function () {
   }, {
     key: '_updateServerInfo',
     value: function _updateServerInfo(serverInfo) {
-      invariant(serverInfo.port);
+      (0, (_assert2 || _assert()).default)(serverInfo.port);
       this._remotePort = serverInfo.port;
       this._remoteHost = '' + (serverInfo.hostname || this._config.host);
 
       // Because the value for the Initial Directory that the user supplied may have
       // been a symlink that was resolved by the server, overwrite the original `cwd`
       // value with the resolved value.
-      invariant(serverInfo.workspace);
+      (0, (_assert2 || _assert()).default)(serverInfo.workspace);
       this._config.cwd = serverInfo.workspace;
 
       // The following keys are optional in `RemoteConnectionConfiguration`.
@@ -246,7 +271,7 @@ var SshHandshake = (function () {
   }, {
     key: '_isSecure',
     value: function _isSecure() {
-      return !!(this._certificateAuthorityCertificate && this._clientCertificate && this._clientKey);
+      return Boolean(this._certificateAuthorityCertificate && this._clientCertificate && this._clientKey);
     }
   }, {
     key: '_startRemoteServer',
@@ -273,13 +298,13 @@ var SshHandshake = (function () {
               // the old channel has been cleaned up on the server.
               // TODO(hansonw): Implement a proper retry mechanism.
               // But first, we have to clean up this callback hell.
-              yield promises.awaitMilliSeconds(100);
+              yield (_nuclideCommons2 || _nuclideCommons()).promises.awaitMilliSeconds(100);
               _this._connection.sftp(_asyncToGenerator(function* (error, sftp) {
                 if (error) {
                   _this._error('Failed to start sftp connection', SshHandshake.ErrorType.SERVER_START_FAILED, error);
                   return resolve(false);
                 }
-                var localTempFile = yield fsPromise.tempfile();
+                var localTempFile = yield (_nuclideCommons2 || _nuclideCommons()).fsPromise.tempfile();
                 sftp.fastGet(remoteTempFile, localTempFile, _asyncToGenerator(function* (sftpError) {
                   sftp.end();
                   if (sftpError) {
@@ -288,7 +313,7 @@ var SshHandshake = (function () {
                   }
 
                   var serverInfo = null;
-                  var serverInfoJson = yield fsPromise.readFile(localTempFile);
+                  var serverInfoJson = yield (_nuclideCommons2 || _nuclideCommons()).fsPromise.readFile(localTempFile);
                   try {
                     serverInfo = JSON.parse(serverInfoJson);
                   } catch (e) {
@@ -333,7 +358,7 @@ var SshHandshake = (function () {
       var connect = _asyncToGenerator(function* (config) {
         var connection = null;
         try {
-          connection = yield RemoteConnection.findOrCreate(config);
+          connection = yield (_RemoteConnection2 || _RemoteConnection()).RemoteConnection.findOrCreate(config);
         } catch (e) {
           _this2._error('Connection check failed', SshHandshake.ErrorType.SERVER_VERSION_MISMATCH, e);
         }
@@ -348,8 +373,8 @@ var SshHandshake = (function () {
 
       // Use an ssh tunnel if server is not secure
       if (this._isSecure()) {
-        invariant(this._remoteHost);
-        invariant(this._remotePort);
+        (0, (_assert2 || _assert()).default)(this._remoteHost);
+        (0, (_assert2 || _assert()).default)(this._remotePort);
         connect({
           host: this._remoteHost,
           port: this._remotePort,
@@ -361,11 +386,11 @@ var SshHandshake = (function () {
         });
       } else {
         /* $FlowIssue t9212378 */
-        this._forwardingServer = net.createServer(function (sock) {
+        this._forwardingServer = (_net2 || _net()).default.createServer(function (sock) {
           _this2._forwardSocket(sock);
         }).listen(0, 'localhost', function () {
           var localPort = _this2._getLocalPort();
-          invariant(localPort);
+          (0, (_assert2 || _assert()).default)(localPort);
           connect({
             host: 'localhost',
             port: localPort,
@@ -399,25 +424,25 @@ function decorateSshConnectionDelegateWithTracking(delegate) {
 
   return {
     onKeyboardInteractive: function onKeyboardInteractive(name, instructions, instructionsLang, prompts, finish) {
-      invariant(connectionTracker);
+      (0, (_assert2 || _assert()).default)(connectionTracker);
       connectionTracker.trackPromptYubikeyInput();
       delegate.onKeyboardInteractive(name, instructions, instructionsLang, prompts, function (answers) {
-        invariant(connectionTracker);
+        (0, (_assert2 || _assert()).default)(connectionTracker);
         connectionTracker.trackFinishYubikeyInput();
         finish(answers);
       });
     },
     onWillConnect: function onWillConnect(config) {
-      connectionTracker = new _ConnectionTracker2['default'](config);
+      connectionTracker = new (_ConnectionTracker2 || _ConnectionTracker()).default(config);
       delegate.onWillConnect(config);
     },
     onDidConnect: function onDidConnect(connection, config) {
-      invariant(connectionTracker);
+      (0, (_assert2 || _assert()).default)(connectionTracker);
       connectionTracker.trackSuccess();
       delegate.onDidConnect(connection, config);
     },
     onError: function onError(errorType, error, config) {
-      invariant(connectionTracker);
+      (0, (_assert2 || _assert()).default)(connectionTracker);
       connectionTracker.trackFailure(errorType, error);
       delegate.onError(errorType, error, config);
     }

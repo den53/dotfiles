@@ -17,12 +17,6 @@ exports.observeTextEditor = observeTextEditor;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _atom = require('atom');
-
-var _Hyperclick = require('./Hyperclick');
-
-var _Hyperclick2 = _interopRequireDefault(_Hyperclick);
-
 var _types = require('./types');
 
 Object.defineProperty(exports, 'HyperclickProvider', {
@@ -38,10 +32,22 @@ Object.defineProperty(exports, 'HyperclickSuggestion', {
   }
 });
 
+var _atom2;
+
+function _atom() {
+  return _atom2 = require('atom');
+}
+
+var _Hyperclick2;
+
+function _Hyperclick() {
+  return _Hyperclick2 = _interopRequireDefault(require('./Hyperclick'));
+}
+
 var hyperclick = null;
 
 function activate() {
-  hyperclick = new _Hyperclick2['default']();
+  hyperclick = new (_Hyperclick2 || _Hyperclick()).default();
 
   // FB-only: override the symbols-view "Go To Declaration" context menu item
   // with the Hyperclick "confirm-cursor" command.
@@ -67,7 +73,7 @@ function deactivate() {
 function consumeProvider(provider) {
   if (hyperclick != null) {
     hyperclick.consumeProvider(provider);
-    return new _atom.Disposable(function () {
+    return new (_atom2 || _atom()).Disposable(function () {
       if (hyperclick != null) {
         hyperclick.removeProvider(provider);
       }

@@ -20,21 +20,39 @@ exports.consumeToolBar = consumeToolBar;
 exports.getHomeFragments = getHomeFragments;
 exports.getDistractionFreeModeProvider = getDistractionFreeModeProvider;
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _atom = require('atom');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _nuclideActiveEditorBasedService = require('../../nuclide-active-editor-based-service');
+var _atom2;
 
-var _OutlineViewPanel = require('./OutlineViewPanel');
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var _createOutlines = require('./createOutlines');
+var _nuclideActiveEditorBasedService2;
 
-var _assert = require('assert');
+function _nuclideActiveEditorBasedService() {
+  return _nuclideActiveEditorBasedService2 = require('../../nuclide-active-editor-based-service');
+}
 
-var _assert2 = _interopRequireDefault(_assert);
+var _OutlineViewPanel2;
+
+function _OutlineViewPanel() {
+  return _OutlineViewPanel2 = require('./OutlineViewPanel');
+}
+
+var _createOutlines2;
+
+function _createOutlines() {
+  return _createOutlines2 = require('./createOutlines');
+}
+
+var _assert2;
+
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
 /**
  * Includes additional information that is useful to the UI, but redundant or nonsensical for
@@ -56,13 +74,13 @@ var Activation = (function () {
 
     _classCallCheck(this, Activation);
 
-    this._disposables = new _atom.CompositeDisposable();
+    this._disposables = new (_atom2 || _atom()).CompositeDisposable();
 
-    this._editorService = new _nuclideActiveEditorBasedService.ActiveEditorBasedService(function (provider, editor) {
+    this._editorService = new (_nuclideActiveEditorBasedService2 || _nuclideActiveEditorBasedService()).ActiveEditorBasedService(function (provider, editor) {
       return provider.getOutline(editor);
     });
 
-    var panel = this._panel = new _OutlineViewPanel.OutlineViewPanelState((0, _createOutlines.createOutlines)(this._editorService), state.width, state.visible);
+    var panel = this._panel = new (_OutlineViewPanel2 || _OutlineViewPanel()).OutlineViewPanelState((0, (_createOutlines2 || _createOutlines()).createOutlines)(this._editorService), state.width, state.visible);
     this._disposables.add(panel);
 
     this._disposables.add(atom.commands.add('atom-workspace', 'nuclide-outline-view:toggle', panel.toggle.bind(panel)));
@@ -98,7 +116,7 @@ var Activation = (function () {
         tooltip: 'Toggle Outline View',
         priority: 350 });
       // Between diff view and test runner
-      this._disposables.add(new _atom.Disposable(function () {
+      this._disposables.add(new (_atom2 || _atom()).Disposable(function () {
         toolBar.removeItems();
       }));
     }
@@ -139,12 +157,12 @@ function serialize() {
 }
 
 function consumeOutlineProvider(provider) {
-  (0, _assert2['default'])(activation != null);
+  (0, (_assert2 || _assert()).default)(activation != null);
   return activation.consumeOutlineProvider(provider);
 }
 
 function consumeToolBar(getToolBar) {
-  (0, _assert2['default'])(activation != null);
+  (0, (_assert2 || _assert()).default)(activation != null);
   activation.consumeToolBar(getToolBar);
 }
 
@@ -162,7 +180,7 @@ function getHomeFragments() {
 // Between diff view and test runner
 
 function getDistractionFreeModeProvider() {
-  (0, _assert2['default'])(activation != null);
+  (0, (_assert2 || _assert()).default)(activation != null);
   return activation.getDistractionFreeModeProvider();
 }
 
@@ -171,6 +189,8 @@ function getDistractionFreeModeProvider() {
 // The initial state at startup.
 
 // The thing that currently has focus is not a text editor.
+
+// Currently awaiting results from a provider (for longer than a certain delay).
 
 // Indicates that no provider is registered for the given grammar.
 

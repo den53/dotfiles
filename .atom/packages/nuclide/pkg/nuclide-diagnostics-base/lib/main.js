@@ -10,6 +10,8 @@ Object.defineProperty(exports, '__esModule', {
  * the root directory of this source tree.
  */
 
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
 // TODO figure out how to allow the diagnostic consumer to poll (for example, if
 // it was just activated and wants diagnostic messages without having to wait
 // for an event to occur)
@@ -22,14 +24,18 @@ Object.defineProperty(exports, '__esModule', {
 // - All previous 'project' scope messages are invalidated whenever
 // projectMessages is populated.
 
-var DiagnosticStore = require('./DiagnosticStore');
+var _DiagnosticStore2;
+
+function _DiagnosticStore() {
+  return _DiagnosticStore2 = _interopRequireDefault(require('./DiagnosticStore'));
+}
 
 /**
  * Linter APIs, for compatibility with the Atom linter package.
  */
 
 module.exports = {
-  DiagnosticStore: DiagnosticStore
+  DiagnosticStore: (_DiagnosticStore2 || _DiagnosticStore()).default
 };
 
 /**

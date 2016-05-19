@@ -1,4 +1,6 @@
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -27,8 +29,17 @@
 // instanceof check is the only way to convince Flow of the type of an unbound `this`.
 var invariant = function invariant(condition) {};
 
-var chalk = require('chalk');
-var diff = require('diff');
+var _chalk2;
+
+function _chalk() {
+  return _chalk2 = _interopRequireDefault(require('chalk'));
+}
+
+var _diff2;
+
+function _diff() {
+  return _diff2 = _interopRequireWildcard(require('diff'));
+}
 
 /**
  * Do a recursive diff of two JSON objects. This function should not be called
@@ -38,7 +49,7 @@ var diff = require('diff');
  * @returns True if the objects are identical.
  */
 function diffJson(expected) {
-  var parts = diff.diffJson(expected, this.actual);
+  var parts = (_diff2 || _diff()).diffJson(expected, this.actual);
 
   var _formatMessage = formatMessage(parts);
 
@@ -60,7 +71,7 @@ function diffJson(expected) {
  * @returns True if the strings are identical.
  */
 function diffLines(expected) {
-  var parts = diff.diffLines(expected, this.actual);
+  var parts = (_diff2 || _diff()).diffLines(expected, this.actual);
 
   var _formatMessage2 = formatMessage(parts);
 
@@ -82,15 +93,15 @@ function diffLines(expected) {
  *   and a string containing the colored diff output.
  */
 function formatMessage(parts) {
-  var changes = 0,
-      message = '';
+  var changes = 0;
+  var message = '';
   for (var part of parts) {
     var color = 'gray';
     if (part.added || part.removed) {
       ++changes;
       color = part.added ? 'green' : 'red';
     }
-    message += chalk[color](part.value);
+    message += (_chalk2 || _chalk()).default[color](part.value);
   }
   return { changes: changes, message: message };
 }

@@ -10,31 +10,51 @@ var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_ag
  * the root directory of this source tree.
  */
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var _classnames = require('classnames');
+var _nuclideUiLibButton2;
 
-var _classnames2 = _interopRequireDefault(_classnames);
+function _nuclideUiLibButton() {
+  return _nuclideUiLibButton2 = require('../../nuclide-ui/lib/Button');
+}
 
-var _nuclideUiLibButton = require('../../nuclide-ui/lib/Button');
+var _nuclideUiLibButtonGroup2;
 
-var _nuclideUiLibButtonGroup = require('../../nuclide-ui/lib/ButtonGroup');
+function _nuclideUiLibButtonGroup() {
+  return _nuclideUiLibButtonGroup2 = require('../../nuclide-ui/lib/ButtonGroup');
+}
 
-var _constants = require('./constants');
+var _reactForAtom2;
 
-var _reactForAtom = require('react-for-atom');
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
 
-var _nuclideUiLibToolbar = require('../../nuclide-ui/lib/Toolbar');
+var _nuclideUiLibToolbar2;
 
-var _nuclideUiLibToolbarCenter = require('../../nuclide-ui/lib/ToolbarCenter');
+function _nuclideUiLibToolbar() {
+  return _nuclideUiLibToolbar2 = require('../../nuclide-ui/lib/Toolbar');
+}
 
-var _nuclideUiLibToolbarLeft = require('../../nuclide-ui/lib/ToolbarLeft');
+var _nuclideUiLibToolbarCenter2;
 
-var _nuclideUiLibToolbarRight = require('../../nuclide-ui/lib/ToolbarRight');
+function _nuclideUiLibToolbarCenter() {
+  return _nuclideUiLibToolbarCenter2 = require('../../nuclide-ui/lib/ToolbarCenter');
+}
+
+var _nuclideUiLibToolbarLeft2;
+
+function _nuclideUiLibToolbarLeft() {
+  return _nuclideUiLibToolbarLeft2 = require('../../nuclide-ui/lib/ToolbarLeft');
+}
+
+var _nuclideUiLibToolbarRight2;
+
+function _nuclideUiLibToolbarRight() {
+  return _nuclideUiLibToolbarRight2 = require('../../nuclide-ui/lib/ToolbarRight');
+}
 
 var DiffViewToolbar = (function (_React$Component) {
   _inherits(DiffViewToolbar, _React$Component);
@@ -48,70 +68,28 @@ var DiffViewToolbar = (function (_React$Component) {
   _createClass(DiffViewToolbar, [{
     key: 'render',
     value: function render() {
-      var _this = this;
-
-      var _props = this.props;
-      var diffMode = _props.diffMode;
-      var filePath = _props.filePath;
+      var filePath = this.props.filePath;
 
       var hasActiveFile = filePath != null && filePath.length > 0;
-      var diffModeIds = Object.keys(_constants.DiffMode);
-      var modeElements = [];
-
-      var _loop = function (i) {
-        var modeId = diffModeIds[i];
-        var modeValue = _constants.DiffMode[modeId];
-        var className = (0, _classnames2['default'])('inline-block', {
-          'selected': modeValue === diffMode
-        });
-        modeElements.push(_reactForAtom.React.createElement(
-          _nuclideUiLibButton.Button,
-          {
-            key: modeValue,
-            className: className,
-            onClick: function () {
-              return _this.props.onSwitchMode(modeValue);
-            },
-            size: 'SMALL' },
-          modeValue
-        ));
-        if (i !== diffModeIds.length - 1) {
-          // Turn the arrow pointing to the next step green to indicate the next step in the compare >
-          // commit > publish flow.
-          var sepClassName = (0, _classnames2['default'])('inline-block-tight icon icon-playback-fast-forward', {
-            'text-success': modeValue === diffMode
-          });
-          modeElements.push(_reactForAtom.React.createElement('span', { className: sepClassName, key: 'sep-' + modeValue }));
-        }
-      };
-
-      for (var i = 0; i < diffModeIds.length; i++) {
-        _loop(i);
-      }
-
-      return _reactForAtom.React.createElement(
-        _nuclideUiLibToolbar.Toolbar,
+      return (_reactForAtom2 || _reactForAtom()).React.createElement(
+        (_nuclideUiLibToolbar2 || _nuclideUiLibToolbar()).Toolbar,
         { location: 'top' },
-        _reactForAtom.React.createElement(
-          _nuclideUiLibToolbarLeft.ToolbarLeft,
-          null,
-          modeElements
-        ),
-        _reactForAtom.React.createElement(
-          _nuclideUiLibToolbarCenter.ToolbarCenter,
+        (_reactForAtom2 || _reactForAtom()).React.createElement((_nuclideUiLibToolbarLeft2 || _nuclideUiLibToolbarLeft()).ToolbarLeft, null),
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
+          (_nuclideUiLibToolbarCenter2 || _nuclideUiLibToolbarCenter()).ToolbarCenter,
           null,
           this.props.oldRevisionTitle == null ? '?' : this.props.oldRevisionTitle,
           '...',
           this.props.newRevisionTitle == null ? '?' : this.props.newRevisionTitle
         ),
-        _reactForAtom.React.createElement(
-          _nuclideUiLibToolbarRight.ToolbarRight,
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
+          (_nuclideUiLibToolbarRight2 || _nuclideUiLibToolbarRight()).ToolbarRight,
           null,
-          _reactForAtom.React.createElement(
-            _nuclideUiLibButtonGroup.ButtonGroup,
+          (_reactForAtom2 || _reactForAtom()).React.createElement(
+            (_nuclideUiLibButtonGroup2 || _nuclideUiLibButtonGroup()).ButtonGroup,
             { size: 'SMALL' },
-            _reactForAtom.React.createElement(
-              _nuclideUiLibButton.Button,
+            (_reactForAtom2 || _reactForAtom()).React.createElement(
+              (_nuclideUiLibButton2 || _nuclideUiLibButton()).Button,
               {
                 disabled: !hasActiveFile,
                 onClick: this.props.onSwitchToEditor },
@@ -124,6 +102,6 @@ var DiffViewToolbar = (function (_React$Component) {
   }]);
 
   return DiffViewToolbar;
-})(_reactForAtom.React.Component);
+})((_reactForAtom2 || _reactForAtom()).React.Component);
 
 module.exports = DiffViewToolbar;

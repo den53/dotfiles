@@ -16,7 +16,11 @@ var _createClass = (function () { function defineProperties(target, props) { for
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _nuclideAtomHelpers = require('../../nuclide-atom-helpers');
+var _nuclideAtomHelpers2;
+
+function _nuclideAtomHelpers() {
+  return _nuclideAtomHelpers2 = require('../../nuclide-atom-helpers');
+}
 
 // A heuristic for named variables in Hack.
 // TODO: Replace RegExp with AST-based, more accurate approach.
@@ -30,7 +34,7 @@ var HackEvaluationExpressionProvider = (function () {
   _createClass(HackEvaluationExpressionProvider, [{
     key: 'getEvaluationExpression',
     value: function getEvaluationExpression(editor, position) {
-      var extractedIdentifier = (0, _nuclideAtomHelpers.extractWordAtPosition)(editor, position, HACK_IDENTIFIER_REGEXP);
+      var extractedIdentifier = (0, (_nuclideAtomHelpers2 || _nuclideAtomHelpers()).extractWordAtPosition)(editor, position, HACK_IDENTIFIER_REGEXP);
       if (extractedIdentifier == null) {
         return Promise.resolve(null);
       }

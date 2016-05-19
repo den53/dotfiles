@@ -12,9 +12,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * the root directory of this source tree.
  */
 
-var _require = require('atom');
+var _atom2;
 
-var CompositeDisposable = _require.CompositeDisposable;
+function _atom() {
+  return _atom2 = require('atom');
+}
 
 var logger = null;
 
@@ -33,7 +35,7 @@ var FileWatcher = (function () {
       getLogger().warn('No editor instance on this._editor');
       return;
     }
-    var _subscriptions = new CompositeDisposable();
+    var _subscriptions = new (_atom2 || _atom()).CompositeDisposable();
     _subscriptions.add(this._editor.onDidConflict(function () {
       if (_this._shouldPromptToReload()) {
         getLogger().info('Conflict at file: ' + (_this._editor.getPath() || 'File not found'));
@@ -51,10 +53,10 @@ var FileWatcher = (function () {
   }, {
     key: '_promptReload',
     value: _asyncToGenerator(function* () {
-      var _require2 = require('../../nuclide-remote-uri');
+      var _require = require('../../nuclide-remote-uri');
 
-      var getPath = _require2.getPath;
-      var basename = _require2.basename;
+      var getPath = _require.getPath;
+      var basename = _require.basename;
 
       var filePath = this._editor.getPath();
       if (filePath == null) {
@@ -77,9 +79,9 @@ var FileWatcher = (function () {
         return;
       }
 
-      var _require3 = require('../../nuclide-client');
+      var _require2 = require('../../nuclide-client');
 
-      var getFileSystemServiceByNuclideUri = _require3.getFileSystemServiceByNuclideUri;
+      var getFileSystemServiceByNuclideUri = _require2.getFileSystemServiceByNuclideUri;
 
       // Load the file contents locally or remotely.
       var localFilePath = getPath(filePath);

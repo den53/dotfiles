@@ -18,9 +18,11 @@ exports.provideRegisterExecutor = provideRegisterExecutor;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _assert = require('assert');
+var _assert2;
 
-var _assert2 = _interopRequireDefault(_assert);
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
 var activation = null;
 
@@ -39,16 +41,16 @@ function deactivate() {
 }
 
 function consumeGadgetsService(gadgetsApi) {
-  (0, _assert2['default'])(activation);
-  return activation.consumeGadgetsService(gadgetsApi);
+  (0, (_assert2 || _assert()).default)(activation);
+  activation.consumeGadgetsService(gadgetsApi);
 }
 
 function provideOutputService() {
-  (0, _assert2['default'])(activation);
+  (0, (_assert2 || _assert()).default)(activation);
   return activation.provideOutputService();
 }
 
 function provideRegisterExecutor() {
-  (0, _assert2['default'])(activation);
+  (0, (_assert2 || _assert()).default)(activation);
   return activation.provideRegisterExecutor();
 }

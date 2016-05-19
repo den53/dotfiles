@@ -12,9 +12,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
  * the root directory of this source tree.
  */
 
-var _assert = require('assert');
+var _assert2;
 
-var _assert2 = _interopRequireDefault(_assert);
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
 /*
  * An ElementRange identifies a range of child elements of a data value.
@@ -113,16 +115,16 @@ function endIndexOfElementRange(elementRange) {
 }
 
 function endIndexOfObjectId(id) {
-  (0, _assert2['default'])(id.elementRange);
+  (0, (_assert2 || _assert()).default)(id.elementRange);
   return endIndexOfElementRange(id.elementRange);
 }
 
 function startIndexOfObjectId(id, pagesize) {
   if (isSinglePageObjectId(id)) {
-    (0, _assert2['default'])(id.page != null);
+    (0, (_assert2 || _assert()).default)(id.page != null);
     return id.page * pagesize;
   } else {
-    (0, _assert2['default'])(id.elementRange);
+    (0, (_assert2 || _assert()).default)(id.elementRange);
     return id.elementRange.startIndex;
   }
 }
@@ -131,7 +133,7 @@ function countOfObjectId(id, pagesize, parentEndIndex) {
   if (isSinglePageObjectId(id)) {
     return Math.min(pagesize, parentEndIndex - startIndexOfObjectId(id, pagesize));
   } else {
-    (0, _assert2['default'])(id.elementRange);
+    (0, (_assert2 || _assert()).default)(id.elementRange);
     return id.elementRange.count;
   }
 }
@@ -141,7 +143,7 @@ function countOfObjectId(id, pagesize, parentEndIndex) {
  * Note that the children may be a combination of PagedObjectIds and SinglePageObjectIds.
  */
 function getChildIds(id) {
-  (0, _assert2['default'])(id.elementRange);
+  (0, (_assert2 || _assert()).default)(id.elementRange);
   var pagesize = id.elementRange.pagesize;
 
   // Handle a page of pages (... of pages)
@@ -157,7 +159,7 @@ function getChildIds(id) {
     var childCount = Math.min(childSize, endIndex - childStartIndex);
 
     var childId = undefined;
-    (0, _assert2['default'])(id.fullname != null);
+    (0, (_assert2 || _assert()).default)(id.fullname != null);
     if (childCount <= pagesize) {
       childId = singlePageObjectId(id, id.fullname, Math.trunc(childStartIndex / pagesize));
     } else {

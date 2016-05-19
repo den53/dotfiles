@@ -2,11 +2,11 @@ var _createClass = (function () { function defineProperties(target, props) { for
 
 var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -16,19 +16,37 @@ function _inherits(subClass, superClass) { if (typeof superClass !== 'function' 
  * the root directory of this source tree.
  */
 
-var _nuclideUiLibAtomInput = require('../../nuclide-ui/lib/AtomInput');
+var _nuclideUiLibAtomInput2;
 
-var _nuclideUiLibCheckbox = require('../../nuclide-ui/lib/Checkbox');
+function _nuclideUiLibAtomInput() {
+  return _nuclideUiLibAtomInput2 = require('../../nuclide-ui/lib/AtomInput');
+}
 
-var _atom = require('atom');
+var _nuclideUiLibCheckbox2;
 
-var _reactForAtom = require('react-for-atom');
+function _nuclideUiLibCheckbox() {
+  return _nuclideUiLibCheckbox2 = require('../../nuclide-ui/lib/Checkbox');
+}
 
-var _path = require('path');
+var _atom2;
 
-var _path2 = _interopRequireDefault(_path);
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var PropTypes = _reactForAtom.React.PropTypes;
+var _reactForAtom2;
+
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
+
+var _path2;
+
+function _path() {
+  return _path2 = _interopRequireDefault(require('path'));
+}
+
+var PropTypes = (_reactForAtom2 || _reactForAtom()).React.PropTypes;
 
 /**
  * Component that displays UI to create a new file.
@@ -71,7 +89,7 @@ var FileDialogComponent = (function (_React$Component) {
 
     _get(Object.getPrototypeOf(FileDialogComponent.prototype), 'constructor', this).apply(this, arguments);
     this._isClosed = false;
-    this._subscriptions = new _atom.CompositeDisposable();
+    this._subscriptions = new (_atom2 || _atom()).CompositeDisposable();
     this._close = this._close.bind(this);
     this._confirm = this._confirm.bind(this);
     this._handleDocumentClick = this._handleDocumentClick.bind(this);
@@ -87,17 +105,17 @@ var FileDialogComponent = (function (_React$Component) {
     key: 'componentDidMount',
     value: function componentDidMount() {
       var input = this.refs.input;
-      this._subscriptions.add(atom.commands.add(_reactForAtom.ReactDOM.findDOMNode(input), {
+      this._subscriptions.add(atom.commands.add((_reactForAtom2 || _reactForAtom()).ReactDOM.findDOMNode(input), {
         'core:confirm': this._confirm,
         'core:cancel': this._close
       }));
       var path = this.props.initialValue;
       input.focus();
       if (this.props.selectBasename) {
-        var _pathModule$parse = _path2['default'].parse(path);
+        var _default$parse = (_path2 || _path()).default.parse(path);
 
-        var dir = _pathModule$parse.dir;
-        var _name2 = _pathModule$parse.name;
+        var dir = _default$parse.dir;
+        var _name2 = _default$parse.name;
 
         var selectionStart = dir ? dir.length + 1 : 0;
         var selectionEnd = selectionStart + _name2.length;
@@ -123,7 +141,7 @@ var FileDialogComponent = (function (_React$Component) {
       for (var _name3 in this.props.additionalOptions) {
         var message = this.props.additionalOptions[_name3];
         var checked = this.state.options[_name3];
-        var checkbox = _reactForAtom.React.createElement(_nuclideUiLibCheckbox.Checkbox, {
+        var checkbox = (_reactForAtom2 || _reactForAtom()).React.createElement((_nuclideUiLibCheckbox2 || _nuclideUiLibCheckbox()).Checkbox, {
           key: _name3,
           checked: checked,
           onChange: this._handleAdditionalOptionChanged.bind(this, _name3),
@@ -137,23 +155,19 @@ var FileDialogComponent = (function (_React$Component) {
       // tree-view.
       //
       // [1] https://github.com/atom/tree-view/blob/v0.200.0/lib/dialog.coffee#L7
-      return _reactForAtom.React.createElement(
-        'atom-panel',
-        { 'class': 'modal overlay from-top' },
-        _reactForAtom.React.createElement(
-          'div',
-          { className: 'tree-view-dialog', ref: 'dialog' },
-          _reactForAtom.React.createElement(
-            'label',
-            { className: labelClassName },
-            this.props.message
-          ),
-          _reactForAtom.React.createElement(_nuclideUiLibAtomInput.AtomInput, {
-            initialValue: this.props.initialValue,
-            ref: 'input'
-          }),
-          checkboxes
-        )
+      return (_reactForAtom2 || _reactForAtom()).React.createElement(
+        'div',
+        { className: 'tree-view-dialog', ref: 'dialog' },
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
+          'label',
+          { className: labelClassName },
+          this.props.message
+        ),
+        (_reactForAtom2 || _reactForAtom()).React.createElement((_nuclideUiLibAtomInput2 || _nuclideUiLibAtomInput()).AtomInput, {
+          initialValue: this.props.initialValue,
+          ref: 'input'
+        }),
+        checkboxes
       );
     }
   }, {
@@ -191,6 +205,6 @@ var FileDialogComponent = (function (_React$Component) {
   }]);
 
   return FileDialogComponent;
-})(_reactForAtom.React.Component);
+})((_reactForAtom2 || _reactForAtom()).React.Component);
 
 module.exports = FileDialogComponent;

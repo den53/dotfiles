@@ -14,11 +14,19 @@ function _inherits(subClass, superClass) { if (typeof superClass !== 'function' 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _atom = require('atom');
+var _atom2;
 
-var _reactForAtom = require('react-for-atom');
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var PropTypes = _reactForAtom.React.PropTypes;
+var _reactForAtom2;
+
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
+
+var PropTypes = (_reactForAtom2 || _reactForAtom()).React.PropTypes;
 
 // Stick this to the left of remote-projects (-99)
 var STATUS_BAR_PRIORITY = -99.5;
@@ -32,7 +40,7 @@ var StatusBarTile = (function () {
       errorCount: 0,
       warningCount: 0
     };
-    this._subscriptions = new _atom.CompositeDisposable();
+    this._subscriptions = new (_atom2 || _atom()).CompositeDisposable();
   }
 
   _createClass(StatusBarTile, [{
@@ -102,7 +110,7 @@ var StatusBarTile = (function () {
     key: '_render',
     value: function _render() {
       if (this._item) {
-        _reactForAtom.ReactDOM.render(_reactForAtom.React.createElement(StatusBarTileComponent, this._totalDiagnosticCount), this._item);
+        (_reactForAtom2 || _reactForAtom()).ReactDOM.render((_reactForAtom2 || _reactForAtom()).React.createElement(StatusBarTileComponent, this._totalDiagnosticCount), this._item);
       }
     }
   }, {
@@ -110,7 +118,7 @@ var StatusBarTile = (function () {
     value: function dispose() {
       this._subscriptions.dispose();
       if (this._item) {
-        _reactForAtom.ReactDOM.unmountComponentAtNode(this._item);
+        (_reactForAtom2 || _reactForAtom()).ReactDOM.unmountComponentAtNode(this._item);
         this._item = null;
       }
 
@@ -148,20 +156,20 @@ var StatusBarTileComponent = (function (_React$Component) {
     value: function render() {
       var errorColorClass = this.props.errorCount === 0 ? '' : 'text-error';
       var warningColorClass = this.props.warningCount === 0 ? '' : 'text-warning';
-      return _reactForAtom.React.createElement(
+      return (_reactForAtom2 || _reactForAtom()).React.createElement(
         'span',
         { className: 'nuclide-diagnostics-status-bar', onClick: this._onClick },
-        _reactForAtom.React.createElement(
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
           'span',
           { className: 'nuclide-diagnostics-status-bar-error ' + errorColorClass },
-          _reactForAtom.React.createElement('span', { className: 'icon icon-stop' }),
+          (_reactForAtom2 || _reactForAtom()).React.createElement('span', { className: 'icon icon-stop' }),
           ' ',
           this.props.errorCount
         ),
-        _reactForAtom.React.createElement(
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
           'span',
           { className: 'nuclide-diagnostics-status-bar-warning ' + warningColorClass },
-          _reactForAtom.React.createElement('span', { className: 'icon icon-alert' }),
+          (_reactForAtom2 || _reactForAtom()).React.createElement('span', { className: 'icon icon-alert' }),
           ' ',
           this.props.warningCount
         )
@@ -182,6 +190,6 @@ var StatusBarTileComponent = (function (_React$Component) {
   }]);
 
   return StatusBarTileComponent;
-})(_reactForAtom.React.Component);
+})((_reactForAtom2 || _reactForAtom()).React.Component);
 
 module.exports = StatusBarTile;

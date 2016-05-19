@@ -16,7 +16,11 @@ exports.createAutocompleteProvider = createAutocompleteProvider;
 exports.provideLinter = provideLinter;
 exports.createTypeHintProvider = createTypeHintProvider;
 
-var _constants = require('./constants');
+var _constants2;
+
+function _constants() {
+  return _constants2 = require('./constants');
+}
 
 function activate() {}
 
@@ -58,7 +62,7 @@ function createTypeHintProvider() {
   return {
     inclusionPriority: 1,
     providerName: 'nuclide-ocaml',
-    selector: Array.from(_constants.GRAMMARS).join(', '),
+    selector: Array.from((_constants2 || _constants()).GRAMMARS).join(', '),
     typeHint: typeHint
   };
 }

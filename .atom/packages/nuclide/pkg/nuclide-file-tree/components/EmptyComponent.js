@@ -18,9 +18,17 @@ function _inherits(subClass, superClass) { if (typeof superClass !== 'function' 
  * the root directory of this source tree.
  */
 
-var _reactForAtom = require('react-for-atom');
+var _reactForAtom2;
 
-var _nuclideUiLibButton = require('../../nuclide-ui/lib/Button');
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
+
+var _nuclideUiLibButton2;
+
+function _nuclideUiLibButton() {
+  return _nuclideUiLibButton2 = require('../../nuclide-ui/lib/Button');
+}
 
 var EmptyComponent = (function (_React$Component) {
   _inherits(EmptyComponent, _React$Component);
@@ -36,11 +44,11 @@ var EmptyComponent = (function (_React$Component) {
     value: function render() {
       var _this = this;
 
-      return _reactForAtom.React.createElement(
+      return (_reactForAtom2 || _reactForAtom()).React.createElement(
         'div',
         { className: 'padded' },
-        _reactForAtom.React.createElement(
-          _nuclideUiLibButton.Button,
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
+          (_nuclideUiLibButton2 || _nuclideUiLibButton()).Button,
           {
             onClick: function () {
               return _this.runCommand('application:add-project-folder');
@@ -49,8 +57,8 @@ var EmptyComponent = (function (_React$Component) {
             className: 'btn-block' },
           'Add Project Folder'
         ),
-        _reactForAtom.React.createElement(
-          _nuclideUiLibButton.Button,
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
+          (_nuclideUiLibButton2 || _nuclideUiLibButton()).Button,
           {
             onClick: function () {
               return _this.runCommand('nuclide-remote-projects:connect');
@@ -69,6 +77,6 @@ var EmptyComponent = (function (_React$Component) {
   }]);
 
   return EmptyComponent;
-})(_reactForAtom.React.Component);
+})((_reactForAtom2 || _reactForAtom()).React.Component);
 
 exports.EmptyComponent = EmptyComponent;

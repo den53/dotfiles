@@ -10,9 +10,13 @@ Object.defineProperty(exports, '__esModule', {
  * the root directory of this source tree.
  */
 
-exports['default'] = createBoundTextBuffer;
+exports.default = createBoundTextBuffer;
 
-var _atom = require('atom');
+var _atom2;
+
+function _atom() {
+  return _atom2 = require('atom');
+}
 
 /**
  * Create a text buffer that's bound to the process.
@@ -20,7 +24,7 @@ var _atom = require('atom');
 
 function createBoundTextBuffer(processOutputStore, outputHandler) {
 
-  var buffer = new _atom.TextBuffer({
+  var buffer = new (_atom2 || _atom()).TextBuffer({
     load: false,
     text: ''
   });
@@ -38,7 +42,7 @@ function createBoundTextBuffer(processOutputStore, outputHandler) {
   update(processOutputStore.getStdout() || '');
   update(processOutputStore.getStderr() || '');
 
-  var disposable = new _atom.CompositeDisposable(processOutputStore.observeStdout(update), processOutputStore.observeStderr(update));
+  var disposable = new (_atom2 || _atom()).CompositeDisposable(processOutputStore.observeStdout(update), processOutputStore.observeStderr(update));
 
   buffer.onDidDestroy(function () {
     return disposable.dispose();
@@ -47,4 +51,4 @@ function createBoundTextBuffer(processOutputStore, outputHandler) {
   return buffer;
 }
 
-module.exports = exports['default'];
+module.exports = exports.default;

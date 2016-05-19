@@ -10,17 +10,27 @@ Object.defineProperty(exports, '__esModule', {
  * the root directory of this source tree.
  */
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
-var _getHackService = require('./getHackService');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _path = require('path');
+var _getHackService2;
 
-var _path2 = _interopRequireDefault(_path);
+function _getHackService() {
+  return _getHackService2 = require('./getHackService');
+}
 
-var _reactForAtom = require('react-for-atom');
+var _path2;
+
+function _path() {
+  return _path2 = _interopRequireDefault(require('path'));
+}
+
+var _reactForAtom2;
+
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
 
 var ICONS = {
   'interface': 'icon-puzzle',
@@ -38,7 +48,7 @@ var ICONS = {
 
 function bestIconForItem(item) {
   if (!item.additionalInfo) {
-    return ICONS['default'];
+    return ICONS.default;
   }
   // Look for exact match.
   if (ICONS[item.additionalInfo]) {
@@ -80,7 +90,7 @@ var HackSymbolProvider = {
   },
 
   isEligibleForDirectory: _asyncToGenerator(function* (directory) {
-    var service = yield (0, _getHackService.getHackService)(directory);
+    var service = yield (0, (_getHackService2 || _getHackService()).getHackService)(directory);
     return service != null;
   }),
 
@@ -89,7 +99,7 @@ var HackSymbolProvider = {
       return [];
     }
 
-    var service = yield (0, _getHackService.getHackService)(directory);
+    var service = yield (0, (_getHackService2 || _getHackService()).getHackService)(directory);
     if (service == null) {
       return [];
     }
@@ -102,24 +112,24 @@ var HackSymbolProvider = {
   getComponentForItem: function getComponentForItem(uncastedItem) {
     var item = uncastedItem;
     var filePath = item.path;
-    var filename = _path2['default'].basename(filePath);
+    var filename = (_path2 || _path()).default.basename(filePath);
     var name = item.name || '';
 
     var icon = bestIconForItem(item);
     var symbolClasses = 'file icon ' + icon;
-    return _reactForAtom.React.createElement(
+    return (_reactForAtom2 || _reactForAtom()).React.createElement(
       'div',
       { title: item.additionalInfo || '' },
-      _reactForAtom.React.createElement(
+      (_reactForAtom2 || _reactForAtom()).React.createElement(
         'span',
         { className: symbolClasses },
-        _reactForAtom.React.createElement(
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
           'code',
           null,
           name
         )
       ),
-      _reactForAtom.React.createElement(
+      (_reactForAtom2 || _reactForAtom()).React.createElement(
         'span',
         { className: 'omnisearch-symbol-result-filename' },
         filename

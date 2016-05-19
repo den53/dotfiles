@@ -16,8 +16,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _createDecoratedClass = (function () { function defineProperties(target, descriptors, initializers) { for (var i = 0; i < descriptors.length; i++) { var descriptor = descriptors[i]; var decorators = descriptor.decorators; var key = descriptor.key; delete descriptor.key; delete descriptor.decorators; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor || descriptor.initializer) descriptor.writable = true; if (decorators) { for (var f = 0; f < decorators.length; f++) { var decorator = decorators[f]; if (typeof decorator === 'function') { descriptor = decorator(target, key, descriptor) || descriptor; } else { throw new TypeError('The decorator for method ' + descriptor.key + ' is of the invalid type ' + typeof decorator); } } if (descriptor.initializer !== undefined) { initializers[key] = descriptor; continue; } } Object.defineProperty(target, key, descriptor); } } return function (Constructor, protoProps, staticProps, protoInitializers, staticInitializers) { if (protoProps) defineProperties(Constructor.prototype, protoProps, protoInitializers); if (staticProps) defineProperties(Constructor, staticProps, staticInitializers); return Constructor; }; })();
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -26,49 +24,97 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _nuclideArcanistClient = require('../../nuclide-arcanist-client');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _nuclideArcanistClient2 = _interopRequireDefault(_nuclideArcanistClient);
+var _nuclideArcanistBaseLibUtils2;
 
-var _atom = require('atom');
+function _nuclideArcanistBaseLibUtils() {
+  return _nuclideArcanistBaseLibUtils2 = require('../../nuclide-arcanist-base/lib/utils');
+}
 
-var _shell = require('shell');
+var _nuclideArcanistClient2;
 
-var _shell2 = _interopRequireDefault(_shell);
+function _nuclideArcanistClient() {
+  return _nuclideArcanistClient2 = _interopRequireDefault(require('../../nuclide-arcanist-client'));
+}
 
-var _constants = require('./constants');
+var _atom2;
 
-var _assert = require('assert');
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var _assert2 = _interopRequireDefault(_assert);
+var _shell2;
 
-var _nuclideHgGitBridge = require('../../nuclide-hg-git-bridge');
+function _shell() {
+  return _shell2 = _interopRequireDefault(require('shell'));
+}
 
-var _nuclideAnalytics = require('../../nuclide-analytics');
+var _constants2;
 
-var _utils = require('./utils');
+function _constants() {
+  return _constants2 = require('./constants');
+}
 
-var _nuclideCommons = require('../../nuclide-commons');
+var _assert2;
 
-var _nuclideRemoteUri = require('../../nuclide-remote-uri');
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
-var _nuclideRemoteUri2 = _interopRequireDefault(_nuclideRemoteUri);
+var _nuclideHgGitBridge2;
 
-var _RepositoryStack = require('./RepositoryStack');
+function _nuclideHgGitBridge() {
+  return _nuclideHgGitBridge2 = require('../../nuclide-hg-git-bridge');
+}
 
-var _RepositoryStack2 = _interopRequireDefault(_RepositoryStack);
+var _nuclideAnalytics2;
 
-var _rxjs = require('rxjs');
+function _nuclideAnalytics() {
+  return _nuclideAnalytics2 = require('../../nuclide-analytics');
+}
 
-var _rxjs2 = _interopRequireDefault(_rxjs);
+var _nuclideCommons2;
 
-var _notifications = require('./notifications');
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
 
-var _nuclideAtomHelpers = require('../../nuclide-atom-helpers');
+var _nuclideRemoteUri2;
 
-var _nuclideLogging = require('../../nuclide-logging');
+function _nuclideRemoteUri() {
+  return _nuclideRemoteUri2 = _interopRequireDefault(require('../../nuclide-remote-uri'));
+}
 
-var serializeAsyncCall = _nuclideCommons.promises.serializeAsyncCall;
+var _RepositoryStack2;
+
+function _RepositoryStack() {
+  return _RepositoryStack2 = _interopRequireDefault(require('./RepositoryStack'));
+}
+
+var _rxjs2;
+
+function _rxjs() {
+  return _rxjs2 = _interopRequireDefault(require('rxjs'));
+}
+
+var _notifications2;
+
+function _notifications() {
+  return _notifications2 = require('./notifications');
+}
+
+var _nuclideAtomHelpers2;
+
+function _nuclideAtomHelpers() {
+  return _nuclideAtomHelpers2 = require('../../nuclide-atom-helpers');
+}
+
+var _nuclideLogging2;
+
+function _nuclideLogging() {
+  return _nuclideLogging2 = require('../../nuclide-logging');
+}
 
 var ACTIVE_FILE_UPDATE_EVENT = 'active-file-update';
 var CHANGE_REVISIONS_EVENT = 'did-change-revisions';
@@ -79,7 +125,6 @@ function getRevisionUpdateMessage(phabricatorRevision) {
   return '\n\n# Updating ' + phabricatorRevision.id + '\n#\n# Enter a brief description of the changes included in this update.\n# The first line is used as subject, next lines as comment.';
 }
 
-var FILE_CHANGE_DEBOUNCE_MS = 200;
 var MAX_DIALOG_FILE_STATUS_COUNT = 20;
 
 // Returns a string with all newline strings, '\\n', converted to literal newlines, '\n'.
@@ -100,12 +145,12 @@ function getInitialFileChangeState() {
 
 function viewModeToDiffOption(viewMode) {
   switch (viewMode) {
-    case _constants.DiffMode.COMMIT_MODE:
-      return _constants.DiffOption.DIRTY;
-    case _constants.DiffMode.PUBLISH_MODE:
-      return _constants.DiffOption.LAST_COMMIT;
-    case _constants.DiffMode.BROWSE_MODE:
-      return _constants.DiffOption.COMPARE_COMMIT;
+    case (_constants2 || _constants()).DiffMode.COMMIT_MODE:
+      return (_constants2 || _constants()).DiffOption.DIRTY;
+    case (_constants2 || _constants()).DiffMode.PUBLISH_MODE:
+      return (_constants2 || _constants()).DiffOption.LAST_COMMIT;
+    case (_constants2 || _constants()).DiffMode.BROWSE_MODE:
+      return (_constants2 || _constants()).DiffOption.COMPARE_COMMIT;
     default:
       throw new Error('Unrecognized view mode!');
   }
@@ -120,7 +165,7 @@ function getFileStatusListMessage(fileChanges) {
       var filePath = _ref2[0];
       var statusCode = _ref2[1];
 
-      message += '\n' + _constants.FileChangeStatusToPrefix[statusCode] + atom.project.relativize(filePath);
+      message += '\n' + (_constants2 || _constants()).FileChangeStatusToPrefix[statusCode] + atom.project.relativize(filePath);
     }
   } else {
     message = '\n more than ' + MAX_DIALOG_FILE_STATUS_COUNT + ' files (check using `hg status`)';
@@ -132,7 +177,7 @@ function hgRepositoryForPath(filePath) {
   // Calling atom.project.repositoryForDirectory gets the real path of the directory,
   // which is another round-trip and calls the repository providers to get an existing repository.
   // Instead, the first match of the filtering here is the only possible match.
-  var repository = (0, _nuclideHgGitBridge.repositoryForPath)(filePath);
+  var repository = (0, (_nuclideHgGitBridge2 || _nuclideHgGitBridge()).repositoryForPath)(filePath);
   if (repository == null || repository.getType() !== 'hg') {
     var _type = repository ? repository.getType() : 'no repository';
     throw new Error('Diff view only supports `Mercurial` repositories, ' + ('but found `' + _type + '` at path: `' + filePath + '`'));
@@ -155,7 +200,7 @@ function notifyRevisionStatus(phabRevision, statusMessage) {
     buttons: [{
       className: 'icon icon-globe',
       onDidClick: function onDidClick() {
-        _shell2['default'].openExternal(url);
+        (_shell2 || _shell()).default.openExternal(url);
       },
       text: 'Open in Phabricator'
     }]
@@ -168,22 +213,22 @@ var DiffViewModel = (function () {
 
     _classCallCheck(this, DiffViewModel);
 
-    this._emitter = new _atom.Emitter();
-    this._subscriptions = new _atom.CompositeDisposable();
-    this._activeSubscriptions = new _atom.CompositeDisposable();
+    this._emitter = new (_atom2 || _atom()).Emitter();
+    this._subscriptions = new (_atom2 || _atom()).CompositeDisposable();
+    this._activeSubscriptions = new (_atom2 || _atom()).CompositeDisposable();
     this._uiProviders = [];
     this._repositoryStacks = new Map();
     this._repositorySubscriptions = new Map();
     this._isActive = false;
-    this._publishUpdates = new _rxjs2['default'].Subject();
+    this._publishUpdates = new (_rxjs2 || _rxjs()).default.Subject();
     this._state = {
-      viewMode: _constants.DiffMode.BROWSE_MODE,
+      viewMode: (_constants2 || _constants()).DiffMode.BROWSE_MODE,
       commitMessage: null,
-      commitMode: _constants.CommitMode.COMMIT,
-      commitModeState: _constants.CommitModeState.READY,
+      commitMode: (_constants2 || _constants()).CommitMode.COMMIT,
+      commitModeState: (_constants2 || _constants()).CommitModeState.READY,
       publishMessage: null,
-      publishMode: _constants.PublishMode.CREATE,
-      publishModeState: _constants.PublishModeState.READY,
+      publishMode: (_constants2 || _constants()).PublishMode.CREATE,
+      publishModeState: (_constants2 || _constants()).PublishModeState.READY,
       headRevision: null,
       dirtyFileChanges: new Map(),
       commitMergeFileChanges: new Map(),
@@ -191,29 +236,15 @@ var DiffViewModel = (function () {
       selectedFileChanges: new Map(),
       showNonHgRepos: true
     };
-    this._serializedUpdateActiveFileDiff = serializeAsyncCall(function () {
+    this._serializedUpdateActiveFileDiff = (_nuclideCommons2 || _nuclideCommons()).promises.serializeAsyncCall(function () {
       return _this._updateActiveFileDiff();
     });
     this._updateRepositories();
     this._subscriptions.add(atom.project.onDidChangePaths(this._updateRepositories.bind(this)));
     this._setActiveFileState(getInitialFileChangeState());
-    this._checkCustomConfig()['catch'](_notifications.notifyInternalError);
   }
 
   _createDecoratedClass(DiffViewModel, [{
-    key: '_checkCustomConfig',
-    value: _asyncToGenerator(function* () {
-      var config = null;
-      try {
-        config = require('./fb/config');
-      } finally {
-        if (config == null) {
-          return;
-        }
-        yield config.applyConfig();
-      }
-    })
-  }, {
     key: '_updateRepositories',
     value: function _updateRepositories() {
       var repositories = new Set(atom.project.getRepositories().filter(function (repository) {
@@ -233,11 +264,11 @@ var DiffViewModel = (function () {
           this._activeRepositoryStack = null;
         }
         repositoryStack.dispose();
-        this._repositoryStacks['delete'](repository);
+        this._repositoryStacks.delete(repository);
         var subscriptions = this._repositorySubscriptions.get(repository);
-        (0, _assert2['default'])(subscriptions);
+        (0, (_assert2 || _assert()).default)(subscriptions);
         subscriptions.dispose();
-        this._repositorySubscriptions['delete'](repository);
+        this._repositorySubscriptions.delete(repository);
       }
 
       // Add the new project repositories, if any.
@@ -262,10 +293,10 @@ var DiffViewModel = (function () {
     value: function _createRepositoryStack(repository) {
       var _this2 = this;
 
-      var repositoryStack = new _RepositoryStack2['default'](repository);
-      var subscriptions = new _atom.CompositeDisposable();
+      var repositoryStack = new (_RepositoryStack2 || _RepositoryStack()).default(repository);
+      var subscriptions = new (_atom2 || _atom()).CompositeDisposable();
       subscriptions.add(repositoryStack.onDidUpdateDirtyFileChanges(this._updateDirtyChangedStatus.bind(this)), repositoryStack.onDidUpdateCommitMergeFileChanges(this._updateCommitMergeFileChanges.bind(this)), repositoryStack.onDidChangeRevisions(function (revisionsState) {
-        _this2._updateChangedRevisions(repositoryStack, revisionsState, true)['catch'](_notifications.notifyInternalError);
+        _this2._updateChangedRevisions(repositoryStack, revisionsState, true).catch((_notifications2 || _notifications()).notifyInternalError);
       }));
       this._repositoryStacks.set(repository, repositoryStack);
       this._repositorySubscriptions.set(repository, subscriptions);
@@ -277,18 +308,31 @@ var DiffViewModel = (function () {
   }, {
     key: '_updateDirtyChangedStatus',
     value: function _updateDirtyChangedStatus() {
-      var dirtyFileChanges = _nuclideCommons.map.union.apply(_nuclideCommons.map, _toConsumableArray(Array.from(this._repositoryStacks.values()).map(function (repositoryStack) {
+      var _map;
+
+      var dirtyFileChanges = (_map = (_nuclideCommons2 || _nuclideCommons()).map).union.apply(_map, _toConsumableArray(Array.from(this._repositoryStacks.values()).map(function (repositoryStack) {
         return repositoryStack.getDirtyFileChanges();
       })));
       this._updateCompareChangedStatus(dirtyFileChanges);
     }
   }, {
+    key: 'getActiveStackDirtyFileChanges',
+    value: function getActiveStackDirtyFileChanges() {
+      if (this._activeRepositoryStack == null) {
+        return new Map();
+      } else {
+        return this._activeRepositoryStack.getDirtyFileChanges();
+      }
+    }
+  }, {
     key: '_updateCommitMergeFileChanges',
     value: function _updateCommitMergeFileChanges() {
-      var commitMergeFileChanges = _nuclideCommons.map.union.apply(_nuclideCommons.map, _toConsumableArray(Array.from(this._repositoryStacks.values()).map(function (repositoryStack) {
+      var _map2, _map3;
+
+      var commitMergeFileChanges = (_map2 = (_nuclideCommons2 || _nuclideCommons()).map).union.apply(_map2, _toConsumableArray(Array.from(this._repositoryStacks.values()).map(function (repositoryStack) {
         return repositoryStack.getCommitMergeFileChanges();
       })));
-      var lastCommitMergeFileChanges = _nuclideCommons.map.union.apply(_nuclideCommons.map, _toConsumableArray(Array.from(this._repositoryStacks.values()).map(function (repositoryStack) {
+      var lastCommitMergeFileChanges = (_map3 = (_nuclideCommons2 || _nuclideCommons()).map).union.apply(_map3, _toConsumableArray(Array.from(this._repositoryStacks.values()).map(function (repositoryStack) {
         return repositoryStack.getLastCommitMergeFileChanges();
       })));
       this._updateCompareChangedStatus(null, commitMergeFileChanges, lastCommitMergeFileChanges);
@@ -316,22 +360,22 @@ var DiffViewModel = (function () {
         (function () {
           var projectDirectory = _this3._activeRepositoryStack.getRepository().getProjectDirectory();
           activeRepositorySelector = function (filePath) {
-            return _nuclideRemoteUri2['default'].contains(projectDirectory, filePath);
+            return (_nuclideRemoteUri2 || _nuclideRemoteUri()).default.contains(projectDirectory, filePath);
           };
         })();
       }
       switch (this._state.viewMode) {
-        case _constants.DiffMode.COMMIT_MODE:
+        case (_constants2 || _constants()).DiffMode.COMMIT_MODE:
           // Commit mode only shows the changes of the active repository.
-          selectedFileChanges = _nuclideCommons.map.filter(dirtyFileChanges, activeRepositorySelector);
+          selectedFileChanges = (_nuclideCommons2 || _nuclideCommons()).map.filter(dirtyFileChanges, activeRepositorySelector);
           showNonHgRepos = false;
           break;
-        case _constants.DiffMode.PUBLISH_MODE:
+        case (_constants2 || _constants()).DiffMode.PUBLISH_MODE:
           // Publish mode only shows the changes of the active repository.
-          selectedFileChanges = _nuclideCommons.map.filter(lastCommitMergeFileChanges, activeRepositorySelector);
+          selectedFileChanges = (_nuclideCommons2 || _nuclideCommons()).map.filter(lastCommitMergeFileChanges, activeRepositorySelector);
           showNonHgRepos = false;
           break;
-        case _constants.DiffMode.BROWSE_MODE:
+        case (_constants2 || _constants()).DiffMode.BROWSE_MODE:
           // Broswe mode shows all changes from all repositories.
           selectedFileChanges = commitMergeFileChanges;
           showNonHgRepos = true;
@@ -353,7 +397,7 @@ var DiffViewModel = (function () {
       if (repositoryStack !== this._activeRepositoryStack) {
         return;
       }
-      (0, _nuclideAnalytics.track)('diff-view-update-timeline-revisions', {
+      (0, (_nuclideAnalytics2 || _nuclideAnalytics()).track)('diff-view-update-timeline-revisions', {
         revisionsCount: '' + revisionsState.revisions.length
       });
       this._onUpdateRevisionsState(revisionsState);
@@ -420,7 +464,7 @@ var DiffViewModel = (function () {
       if (viewMode === this._state.viewMode) {
         return;
       }
-      (0, _nuclideAnalytics.track)('diff-view-switch-mode', {
+      (0, (_nuclideAnalytics2 || _nuclideAnalytics()).track)('diff-view-switch-mode', {
         viewMode: viewMode
       });
       this._setState(_extends({}, this._state, {
@@ -442,11 +486,11 @@ var DiffViewModel = (function () {
         }));
       }
       switch (this._state.viewMode) {
-        case _constants.DiffMode.COMMIT_MODE:
+        case (_constants2 || _constants()).DiffMode.COMMIT_MODE:
           this._loadCommitModeState();
           break;
-        case _constants.DiffMode.PUBLISH_MODE:
-          this._loadPublishModeState()['catch'](_notifications.notifyInternalError);
+        case (_constants2 || _constants()).DiffMode.PUBLISH_MODE:
+          this._loadPublishModeState().catch((_notifications2 || _notifications()).notifyInternalError);
           break;
       }
     }
@@ -459,7 +503,7 @@ var DiffViewModel = (function () {
 
       function getMatchingFileChange(filePaths, parentPath) {
         return filePaths.filter(function (filePath) {
-          return _nuclideRemoteUri2['default'].contains(parentPath, filePath);
+          return (_nuclideRemoteUri2 || _nuclideRemoteUri()).default.contains(parentPath, filePath);
         })[0];
       }
       var dirtyFilePaths = Array.from(repositoryStack.getDirtyFileChanges().keys());
@@ -479,26 +523,26 @@ var DiffViewModel = (function () {
       }
 
       if (diffPath == null) {
-        var repository = (0, _nuclideHgGitBridge.repositoryForPath)(entityOption.file || entityOption.directory || '');
+        var repository = (0, (_nuclideHgGitBridge2 || _nuclideHgGitBridge()).repositoryForPath)(entityOption.file || entityOption.directory || '');
         if (repository != null && repository.getType() === 'hg' && this._repositoryStacks.has(repository)) {
           var repositoryStack = this._repositoryStacks.get(repository);
-          (0, _assert2['default'])(repositoryStack);
+          (0, (_assert2 || _assert()).default)(repositoryStack);
           this._setActiveRepositoryStack(repositoryStack);
         } else if (this._activeRepositoryStack == null) {
           // This can only happen none of the project folders are Mercurial repositories.
           // However, this is caught earlier with a better error message.
           throw new Error('No active repository stack and non-diffable entity:' + JSON.stringify(entityOption));
         } else {
-          (0, _nuclideLogging.getLogger)().error('Non diffable entity:', entityOption);
+          (0, (_nuclideLogging2 || _nuclideLogging()).getLogger)().error('Non diffable entity:', entityOption);
         }
       }
       var viewMode = entityOption.viewMode;
       var commitMode = entityOption.commitMode;
 
       if (viewMode !== this._state.viewMode || commitMode !== this._state.commitMode) {
-        if (viewMode === _constants.DiffMode.COMMIT_MODE) {
-          (0, _assert2['default'])(commitMode, 'DIFF: Commit Mode not set!');
-          this.setViewMode(_constants.DiffMode.COMMIT_MODE, false);
+        if (viewMode === (_constants2 || _constants()).DiffMode.COMMIT_MODE) {
+          (0, (_assert2 || _assert()).default)(commitMode, 'DIFF: Commit Mode not set!');
+          this.setViewMode((_constants2 || _constants()).DiffMode.COMMIT_MODE, false);
           this.setCommitMode(commitMode, false);
           this._loadModeState(true);
         } else if (viewMode) {
@@ -519,41 +563,28 @@ var DiffViewModel = (function () {
         return;
       }
       this._activeSubscriptions.dispose();
-      this._activeSubscriptions = new _atom.CompositeDisposable();
+      this._activeSubscriptions = new (_atom2 || _atom()).CompositeDisposable();
       // TODO(most): Show progress indicator: t8991676
-      var buffer = (0, _nuclideAtomHelpers.bufferForUri)(filePath);
-      var file = buffer.file;
-
-      if (file != null) {
-        this._activeSubscriptions.add(file.onDidChange((0, _nuclideCommons.debounce)(function () {
-          return _this4._onDidFileChange(filePath)['catch'](_notifications.notifyInternalError);
-        }, FILE_CHANGE_DEBOUNCE_MS, false)));
-      }
+      var buffer = (0, (_nuclideAtomHelpers2 || _nuclideAtomHelpers()).bufferForUri)(filePath);
+      this._activeSubscriptions.add(buffer.onDidReload(function () {
+        return _this4._onActiveBufferReload(filePath, buffer).catch((_notifications2 || _notifications()).notifyInternalError);
+      }));
       this._activeSubscriptions.add(buffer.onDidChangeModified(this.emitActiveBufferChangeModified.bind(this)));
-      // Modified events could be late that it doesn't capture the latest edits/ state changes.
+      // Modified events could be late that it doesn't capture the latest edits / state changes.
       // Hence, it's safe to re-emit changes when stable from changes.
       this._activeSubscriptions.add(buffer.onDidStopChanging(this.emitActiveBufferChangeModified.bind(this)));
-      // Update `savedContents` on buffer save requests.
-      this._activeSubscriptions.add(buffer.onWillSave(function () {
-        return _this4._onWillSaveActiveBuffer(buffer);
-      }));
-      (0, _nuclideAnalytics.track)('diff-view-open-file', { filePath: filePath });
-      this._updateActiveDiffState(filePath)['catch'](_notifications.notifyInternalError);
+      (0, (_nuclideAnalytics2 || _nuclideAnalytics()).track)('diff-view-open-file', { filePath: filePath });
+      this._updateActiveDiffState(filePath).catch((_notifications2 || _notifications()).notifyInternalError);
     }
   }, {
-    key: '_onDidFileChange',
-    decorators: [(0, _nuclideAnalytics.trackTiming)('diff-view.file-change-update')],
-    value: _asyncToGenerator(function* (filePath) {
-      if (this._activeFileState.filePath !== filePath) {
-        return;
-      }
-      var filesystemContents = yield (0, _utils.getFileSystemContents)(filePath);
+    key: '_onActiveBufferReload',
+    value: _asyncToGenerator(function* (filePath, buffer) {
       var _activeFileState = this._activeFileState;
       var committedContents = _activeFileState.oldContents;
       var revisionInfo = _activeFileState.compareRevisionInfo;
 
-      (0, _assert2['default'])(revisionInfo, 'Diff View: Revision info must be defined to update changed state');
-      yield this._updateDiffStateIfChanged(filePath, committedContents, filesystemContents, revisionInfo);
+      (0, (_assert2 || _assert()).default)(revisionInfo, 'Diff View: Revision info must be defined to update changed state');
+      yield this._updateDiffStateIfChanged(filePath, committedContents, buffer.getText(), revisionInfo);
     })
   }, {
     key: 'emitActiveBufferChangeModified',
@@ -570,39 +601,22 @@ var DiffViewModel = (function () {
     value: function isActiveBufferModified() {
       var filePath = this._activeFileState.filePath;
 
-      var buffer = (0, _nuclideAtomHelpers.bufferForUri)(filePath);
+      var buffer = (0, (_nuclideAtomHelpers2 || _nuclideAtomHelpers()).bufferForUri)(filePath);
       return buffer.isModified();
     }
   }, {
     key: '_updateDiffStateIfChanged',
-    value: function _updateDiffStateIfChanged(filePath, committedContents, filesystemContents, revisionInfo) {
-      var _activeFileState2 = this._activeFileState;
-      var activeFilePath = _activeFileState2.filePath;
-      var newContents = _activeFileState2.newContents;
-      var savedContents = _activeFileState2.savedContents;
-
-      if (filePath !== activeFilePath) {
-        return Promise.resolve();
+    value: _asyncToGenerator(function* (filePath, committedContents, filesystemContents, revisionInfo) {
+      if (this._activeFileState.filePath !== filePath) {
+        return;
       }
       var updatedDiffState = {
         committedContents: committedContents,
         filesystemContents: filesystemContents,
         revisionInfo: revisionInfo
       };
-      (0, _assert2['default'])(savedContents, 'savedContents is not defined while updating diff state!');
-      if (savedContents === newContents || filesystemContents === newContents) {
-        return this._updateDiffState(filePath, updatedDiffState, savedContents);
-      }
-      // The user have edited since the last update.
-      if (filesystemContents === savedContents) {
-        // The changes haven't touched the filesystem, keep user edits.
-        return this._updateDiffState(filePath, _extends({}, updatedDiffState, { filesystemContents: newContents }), savedContents);
-      } else {
-        // The committed and filesystem state have changed, notify of override.
-        (0, _notifications.notifyFilesystemOverrideUserEdits)(filePath);
-        return this._updateDiffState(filePath, updatedDiffState, filesystemContents);
-      }
-    }
+      return this._updateDiffState(filePath, updatedDiffState);
+    })
   }, {
     key: 'setNewContents',
     value: function setNewContents(newContents) {
@@ -611,11 +625,11 @@ var DiffViewModel = (function () {
   }, {
     key: 'setRevision',
     value: function setRevision(revision) {
-      (0, _nuclideAnalytics.track)('diff-view-set-revision');
+      (0, (_nuclideAnalytics2 || _nuclideAnalytics()).track)('diff-view-set-revision');
       var repositoryStack = this._activeRepositoryStack;
-      (0, _assert2['default'])(repositoryStack, 'There must be an active repository stack!');
+      (0, (_assert2 || _assert()).default)(repositoryStack, 'There must be an active repository stack!');
       this._activeFileState = _extends({}, this._activeFileState, { compareRevisionInfo: revision });
-      repositoryStack.setRevision(revision)['catch'](_notifications.notifyInternalError);
+      repositoryStack.setRevision(revision).catch((_notifications2 || _notifications()).notifyInternalError);
     }
   }, {
     key: 'getActiveFileState',
@@ -634,11 +648,11 @@ var DiffViewModel = (function () {
         return;
       }
       var fileDiffState = yield this._fetchFileDiff(filePath);
-      yield this._updateDiffState(filePath, fileDiffState, fileDiffState.filesystemContents);
+      yield this._updateDiffState(filePath, fileDiffState);
     })
   }, {
     key: '_updateDiffState',
-    value: _asyncToGenerator(function* (filePath, fileDiffState, savedContents) {
+    value: _asyncToGenerator(function* (filePath, fileDiffState) {
       var oldContents = fileDiffState.committedContents;
       var newContents = fileDiffState.filesystemContents;
       var revisionInfo = fileDiffState.revisionInfo;
@@ -649,7 +663,6 @@ var DiffViewModel = (function () {
         filePath: filePath,
         oldContents: oldContents,
         newContents: newContents,
-        savedContents: savedContents,
         compareRevisionInfo: revisionInfo,
         fromRevisionTitle: '' + hash + (bookmarks.length === 0 ? '' : ' - (' + bookmarks.join(', ') + ')'),
         toRevisionTitle: 'Filesystem / Editor'
@@ -667,7 +680,7 @@ var DiffViewModel = (function () {
     }
   }, {
     key: '_fetchFileDiff',
-    decorators: [(0, _nuclideAnalytics.trackTiming)('diff-view.hg-state-update')],
+    decorators: [(0, (_nuclideAnalytics2 || _nuclideAnalytics()).trackTiming)('diff-view.hg-state-update')],
     value: _asyncToGenerator(function* (filePath) {
       var repositoryStack = this._getRepositoryStackForPath(filePath);
 
@@ -679,7 +692,7 @@ var DiffViewModel = (function () {
 
       // Intentionally fetch the filesystem contents after getting the committed contents
       // to make sure we have the latest filesystem version.
-      var buffer = yield (0, _nuclideAtomHelpers.loadBufferForUri)(filePath);
+      var buffer = yield (0, (_nuclideAtomHelpers2 || _nuclideAtomHelpers()).loadBufferForUri)(filePath);
       return _extends({}, hgDiff, {
         filesystemContents: buffer.getText()
       });
@@ -689,7 +702,7 @@ var DiffViewModel = (function () {
     value: function _getRepositoryStackForPath(filePath) {
       var hgRepository = hgRepositoryForPath(filePath);
       var repositoryStack = this._repositoryStacks.get(hgRepository);
-      (0, _assert2['default'])(repositoryStack, 'There must be an repository stack for a given repository!');
+      (0, (_assert2 || _assert()).default)(repositoryStack, 'There must be an repository stack for a given repository!');
       return repositoryStack;
     }
   }, {
@@ -707,31 +720,31 @@ var DiffViewModel = (function () {
     })
   }, {
     key: 'saveActiveFile',
-    decorators: [(0, _nuclideAnalytics.trackTiming)('diff-view.save-file')],
+    decorators: [(0, (_nuclideAnalytics2 || _nuclideAnalytics()).trackTiming)('diff-view.save-file')],
     value: function saveActiveFile() {
       var filePath = this._activeFileState.filePath;
 
-      (0, _nuclideAnalytics.track)('diff-view-save-file', { filePath: filePath });
-      return this._saveFile(filePath)['catch'](_notifications.notifyInternalError);
+      (0, (_nuclideAnalytics2 || _nuclideAnalytics()).track)('diff-view-save-file', { filePath: filePath });
+      return this._saveFile(filePath).catch((_notifications2 || _notifications()).notifyInternalError);
     }
   }, {
     key: 'publishDiff',
-    decorators: [(0, _nuclideAnalytics.trackTiming)('diff-view.publish-diff')],
+    decorators: [(0, (_nuclideAnalytics2 || _nuclideAnalytics()).trackTiming)('diff-view.publish-diff')],
     value: _asyncToGenerator(function* (publishMessage) {
       this._setState(_extends({}, this._state, {
         publishMessage: publishMessage,
-        publishModeState: _constants.PublishModeState.AWAITING_PUBLISH
+        publishModeState: (_constants2 || _constants()).PublishModeState.AWAITING_PUBLISH
       }));
       var publishMode = this._state.publishMode;
 
-      (0, _nuclideAnalytics.track)('diff-view-publish', {
+      (0, (_nuclideAnalytics2 || _nuclideAnalytics()).track)('diff-view-publish', {
         publishMode: publishMode
       });
-      var commitMessage = publishMode === _constants.PublishMode.CREATE ? publishMessage : null;
+      var commitMessage = publishMode === (_constants2 || _constants()).PublishMode.CREATE ? publishMessage : null;
       var cleanResult = yield this._promptToCleanDirtyChanges(commitMessage);
       if (cleanResult == null) {
         this._setState(_extends({}, this._state, {
-          publishModeState: _constants.PublishModeState.READY
+          publishModeState: (_constants2 || _constants()).PublishModeState.READY
         }));
         return;
       }
@@ -740,27 +753,28 @@ var DiffViewModel = (function () {
 
       try {
         switch (publishMode) {
-          case _constants.PublishMode.CREATE:
+          case (_constants2 || _constants()).PublishMode.CREATE:
             // Create uses `verbatim` and `n` answer buffer
             // and that implies that untracked files will be ignored.
             var createdPhabricatorRevision = yield this._createPhabricatorRevision(publishMessage, amended);
             notifyRevisionStatus(createdPhabricatorRevision, 'created');
             break;
-          case _constants.PublishMode.UPDATE:
+          case (_constants2 || _constants()).PublishMode.UPDATE:
             var updatedPhabricatorRevision = yield this._updatePhabricatorRevision(publishMessage, allowUntracked);
             notifyRevisionStatus(updatedPhabricatorRevision, 'updated');
             break;
           default:
             throw new Error('Unknown publish mode \'' + publishMode + '\'');
         }
-        // Wait a bit until the user sees the success push message.
-        yield _nuclideCommons.promises.awaitMilliSeconds(2000);
         // Populate Publish UI with the most recent data after a successful push.
-        this._loadModeState(true);
-      } catch (error) {
-        (0, _notifications.notifyInternalError)(error, true /*persist the error (user dismissable)*/);
         this._setState(_extends({}, this._state, {
-          publishModeState: _constants.PublishModeState.PUBLISH_ERROR
+          publishModeState: (_constants2 || _constants()).PublishModeState.READY
+        }));
+        this.setViewMode((_constants2 || _constants()).DiffMode.BROWSE_MODE);
+      } catch (error) {
+        (0, (_notifications2 || _notifications()).notifyInternalError)(error, true /*persist the error (user dismissable)*/);
+        this._setState(_extends({}, this._state, {
+          publishModeState: (_constants2 || _constants()).PublishModeState.PUBLISH_ERROR
         }));
       }
     })
@@ -768,8 +782,15 @@ var DiffViewModel = (function () {
     key: '_promptToCleanDirtyChanges',
     value: _asyncToGenerator(function* (commitMessage) {
       var activeStack = this._activeRepositoryStack;
-      (0, _assert2['default'])(activeStack != null, 'No active repository stack when cleaning dirty changes');
+      (0, (_assert2 || _assert()).default)(activeStack != null, 'No active repository stack when cleaning dirty changes');
+
+      var hgRepo = activeStack.getRepository();
+      var checkingStatusNotification = atom.notifications.addInfo('Running `hg status` to check dirty changes to Add/Amend/Revert', { dismissable: true });
+      yield hgRepo.getStatuses([hgRepo.getProjectDirectory()]);
+      checkingStatusNotification.dismiss();
+
       var dirtyFileChanges = activeStack.getDirtyFileChanges();
+
       var shouldAmend = false;
       var amended = false;
       var allowUntracked = false;
@@ -780,7 +801,7 @@ var DiffViewModel = (function () {
         };
       }
       var untrackedChanges = new Map(Array.from(dirtyFileChanges.entries()).filter(function (fileChange) {
-        return fileChange[1] === _constants.FileChangeStatus.UNTRACKED;
+        return fileChange[1] === (_constants2 || _constants()).FileChangeStatus.UNTRACKED;
       }));
       if (untrackedChanges.size > 0) {
         var untrackedChoice = atom.confirm({
@@ -788,7 +809,7 @@ var DiffViewModel = (function () {
           detailedMessage: getFileStatusListMessage(untrackedChanges),
           buttons: ['Cancel', 'Add', 'Allow Untracked']
         });
-        (0, _nuclideLogging.getLogger)().info('Untracked changes choice:', untrackedChoice);
+        (0, (_nuclideLogging2 || _nuclideLogging()).getLogger)().info('Untracked changes choice:', untrackedChoice);
         if (untrackedChoice === 0) /*Cancel*/{
             return null;
           } else if (untrackedChoice === 1) /*Add*/{
@@ -799,7 +820,7 @@ var DiffViewModel = (function () {
           }
       }
       var revertableChanges = new Map(Array.from(dirtyFileChanges.entries()).filter(function (fileChange) {
-        return fileChange[1] !== _constants.FileChangeStatus.UNTRACKED;
+        return fileChange[1] !== (_constants2 || _constants()).FileChangeStatus.UNTRACKED;
       }));
       if (revertableChanges.size > 0) {
         var cleanChoice = atom.confirm({
@@ -807,12 +828,12 @@ var DiffViewModel = (function () {
           detailedMessage: getFileStatusListMessage(revertableChanges),
           buttons: ['Cancel', 'Revert', 'Amend']
         });
-        (0, _nuclideLogging.getLogger)().info('Dirty changes clean choice:', cleanChoice);
+        (0, (_nuclideLogging2 || _nuclideLogging()).getLogger)().info('Dirty changes clean choice:', cleanChoice);
         if (cleanChoice === 0) /*Cancel*/{
             return null;
           } else if (cleanChoice === 1) /*Revert*/{
             var canRevertFilePaths = Array.from(dirtyFileChanges.entries()).filter(function (fileChange) {
-              return fileChange[1] !== _constants.FileChangeStatus.UNTRACKED;
+              return fileChange[1] !== (_constants2 || _constants()).FileChangeStatus.UNTRACKED;
             }).map(function (fileChange) {
               return fileChange[0];
             });
@@ -846,35 +867,36 @@ var DiffViewModel = (function () {
       var filePath = this._getArcanistFilePath();
       var lastCommitMessage = yield this._loadActiveRepositoryLatestCommitMessage();
       var activeRepositoryStack = this._activeRepositoryStack;
-      (0, _assert2['default'])(activeRepositoryStack, 'No active repository stack');
+      (0, (_assert2 || _assert()).default)(activeRepositoryStack, 'No active repository stack');
       if (!amended && publishMessage !== lastCommitMessage) {
-        (0, _nuclideLogging.getLogger)().info('Amending commit with the updated message');
+        (0, (_nuclideLogging2 || _nuclideLogging()).getLogger)().info('Amending commit with the updated message');
         yield activeRepositoryStack.amend(publishMessage);
         atom.notifications.addSuccess('Commit amended with the updated message');
       }
 
       this._publishUpdates.next({ level: 'log', text: 'Creating new revision...\n' });
-      var stream = _nuclideArcanistClient2['default'].createPhabricatorRevision(filePath);
+      var stream = (_nuclideArcanistClient2 || _nuclideArcanistClient()).default.createPhabricatorRevision(filePath);
       yield this._processArcanistOutput(stream);
+      var asyncHgRepo = activeRepositoryStack.getRepository().async;
+      var headCommitMessagePromise = asyncHgRepo.getHeadCommitMessage();
       // Invalidate the current revisions state because the current commit info has changed.
       activeRepositoryStack.getRevisionsStatePromise();
-
-      var _ref7 = yield this._getActiveHeadRevisionDetails();
-
-      var phabricatorRevision = _ref7.phabricatorRevision;
-
-      return phabricatorRevision;
+      var commitMessage = yield headCommitMessagePromise;
+      if (commitMessage == null) {
+        return null;
+      }
+      return (0, (_nuclideArcanistBaseLibUtils2 || _nuclideArcanistBaseLibUtils()).getPhabricatorRevisionFromCommitMessage)(commitMessage);
     })
   }, {
     key: '_updatePhabricatorRevision',
     value: _asyncToGenerator(function* (publishMessage, allowUntracked) {
       var filePath = this._getArcanistFilePath();
 
-      var _ref8 = yield this._getActiveHeadRevisionDetails();
+      var _ref7 = yield this._getActiveHeadRevisionDetails();
 
-      var phabricatorRevision = _ref8.phabricatorRevision;
+      var phabricatorRevision = _ref7.phabricatorRevision;
 
-      (0, _assert2['default'])(phabricatorRevision != null, 'A phabricator revision must exist to update!');
+      (0, (_assert2 || _assert()).default)(phabricatorRevision != null, 'A phabricator revision must exist to update!');
       var updateTemplate = getRevisionUpdateMessage(phabricatorRevision).trim();
       var userUpdateMessage = publishMessage.replace(updateTemplate, '').trim();
       if (userUpdateMessage.length === 0) {
@@ -885,14 +907,14 @@ var DiffViewModel = (function () {
         level: 'log',
         text: 'Updating revision `' + phabricatorRevision.id + '`...\n'
       });
-      var stream = _nuclideArcanistClient2['default'].updatePhabricatorRevision(filePath, userUpdateMessage, allowUntracked);
+      var stream = (_nuclideArcanistClient2 || _nuclideArcanistClient()).default.updatePhabricatorRevision(filePath, userUpdateMessage, allowUntracked);
       yield this._processArcanistOutput(stream);
       return phabricatorRevision;
     })
   }, {
     key: '_processArcanistOutput',
     value: _asyncToGenerator(function* (stream) {
-      var _Rx$Observable,
+      var _default$Observable,
           _this5 = this;
 
       stream = stream
@@ -920,7 +942,7 @@ var DiffViewModel = (function () {
             decodedJSON = JSON.parse(stdout);
           } catch (err) {
             messages.push({ type: 'phutil:out', message: stdout + '\n' });
-            (0, _nuclideLogging.getLogger)().error('Invalid JSON encountered: ' + stdout);
+            (0, (_nuclideLogging2 || _nuclideLogging()).getLogger)().error('Invalid JSON encountered: ' + stdout);
           }
           if (decodedJSON != null) {
             messages.push(decodedJSON);
@@ -945,7 +967,7 @@ var DiffViewModel = (function () {
           case 'error':
             throw new Error(decodedJSON.message);
           default:
-            (0, _nuclideLogging.getLogger)().info('Unhandled message type:', decodedJSON.type, 'Message payload:', decodedJSON.message);
+            (0, (_nuclideLogging2 || _nuclideLogging()).getLogger)().info('Unhandled message type:', decodedJSON.type, 'Message payload:', decodedJSON.message);
             break;
         }
         return messages;
@@ -966,7 +988,7 @@ var DiffViewModel = (function () {
         var levelStream = stream.filter(function (message) {
           return message.level === _level;
         }).share();
-        levelStreams.push((0, _nuclideCommons.bufferUntil)(levelStream, function (message) {
+        levelStreams.push((0, (_nuclideCommons2 || _nuclideCommons()).bufferUntil)(levelStream, function (message) {
           return message.text.endsWith('\n');
         }));
       };
@@ -974,7 +996,7 @@ var DiffViewModel = (function () {
       for (var _level of ['log', 'error']) {
         _loop(_level);
       }
-      yield (_Rx$Observable = _rxjs2['default'].Observable).merge.apply(_Rx$Observable, levelStreams)['do'](function (messages) {
+      yield (_default$Observable = (_rxjs2 || _rxjs()).default.Observable).merge.apply(_default$Observable, levelStreams).do(function (messages) {
         if (messages.length > 0) {
           _this5._publishUpdates.next({
             level: messages[0].level,
@@ -986,16 +1008,9 @@ var DiffViewModel = (function () {
       }).toPromise();
     })
   }, {
-    key: '_onWillSaveActiveBuffer',
-    value: function _onWillSaveActiveBuffer(buffer) {
-      this._setActiveFileState(_extends({}, this._activeFileState, {
-        savedContents: buffer.getText()
-      }));
-    }
-  }, {
     key: '_saveFile',
     value: _asyncToGenerator(function* (filePath) {
-      var buffer = (0, _nuclideAtomHelpers.bufferForUri)(filePath);
+      var buffer = (0, (_nuclideAtomHelpers2 || _nuclideAtomHelpers()).bufferForUri)(filePath);
       if (buffer == null) {
         throw new Error('Could not find file buffer to save: `' + filePath + '`');
       }
@@ -1036,7 +1051,7 @@ var DiffViewModel = (function () {
     })
   }, {
     key: '_fetchInlineComponents',
-    decorators: [(0, _nuclideAnalytics.trackTiming)('diff-view.fetch-comments')],
+    decorators: [(0, (_nuclideAnalytics2 || _nuclideAnalytics()).trackTiming)('diff-view.fetch-comments')],
     value: _asyncToGenerator(function* (filePath) {
       // TODO(most): Fix UI rendering and re-introduce: t8174332
       // provider.composeUiElements(filePath)
@@ -1052,55 +1067,60 @@ var DiffViewModel = (function () {
     key: 'setUiProviders',
     value: function setUiProviders(uiProviders) {
       this._uiProviders = uiProviders;
-      this._updateInlineComponents()['catch'](_notifications.notifyInternalError);
+      this._updateInlineComponents().catch((_notifications2 || _notifications()).notifyInternalError);
     }
   }, {
     key: '_loadCommitModeState',
     value: _asyncToGenerator(function* () {
       this._setState(_extends({}, this._state, {
-        commitModeState: _constants.CommitModeState.LOADING_COMMIT_MESSAGE
+        commitModeState: (_constants2 || _constants()).CommitModeState.LOADING_COMMIT_MESSAGE
       }));
 
       var commitMessage = null;
       try {
         if (this._state.commitMessage != null) {
           commitMessage = this._state.commitMessage;
-        } else if (this._state.commitMode === _constants.CommitMode.COMMIT) {
+        } else if (this._state.commitMode === (_constants2 || _constants()).CommitMode.COMMIT) {
           commitMessage = yield this._loadActiveRepositoryTemplateCommitMessage();
         } else {
           commitMessage = yield this._loadActiveRepositoryLatestCommitMessage();
         }
       } catch (error) {
-        (0, _notifications.notifyInternalError)(error);
+        (0, (_notifications2 || _notifications()).notifyInternalError)(error);
       } finally {
         this._setState(_extends({}, this._state, {
           commitMessage: commitMessage,
-          commitModeState: _constants.CommitModeState.READY
+          commitModeState: (_constants2 || _constants()).CommitModeState.READY
         }));
       }
     })
   }, {
     key: '_loadPublishModeState',
     value: _asyncToGenerator(function* () {
+      if (this._state.publishModeState === (_constants2 || _constants()).PublishModeState.AWAITING_PUBLISH) {
+        // That must be an a update triggered by an `amend` operation,
+        // done as part of diffing.
+        return;
+      }
       var publishMessage = this._state.publishMessage;
       this._setState(_extends({}, this._state, {
-        publishMode: _constants.PublishMode.CREATE,
-        publishModeState: _constants.PublishModeState.LOADING_PUBLISH_MESSAGE,
+        publishMode: (_constants2 || _constants()).PublishMode.CREATE,
+        publishModeState: (_constants2 || _constants()).PublishModeState.LOADING_PUBLISH_MESSAGE,
         publishMessage: null,
         headRevision: null
       }));
 
-      var _ref9 = yield this._getActiveHeadRevisionDetails();
+      var _ref8 = yield this._getActiveHeadRevisionDetails();
 
-      var headRevision = _ref9.headRevision;
-      var phabricatorRevision = _ref9.phabricatorRevision;
+      var headRevision = _ref8.headRevision;
+      var phabricatorRevision = _ref8.phabricatorRevision;
 
       if (publishMessage == null) {
         publishMessage = phabricatorRevision != null ? getRevisionUpdateMessage(phabricatorRevision) : headRevision.description;
       }
       this._setState(_extends({}, this._state, {
-        publishMode: phabricatorRevision != null ? _constants.PublishMode.UPDATE : _constants.PublishMode.CREATE,
-        publishModeState: _constants.PublishModeState.READY,
+        publishMode: phabricatorRevision != null ? (_constants2 || _constants()).PublishMode.UPDATE : (_constants2 || _constants()).PublishMode.CREATE,
+        publishModeState: (_constants2 || _constants()).PublishModeState.READY,
         publishMessage: publishMessage,
         headRevision: headRevision
       }));
@@ -1114,9 +1134,9 @@ var DiffViewModel = (function () {
       }
       var revisions = revisionsState.revisions;
 
-      (0, _assert2['default'])(revisions.length > 0, 'Diff View Error: Zero Revisions');
+      (0, (_assert2 || _assert()).default)(revisions.length > 0, 'Diff View Error: Zero Revisions');
       var headRevision = revisions[revisions.length - 1];
-      var phabricatorRevision = _nuclideArcanistClient2['default'].getPhabricatorRevisionFromCommitMessage(headRevision.description);
+      var phabricatorRevision = (0, (_nuclideArcanistBaseLibUtils2 || _nuclideArcanistBaseLibUtils()).getPhabricatorRevisionFromCommitMessage)(headRevision.description);
       return {
         headRevision: headRevision,
         phabricatorRevision: phabricatorRevision
@@ -1129,10 +1149,10 @@ var DiffViewModel = (function () {
         throw new Error('Diff View: No active file or repository open');
       }
       var revisionsState = yield this.getActiveRevisionsState();
-      (0, _assert2['default'])(revisionsState, 'Diff View Internal Error: revisionsState cannot be null');
+      (0, (_assert2 || _assert()).default)(revisionsState, 'Diff View Internal Error: revisionsState cannot be null');
       var revisions = revisionsState.revisions;
 
-      (0, _assert2['default'])(revisions.length > 0, 'Diff View Error: Cannot amend non-existing commit');
+      (0, (_assert2 || _assert()).default)(revisions.length > 0, 'Diff View Error: Cannot amend non-existing commit');
       return revisions[revisions.length - 1].description;
     })
   }, {
@@ -1165,7 +1185,7 @@ var DiffViewModel = (function () {
     }
   }, {
     key: 'commit',
-    decorators: [(0, _nuclideAnalytics.trackTiming)('diff-view.commit')],
+    decorators: [(0, (_nuclideAnalytics2 || _nuclideAnalytics()).trackTiming)('diff-view.commit')],
     value: _asyncToGenerator(function* (message) {
       if (message === '') {
         atom.notifications.addError('Commit aborted', { detail: 'Commit message empty' });
@@ -1174,24 +1194,24 @@ var DiffViewModel = (function () {
 
       this._setState(_extends({}, this._state, {
         commitMessage: message,
-        commitModeState: _constants.CommitModeState.AWAITING_COMMIT
+        commitModeState: (_constants2 || _constants()).CommitModeState.AWAITING_COMMIT
       }));
 
       var commitMode = this._state.commitMode;
 
-      (0, _nuclideAnalytics.track)('diff-view-commit', {
+      (0, (_nuclideAnalytics2 || _nuclideAnalytics()).track)('diff-view-commit', {
         commitMode: commitMode
       });
 
       var activeStack = this._activeRepositoryStack;
       try {
-        (0, _assert2['default'])(activeStack, 'No active repository stack');
+        (0, (_assert2 || _assert()).default)(activeStack, 'No active repository stack');
         switch (commitMode) {
-          case _constants.CommitMode.COMMIT:
+          case (_constants2 || _constants()).CommitMode.COMMIT:
             yield activeStack.commit(message);
             atom.notifications.addSuccess('Commit created');
             break;
-          case _constants.CommitMode.AMEND:
+          case (_constants2 || _constants()).CommitMode.AMEND:
             yield activeStack.amend(message);
             atom.notifications.addSuccess('Commit amended');
             break;
@@ -1199,11 +1219,11 @@ var DiffViewModel = (function () {
 
         // Force trigger an update to the revisions to update the UI state with the new commit info.
         activeStack.getRevisionsStatePromise();
-        this._loadModeState(true);
+        this.setViewMode((_constants2 || _constants()).DiffMode.BROWSE_MODE);
       } catch (e) {
         atom.notifications.addError('Error creating commit', { detail: 'Details: ' + e.stdout });
         this._setState(_extends({}, this._state, {
-          commitModeState: _constants.CommitModeState.READY
+          commitModeState: (_constants2 || _constants()).CommitModeState.READY
         }));
         return;
       }
@@ -1221,7 +1241,7 @@ var DiffViewModel = (function () {
       if (this._state.commitMode === commitMode) {
         return;
       }
-      (0, _nuclideAnalytics.track)('diff-view-switch-commit-mode', {
+      (0, (_nuclideAnalytics2 || _nuclideAnalytics()).track)('diff-view-switch-commit-mode', {
         commitMode: commitMode
       });
       this._setState(_extends({}, this._state, {

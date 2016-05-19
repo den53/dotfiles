@@ -17,41 +17,63 @@ exports.deactivate = deactivate;
 exports.consumeToolBar = consumeToolBar;
 exports.consumeGadgetsService = consumeGadgetsService;
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
 
 // Imports from non-Nuclide modules.
 
-var _assert = require('assert');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _assert2 = _interopRequireDefault(_assert);
+var _assert2;
 
-var _atom = require('atom');
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
-var _os = require('os');
+var _atom2;
 
-var _os2 = _interopRequireDefault(_os);
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var _rxjs = require('rxjs');
+var _os2;
 
-var _rxjs2 = _interopRequireDefault(_rxjs);
+function _os() {
+  return _os2 = _interopRequireDefault(require('os'));
+}
+
+var _rxjs2;
+
+function _rxjs() {
+  return _rxjs2 = _interopRequireDefault(require('rxjs'));
+}
 
 // Imports from other Nuclide packages.
 
-var _nuclideAnalytics = require('../../nuclide-analytics');
+var _nuclideAnalytics2;
 
-var _nuclideAtomHelpers = require('../../nuclide-atom-helpers');
+function _nuclideAnalytics() {
+  return _nuclideAnalytics2 = require('../../nuclide-analytics');
+}
 
-var _nuclideFeatureConfig = require('../../nuclide-feature-config');
+var _nuclideAtomHelpers2;
 
-var _nuclideFeatureConfig2 = _interopRequireDefault(_nuclideFeatureConfig);
+function _nuclideAtomHelpers() {
+  return _nuclideAtomHelpers2 = require('../../nuclide-atom-helpers');
+}
+
+var _nuclideFeatureConfig2;
+
+function _nuclideFeatureConfig() {
+  return _nuclideFeatureConfig2 = _interopRequireDefault(require('../../nuclide-feature-config'));
+}
 
 // Imports from within this Nuclide package.
 
-var _createHealthGadget = require('./createHealthGadget');
+var _createHealthGadget2;
 
-var _createHealthGadget2 = _interopRequireDefault(_createHealthGadget);
+function _createHealthGadget() {
+  return _createHealthGadget2 = _interopRequireDefault(require('./createHealthGadget'));
+}
 
 // We may as well declare these outside of Activation because most of them really are nullable.
 var currentConfig = {};
@@ -72,20 +94,20 @@ var paneItemState$ = null;
 var subscriptions = null;
 
 function activate(state) {
-  paneItemState$ = new _rxjs2['default'].BehaviorSubject(null);
-  subscriptions = new _atom.CompositeDisposable();
-  subscriptions.add(_nuclideFeatureConfig2['default'].onDidChange('nuclide-health', function (event) {
+  paneItemState$ = new (_rxjs2 || _rxjs()).default.BehaviorSubject(null);
+  subscriptions = new (_atom2 || _atom()).CompositeDisposable();
+  subscriptions.add((_nuclideFeatureConfig2 || _nuclideFeatureConfig()).default.onDidChange('nuclide-health', function (event) {
     currentConfig = event.newValue;
     // If user changes any config, update the health - and reset the polling cycles.
     updateViews();
     updateAnalytics();
-  }), atom.workspace.onDidChangeActivePaneItem(disposeActiveEditorDisposables), _nuclideAtomHelpers.atomEventDebounce.onWorkspaceDidStopChangingActivePaneItem(timeActiveEditorKeys));
-  currentConfig = _nuclideFeatureConfig2['default'].get('nuclide-health');
+  }), atom.workspace.onDidChangeActivePaneItem(disposeActiveEditorDisposables), (_nuclideAtomHelpers2 || _nuclideAtomHelpers()).atomEventDebounce.onWorkspaceDidStopChangingActivePaneItem(timeActiveEditorKeys));
+  currentConfig = (_nuclideFeatureConfig2 || _nuclideFeatureConfig()).default.get('nuclide-health');
   timeActiveEditorKeys();
   updateViews();
   updateAnalytics();
 
-  keyLatencyHistogram = new _nuclideAnalytics.HistogramTracker('keypress-latency',
+  keyLatencyHistogram = new (_nuclideAnalytics2 || _nuclideAnalytics()).HistogramTracker('keypress-latency',
   /* maxValue */500,
   /* buckets */25,
   /* intervalSeconds */60);
@@ -121,15 +143,15 @@ function consumeToolBar(getToolBar) {
     tooltip: 'Toggle Nuclide health stats',
     priority: priority
   });
-  subscriptions.add(new _atom.Disposable(function () {
+  subscriptions.add(new (_atom2 || _atom()).Disposable(function () {
     toolBar.removeItems();
   }));
 }
 
 function consumeGadgetsService(gadgetsApi) {
-  (0, _assert2['default'])(paneItemState$);
-  var gadget = (0, _createHealthGadget2['default'])(paneItemState$);
-  return gadgetsApi.registerGadget(gadget);
+  (0, (_assert2 || _assert()).default)(paneItemState$);
+  var gadget = (0, (_createHealthGadget2 || _createHealthGadget()).default)(paneItemState$);
+  subscriptions.add(gadgetsApi.registerGadget(gadget));
 }
 
 function disposeActiveEditorDisposables() {
@@ -142,7 +164,7 @@ function disposeActiveEditorDisposables() {
 
 function timeActiveEditorKeys() {
   disposeActiveEditorDisposables();
-  activeEditorSubscriptions = new _atom.CompositeDisposable();
+  activeEditorSubscriptions = new (_atom2 || _atom()).CompositeDisposable();
 
   // If option is enabled, start timing latency of keys on the new text editor.
   if (!paneItemState$) {
@@ -184,7 +206,7 @@ function timeActiveEditorKeys() {
 
   activeEditorSubscriptions.add(
   // Remove the listener in a home-made disposable for when this editor is no-longer active.
-  new _atom.Disposable(function () {
+  new (_atom2 || _atom()).Disposable(function () {
     return view.removeEventListener('keydown', startKeyClock);
   }),
 
@@ -233,7 +255,7 @@ function updateAnalytics() {
           }
         });
       });
-      (0, _nuclideAnalytics.track)('nuclide-health', aggregateStats);
+      (0, (_nuclideAnalytics2 || _nuclideAnalytics()).track)('nuclide-health', aggregateStats);
       analyticsBuffer = [];
     })();
   }
@@ -275,7 +297,7 @@ function getHealthStats() {
 
   var result = _extends({}, stats, {
     heapPercentage: 100 * stats.heapUsed / stats.heapTotal, // Just for convenience.
-    cpuPercentage: _os2['default'].loadavg()[0], // 1 minute CPU average.
+    cpuPercentage: (_os2 || _os()).default.loadavg()[0], // 1 minute CPU average.
     lastKeyLatency: lastKeyLatency,
     keyLatency: keyLatency,
     activeHandles: getActiveHandles().length,

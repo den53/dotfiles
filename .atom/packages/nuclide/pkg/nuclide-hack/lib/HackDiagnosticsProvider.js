@@ -10,40 +10,66 @@ var _createDecoratedClass = (function () { function defineProperties(target, des
 
 var findDiagnostics = _asyncToGenerator(function* (editor) {
   var filePath = editor.getPath();
-  var hackLanguage = yield (0, _HackLanguage.getHackLanguageForUri)(filePath);
+  var hackLanguage = yield (0, (_HackLanguage2 || _HackLanguage()).getHackLanguageForUri)(filePath);
   if (!hackLanguage || !filePath) {
     return [];
   }
 
-  (0, _assert2['default'])(filePath);
+  (0, (_assert2 || _assert()).default)(filePath);
   var contents = editor.getText();
 
   return yield hackLanguage.getDiagnostics(filePath, contents);
 });
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _nuclideAnalytics = require('../../nuclide-analytics');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _HackLanguage = require('./HackLanguage');
+var _nuclideAnalytics2;
 
-var _nuclideCommons = require('../../nuclide-commons');
+function _nuclideAnalytics() {
+  return _nuclideAnalytics2 = require('../../nuclide-analytics');
+}
 
-var _nuclideDiagnosticsProviderBase = require('../../nuclide-diagnostics-provider-base');
+var _HackLanguage2;
 
-var _atom = require('atom');
+function _HackLanguage() {
+  return _HackLanguage2 = require('./HackLanguage');
+}
 
-var _assert = require('assert');
+var _nuclideCommons2;
 
-var _assert2 = _interopRequireDefault(_assert);
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
 
-var _nuclideHackCommon = require('../../nuclide-hack-common');
+var _nuclideDiagnosticsProviderBase2;
 
-var RequestSerializer = _nuclideCommons.promises.RequestSerializer;
+function _nuclideDiagnosticsProviderBase() {
+  return _nuclideDiagnosticsProviderBase2 = require('../../nuclide-diagnostics-provider-base');
+}
+
+var _atom2;
+
+function _atom() {
+  return _atom2 = require('atom');
+}
+
+var _assert2;
+
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
+
+var _nuclideHackCommon2;
+
+function _nuclideHackCommon() {
+  return _nuclideHackCommon2 = require('../../nuclide-hack-common');
+}
+
+var RequestSerializer = (_nuclideCommons2 || _nuclideCommons()).promises.RequestSerializer;
 
 /**
  * Currently, a diagnostic from Hack is an object with a "message" property.
@@ -64,7 +90,7 @@ var RequestSerializer = _nuclideCommons.promises.RequestSerializer;
 function extractRange(message) {
   // It's unclear why the 1-based to 0-based indexing works the way that it
   // does, but this has the desired effect in the UI, in practice.
-  return new _atom.Range([message['line'] - 1, message['start'] - 1], [message['line'] - 1, message['end']]);
+  return new (_atom2 || _atom()).Range([message['line'] - 1, message['start'] - 1], [message['line'] - 1, message['end']]);
 }
 
 // A trace object is very similar to an error object.
@@ -81,7 +107,7 @@ function hackMessageToDiagnosticMessage(hackDiagnostic) {
   var hackMessages = hackDiagnostic.message;
 
   var causeMessage = hackMessages[0];
-  (0, _assert2['default'])(causeMessage.path != null);
+  (0, (_assert2 || _assert()).default)(causeMessage.path != null);
   var diagnosticMessage = {
     scope: 'file',
     providerName: 'Hack: ' + hackMessages[0].code,
@@ -104,13 +130,13 @@ var HackDiagnosticsProvider = (function () {
   function HackDiagnosticsProvider(shouldRunOnTheFly, busySignalProvider) {
     var _this = this;
 
-    var ProviderBase = arguments.length <= 2 || arguments[2] === undefined ? _nuclideDiagnosticsProviderBase.DiagnosticsProviderBase : arguments[2];
+    var ProviderBase = arguments.length <= 2 || arguments[2] === undefined ? (_nuclideDiagnosticsProviderBase2 || _nuclideDiagnosticsProviderBase()).DiagnosticsProviderBase : arguments[2];
 
     _classCallCheck(this, HackDiagnosticsProvider);
 
     this._busySignalProvider = busySignalProvider;
     var utilsOptions = {
-      grammarScopes: _nuclideHackCommon.HACK_GRAMMARS_SET,
+      grammarScopes: (_nuclideHackCommon2 || _nuclideHackCommon()).HACK_GRAMMARS_SET,
       shouldRunOnTheFly: shouldRunOnTheFly,
       onTextEditorEvent: function onTextEditorEvent(editor) {
         return _this._runDiagnostics(editor);
@@ -135,7 +161,7 @@ var HackDiagnosticsProvider = (function () {
     }
   }, {
     key: '_runDiagnosticsImpl',
-    decorators: [(0, _nuclideAnalytics.trackTiming)('hack.run-diagnostics')],
+    decorators: [(0, (_nuclideAnalytics2 || _nuclideAnalytics()).trackTiming)('hack.run-diagnostics')],
     value: _asyncToGenerator(function* (textEditor) {
       var filePath = textEditor.getPath();
       if (!filePath) {
@@ -151,7 +177,7 @@ var HackDiagnosticsProvider = (function () {
       }
 
       var diagnostics = diagnosisResult.result;
-      var hackLanguage = yield (0, _HackLanguage.getHackLanguageForUri)(textEditor.getPath());
+      var hackLanguage = yield (0, (_HackLanguage2 || _HackLanguage()).getHackLanguageForUri)(textEditor.getPath());
       if (!hackLanguage) {
         return;
       }
@@ -214,7 +240,7 @@ var HackDiagnosticsProvider = (function () {
       // probably remove the activeTextEditor parameter.
       var activeTextEditor = atom.workspace.getActiveTextEditor();
       if (activeTextEditor) {
-        if (_nuclideHackCommon.HACK_GRAMMARS_SET.has(activeTextEditor.getGrammar().scopeName)) {
+        if ((_nuclideHackCommon2 || _nuclideHackCommon()).HACK_GRAMMARS_SET.has(activeTextEditor.getGrammar().scopeName)) {
           this._runDiagnostics(activeTextEditor);
         }
       }
@@ -237,7 +263,7 @@ var HackDiagnosticsProvider = (function () {
   }, {
     key: 'invalidateProjectPath',
     value: function invalidateProjectPath(projectPath) {
-      var hackLanguage = (0, _HackLanguage.getCachedHackLanguageForUri)(projectPath);
+      var hackLanguage = (0, (_HackLanguage2 || _HackLanguage()).getCachedHackLanguageForUri)(projectPath);
       if (!hackLanguage) {
         return;
       }
@@ -248,7 +274,7 @@ var HackDiagnosticsProvider = (function () {
     value: function _invalidatePathsForHackLanguage(hackLanguage) {
       var pathsToInvalidate = this._getPathsToInvalidate(hackLanguage);
       this._providerBase.publishMessageInvalidation({ scope: 'file', filePaths: pathsToInvalidate });
-      this._hackLanguageToFilePaths['delete'](hackLanguage);
+      this._hackLanguageToFilePaths.delete(hackLanguage);
     }
   }, {
     key: 'dispose',

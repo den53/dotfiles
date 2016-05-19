@@ -12,37 +12,67 @@ Object.defineProperty(exports, '__esModule', {
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _assert = require('assert');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _assert2 = _interopRequireDefault(_assert);
+var _assert2;
 
-var Ansi = require('./Ansi');
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
-var _require = require('atom');
+var _Ansi2;
 
-var TextBuffer = _require.TextBuffer;
+function _Ansi() {
+  return _Ansi2 = _interopRequireDefault(require('./Ansi'));
+}
 
-var _require2 = require('react-for-atom');
+var _atom2;
 
-var React = _require2.React;
-var ReactDOM = _require2.ReactDOM;
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var TestRunModel = require('./TestRunModel');
-var TestRunnerPanel = require('./ui/TestRunnerPanel');
-var TestSuiteModel = require('./TestSuiteModel');
+var _reactForAtom2;
+
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
+
+var _TestRunModel2;
+
+function _TestRunModel() {
+  return _TestRunModel2 = _interopRequireDefault(require('./TestRunModel'));
+}
+
+var _uiTestRunnerPanel2;
+
+function _uiTestRunnerPanel() {
+  return _uiTestRunnerPanel2 = _interopRequireDefault(require('./ui/TestRunnerPanel'));
+}
+
+var _TestSuiteModel2;
+
+function _TestSuiteModel() {
+  return _TestSuiteModel2 = _interopRequireDefault(require('./TestSuiteModel'));
+}
+
+var _os2;
+
+function _os() {
+  return _os2 = _interopRequireDefault(require('os'));
+}
+
+var _nuclideAnalytics2;
+
+function _nuclideAnalytics() {
+  return _nuclideAnalytics2 = require('../../nuclide-analytics');
+}
 
 var logger = require('../../nuclide-logging').getLogger();
-var os = require('os');
-
-var _require3 = require('../../nuclide-analytics');
-
-var track = _require3.track;
 
 var TestRunnerController = (function () {
   function TestRunnerController(state, testRunners) {
@@ -65,11 +95,11 @@ var TestRunnerController = (function () {
     this._onDebuggerCheckboxChanged = this._onDebuggerCheckboxChanged.bind(this);
 
     // TODO: Use the ReadOnlyTextBuffer class from nuclide-atom-text-editor when it is exported.
-    this._buffer = new TextBuffer();
+    this._buffer = new (_atom2 || _atom()).TextBuffer();
     // Make `delete` a no-op to effectively create a read-only buffer.
-    this._buffer['delete'] = function () {};
+    this._buffer.delete = function () {};
 
-    this._executionState = TestRunnerPanel.ExecutionState.STOPPED;
+    this._executionState = (_uiTestRunnerPanel2 || _uiTestRunnerPanel()).default.ExecutionState.STOPPED;
     this._testRunners = testRunners;
     this._attachDebuggerBeforeRunning = false;
     this._runningTest = false;
@@ -91,7 +121,7 @@ var TestRunnerController = (function () {
     value: function destroy() {
       this._stopListening();
       if (this._root) {
-        ReactDOM.unmountComponentAtNode(this._root);
+        (_reactForAtom2 || _reactForAtom()).ReactDOM.unmountComponentAtNode(this._root);
         this._root = null;
       }
       if (this._panel) {
@@ -179,13 +209,13 @@ var TestRunnerController = (function () {
 
       this.clearOutput();
       this._runTestRunnerServiceForPath(selectedTestRunner.runTest(testPath), testPath, selectedTestRunner.label);
-      track('testrunner-run-tests', {
+      (0, (_nuclideAnalytics2 || _nuclideAnalytics()).track)('testrunner-run-tests', {
         path: testPath,
         testRunner: selectedTestRunner.label
       });
 
       // Set state as "Running" to give immediate feedback in the UI.
-      this._setExecutionState(TestRunnerPanel.ExecutionState.RUNNING);
+      this._setExecutionState((_uiTestRunnerPanel2 || _uiTestRunnerPanel()).default.ExecutionState.RUNNING);
       this._path = testPath;
       this._renderPanel();
     })
@@ -214,7 +244,7 @@ var TestRunnerController = (function () {
       }
       this._stopListening();
       // Respond in the UI immediately and assume the process is properly killed.
-      this._setExecutionState(TestRunnerPanel.ExecutionState.STOPPED);
+      this._setExecutionState((_uiTestRunnerPanel2 || _uiTestRunnerPanel()).default.ExecutionState.STOPPED);
     }
   }, {
     key: 'serialize',
@@ -224,7 +254,7 @@ var TestRunnerController = (function () {
   }, {
     key: 'showPanel',
     value: function showPanel(didRender) {
-      track('testrunner-show-panel');
+      (0, (_nuclideAnalytics2 || _nuclideAnalytics()).track)('testrunner-show-panel');
       this._state.panelVisible = true;
       this._renderPanel(didRender);
       if (this._panel) {
@@ -234,7 +264,7 @@ var TestRunnerController = (function () {
   }, {
     key: 'togglePanel',
     value: function togglePanel() {
-      track('testrunner-hide-panel');
+      (0, (_nuclideAnalytics2 || _nuclideAnalytics()).track)('testrunner-hide-panel');
       if (this._state.panelVisible) {
         this.hidePanel();
       } else {
@@ -259,7 +289,7 @@ var TestRunnerController = (function () {
       // bookkeeping.
       //
       // @see {@link https://atom.io/docs/api/v1.0.4/TextBuffer#instance-append|TextBuffer::append}
-      this._buffer.append('' + text + os.EOL, { undo: 'skip' });
+      this._buffer.append('' + text + (_os2 || _os()).default.EOL, { undo: 'skip' });
     }
   }, {
     key: '_onDebuggerCheckboxChanged',
@@ -280,10 +310,10 @@ var TestRunnerController = (function () {
     value: function _runTestRunnerServiceForPath(testRun, path, label) {
       var _this2 = this;
 
-      var subscription = testRun['do'](function (message) {
+      var subscription = testRun.do(function (message) {
         switch (message.kind) {
           case 'summary':
-            _this2._testSuiteModel = new TestSuiteModel(message.summaryInfo);
+            _this2._testSuiteModel = new (_TestSuiteModel2 || _TestSuiteModel()).default(message.summaryInfo);
             _this2._renderPanel();
             break;
           case 'run-test':
@@ -300,7 +330,7 @@ var TestRunnerController = (function () {
             }
 
             // Append a PASS/FAIL message depending on whether the class has test failures.
-            _this2._appendToBuffer(TestRunModel.formatStatusMessage(testInfo.name, testInfo.durationSecs, testInfo.status));
+            _this2._appendToBuffer((_TestRunModel2 || _TestRunModel()).default.formatStatusMessage(testInfo.name, testInfo.durationSecs, testInfo.status));
             _this2._renderPanel();
             break;
           case 'start':
@@ -314,24 +344,24 @@ var TestRunnerController = (function () {
               _this2._run.stop();
             }
             if (error.code === 'ENOENT') {
-              _this2._appendToBuffer(Ansi.YELLOW + 'Command \'' + error.path + '\' does not exist' + Ansi.RESET);
-              _this2._appendToBuffer(Ansi.YELLOW + 'Are you trying to run remotely?' + Ansi.RESET);
-              _this2._appendToBuffer(Ansi.YELLOW + 'Path: ' + path + Ansi.RESET);
+              _this2._appendToBuffer((_Ansi2 || _Ansi()).default.YELLOW + 'Command \'' + error.path + '\' does not exist' + (_Ansi2 || _Ansi()).default.RESET);
+              _this2._appendToBuffer((_Ansi2 || _Ansi()).default.YELLOW + 'Are you trying to run remotely?' + (_Ansi2 || _Ansi()).default.RESET);
+              _this2._appendToBuffer((_Ansi2 || _Ansi()).default.YELLOW + 'Path: ' + path + (_Ansi2 || _Ansi()).default.RESET);
             }
-            _this2._appendToBuffer(Ansi.RED + 'Original Error: ' + error.message + Ansi.RESET);
-            _this2._setExecutionState(TestRunnerPanel.ExecutionState.STOPPED);
+            _this2._appendToBuffer((_Ansi2 || _Ansi()).default.RED + 'Original Error: ' + error.message + (_Ansi2 || _Ansi()).default.RESET);
+            _this2._setExecutionState((_uiTestRunnerPanel2 || _uiTestRunnerPanel()).default.ExecutionState.STOPPED);
             logger.error('Error running tests: "' + error.message + '"');
             break;
           case 'stderr':
             // Color stderr output red in the console to distinguish it as error.
-            _this2._appendToBuffer('' + Ansi.RED + message.data + Ansi.RESET);
+            _this2._appendToBuffer('' + (_Ansi2 || _Ansi()).default.RED + message.data + (_Ansi2 || _Ansi()).default.RESET);
             break;
         }
-      })['finally'](function () {
+      }).finally(function () {
         _this2._stopListening();
-        _this2._setExecutionState(TestRunnerPanel.ExecutionState.STOPPED);
+        _this2._setExecutionState((_uiTestRunnerPanel2 || _uiTestRunnerPanel()).default.ExecutionState.STOPPED);
       }).subscribe();
-      this._run = new TestRunModel(label, subscription.unsubscribe.bind(subscription));
+      this._run = new (_TestRunModel2 || _TestRunModel()).default(label, subscription.unsubscribe.bind(subscription));
     }
   }, {
     key: '_setExecutionState',
@@ -356,7 +386,7 @@ var TestRunnerController = (function () {
       }
 
       var progressValue = undefined;
-      if (this._testSuiteModel && this._executionState === TestRunnerPanel.ExecutionState.RUNNING) {
+      if (this._testSuiteModel && this._executionState === (_uiTestRunnerPanel2 || _uiTestRunnerPanel()).default.ExecutionState.RUNNING) {
         progressValue = this._testSuiteModel.progressPercent();
       } else {
         // If there is no running test suite, fill the progress bar because there is no progress to
@@ -364,7 +394,7 @@ var TestRunnerController = (function () {
         progressValue = 100;
       }
 
-      var component = ReactDOM.render(React.createElement(TestRunnerPanel, {
+      var component = (_reactForAtom2 || _reactForAtom()).ReactDOM.render((_reactForAtom2 || _reactForAtom()).React.createElement((_uiTestRunnerPanel2 || _uiTestRunnerPanel()).default, {
         attachDebuggerBeforeRunning: this._attachDebuggerBeforeRunning,
         buffer: this._buffer,
         executionState: this._executionState,
@@ -382,7 +412,7 @@ var TestRunnerController = (function () {
         testRunners: Array.from(this._testRunners),
         testSuiteModel: this._testSuiteModel
       }), root, didRender);
-      (0, _assert2['default'])(component instanceof TestRunnerPanel);
+      (0, (_assert2 || _assert()).default)(component instanceof (_uiTestRunnerPanel2 || _uiTestRunnerPanel()).default);
       this._testRunnerPanel = component;
 
       if (!this._panel) {
@@ -398,13 +428,13 @@ var TestRunnerController = (function () {
           var dispose = this._run.dispose;
           this._run.dispose = null;
           this._run.stop();
-          (0, _assert2['default'])(this._run); // Calling `stop()` should never null the `_run` property.
-          track('testrunner-stop-tests', {
+          (0, (_assert2 || _assert()).default)(this._run); // Calling `stop()` should never null the `_run` property.
+          (0, (_nuclideAnalytics2 || _nuclideAnalytics()).track)('testrunner-stop-tests', {
             testRunner: this._run.label
           });
           dispose();
         } catch (e) {
-          (0, _assert2['default'])(this._run); // Nothing in the try block should ever null the `_run` property.
+          (0, (_assert2 || _assert()).default)(this._run); // Nothing in the try block should ever null the `_run` property.
           // If the remote connection goes away, it won't be possible to stop tests. Log an error and
           // proceed as usual.
           logger.error('Error when stopping test run #\'' + this._run.label + ': ' + e);

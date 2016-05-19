@@ -1,4 +1,4 @@
-
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -8,7 +8,11 @@
  * the root directory of this source tree.
  */
 
-var invariant = require('assert');
+var _assert2;
+
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
 function waitsForPromise() {
   for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
@@ -29,7 +33,7 @@ function waitsForPromise() {
 
   runs(function () {
     var fn = args[args.length - 1];
-    invariant(typeof fn === 'function');
+    (0, (_assert2 || _assert()).default)(typeof fn === 'function');
     var promise = fn();
     if (shouldReject) {
       promise.then(function () {

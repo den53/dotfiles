@@ -10,61 +10,101 @@ var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_ag
  * the root directory of this source tree.
  */
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var _assert = require('assert');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _assert2 = _interopRequireDefault(_assert);
+var _assert2;
 
-var _atom = require('atom');
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
-var _reactForAtom = require('react-for-atom');
+var _atom2;
 
-var _DiffViewEditorPane = require('./DiffViewEditorPane');
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var _DiffViewEditorPane2 = _interopRequireDefault(_DiffViewEditorPane);
+var _reactForAtom2;
 
-var _DiffViewTree = require('./DiffViewTree');
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
 
-var _DiffViewTree2 = _interopRequireDefault(_DiffViewTree);
+var _DiffViewEditorPane2;
 
-var _SyncScroll = require('./SyncScroll');
+function _DiffViewEditorPane() {
+  return _DiffViewEditorPane2 = _interopRequireDefault(require('./DiffViewEditorPane'));
+}
 
-var _SyncScroll2 = _interopRequireDefault(_SyncScroll);
+var _DiffViewTree2;
 
-var _DiffTimelineView = require('./DiffTimelineView');
+function _DiffViewTree() {
+  return _DiffViewTree2 = _interopRequireDefault(require('./DiffViewTree'));
+}
 
-var _DiffTimelineView2 = _interopRequireDefault(_DiffTimelineView);
+var _SyncScroll2;
 
-var _DiffViewToolbar = require('./DiffViewToolbar');
+function _SyncScroll() {
+  return _SyncScroll2 = _interopRequireDefault(require('./SyncScroll'));
+}
 
-var _DiffViewToolbar2 = _interopRequireDefault(_DiffViewToolbar);
+var _DiffTimelineView2;
 
-var _DiffNavigationBar = require('./DiffNavigationBar');
+function _DiffTimelineView() {
+  return _DiffTimelineView2 = _interopRequireDefault(require('./DiffTimelineView'));
+}
 
-var _DiffNavigationBar2 = _interopRequireDefault(_DiffNavigationBar);
+var _DiffViewToolbar2;
 
-var _DiffCommitView = require('./DiffCommitView');
+function _DiffViewToolbar() {
+  return _DiffViewToolbar2 = _interopRequireDefault(require('./DiffViewToolbar'));
+}
 
-var _DiffCommitView2 = _interopRequireDefault(_DiffCommitView);
+var _DiffNavigationBar2;
 
-var _DiffPublishView = require('./DiffPublishView');
+function _DiffNavigationBar() {
+  return _DiffNavigationBar2 = _interopRequireDefault(require('./DiffNavigationBar'));
+}
 
-var _DiffPublishView2 = _interopRequireDefault(_DiffPublishView);
+var _DiffCommitView2;
 
-var _diffUtils = require('./diff-utils');
+function _DiffCommitView() {
+  return _DiffCommitView2 = _interopRequireDefault(require('./DiffCommitView'));
+}
 
-var _nuclideAtomHelpers = require('../../nuclide-atom-helpers');
+var _DiffPublishView2;
 
-var _constants = require('./constants');
+function _DiffPublishView() {
+  return _DiffPublishView2 = _interopRequireDefault(require('./DiffPublishView'));
+}
 
-var _nuclideFeatureConfig = require('../../nuclide-feature-config');
+var _diffUtils2;
 
-var _nuclideFeatureConfig2 = _interopRequireDefault(_nuclideFeatureConfig);
+function _diffUtils() {
+  return _diffUtils2 = require('./diff-utils');
+}
+
+var _nuclideAtomHelpers2;
+
+function _nuclideAtomHelpers() {
+  return _nuclideAtomHelpers2 = require('../../nuclide-atom-helpers');
+}
+
+var _nuclideAtomHelpers4;
+
+function _nuclideAtomHelpers3() {
+  return _nuclideAtomHelpers4 = require('../../nuclide-atom-helpers');
+}
+
+var _constants2;
+
+function _constants() {
+  return _constants2 = require('./constants');
+}
 
 function initialEditorState() {
   return {
@@ -80,6 +120,7 @@ function initialEditorState() {
 }
 
 var EMPTY_FUNCTION = function EMPTY_FUNCTION() {};
+var SCROLL_FIRST_CHANGE_DELAY_MS = 100;
 
 var DiffViewComponent = (function (_React$Component) {
   _inherits(DiffViewComponent, _React$Component);
@@ -88,11 +129,10 @@ var DiffViewComponent = (function (_React$Component) {
     _classCallCheck(this, DiffViewComponent);
 
     _get(Object.getPrototypeOf(DiffViewComponent.prototype), 'constructor', this).call(this, props);
-    var toolbarVisible = _nuclideFeatureConfig2['default'].get(_constants.TOOLBAR_VISIBLE_SETTING);
     this.state = {
-      mode: _constants.DiffMode.BROWSE_MODE,
+      mode: (_constants2 || _constants()).DiffMode.BROWSE_MODE,
       filePath: '',
-      toolbarVisible: toolbarVisible,
+      toolbarVisible: true,
       oldEditorState: initialEditorState(),
       newEditorState: initialEditorState()
     };
@@ -104,23 +144,14 @@ var DiffViewComponent = (function (_React$Component) {
     this._onDidUpdateTextEditorElement = this._onDidUpdateTextEditorElement.bind(this);
     this._onChangeMode = this._onChangeMode.bind(this);
     this._onSwitchToEditor = this._onSwitchToEditor.bind(this);
-    this._readonlyBuffer = new _atom.TextBuffer();
-    this._subscriptions = new _atom.CompositeDisposable();
+    this._readonlyBuffer = new (_atom2 || _atom()).TextBuffer();
+    this._subscriptions = new (_atom2 || _atom()).CompositeDisposable();
   }
 
   _createClass(DiffViewComponent, [{
-    key: 'componentWillMount',
-    value: function componentWillMount() {
-      var _this = this;
-
-      this._subscriptions.add(_nuclideFeatureConfig2['default'].observe(_constants.TOOLBAR_VISIBLE_SETTING, function (toolbarVisible) {
-        _this.setState({ toolbarVisible: toolbarVisible });
-      }));
-    }
-  }, {
     key: 'componentDidMount',
     value: function componentDidMount() {
-      var _this2 = this;
+      var _this = this;
 
       var diffModel = this.props.diffModel;
 
@@ -129,11 +160,11 @@ var DiffViewComponent = (function (_React$Component) {
       this._subscriptions.add(atom.workspace.onDidChangeActivePaneItem(function (activeItem) {
         if (activeItem != null && activeItem.tagName === 'NUCLIDE-DIFF-VIEW') {
           // Re-render on activation.
-          _this2.setState({});
+          _this._updateLineDiffState(diffModel.getActiveFileState());
         }
       }));
 
-      this._paneContainer = (0, _nuclideAtomHelpers.createPaneContainer)();
+      this._paneContainer = (0, (_nuclideAtomHelpers2 || _nuclideAtomHelpers()).createPaneContainer)();
       // The changed files status tree takes 1/5 of the width and lives on the right most,
       // while being vertically splt with the revision timeline stack pane.
       var topPane = this._newEditorPane = this._paneContainer.getActivePane();
@@ -154,7 +185,7 @@ var DiffViewComponent = (function (_React$Component) {
 
       this._subscriptions.add(this._destroyPaneDisposable(this._oldEditorPane, true), this._destroyPaneDisposable(this._newEditorPane, true), this._destroyPaneDisposable(this._navigationPane, true), this._destroyPaneDisposable(this._treePane, true), this._destroyPaneDisposable(this._bottomRightPane));
 
-      _reactForAtom.ReactDOM.findDOMNode(this.refs['paneContainer']).appendChild(atom.views.getView(this._paneContainer));
+      (_reactForAtom2 || _reactForAtom()).ReactDOM.findDOMNode(this.refs['paneContainer']).appendChild(atom.views.getView(this._paneContainer));
 
       this._updateLineDiffState(diffModel.getActiveFileState());
     }
@@ -176,33 +207,42 @@ var DiffViewComponent = (function (_React$Component) {
         syncScroll.dispose();
         this._subscriptions.remove(syncScroll);
       }
-      this._syncScroll = new _SyncScroll2['default'](oldTextEditorElement, newTextEditorElement);
+      this._syncScroll = new (_SyncScroll2 || _SyncScroll()).default(oldTextEditorElement, newTextEditorElement);
       this._subscriptions.add(this._syncScroll);
     }
   }, {
     key: '_scrollToFirstHighlightedLine',
     value: function _scrollToFirstHighlightedLine() {
-      var _this3 = this;
+      var _this2 = this;
 
       // Schedule scroll to first line after all lines have been rendered.
       var _state = this.state;
       var oldEditorState = _state.oldEditorState;
       var newEditorState = _state.newEditorState;
+      var filePath = _state.filePath;
 
       var removedLines = oldEditorState.highlightedLines.removed;
       var addedLines = newEditorState.highlightedLines.added;
       if (addedLines.length === 0 && removedLines.length === 0) {
         return;
       }
-      var firstRemovedLine = (0, _diffUtils.getOffsetLineNumber)(removedLines[0] || 0, oldEditorState.offsets);
-      var firstAddedLine = (0, _diffUtils.getOffsetLineNumber)(addedLines[0] || 0, newEditorState.offsets);
-      setImmediate(function () {
-        if (addedLines.length === 0 || removedLines.length > 0 && firstRemovedLine < firstAddedLine) {
-          _this3._oldEditorComponent.scrollToScreenLine(firstRemovedLine);
-        } else {
-          _this3._newEditorComponent.scrollToScreenLine(firstAddedLine);
+      var firstRemovedLine = (0, (_diffUtils2 || _diffUtils()).getOffsetLineNumber)(removedLines[0] || 0, oldEditorState.offsets);
+      var firstAddedLine = (0, (_diffUtils2 || _diffUtils()).getOffsetLineNumber)(addedLines[0] || 0, newEditorState.offsets);
+      var scrollTimeout = setTimeout(function () {
+        _this2._subscriptions.remove(clearScrollTimeoutSubscription);
+        if (_this2.state.filePath !== filePath) {
+          return;
         }
+        if (addedLines.length === 0 || removedLines.length > 0 && firstRemovedLine < firstAddedLine) {
+          _this2._oldEditorComponent.scrollToScreenLine(firstRemovedLine);
+        } else {
+          _this2._newEditorComponent.scrollToScreenLine(firstAddedLine);
+        }
+      }, SCROLL_FIRST_CHANGE_DELAY_MS);
+      var clearScrollTimeoutSubscription = new (_atom2 || _atom()).Disposable(function () {
+        clearTimeout(scrollTimeout);
       });
+      this._subscriptions.add(clearScrollTimeoutSubscription);
     }
   }, {
     key: '_onChangeMode',
@@ -225,17 +265,17 @@ var DiffViewComponent = (function (_React$Component) {
       var viewMode = _props$diffModel$getState.viewMode;
 
       switch (viewMode) {
-        case _constants.DiffMode.BROWSE_MODE:
+        case (_constants2 || _constants()).DiffMode.BROWSE_MODE:
           this._renderTimelineView();
           this._commitComponent = null;
           this._publishComponent = null;
           break;
-        case _constants.DiffMode.COMMIT_MODE:
+        case (_constants2 || _constants()).DiffMode.COMMIT_MODE:
           this._renderCommitView();
           this._timelineComponent = null;
           this._publishComponent = null;
           break;
-        case _constants.DiffMode.PUBLISH_MODE:
+        case (_constants2 || _constants()).DiffMode.PUBLISH_MODE:
           this._renderPublishView();
           this._commitComponent = null;
           this._timelineComponent = null;
@@ -262,7 +302,7 @@ var DiffViewComponent = (function (_React$Component) {
       var commitMode = _props$diffModel$getState2.commitMode;
       var commitModeState = _props$diffModel$getState2.commitModeState;
 
-      var component = _reactForAtom.ReactDOM.render(_reactForAtom.React.createElement(_DiffCommitView2['default'], {
+      var component = (_reactForAtom2 || _reactForAtom()).ReactDOM.render((_reactForAtom2 || _reactForAtom()).React.createElement((_DiffCommitView2 || _DiffCommitView()).default, {
         commitMessage: commitMessage,
         commitMode: commitMode,
         commitModeState: commitModeState,
@@ -270,7 +310,7 @@ var DiffViewComponent = (function (_React$Component) {
         // methods can be called on it.
         diffModel: this.props.diffModel
       }), this._getPaneElement(this._bottomRightPane));
-      (0, _assert2['default'])(component instanceof _DiffCommitView2['default']);
+      (0, (_assert2 || _assert()).default)(component instanceof (_DiffCommitView2 || _DiffCommitView()).default);
       this._commitComponent = component;
     }
   }, {
@@ -285,14 +325,14 @@ var DiffViewComponent = (function (_React$Component) {
       var publishMessage = _diffModel$getState.publishMessage;
       var headRevision = _diffModel$getState.headRevision;
 
-      var component = _reactForAtom.ReactDOM.render(_reactForAtom.React.createElement(_DiffPublishView2['default'], {
+      var component = (_reactForAtom2 || _reactForAtom()).ReactDOM.render((_reactForAtom2 || _reactForAtom()).React.createElement((_DiffPublishView2 || _DiffPublishView()).default, {
         publishModeState: publishModeState,
         message: publishMessage,
         publishMode: publishMode,
         headRevision: headRevision,
         diffModel: diffModel
       }), this._getPaneElement(this._bottomRightPane));
-      (0, _assert2['default'])(component instanceof _DiffPublishView2['default']);
+      (0, (_assert2 || _assert()).default)(component instanceof (_DiffPublishView2 || _DiffPublishView()).default);
       this._publishComponent = component;
     }
   }, {
@@ -309,10 +349,10 @@ var DiffViewComponent = (function (_React$Component) {
 
       var filePath = _diffModel$getActiveFileState.filePath;
 
-      this._treeComponent = _reactForAtom.ReactDOM.render(_reactForAtom.React.createElement(
+      this._treeComponent = (_reactForAtom2 || _reactForAtom()).ReactDOM.render((_reactForAtom2 || _reactForAtom()).React.createElement(
         'div',
         { className: 'nuclide-diff-view-tree padded' },
-        _reactForAtom.React.createElement(_DiffViewTree2['default'], {
+        (_reactForAtom2 || _reactForAtom()).React.createElement((_DiffViewTree2 || _DiffViewTree()).default, {
           activeFilePath: filePath,
           fileChanges: selectedFileChanges,
           showNonHgRepos: showNonHgRepos,
@@ -328,36 +368,34 @@ var DiffViewComponent = (function (_React$Component) {
       var oldState = _state2.oldEditorState;
       var newState = _state2.newEditorState;
 
-      var oldEditorComponent = _reactForAtom.ReactDOM.render(_reactForAtom.React.createElement(_DiffViewEditorPane2['default'], {
+      var oldEditorComponent = (_reactForAtom2 || _reactForAtom()).ReactDOM.render((_reactForAtom2 || _reactForAtom()).React.createElement((_DiffViewEditorPane2 || _DiffViewEditorPane()).default, {
         headerTitle: oldState.revisionTitle,
         textBuffer: this._readonlyBuffer,
         filePath: filePath,
         offsets: oldState.offsets,
         highlightedLines: oldState.highlightedLines,
-        savedContents: oldState.text,
         initialTextContent: oldState.text,
         inlineElements: oldState.inlineElements,
         readOnly: true,
         onChange: EMPTY_FUNCTION,
         onDidUpdateTextEditorElement: EMPTY_FUNCTION
       }), this._getPaneElement(this._oldEditorPane));
-      (0, _assert2['default'])(oldEditorComponent instanceof _DiffViewEditorPane2['default']);
+      (0, (_assert2 || _assert()).default)(oldEditorComponent instanceof (_DiffViewEditorPane2 || _DiffViewEditorPane()).default);
       this._oldEditorComponent = oldEditorComponent;
-      var textBuffer = (0, _nuclideAtomHelpers.bufferForUri)(filePath);
-      var newEditorComponent = _reactForAtom.ReactDOM.render(_reactForAtom.React.createElement(_DiffViewEditorPane2['default'], {
+      var textBuffer = (0, (_nuclideAtomHelpers4 || _nuclideAtomHelpers3()).bufferForUri)(filePath);
+      var newEditorComponent = (_reactForAtom2 || _reactForAtom()).ReactDOM.render((_reactForAtom2 || _reactForAtom()).React.createElement((_DiffViewEditorPane2 || _DiffViewEditorPane()).default, {
         headerTitle: newState.revisionTitle,
         textBuffer: textBuffer,
         filePath: filePath,
         offsets: newState.offsets,
         highlightedLines: newState.highlightedLines,
         initialTextContent: newState.text,
-        savedContents: newState.savedContents,
         inlineElements: newState.inlineElements,
         onDidUpdateTextEditorElement: this._onDidUpdateTextEditorElement,
         readOnly: false,
         onChange: this._onChangeNewTextEditor
       }), this._getPaneElement(this._newEditorPane));
-      (0, _assert2['default'])(newEditorComponent instanceof _DiffViewEditorPane2['default']);
+      (0, (_assert2 || _assert()).default)(newEditorComponent instanceof (_DiffViewEditorPane2 || _DiffViewEditorPane()).default);
       this._newEditorComponent = newEditorComponent;
     }
   }, {
@@ -368,11 +406,11 @@ var DiffViewComponent = (function (_React$Component) {
   }, {
     key: '_renderTimelineView',
     value: function _renderTimelineView() {
-      var component = _reactForAtom.ReactDOM.render(_reactForAtom.React.createElement(_DiffTimelineView2['default'], {
+      var component = (_reactForAtom2 || _reactForAtom()).ReactDOM.render((_reactForAtom2 || _reactForAtom()).React.createElement((_DiffTimelineView2 || _DiffTimelineView()).default, {
         diffModel: this.props.diffModel,
         onSelectionChange: this._onTimelineChangeRevision
       }), this._getPaneElement(this._bottomRightPane));
-      (0, _assert2['default'])(component instanceof _DiffTimelineView2['default']);
+      (0, (_assert2 || _assert()).default)(component instanceof (_DiffTimelineView2 || _DiffTimelineView()).default);
       this._timelineComponent = component;
     }
   }, {
@@ -389,7 +427,7 @@ var DiffViewComponent = (function (_React$Component) {
       var newContents = newEditorState.text;
 
       var navigationPaneElement = this._getPaneElement(this._navigationPane);
-      var component = _reactForAtom.ReactDOM.render(_reactForAtom.React.createElement(_DiffNavigationBar2['default'], {
+      var component = (_reactForAtom2 || _reactForAtom()).ReactDOM.render((_reactForAtom2 || _reactForAtom()).React.createElement((_DiffNavigationBar2 || _DiffNavigationBar()).default, {
         elementHeight: navigationPaneElement.clientHeight,
         addedLines: newLines.added,
         newOffsets: newOffsets,
@@ -399,14 +437,14 @@ var DiffViewComponent = (function (_React$Component) {
         oldContents: oldContents,
         onClick: this._onNavigationClick
       }), navigationPaneElement);
-      (0, _assert2['default'])(component instanceof _DiffNavigationBar2['default']);
+      (0, (_assert2 || _assert()).default)(component instanceof (_DiffNavigationBar2 || _DiffNavigationBar()).default);
       this._navigationComponent = component;
     }
   }, {
     key: '_onNavigationClick',
     value: function _onNavigationClick(lineNumber, isAddedLine) {
       var textEditorComponent = isAddedLine ? this._newEditorComponent : this._oldEditorComponent;
-      (0, _assert2['default'])(textEditorComponent, 'Diff View Navigation Error: Non valid text editor component');
+      (0, (_assert2 || _assert()).default)(textEditorComponent, 'Diff View Navigation Error: Non valid text editor component');
       var textEditor = textEditorComponent.getEditorModel();
       textEditor.scrollToBufferPosition([lineNumber, 0]);
     }
@@ -418,7 +456,7 @@ var DiffViewComponent = (function (_React$Component) {
   }, {
     key: '_destroyPaneDisposable',
     value: function _destroyPaneDisposable(pane) {
-      return new _atom.Disposable(function () {
+      return new (_atom2 || _atom()).Disposable(function () {
         pane.destroy();
       });
     }
@@ -432,34 +470,30 @@ var DiffViewComponent = (function (_React$Component) {
     value: function render() {
       var toolbarComponent = null;
       if (this.state.toolbarVisible) {
-        var _props$diffModel$getState3 = this.props.diffModel.getState();
-
-        var viewMode = _props$diffModel$getState3.viewMode;
         var _state4 = this.state;
         var _oldEditorState = _state4.oldEditorState;
         var _newEditorState = _state4.newEditorState;
 
-        toolbarComponent = _reactForAtom.React.createElement(_DiffViewToolbar2['default'], {
+        toolbarComponent = (_reactForAtom2 || _reactForAtom()).React.createElement((_DiffViewToolbar2 || _DiffViewToolbar()).default, {
           filePath: this.state.filePath,
-          diffMode: viewMode,
           newRevisionTitle: _newEditorState.revisionTitle,
           oldRevisionTitle: _oldEditorState.revisionTitle,
           onSwitchMode: this._onChangeMode,
           onSwitchToEditor: this._onSwitchToEditor
         });
       }
-      return _reactForAtom.React.createElement(
+      return (_reactForAtom2 || _reactForAtom()).React.createElement(
         'div',
         { className: 'nuclide-diff-view-container' },
         toolbarComponent,
-        _reactForAtom.React.createElement('div', { className: 'nuclide-diff-view-component', ref: 'paneContainer' })
+        (_reactForAtom2 || _reactForAtom()).React.createElement('div', { className: 'nuclide-diff-view-component', ref: 'paneContainer' })
       );
     }
   }, {
     key: '_onSwitchToEditor',
     value: function _onSwitchToEditor() {
-      var diffViewNode = _reactForAtom.ReactDOM.findDOMNode(this);
-      (0, _assert2['default'])(diffViewNode, 'Diff View DOM needs to be attached to switch to editor mode');
+      var diffViewNode = (_reactForAtom2 || _reactForAtom()).ReactDOM.findDOMNode(this);
+      (0, (_assert2 || _assert()).default)(diffViewNode, 'Diff View DOM needs to be attached to switch to editor mode');
       atom.commands.dispatch(diffViewNode, 'nuclide-diff-view:switch-to-editor');
     }
   }, {
@@ -482,17 +516,16 @@ var DiffViewComponent = (function (_React$Component) {
       var filePath = fileState.filePath;
       var oldContents = fileState.oldContents;
       var newContents = fileState.newContents;
-      var savedContents = fileState.savedContents;
       var inlineComponents = fileState.inlineComponents;
       var fromRevisionTitle = fileState.fromRevisionTitle;
       var toRevisionTitle = fileState.toRevisionTitle;
 
-      var _computeDiff = (0, _diffUtils.computeDiff)(oldContents, newContents);
+      var _ref = (0, (_diffUtils2 || _diffUtils()).computeDiff)(oldContents, newContents);
 
-      var addedLines = _computeDiff.addedLines;
-      var removedLines = _computeDiff.removedLines;
-      var oldLineOffsets = _computeDiff.oldLineOffsets;
-      var newLineOffsets = _computeDiff.newLineOffsets;
+      var addedLines = _ref.addedLines;
+      var removedLines = _ref.removedLines;
+      var oldLineOffsets = _ref.oldLineOffsets;
+      var newLineOffsets = _ref.newLineOffsets;
 
       // TODO(most): Sync the used comment vertical space on both editors.
       var oldEditorState = {
@@ -508,7 +541,6 @@ var DiffViewComponent = (function (_React$Component) {
       var newEditorState = {
         revisionTitle: toRevisionTitle,
         text: newContents,
-        savedContents: savedContents,
         offsets: newLineOffsets,
         highlightedLines: {
           added: addedLines,
@@ -525,6 +557,6 @@ var DiffViewComponent = (function (_React$Component) {
   }]);
 
   return DiffViewComponent;
-})(_reactForAtom.React.Component);
+})((_reactForAtom2 || _reactForAtom()).React.Component);
 
 module.exports = DiffViewComponent;

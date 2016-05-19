@@ -17,18 +17,30 @@ exports.createDebuggerProvider = createDebuggerProvider;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _utils = require('./utils');
+var _utils2;
 
-var _utils2 = _interopRequireDefault(_utils);
+function _utils() {
+  return _utils2 = _interopRequireDefault(require('./utils'));
+}
 
-var _nuclideDebuggerCommonLibOutputServiceManager = require('../../nuclide-debugger-common/lib/OutputServiceManager');
+var _utils4;
+
+function _utils3() {
+  return _utils4 = require('./utils');
+}
+
+var _nuclideDebuggerCommonLibOutputServiceManager2;
+
+function _nuclideDebuggerCommonLibOutputServiceManager() {
+  return _nuclideDebuggerCommonLibOutputServiceManager2 = require('../../nuclide-debugger-common/lib/OutputServiceManager');
+}
 
 function activate(state) {
-  _utils2['default'].setLogLevel((0, _utils.getConfig)().clientLogLevel);
+  (_utils2 || _utils()).default.setLogLevel((0, (_utils4 || _utils3()).getConfig)().clientLogLevel);
 }
 
 function consumeOutputService(api) {
-  (0, _nuclideDebuggerCommonLibOutputServiceManager.setOutputService)(api);
+  (0, (_nuclideDebuggerCommonLibOutputServiceManager2 || _nuclideDebuggerCommonLibOutputServiceManager()).setOutputService)(api);
 }
 
 function provideNuclideDebuggerLLDB() {

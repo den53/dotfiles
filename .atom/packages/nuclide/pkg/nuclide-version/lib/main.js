@@ -3,6 +3,8 @@ Object.defineProperty(exports, '__esModule', {
 });
 exports.getVersion = getVersion;
 
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
  * All rights reserved.
@@ -11,8 +13,17 @@ exports.getVersion = getVersion;
  * the root directory of this source tree.
  */
 
-var fs = require('fs');
-var invariant = require('assert');
+var _fs2;
+
+function _fs() {
+  return _fs2 = _interopRequireDefault(require('fs'));
+}
+
+var _assert2;
+
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
 // Use a regex and not the "semver" module so the result here is the same
 // as from python code.
@@ -41,9 +52,9 @@ function getVersion() {
     // Don't use require() because it may be reading from the module cache.
     // Do use require.resolve so the paths can be codemoded in the future.
     var pkgFilename = require.resolve('../../../package.json');
-    var pkgJson = JSON.parse(fs.readFileSync(pkgFilename));
+    var pkgJson = JSON.parse((_fs2 || _fs()).default.readFileSync(pkgFilename));
     var match = SEMVERISH_RE.exec(pkgJson.version);
-    invariant(match);
+    (0, (_assert2 || _assert()).default)(match);
     // const majorVersion = match[1];
     var minorVersion = match[2];
     // const patchVersion = match[3];

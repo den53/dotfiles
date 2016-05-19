@@ -14,9 +14,17 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * the root directory of this source tree.
  */
 
-var _nuclideCommons = require('../../nuclide-commons');
+var _nuclideCommons2;
 
-var _atom = require('atom');
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
+
+var _atom2;
+
+function _atom() {
+  return _atom2 = require('atom');
+}
 
 var NEW_ITEM_EVENT = 'NEW_ITEM_EVENT';
 
@@ -24,8 +32,8 @@ var ServiceLogger = (function () {
   function ServiceLogger() {
     _classCallCheck(this, ServiceLogger);
 
-    this._buffer = new _nuclideCommons.CircularBuffer(10000);
-    this._emitter = new _atom.Emitter();
+    this._buffer = new (_nuclideCommons2 || _nuclideCommons()).CircularBuffer(10000);
+    this._emitter = new (_atom2 || _atom()).Emitter();
   }
 
   /**
@@ -82,7 +90,7 @@ var ServiceLogger = (function () {
   return ServiceLogger;
 })();
 
-exports['default'] = ServiceLogger;
+exports.default = ServiceLogger;
 function createArgInfo(service, method, args) {
   if (service === 'ArcanistBaseService') {
     // All Arcanist services take a file.
@@ -118,4 +126,4 @@ function createArgInfo(service, method, args) {
   }
   return null;
 }
-module.exports = exports['default'];
+module.exports = exports.default;

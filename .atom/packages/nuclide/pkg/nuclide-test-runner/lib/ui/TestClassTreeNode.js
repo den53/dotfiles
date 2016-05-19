@@ -8,6 +8,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
  * All rights reserved.
@@ -16,11 +18,17 @@ function _inherits(subClass, superClass) { if (typeof superClass !== 'function' 
  * the root directory of this source tree.
  */
 
-var Immutable = require('immutable');
+var _immutable2;
 
-var _require = require('../../../nuclide-ui/lib/LazyTreeNode');
+function _immutable() {
+  return _immutable2 = _interopRequireDefault(require('immutable'));
+}
 
-var LazyTreeNode = _require.LazyTreeNode;
+var _nuclideUiLibLazyTreeNode2;
+
+function _nuclideUiLibLazyTreeNode() {
+  return _nuclideUiLibLazyTreeNode2 = require('../../../nuclide-ui/lib/LazyTreeNode');
+}
 
 var TestClassTreeNode = (function (_LazyTreeNode) {
   _inherits(TestClassTreeNode, _LazyTreeNode);
@@ -29,7 +37,7 @@ var TestClassTreeNode = (function (_LazyTreeNode) {
     _classCallCheck(this, TestClassTreeNode);
 
     _get(Object.getPrototypeOf(TestClassTreeNode.prototype), 'constructor', this).call(this, testClass, null, true, _asyncToGenerator(function* () {
-      return Immutable.List.of();
+      return (_immutable2 || _immutable()).default.List.of();
     }));
   }
 
@@ -41,6 +49,6 @@ var TestClassTreeNode = (function (_LazyTreeNode) {
   }]);
 
   return TestClassTreeNode;
-})(LazyTreeNode);
+})((_nuclideUiLibLazyTreeNode2 || _nuclideUiLibLazyTreeNode()).LazyTreeNode);
 
 module.exports = TestClassTreeNode;

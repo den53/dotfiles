@@ -109,6 +109,13 @@ module.exports = Object.defineProperties({}, {
     configurable: true,
     enumerable: true
   },
+  diffSets: {
+    get: function get() {
+      return requireStream().diffSets;
+    },
+    configurable: true,
+    enumerable: true
+  },
   DisposableSubscription: {
     get: function get() {
       return requireStream().DisposableSubscription;
@@ -154,6 +161,20 @@ module.exports = Object.defineProperties({}, {
   observeStream: {
     get: function get() {
       return requireStream().observeStream;
+    },
+    configurable: true,
+    enumerable: true
+  },
+  cacheWhileSubscribed: {
+    get: function get() {
+      return requireStream().cacheWhileSubscribed;
+    },
+    configurable: true,
+    enumerable: true
+  },
+  toggle: {
+    get: function get() {
+      return requireStream().toggle;
     },
     configurable: true,
     enumerable: true
@@ -305,13 +326,6 @@ module.exports = Object.defineProperties({}, {
     configurable: true,
     enumerable: true
   },
-  regexp: {
-    get: function get() {
-      return requireFromCache('./regexp');
-    },
-    configurable: true,
-    enumerable: true
-  },
   error: {
     get: function get() {
       return requireFromCache('./error');
@@ -399,6 +413,13 @@ module.exports = Object.defineProperties({}, {
   passesGK: {
     get: function get() {
       return requireFromCache('./gatekeeper').passesGK;
+    },
+    configurable: true,
+    enumerable: true
+  },
+  reconcileSetDiffs: {
+    get: function get() {
+      return requireStream().reconcileSetDiffs;
     },
     configurable: true,
     enumerable: true

@@ -97,6 +97,10 @@ export type TextToken = {
 // When updating update both locations!
 export type TokenizedText = Array<TextToken>;
 
+export type FlowCoverageResult = {
+  percentage: number;
+};
+
 import {FlowRoot} from './FlowRoot';
 
 import {FlowRootContainer} from './FlowRootContainer';
@@ -177,6 +181,13 @@ export async function flowGetType(
       column,
       includeRawType,
     )
+  );
+}
+
+export async function flowGetCoverage(file: NuclideUri): Promise<?FlowCoverageResult> {
+  return rootContainer.runWithRoot(
+    file,
+    root => root.flowGetCoverage(file),
   );
 }
 

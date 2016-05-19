@@ -18,7 +18,11 @@ function _inherits(subClass, superClass) { if (typeof superClass !== 'function' 
  * the root directory of this source tree.
  */
 
-var _reactForAtom = require('react-for-atom');
+var _reactForAtom2;
+
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
 
 /**
  * Component to entertain the user while he is waiting to hear back from the
@@ -37,16 +41,16 @@ var IndeterminateProgressBar = (function (_React$Component) {
   _createClass(IndeterminateProgressBar, [{
     key: 'render',
     value: function render() {
-      return _reactForAtom.React.createElement(
+      return (_reactForAtom2 || _reactForAtom()).React.createElement(
         'div',
         { className: 'block text-center padded' },
-        _reactForAtom.React.createElement('span', { className: 'loading loading-spinner-medium inline-block' })
+        (_reactForAtom2 || _reactForAtom()).React.createElement('span', { className: 'loading loading-spinner-medium inline-block' })
       );
     }
   }]);
 
   return IndeterminateProgressBar;
-})(_reactForAtom.React.Component);
+})((_reactForAtom2 || _reactForAtom()).React.Component);
 
-exports['default'] = IndeterminateProgressBar;
-module.exports = exports['default'];
+exports.default = IndeterminateProgressBar;
+module.exports = exports.default;

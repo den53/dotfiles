@@ -12,15 +12,29 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
  * the root directory of this source tree.
  */
 
-var _path = require('path');
+var _path2;
 
-var _path2 = _interopRequireDefault(_path);
+function _path() {
+  return _path2 = _interopRequireDefault(require('path'));
+}
 
-var _reactForAtom = require('react-for-atom');
+var _reactForAtom2;
 
-var _nuclideCommons = require('../../nuclide-commons');
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
 
-var _nuclideFuzzyNative = require('../../nuclide-fuzzy-native');
+var _nuclideCommons2;
+
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
+
+var _nuclideFuzzyNative2;
+
+function _nuclideFuzzyNative() {
+  return _nuclideFuzzyNative2 = require('../../nuclide-fuzzy-native');
+}
 
 // Imported from nuclide-files-service, which is an apm package, preventing a direct import.
 
@@ -31,7 +45,7 @@ function getRecentFilesMatching(query) {
     return [];
   }
   var projectPaths = atom.project.getPaths();
-  var openFiles = new Set(_nuclideCommons.array.compact(atom.workspace.getTextEditors().map(function (editor) {
+  var openFiles = new Set((_nuclideCommons2 || _nuclideCommons()).array.compact(atom.workspace.getTextEditors().map(function (editor) {
     return editor.getPath();
   })));
   var validRecentFiles = _recentFilesService.getRecentFiles().filter(function (result) {
@@ -40,7 +54,7 @@ function getRecentFilesMatching(query) {
     });
   });
   var timestamps = new Map();
-  var matcher = new _nuclideFuzzyNative.Matcher(validRecentFiles.map(function (recentFile) {
+  var matcher = new (_nuclideFuzzyNative2 || _nuclideFuzzyNative()).Matcher(validRecentFiles.map(function (recentFile) {
     timestamps.set(recentFile.path, recentFile.timestamp);
     return recentFile.path;
   }));
@@ -123,37 +137,37 @@ var RecentFilesProvider = {
   },
 
   getComponentForItem: function getComponentForItem(item) {
-    var filename = _path2['default'].basename(item.path);
+    var filename = (_path2 || _path()).default.basename(item.path);
     var filePath = item.path.substring(0, item.path.lastIndexOf(filename));
     var date = item.timestamp == null ? null : new Date(item.timestamp);
     var datetime = date === null ? '' : date.toLocaleString();
-    return _reactForAtom.React.createElement(
+    return (_reactForAtom2 || _reactForAtom()).React.createElement(
       'div',
       {
         className: 'recent-files-provider-result',
         style: { opacity: opacityForTimestamp(item.timestamp || Date.now()) },
         title: datetime },
-      _reactForAtom.React.createElement(
+      (_reactForAtom2 || _reactForAtom()).React.createElement(
         'div',
         { className: 'recent-files-provider-filepath-container' },
-        _reactForAtom.React.createElement(
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
           'span',
           { className: 'recent-files-provider-file-path' },
           filePath
         ),
-        _reactForAtom.React.createElement(
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
           'span',
           { className: 'recent-files-provider-file-name' },
           filename
         )
       ),
-      _reactForAtom.React.createElement(
+      (_reactForAtom2 || _reactForAtom()).React.createElement(
         'div',
         { className: 'recent-files-provider-datetime-container' },
-        _reactForAtom.React.createElement(
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
           'span',
           { className: 'recent-files-provider-datetime-label' },
-          date === null ? 'At some point' : (0, _nuclideCommons.relativeDate)(date)
+          date === null ? 'At some point' : (0, (_nuclideCommons2 || _nuclideCommons()).relativeDate)(date)
         )
       )
     );

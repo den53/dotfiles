@@ -14,23 +14,35 @@ var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = 
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _atom = require('atom');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _rxjs = require('rxjs');
+var _atom2;
 
-var _rxjs2 = _interopRequireDefault(_rxjs);
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var _assert = require('assert');
+var _rxjs2;
 
-var _assert2 = _interopRequireDefault(_assert);
+function _rxjs() {
+  return _rxjs2 = _interopRequireDefault(require('rxjs'));
+}
 
-var _nuclideCommons = require('../../nuclide-commons');
+var _assert2;
 
-var incompleteObservableFromPromise = _nuclideCommons.observables.incompleteObservableFromPromise;
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
+
+var _nuclideCommons2;
+
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
+
+var incompleteObservableFromPromise = (_nuclideCommons2 || _nuclideCommons()).observables.incompleteObservableFromPromise;
 
 var WatchExpressionStore = (function () {
   function WatchExpressionStore(bridge) {
@@ -39,12 +51,12 @@ var WatchExpressionStore = (function () {
     _classCallCheck(this, WatchExpressionStore);
 
     this._bridge = bridge;
-    this._disposables = new _atom.CompositeDisposable();
+    this._disposables = new (_atom2 || _atom()).CompositeDisposable();
     this._watchExpressions = new Map();
     // `this._previousEvaluationSubscriptions` can change at any time and are a distinct subset of
     // `this._disposables`.
-    this._previousEvaluationSubscriptions = new _atom.CompositeDisposable();
-    this._disposables.add(new _atom.Disposable(function () {
+    this._previousEvaluationSubscriptions = new (_atom2 || _atom()).CompositeDisposable();
+    this._disposables.add(new (_atom2 || _atom()).Disposable(function () {
       _this._previousEvaluationSubscriptions.dispose();
     }));
   }
@@ -57,7 +69,7 @@ var WatchExpressionStore = (function () {
   }, {
     key: '_requestExpressionEvaluation',
     value: function _requestExpressionEvaluation(expression, subject) {
-      this._previousEvaluationSubscriptions.add(new _nuclideCommons.DisposableSubscription(incompleteObservableFromPromise(this._bridge.evaluateOnSelectedCallFrame(expression)).subscribe(subject)));
+      this._previousEvaluationSubscriptions.add(new (_nuclideCommons2 || _nuclideCommons()).DisposableSubscription(incompleteObservableFromPromise(this._bridge.evaluateOnSelectedCallFrame(expression)).subscribe(subject)));
     }
 
     /**
@@ -69,10 +81,10 @@ var WatchExpressionStore = (function () {
     value: function evaluateWatchExpression(expression) {
       if (this._watchExpressions.has(expression)) {
         var cachedResult = this._watchExpressions.get(expression);
-        (0, _assert2['default'])(cachedResult);
+        (0, (_assert2 || _assert()).default)(cachedResult);
         return cachedResult;
       }
-      var subject = new _rxjs2['default'].BehaviorSubject();
+      var subject = new (_rxjs2 || _rxjs()).default.BehaviorSubject();
       this._requestExpressionEvaluation(expression, subject);
       this._watchExpressions.set(expression, subject);
       // Expose an observable rather than the raw subject.
@@ -83,7 +95,7 @@ var WatchExpressionStore = (function () {
     value: function triggerReevaluation() {
       // Cancel any outstanding evaluation requests to the Bridge
       this._previousEvaluationSubscriptions.dispose();
-      this._previousEvaluationSubscriptions = new _atom.CompositeDisposable();
+      this._previousEvaluationSubscriptions = new (_atom2 || _atom()).CompositeDisposable();
       for (var _ref3 of this._watchExpressions) {
         var _ref2 = _slicedToArray(_ref3, 2);
 
@@ -92,7 +104,7 @@ var WatchExpressionStore = (function () {
 
         if (subject.observers == null || subject.observers.length === 0) {
           // Nobody is watching this expression anymore.
-          this._watchExpressions['delete'](expression);
+          this._watchExpressions.delete(expression);
           continue;
         }
         this._requestExpressionEvaluation(expression, subject);

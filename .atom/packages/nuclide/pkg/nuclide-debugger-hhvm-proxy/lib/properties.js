@@ -8,20 +8,32 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
  * the root directory of this source tree.
  */
 
-var _utils = require('./utils');
+var _utils2;
 
-var _utils2 = _interopRequireDefault(_utils);
+function _utils() {
+  return _utils2 = _interopRequireDefault(require('./utils'));
+}
 
-var _ObjectId = require('./ObjectId');
+var _ObjectId2;
 
-var _values = require('./values');
+function _ObjectId() {
+  return _ObjectId2 = require('./ObjectId');
+}
 
-var _assert = require('assert');
+var _values2;
 
-var _assert2 = _interopRequireDefault(_assert);
+function _values() {
+  return _values2 = require('./values');
+}
+
+var _assert2;
+
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
 function convertProperties(id, properties) {
-  _utils2['default'].log('Got properties: ' + JSON.stringify(properties));
+  (_utils2 || _utils()).default.log('Got properties: ' + JSON.stringify(properties));
   return properties.map(function (property) {
     return convertProperty(id, property);
   });
@@ -31,12 +43,12 @@ function convertProperties(id, properties) {
  * Converts a DbgpProperty to a Chrome PropertyDescriptor.
  */
 function convertProperty(contextId, dbgpProperty) {
-  _utils2['default'].log('Converting to Chrome property: ' + JSON.stringify(dbgpProperty));
+  (_utils2 || _utils()).default.log('Converting to Chrome property: ' + JSON.stringify(dbgpProperty));
   var result = {
     configurable: false,
     enumerable: true,
     name: dbgpProperty.$.name || 'Anonymous Property',
-    value: (0, _values.convertValue)(contextId, dbgpProperty)
+    value: (0, (_values2 || _values()).convertValue)(contextId, dbgpProperty)
   };
   return result;
 }
@@ -46,14 +58,14 @@ function convertProperty(contextId, dbgpProperty) {
  * for the object's children.
  */
 function getPagedProperties(pagedId) {
-  (0, _assert2['default'])(pagedId.elementRange);
+  (0, (_assert2 || _assert()).default)(pagedId.elementRange);
   var pagesize = pagedId.elementRange.pagesize;
-  var endIndex = (0, _ObjectId.endIndexOfObjectId)(pagedId);
+  var endIndex = (0, (_ObjectId2 || _ObjectId()).endIndexOfObjectId)(pagedId);
 
-  var childIds = (0, _ObjectId.getChildIds)(pagedId);
+  var childIds = (0, (_ObjectId2 || _ObjectId()).getChildIds)(pagedId);
   return childIds.map(function (childId) {
-    var childStartIndex = (0, _ObjectId.startIndexOfObjectId)(childId, pagesize);
-    var childCount = (0, _ObjectId.countOfObjectId)(childId, pagesize, endIndex);
+    var childStartIndex = (0, (_ObjectId2 || _ObjectId()).startIndexOfObjectId)(childId, pagesize);
+    var childCount = (0, (_ObjectId2 || _ObjectId()).countOfObjectId)(childId, pagesize, endIndex);
     return {
       configurable: false,
       enumerable: true,
@@ -61,7 +73,7 @@ function getPagedProperties(pagedId) {
       value: {
         description: childCount + ' elements',
         type: 'object',
-        objectId: (0, _ObjectId.remoteObjectIdOfObjectId)(childId)
+        objectId: (0, (_ObjectId2 || _ObjectId()).remoteObjectIdOfObjectId)(childId)
       }
     };
   });

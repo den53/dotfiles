@@ -8,43 +8,71 @@ var _createClass = (function () { function defineProperties(target, props) { for
  * the root directory of this source tree.
  */
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _atom = require('atom');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _Commands = require('./Commands');
+var _atom2;
 
-var _Commands2 = _interopRequireDefault(_Commands);
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var _GadgetsService = require('./GadgetsService');
+var _Commands2;
 
-var _GadgetsService2 = _interopRequireDefault(_GadgetsService);
+function _Commands() {
+  return _Commands2 = _interopRequireDefault(require('./Commands'));
+}
 
-var _createStateStream = require('./createStateStream');
+var _createGadgetsService2;
 
-var _createStateStream2 = _interopRequireDefault(_createStateStream);
+function _createGadgetsService() {
+  return _createGadgetsService2 = _interopRequireDefault(require('./createGadgetsService'));
+}
 
-var _getInitialState = require('./getInitialState');
+var _createAtomCommands2;
 
-var _getInitialState2 = _interopRequireDefault(_getInitialState);
+function _createAtomCommands() {
+  return _createAtomCommands2 = _interopRequireDefault(require('./createAtomCommands'));
+}
 
-var _nuclideCommons = require('../../nuclide-commons');
+var _createStateStream2;
 
-var _rxjs = require('rxjs');
+function _createStateStream() {
+  return _createStateStream2 = _interopRequireDefault(require('./createStateStream'));
+}
 
-var _rxjs2 = _interopRequireDefault(_rxjs);
+var _getInitialState2;
 
-var _syncAtomCommands = require('./syncAtomCommands');
+function _getInitialState() {
+  return _getInitialState2 = _interopRequireDefault(require('./getInitialState'));
+}
 
-var _syncAtomCommands2 = _interopRequireDefault(_syncAtomCommands);
+var _nuclideAtomHelpers2;
 
-var _trackActions = require('./trackActions');
+function _nuclideAtomHelpers() {
+  return _nuclideAtomHelpers2 = require('../../nuclide-atom-helpers');
+}
 
-var _trackActions2 = _interopRequireDefault(_trackActions);
+var _nuclideCommons2;
 
-var observableFromSubscribeFunction = _nuclideCommons.event.observableFromSubscribeFunction;
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
+
+var observableFromSubscribeFunction = (_nuclideCommons2 || _nuclideCommons()).event.observableFromSubscribeFunction;
+
+var _rxjs2;
+
+function _rxjs() {
+  return _rxjs2 = _interopRequireDefault(require('rxjs'));
+}
+
+var _trackActions2;
+
+function _trackActions() {
+  return _trackActions2 = _interopRequireDefault(require('./trackActions'));
+}
 
 var Activation = (function () {
   function Activation(initialState) {
@@ -52,10 +80,10 @@ var Activation = (function () {
 
     _classCallCheck(this, Activation);
 
-    initialState = (0, _getInitialState2['default'])();
-    var action$ = new _rxjs2['default'].Subject();
-    var state$ = (0, _createStateStream2['default'])(action$, initialState);
-    var commands = this.commands = new _Commands2['default'](action$, function () {
+    initialState = (0, (_getInitialState2 || _getInitialState()).default)();
+    var action$ = new (_rxjs2 || _rxjs()).default.Subject();
+    var state$ = (0, (_createStateStream2 || _createStateStream()).default)(action$, initialState);
+    var commands = this.commands = new (_Commands2 || _Commands()).default(action$, function () {
       return state$.getValue();
     });
 
@@ -64,29 +92,35 @@ var Activation = (function () {
     };
     var gadget$ = state$.map(getGadgets).distinctUntilChanged();
 
-    this._disposables = new _atom.CompositeDisposable(new _nuclideCommons.DisposableSubscription(action$),
+    this._disposables = new (_atom2 || _atom()).CompositeDisposable(new (_nuclideCommons2 || _nuclideCommons()).DisposableSubscription(action$),
 
     // Re-render all pane items when (1) new items are added, (2) new gadgets are registered and
     // (3) the active pane item changes.
-    new _nuclideCommons.DisposableSubscription(observableFromSubscribeFunction(atom.workspace.observePaneItems.bind(atom.workspace)).merge(observableFromSubscribeFunction(atom.workspace.onDidChangeActivePaneItem.bind(atom.workspace))).merge(gadget$).sampleTime(100).subscribe(function () {
+    new (_nuclideCommons2 || _nuclideCommons()).DisposableSubscription(observableFromSubscribeFunction(atom.workspace.observePaneItems.bind(atom.workspace)).merge(observableFromSubscribeFunction(atom.workspace.onDidChangeActivePaneItem.bind(atom.workspace))).merge(gadget$).sampleTime(100).subscribe(function () {
       return _this.commands.renderPaneItems();
     })),
 
     // Clean up when pane items are destroyed.
-    new _nuclideCommons.DisposableSubscription(observableFromSubscribeFunction(atom.workspace.onDidDestroyPaneItem.bind(atom.workspace)).subscribe(function (_ref) {
+    new (_nuclideCommons2 || _nuclideCommons()).DisposableSubscription(observableFromSubscribeFunction(atom.workspace.onDidDestroyPaneItem.bind(atom.workspace)).subscribe(function (_ref) {
       var item = _ref.item;
       return _this.commands.cleanUpDestroyedPaneItem(item);
     })),
 
     // Keep the atom commands up to date with the registered gadgets.
-    new _nuclideCommons.DisposableSubscription((0, _syncAtomCommands2['default'])(gadget$, commands)),
+    (0, (_nuclideAtomHelpers2 || _nuclideAtomHelpers()).syncAtomCommands)(
+    // $FlowFixMe(matthewwithanm): gadgetsMap is mixed because the state is an untyped Immutable.Map. It should be a record!
+    gadget$.map(function (gadgetsMap) {
+      return new Set(gadgetsMap.values());
+    }), function (gadget) {
+      return (0, (_createAtomCommands2 || _createAtomCommands()).default)(gadget, commands);
+    }),
 
     // Collect some analytics about gadget actions.
-    (0, _trackActions2['default'])(action$),
+    (0, (_trackActions2 || _trackActions()).default)(action$),
 
     // Update the expanded Flex scale whenever the user starts dragging a handle. Use the capture
     // phase since resize handles stop propagation of the event during the bubbling phase.
-    new _nuclideCommons.DisposableSubscription(_rxjs2['default'].Observable.fromEventPattern(function (handler) {
+    new (_nuclideCommons2 || _nuclideCommons()).DisposableSubscription((_rxjs2 || _rxjs()).default.Observable.fromEventPattern(function (handler) {
       document.addEventListener('mousedown', handler, true);
     }, function (handler) {
       document.removeEventListener('mousedown', handler, true);
@@ -117,7 +151,16 @@ var Activation = (function () {
   }, {
     key: 'provideGadgetsService',
     value: function provideGadgetsService() {
-      return new _GadgetsService2['default'](this.commands);
+      if (this._gadgetsService == null) {
+        var _ref2 = (0, (_createGadgetsService2 || _createGadgetsService()).default)(this.commands);
+
+        var service = _ref2.service;
+        var dispose = _ref2.dispose;
+
+        this._disposables.add({ dispose: dispose });
+        this._gadgetsService = service;
+      }
+      return this._gadgetsService;
     }
   }]);
 

@@ -1,7 +1,7 @@
 Object.defineProperty(exports, '__esModule', {
   value: true
 });
-exports['default'] = addObserveMethods;
+exports.default = addObserveMethods;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
@@ -13,11 +13,17 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
  * the root directory of this source tree.
  */
 
-var _rxjs = require('rxjs');
+var _rxjs2;
 
-var _rxjs2 = _interopRequireDefault(_rxjs);
+function _rxjs() {
+  return _rxjs2 = _interopRequireDefault(require('rxjs'));
+}
 
-var _nuclideCommons = require('../../nuclide-commons');
+var _nuclideCommons2;
+
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
 
 var strictEquals = function strictEquals(a, b) {
   return a === b;
@@ -110,13 +116,13 @@ function createObserveMethodDescriptor(target, key, getValue) {
 function createObserveFunction() {
   var comparer = arguments.length <= 0 || arguments[0] === undefined ? strictEquals : arguments[0];
 
-  var value$ = new _rxjs2['default'].Subject();
+  var value$ = new (_rxjs2 || _rxjs()).default.Subject();
   var distinctValue$ = value$.distinctUntilChanged(undefined, comparer);
   // Wrap each callback so that we don't leak the fact that subscribe is implemented with
   // observables (by accepting Observers as well as callbacks).
   return {
     observe: function observe(callback) {
-      return new _nuclideCommons.DisposableSubscription(distinctValue$.subscribe(function (value) {
+      return new (_nuclideCommons2 || _nuclideCommons()).DisposableSubscription(distinctValue$.subscribe(function (value) {
         return callback(value);
       }));
     },
@@ -128,4 +134,4 @@ function createObserveFunction() {
     }
   };
 }
-module.exports = exports['default'];
+module.exports = exports.default;

@@ -10,19 +10,25 @@ Object.defineProperty(exports, '__esModule', {
  * the root directory of this source tree.
  */
 
-exports['default'] = getContainerToHide;
+exports.default = getContainerToHide;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _atom = require('atom');
+var _atom2;
 
-var _getResizableContainers = require('./getResizableContainers');
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var _getResizableContainers2 = _interopRequireDefault(_getResizableContainers);
+var _getResizableContainers2;
+
+function _getResizableContainers() {
+  return _getResizableContainers2 = _interopRequireDefault(require('./getResizableContainers'));
+}
 
 var containsTextEditor = function containsTextEditor(pane) {
   return pane.getItems().some(function (item) {
-    return item instanceof _atom.TextEditor;
+    return item instanceof (_atom2 || _atom()).TextEditor;
   });
 };
 
@@ -35,7 +41,7 @@ function getContainerToHide(pane) {
   var containerToHide = null;
 
   // The top-most container isn't resizable so exclude that immediately.
-  var resizableContainers = Array.from((0, _getResizableContainers2['default'])(pane)).slice(0, -1);
+  var resizableContainers = Array.from((0, (_getResizableContainers2 || _getResizableContainers()).default)(pane)).slice(0, -1);
 
   // Find the highest resizable container that doesn't contain a text editor. If the very first
   // container has a text editor, use it anyway (we gotta hide something!)
@@ -53,4 +59,4 @@ function getContainerToHide(pane) {
   return containerToHide;
 }
 
-module.exports = exports['default'];
+module.exports = exports.default;

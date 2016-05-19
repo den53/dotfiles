@@ -6,6 +6,7 @@ var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = 
 
 exports.union = union;
 exports.filter = filter;
+exports.equal = equal;
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -53,4 +54,21 @@ function filter(map, selector) {
     }
   }
   return selected;
+}
+
+function equal(map1, map2) {
+  if (map1.size !== map2.size) {
+    return false;
+  }
+  for (var _ref53 of map1) {
+    var _ref52 = _slicedToArray(_ref53, 2);
+
+    var key1 = _ref52[0];
+    var value1 = _ref52[1];
+
+    if (map2.get(key1) !== value1) {
+      return false;
+    }
+  }
+  return true;
 }

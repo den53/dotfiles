@@ -6,17 +6,13 @@ var _createClass = (function () { function defineProperties(target, props) { for
 
 var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var _rxjs = require('rxjs');
-
-var _rxjs2 = _interopRequireDefault(_rxjs);
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -26,19 +22,29 @@ var _rxjs2 = _interopRequireDefault(_rxjs);
  * the root directory of this source tree.
  */
 
-var _require = require('atom');
+var _rxjs2;
 
-var CompositeDisposable = _require.CompositeDisposable;
+function _rxjs() {
+  return _rxjs2 = _interopRequireDefault(require('rxjs'));
+}
 
-var _require2 = require('./AtomInput');
+var _atom2;
 
-var AtomInput = _require2.AtomInput;
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var _require3 = require('react-for-atom');
+var _AtomInput2;
 
-var React = _require3.React;
-var ReactDOM = _require3.ReactDOM;
-var PropTypes = React.PropTypes;
+function _AtomInput() {
+  return _AtomInput2 = require('./AtomInput');
+}
+
+var _reactForAtom2;
+
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
 
 /**
  * A Combo Box.
@@ -55,22 +61,22 @@ var Combobox = (function (_React$Component) {
   _createClass(Combobox, null, [{
     key: 'propTypes',
     value: {
-      className: PropTypes.string.isRequired,
-      formatRequestOptionsErrorMessage: PropTypes.func,
-      initialTextInput: PropTypes.string,
-      loadingMessage: PropTypes.string,
-      placeholderText: PropTypes.string,
-      maxOptionCount: PropTypes.number.isRequired,
-      onChange: PropTypes.func.isRequired,
-      onRequestOptionsError: PropTypes.func,
-      onSelect: PropTypes.func.isRequired,
+      className: (_reactForAtom2 || _reactForAtom()).React.PropTypes.string.isRequired,
+      formatRequestOptionsErrorMessage: (_reactForAtom2 || _reactForAtom()).React.PropTypes.func,
+      initialTextInput: (_reactForAtom2 || _reactForAtom()).React.PropTypes.string,
+      loadingMessage: (_reactForAtom2 || _reactForAtom()).React.PropTypes.string,
+      placeholderText: (_reactForAtom2 || _reactForAtom()).React.PropTypes.string,
+      maxOptionCount: (_reactForAtom2 || _reactForAtom()).React.PropTypes.number.isRequired,
+      onChange: (_reactForAtom2 || _reactForAtom()).React.PropTypes.func.isRequired,
+      onRequestOptionsError: (_reactForAtom2 || _reactForAtom()).React.PropTypes.func,
+      onSelect: (_reactForAtom2 || _reactForAtom()).React.PropTypes.func.isRequired,
       /**
        * promise-returning function; Gets called with
        * the current value of the input field as its only argument
        */
-      requestOptions: PropTypes.func.isRequired,
-      size: PropTypes.oneOf(['xs', 'sm', 'lg']),
-      width: PropTypes.number
+      requestOptions: (_reactForAtom2 || _reactForAtom()).React.PropTypes.func.isRequired,
+      size: (_reactForAtom2 || _reactForAtom()).React.PropTypes.oneOf(['xs', 'sm', 'lg']),
+      width: (_reactForAtom2 || _reactForAtom()).React.PropTypes.number
     },
     enumerable: true
   }, {
@@ -112,8 +118,8 @@ var Combobox = (function (_React$Component) {
   _createClass(Combobox, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
-      var node = ReactDOM.findDOMNode(this);
-      var _subscriptions = this._subscriptions = new CompositeDisposable();
+      var node = (_reactForAtom2 || _reactForAtom()).ReactDOM.findDOMNode(this);
+      var _subscriptions = this._subscriptions = new (_atom2 || _atom()).CompositeDisposable();
       _subscriptions.add(atom.commands.add(node, 'core:move-up', this._handleMoveUp), atom.commands.add(node, 'core:move-down', this._handleMoveDown), atom.commands.add(node, 'core:cancel', this._handleCancel), atom.commands.add(node, 'core:confirm', this._handleConfirm), this.refs['freeformInput'].onDidChange(this._handleTextInputChange));
       this.requestUpdate();
     }
@@ -139,7 +145,7 @@ var Combobox = (function (_React$Component) {
 
       this.setState({ error: null, loadingOptions: true });
 
-      this._updateSubscription = _rxjs2['default'].Observable.fromPromise(this.props.requestOptions(this.state.textInput)).subscribe(function (options) {
+      this._updateSubscription = (_rxjs2 || _rxjs()).default.Observable.fromPromise(this.props.requestOptions(this.state.textInput)).subscribe(function (options) {
         return _this.receiveUpdate(options);
       }, function (err) {
         _this.setState({ error: err, loadingOptions: false });
@@ -244,7 +250,7 @@ var Combobox = (function (_React$Component) {
       this.selectValue(selectedValue, function () {
         // Focus the input again because the click will cause the input to blur. This mimics native
         // <select> behavior by keeping focus in the form being edited.
-        var input = ReactDOM.findDOMNode(_this2.refs['freeformInput']);
+        var input = (_reactForAtom2 || _reactForAtom()).ReactDOM.findDOMNode(_this2.refs['freeformInput']);
         if (input) {
           input.focus();
         }
@@ -287,7 +293,7 @@ var Combobox = (function (_React$Component) {
   }, {
     key: '_scrollSelectedOptionIntoViewIfNeeded',
     value: function _scrollSelectedOptionIntoViewIfNeeded() {
-      var selectedOption = ReactDOM.findDOMNode(this.refs['selectedOption']);
+      var selectedOption = (_reactForAtom2 || _reactForAtom()).ReactDOM.findDOMNode(this.refs['selectedOption']);
       if (selectedOption) {
         selectedOption.scrollIntoViewIfNeeded();
       }
@@ -301,10 +307,10 @@ var Combobox = (function (_React$Component) {
       var options = [];
 
       if (this.props.loadingMessage && this.state.loadingOptions) {
-        options.push(React.createElement(
+        options.push((_reactForAtom2 || _reactForAtom()).React.createElement(
           'li',
           { key: 'loading-text', className: 'loading' },
-          React.createElement(
+          (_reactForAtom2 || _reactForAtom()).React.createElement(
             'span',
             { className: 'loading-message' },
             this.props.loadingMessage
@@ -314,7 +320,7 @@ var Combobox = (function (_React$Component) {
 
       if (this.state.error != null && this.props.formatRequestOptionsErrorMessage != null) {
         var message = this.props.formatRequestOptionsErrorMessage(this.state.error);
-        options.push(React.createElement(
+        options.push((_reactForAtom2 || _reactForAtom()).React.createElement(
           'li',
           { className: 'text-error' },
           message
@@ -328,7 +334,7 @@ var Combobox = (function (_React$Component) {
           var highlightedMatch = option.value.substring(option.matchIndex, endOfMatchIndex);
           var afterMatch = option.value.substring(endOfMatchIndex, option.value.length);
           var isSelected = i === _this3.state.selectedIndex;
-          return React.createElement(
+          return (_reactForAtom2 || _reactForAtom()).React.createElement(
             'li',
             {
               className: isSelected ? 'selected' : null,
@@ -337,7 +343,7 @@ var Combobox = (function (_React$Component) {
               onMouseOver: _this3._setSelectedIndex.bind(_this3, i),
               ref: isSelected ? 'selectedOption' : null },
             beforeMatch,
-            React.createElement(
+            (_reactForAtom2 || _reactForAtom()).React.createElement(
               'strong',
               { className: 'text-highlight' },
               highlightedMatch
@@ -347,14 +353,14 @@ var Combobox = (function (_React$Component) {
         })));
 
         if (!options.length) {
-          options.push(React.createElement(
+          options.push((_reactForAtom2 || _reactForAtom()).React.createElement(
             'li',
             { className: 'text-subtle', key: 'no-results-found' },
             'No results found'
           ));
         }
 
-        optionsContainer = React.createElement(
+        optionsContainer = (_reactForAtom2 || _reactForAtom()).React.createElement(
           'ol',
           { className: 'list-group' },
           options
@@ -367,11 +373,11 @@ var Combobox = (function (_React$Component) {
       var size = _props.size;
       var width = _props.width;
 
-      return React.createElement(
+      return (_reactForAtom2 || _reactForAtom()).React.createElement(
         'div',
         { className: 'select-list popover-list popover-list-subtle ' + this.props.className,
           style: { width: width + 'px' } },
-        React.createElement(AtomInput, {
+        (_reactForAtom2 || _reactForAtom()).React.createElement((_AtomInput2 || _AtomInput()).AtomInput, {
           initialValue: initialTextInput,
           onBlur: this._handleInputBlur,
           onFocus: this._handleInputFocus,
@@ -386,6 +392,6 @@ var Combobox = (function (_React$Component) {
   }]);
 
   return Combobox;
-})(React.Component);
+})((_reactForAtom2 || _reactForAtom()).React.Component);
 
 exports.Combobox = Combobox;

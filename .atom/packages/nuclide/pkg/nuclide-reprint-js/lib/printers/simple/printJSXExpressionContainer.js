@@ -8,11 +8,22 @@
  * the root directory of this source tree.
  */
 
-var flatten = require('../../utils/flatten');
-var markers = require('../../constants/markers');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _utilsFlatten2;
+
+function _utilsFlatten() {
+  return _utilsFlatten2 = _interopRequireDefault(require('../../utils/flatten'));
+}
+
+var _constantsMarkers2;
+
+function _constantsMarkers() {
+  return _constantsMarkers2 = _interopRequireDefault(require('../../constants/markers'));
+}
 
 function printJSXExpressionContainer(print, node) {
-  return flatten(['{', markers.openScope, markers.scopeIndent, markers.scopeBreak, print(node.expression), markers.scopeBreak, markers.scopeDedent, markers.closeScope, '}']);
+  return (0, (_utilsFlatten2 || _utilsFlatten()).default)(['{', (_constantsMarkers2 || _constantsMarkers()).default.openScope, (_constantsMarkers2 || _constantsMarkers()).default.scopeIndent, (_constantsMarkers2 || _constantsMarkers()).default.scopeBreak, print(node.expression), (_constantsMarkers2 || _constantsMarkers()).default.scopeBreak, (_constantsMarkers2 || _constantsMarkers()).default.scopeDedent, (_constantsMarkers2 || _constantsMarkers()).default.closeScope, '}']);
 }
 
 module.exports = printJSXExpressionContainer;

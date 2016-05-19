@@ -17,15 +17,42 @@ exports.consumeTypehintProvider = consumeTypehintProvider;
 exports.consumeDatatipService = consumeDatatipService;
 exports.deactivate = deactivate;
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _assert = require('assert');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _assert2 = _interopRequireDefault(_assert);
+var _types = require('./types');
 
-var _atom = require('atom');
+Object.defineProperty(exports, 'HintTree', {
+  enumerable: true,
+  get: function get() {
+    return _types.HintTree;
+  }
+});
+Object.defineProperty(exports, 'TypeHint', {
+  enumerable: true,
+  get: function get() {
+    return _types.TypeHint;
+  }
+});
+Object.defineProperty(exports, 'TypeHintProvider', {
+  enumerable: true,
+  get: function get() {
+    return _types.TypeHintProvider;
+  }
+});
+
+var _assert2;
+
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
+
+var _atom2;
+
+function _atom() {
+  return _atom2 = require('atom');
+}
 
 var PACKAGE_NAME = 'nuclide-type-hint';
 
@@ -33,7 +60,7 @@ var Activation = (function () {
   function Activation(state) {
     _classCallCheck(this, Activation);
 
-    this._disposables = new _atom.CompositeDisposable();
+    this._disposables = new (_atom2 || _atom()).CompositeDisposable();
     if (this.typeHintManager == null) {
       var TypeHintManager = require('./TypeHintManager');
       this.typeHintManager = new TypeHintManager();
@@ -45,9 +72,9 @@ var Activation = (function () {
     value: function consumeTypehintProvider(provider) {
       var _this = this;
 
-      (0, _assert2['default'])(this.typeHintManager);
+      (0, (_assert2 || _assert()).default)(this.typeHintManager);
       this.typeHintManager.addProvider(provider);
-      return new _atom.Disposable(function () {
+      return new (_atom2 || _atom()).Disposable(function () {
         if (_this.typeHintManager != null) {
           _this.typeHintManager.removeProvider(provider);
         }
@@ -56,7 +83,7 @@ var Activation = (function () {
   }, {
     key: 'consumeDatatipService',
     value: function consumeDatatipService(service) {
-      (0, _assert2['default'])(this.typeHintManager);
+      (0, (_assert2 || _assert()).default)(this.typeHintManager);
       var datatip = this.typeHintManager.datatip.bind(this.typeHintManager);
       var datatipProvider = {
         validForScope: function validForScope() {
@@ -68,7 +95,7 @@ var Activation = (function () {
       };
       this.datatipService = service;
       service.addProvider(datatipProvider);
-      var disposable = new _atom.Disposable(function () {
+      var disposable = new (_atom2 || _atom()).Disposable(function () {
         return service.removeProvider(datatipProvider);
       });
       this._disposables.add(disposable);
@@ -91,12 +118,12 @@ function activate(state) {
 }
 
 function consumeTypehintProvider(provider) {
-  (0, _assert2['default'])(activation);
+  (0, (_assert2 || _assert()).default)(activation);
   return activation.consumeTypehintProvider(provider);
 }
 
 function consumeDatatipService(service) {
-  (0, _assert2['default'])(activation);
+  (0, (_assert2 || _assert()).default)(activation);
   return activation.consumeDatatipService(service);
 }
 

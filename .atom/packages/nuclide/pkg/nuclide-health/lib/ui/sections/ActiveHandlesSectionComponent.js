@@ -6,11 +6,11 @@ var _createClass = (function () { function defineProperties(target, props) { for
 
 var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -20,17 +20,25 @@ function _inherits(subClass, superClass) { if (typeof superClass !== 'function' 
  * the root directory of this source tree.
  */
 
-var _path = require('path');
+var _path2;
 
-var _path2 = _interopRequireDefault(_path);
+function _path() {
+  return _path2 = _interopRequireDefault(require('path'));
+}
 
-var _reactForAtom = require('react-for-atom');
+var _reactForAtom2;
 
-var _HandlesTableComponent = require('./HandlesTableComponent');
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
 
-var _HandlesTableComponent2 = _interopRequireDefault(_HandlesTableComponent);
+var _HandlesTableComponent2;
 
-var PropTypes = _reactForAtom.React.PropTypes;
+function _HandlesTableComponent() {
+  return _HandlesTableComponent2 = _interopRequireDefault(require('./HandlesTableComponent'));
+}
+
+var PropTypes = (_reactForAtom2 || _reactForAtom()).React.PropTypes;
 
 var ActiveHandlesSectionComponent = (function (_React$Component) {
   _inherits(ActiveHandlesSectionComponent, _React$Component);
@@ -45,7 +53,7 @@ var ActiveHandlesSectionComponent = (function (_React$Component) {
     key: 'render',
     value: function render() {
       if (!this.props.activeHandleObjects || this.props.activeHandleObjects.length === 0) {
-        return _reactForAtom.React.createElement('div', null);
+        return (_reactForAtom2 || _reactForAtom()).React.createElement('div', null);
       }
 
       var handlesByType = {};
@@ -61,10 +69,10 @@ var ActiveHandlesSectionComponent = (function (_React$Component) {
       });
 
       // Note that widthPercentage properties should add up to 90 since the ID column always adds 10.
-      return _reactForAtom.React.createElement(
+      return (_reactForAtom2 || _reactForAtom()).React.createElement(
         'div',
         null,
-        _reactForAtom.React.createElement(_HandlesTableComponent2['default'], {
+        (_reactForAtom2 || _reactForAtom()).React.createElement((_HandlesTableComponent2 || _HandlesTableComponent()).default, {
           key: 1,
           title: 'Processes',
           handles: handlesByType['childprocess'],
@@ -74,7 +82,7 @@ var ActiveHandlesSectionComponent = (function (_React$Component) {
           columns: [{
             title: 'Name',
             value: function value(process) {
-              return _path2['default'].basename(process.spawnfile);
+              return (_path2 || _path()).default.basename(process.spawnfile);
             },
             widthPercentage: 15
           }, {
@@ -105,7 +113,7 @@ var ActiveHandlesSectionComponent = (function (_React$Component) {
             widthPercentage: 60
           }]
         }),
-        _reactForAtom.React.createElement(_HandlesTableComponent2['default'], {
+        (_reactForAtom2 || _reactForAtom()).React.createElement((_HandlesTableComponent2 || _HandlesTableComponent()).default, {
           key: 2,
           title: 'TLS Sockets',
           handles: handlesByType['tlssocket'],
@@ -132,7 +140,7 @@ var ActiveHandlesSectionComponent = (function (_React$Component) {
             widthPercentage: 10
           }]
         }),
-        _reactForAtom.React.createElement(_HandlesTableComponent2['default'], {
+        (_reactForAtom2 || _reactForAtom()).React.createElement((_HandlesTableComponent2 || _HandlesTableComponent()).default, {
           key: 3,
           title: 'Other handles',
           handles: handlesByType['other'],
@@ -182,7 +190,7 @@ var ActiveHandlesSectionComponent = (function (_React$Component) {
   }]);
 
   return ActiveHandlesSectionComponent;
-})(_reactForAtom.React.Component);
+})((_reactForAtom2 || _reactForAtom()).React.Component);
 
-exports['default'] = ActiveHandlesSectionComponent;
-module.exports = exports['default'];
+exports.default = ActiveHandlesSectionComponent;
+module.exports = exports.default;

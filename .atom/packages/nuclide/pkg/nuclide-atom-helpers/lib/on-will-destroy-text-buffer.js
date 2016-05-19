@@ -1,7 +1,7 @@
 Object.defineProperty(exports, '__esModule', {
   value: true
 });
-exports['default'] = onWillDestroyTextBuffer;
+exports.default = onWillDestroyTextBuffer;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
@@ -13,9 +13,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
  * the root directory of this source tree.
  */
 
-var _assert = require('assert');
+var _assert2;
 
-var _assert2 = _interopRequireDefault(_assert);
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
 function onWillDestroyTextBuffer(callback) {
   return atom.workspace.onWillDestroyPaneItem(function (_ref) {
@@ -27,11 +29,11 @@ function onWillDestroyTextBuffer(callback) {
 
     var editor = item;
     var openBufferCount = editor.getBuffer().refcount;
-    (0, _assert2['default'])(openBufferCount !== 0, 'The file that is about to be closed should still be open.');
+    (0, (_assert2 || _assert()).default)(openBufferCount !== 0, 'The file that is about to be closed should still be open.');
     if (openBufferCount === 1) {
       callback(editor.getBuffer());
     }
   });
 }
 
-module.exports = exports['default'];
+module.exports = exports.default;

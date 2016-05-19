@@ -21,13 +21,25 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _atom = require('atom');
+var _atom2;
 
-var _nuclideDiagnosticsProviderBase = require('../../nuclide-diagnostics-provider-base');
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var _nuclideCommons = require('../../nuclide-commons');
+var _nuclideDiagnosticsProviderBase2;
 
-var RequestSerializer = _nuclideCommons.promises.RequestSerializer;
+function _nuclideDiagnosticsProviderBase() {
+  return _nuclideDiagnosticsProviderBase2 = require('../../nuclide-diagnostics-provider-base');
+}
+
+var _nuclideCommons2;
+
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
+
+var RequestSerializer = (_nuclideCommons2 || _nuclideCommons()).promises.RequestSerializer;
 
 // Exported for testing.
 
@@ -47,7 +59,7 @@ function linterMessageToDiagnosticMessage(msg, providerName) {
       filePath: msg.filePath,
       text: msg.text,
       html: msg.html,
-      range: msg.range && _atom.Range.fromObject(msg.range),
+      range: msg.range && (_atom2 || _atom()).Range.fromObject(msg.range),
       trace: trace,
       fix: msg.fix == null ? undefined : {
         oldRange: msg.fix.range,
@@ -62,7 +74,7 @@ function linterMessageToDiagnosticMessage(msg, providerName) {
       type: msg.type,
       text: msg.text,
       html: msg.html,
-      range: msg.range && _atom.Range.fromObject(msg.range),
+      range: msg.range && (_atom2 || _atom()).Range.fromObject(msg.range),
       trace: trace
     };
   }
@@ -118,7 +130,7 @@ var LinterAdapter = (function () {
   function LinterAdapter(provider) {
     var _this = this;
 
-    var ProviderBase = arguments.length <= 1 || arguments[1] === undefined ? _nuclideDiagnosticsProviderBase.DiagnosticsProviderBase : arguments[1];
+    var ProviderBase = arguments.length <= 1 || arguments[1] === undefined ? (_nuclideDiagnosticsProviderBase2 || _nuclideDiagnosticsProviderBase()).DiagnosticsProviderBase : arguments[1];
 
     _classCallCheck(this, LinterAdapter);
 

@@ -10,9 +10,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * the root directory of this source tree.
  */
 
-var _require = require('flux');
+var _flux2;
 
-var Dispatcher = _require.Dispatcher;
+function _flux() {
+  return _flux2 = require('flux');
+}
 
 var quickopenDispatcher = null;
 
@@ -25,7 +27,7 @@ var QuickSelectionDispatcher = (function () {
     key: 'getInstance',
     value: function getInstance() {
       if (!quickopenDispatcher) {
-        quickopenDispatcher = new Dispatcher();
+        quickopenDispatcher = new (_flux2 || _flux()).Dispatcher();
       }
       return quickopenDispatcher;
     }

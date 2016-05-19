@@ -4,6 +4,8 @@ Object.defineProperty(exports, '__esModule', {
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
  * All rights reserved.
@@ -12,24 +14,28 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
  * the root directory of this source tree.
  */
 
-var _require = require('react-for-atom');
+var _reactForAtom2;
 
-var React = _require.React;
-var PropTypes = React.PropTypes;
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
 
-var classnames = require('classnames');
+var _classnames2;
 
-var Tabs = React.createClass({
-  displayName: 'Tabs',
+function _classnames() {
+  return _classnames2 = _interopRequireDefault(require('classnames'));
+}
+
+var Tabs = (_reactForAtom2 || _reactForAtom()).React.createClass({
 
   propTypes: {
-    tabs: PropTypes.arrayOf(PropTypes.shape({
-      name: PropTypes.string.isRequired,
-      tabContent: PropTypes.node.isRequired
+    tabs: (_reactForAtom2 || _reactForAtom()).React.PropTypes.arrayOf((_reactForAtom2 || _reactForAtom()).React.PropTypes.shape({
+      name: (_reactForAtom2 || _reactForAtom()).React.PropTypes.string.isRequired,
+      tabContent: (_reactForAtom2 || _reactForAtom()).React.PropTypes.node.isRequired
     })).isRequired,
-    activeTabName: PropTypes.string.isRequired,
-    onActiveTabChange: PropTypes.func.isRequired,
-    triggeringEvent: PropTypes.string.isRequired
+    activeTabName: (_reactForAtom2 || _reactForAtom()).React.PropTypes.string.isRequired,
+    onActiveTabChange: (_reactForAtom2 || _reactForAtom()).React.PropTypes.func.isRequired,
+    triggeringEvent: (_reactForAtom2 || _reactForAtom()).React.PropTypes.string.isRequired
   },
 
   getDefaultProps: function getDefaultProps() {
@@ -52,23 +58,23 @@ var Tabs = React.createClass({
     var tabs = this.props.tabs.map(function (tab) {
       var handler = {};
       handler[_this.props.triggeringEvent] = _this._handleTabChange.bind(_this, tab.name);
-      return React.createElement(
+      return (_reactForAtom2 || _reactForAtom()).React.createElement(
         'li',
         _extends({
-          className: classnames({
+          className: (0, (_classnames2 || _classnames()).default)({
             tab: true,
             active: _this.props.activeTabName === tab.name
           }),
           key: tab.name
         }, handler),
-        React.createElement(
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
           'div',
           { className: 'title' },
           tab.tabContent
         )
       );
     });
-    return React.createElement(
+    return (_reactForAtom2 || _reactForAtom()).React.createElement(
       'ul',
       { className: 'tab-bar list-inline inset-panel' },
       tabs
@@ -76,7 +82,7 @@ var Tabs = React.createClass({
   },
 
   render: function render() {
-    return React.createElement(
+    return (_reactForAtom2 || _reactForAtom()).React.createElement(
       'div',
       { className: 'nuclide-tabs' },
       this._renderTabMenu()

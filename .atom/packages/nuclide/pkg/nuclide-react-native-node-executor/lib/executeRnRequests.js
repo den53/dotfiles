@@ -16,38 +16,58 @@ exports.executeRnRequests = executeRnRequests;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _nuclideCommons = require('../../nuclide-commons');
+var _nuclideCommons2;
 
-var _nuclideFeatureConfig = require('../../nuclide-feature-config');
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
 
-var _nuclideFeatureConfig2 = _interopRequireDefault(_nuclideFeatureConfig);
+var _nuclideFeatureConfig2;
 
-var _nuclideCommonsLibProcess = require('../../nuclide-commons/lib/process');
+function _nuclideFeatureConfig() {
+  return _nuclideFeatureConfig2 = _interopRequireDefault(require('../../nuclide-feature-config'));
+}
 
-var _nuclideLogging = require('../../nuclide-logging');
+var _nuclideCommonsLibProcess2;
 
-var _path = require('path');
+function _nuclideCommonsLibProcess() {
+  return _nuclideCommonsLibProcess2 = require('../../nuclide-commons/lib/process');
+}
 
-var _path2 = _interopRequireDefault(_path);
+var _nuclideLogging2;
 
-var _rxjs = require('rxjs');
+function _nuclideLogging() {
+  return _nuclideLogging2 = require('../../nuclide-logging');
+}
 
-var logger = (0, _nuclideLogging.getLogger)();
+var _path2;
+
+function _path() {
+  return _path2 = _interopRequireDefault(require('path'));
+}
+
+var _rxjs2;
+
+function _rxjs() {
+  return _rxjs2 = require('rxjs');
+}
+
+var logger = (0, (_nuclideLogging2 || _nuclideLogging()).getLogger)();
 
 function executeRnRequests(rnRequests) {
-  var workerProcess = (0, _nuclideCommonsLibProcess.createProcessStream)(function () {
+  var workerProcess = (0, (_nuclideCommonsLibProcess2 || _nuclideCommonsLibProcess()).createProcessStream)(function () {
     return(
       // TODO: The node location/path needs to be more configurable. We need to figure out a way to
       //   handle this across the board.
-      (0, _nuclideCommonsLibProcess.forkWithExecEnvironment)(_path2['default'].join(__dirname, 'executor.js'), [], {
+      (0, (_nuclideCommonsLibProcess2 || _nuclideCommonsLibProcess()).forkWithExecEnvironment)((_path2 || _path()).default.join(__dirname, 'executor.js'), [], {
         execArgv: ['--debug-brk'],
-        execPath: _nuclideFeatureConfig2['default'].get('nuclide-react-native.pathToNode'),
+        execPath: (_nuclideFeatureConfig2 || _nuclideFeatureConfig()).default.get('nuclide-react-native.pathToNode'),
         silent: true
       })
     );
   }).share();
 
-  return _rxjs.Observable.merge(workerProcess.map(function (process) {
+  return (_rxjs2 || _rxjs()).Observable.merge(workerProcess.map(function (process) {
     return {
       kind: 'pid',
       pid: process.pid
@@ -56,9 +76,9 @@ function executeRnRequests(rnRequests) {
 
   // The messages we're receiving from the worker process.
   workerProcess.flatMap(function (process) {
-    return _rxjs.Observable.fromEvent(process, 'message');
-  }), _rxjs.Observable.create(function () {
-    return new _nuclideCommons.CompositeSubscription(
+    return (_rxjs2 || _rxjs()).Observable.fromEvent(process, 'message');
+  }), (_rxjs2 || _rxjs()).Observable.create(function () {
+    return new (_nuclideCommons2 || _nuclideCommons()).CompositeSubscription(
     // Send the incoming requests to the worker process for evaluation.
     rnRequests.withLatestFrom(workerProcess, function (r, p) {
       return [r, p];
@@ -72,7 +92,7 @@ function executeRnRequests(rnRequests) {
 
     // Pipe output from forked process. This just makes things easier to debug for us.
     workerProcess.switchMap(function (process) {
-      return (0, _nuclideCommonsLibProcess.getOutputStream)(process);
+      return (0, (_nuclideCommonsLibProcess2 || _nuclideCommonsLibProcess()).getOutputStream)(process);
     }).subscribe(function (message) {
       switch (message.kind) {
         case 'error':

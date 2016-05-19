@@ -20,9 +20,17 @@ function _inherits(subClass, superClass) { if (typeof superClass !== 'function' 
  * the root directory of this source tree.
  */
 
-var _nuclideDebuggerAtom = require('../../nuclide-debugger-atom');
+var _nuclideDebuggerAtom2;
 
-var _HhvmDebuggerInstance = require('./HhvmDebuggerInstance');
+function _nuclideDebuggerAtom() {
+  return _nuclideDebuggerAtom2 = require('../../nuclide-debugger-atom');
+}
+
+var _HhvmDebuggerInstance2;
+
+function _HhvmDebuggerInstance() {
+  return _HhvmDebuggerInstance2 = require('./HhvmDebuggerInstance');
+}
 
 var LaunchProcessInfo = (function (_DebuggerProcessInfo) {
   _inherits(LaunchProcessInfo, _DebuggerProcessInfo);
@@ -37,11 +45,11 @@ var LaunchProcessInfo = (function (_DebuggerProcessInfo) {
   _createClass(LaunchProcessInfo, [{
     key: 'debug',
     value: _asyncToGenerator(function* () {
-      return new _HhvmDebuggerInstance.HhvmDebuggerInstance(this, this._launchTarget);
+      return new (_HhvmDebuggerInstance2 || _HhvmDebuggerInstance()).HhvmDebuggerInstance(this, this._launchTarget);
     })
   }]);
 
   return LaunchProcessInfo;
-})(_nuclideDebuggerAtom.DebuggerProcessInfo);
+})((_nuclideDebuggerAtom2 || _nuclideDebuggerAtom()).DebuggerProcessInfo);
 
 exports.LaunchProcessInfo = LaunchProcessInfo;

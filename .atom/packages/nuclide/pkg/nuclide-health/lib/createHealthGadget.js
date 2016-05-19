@@ -14,19 +14,25 @@ var _createClass = (function () { function defineProperties(target, props) { for
 
 var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
-exports['default'] = createHealthGadget;
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+exports.default = createHealthGadget;
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var _uiHealthPaneItemComponent = require('./ui/HealthPaneItemComponent');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _uiHealthPaneItemComponent2 = _interopRequireDefault(_uiHealthPaneItemComponent);
+var _uiHealthPaneItemComponent2;
 
-var _reactForAtom = require('react-for-atom');
+function _uiHealthPaneItemComponent() {
+  return _uiHealthPaneItemComponent2 = _interopRequireDefault(require('./ui/HealthPaneItemComponent'));
+}
+
+var _reactForAtom2;
+
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
 
 function createHealthGadget(state$) {
 
@@ -89,13 +95,13 @@ function createHealthGadget(state$) {
         var activeHandleObjects = _state.activeHandleObjects;
 
         if (stats == null || activeHandleObjects == null) {
-          return _reactForAtom.React.createElement('div', null);
+          return (_reactForAtom2 || _reactForAtom()).React.createElement('div', null);
         }
 
-        return _reactForAtom.React.createElement(
+        return (_reactForAtom2 || _reactForAtom()).React.createElement(
           'div',
           { className: 'pane-item padded nuclide-health-pane-item' },
-          _reactForAtom.React.createElement(_uiHealthPaneItemComponent2['default'], {
+          (_reactForAtom2 || _reactForAtom()).React.createElement((_uiHealthPaneItemComponent2 || _uiHealthPaneItemComponent()).default, {
             cpuPercentage: stats.cpuPercentage,
             heapPercentage: stats.heapPercentage,
             memory: stats.rss,
@@ -109,7 +115,7 @@ function createHealthGadget(state$) {
     }]);
 
     return HealthPaneItem;
-  })(_reactForAtom.React.Component);
+  })((_reactForAtom2 || _reactForAtom()).React.Component);
 }
 
-module.exports = exports['default'];
+module.exports = exports.default;

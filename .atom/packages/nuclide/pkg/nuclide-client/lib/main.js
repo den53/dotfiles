@@ -14,21 +14,27 @@ exports.getFileSystemServiceByNuclideUri = getFileSystemServiceByNuclideUri;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _assert = require('assert');
+var _assert2;
 
-var _assert2 = _interopRequireDefault(_assert);
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
 // TODO: Remove this once all services have been moved to framework v3.
 
-var _nuclideRemoteConnection = require('../../nuclide-remote-connection');
+var _nuclideRemoteConnection2;
 
-exports.getFileForPath = _nuclideRemoteConnection.getFileForPath;
-exports.getService = _nuclideRemoteConnection.getService;
-exports.getServiceLogger = _nuclideRemoteConnection.getServiceLogger;
-exports.getServiceByNuclideUri = _nuclideRemoteConnection.getServiceByNuclideUri;
+function _nuclideRemoteConnection() {
+  return _nuclideRemoteConnection2 = require('../../nuclide-remote-connection');
+}
+
+exports.getFileForPath = (_nuclideRemoteConnection2 || _nuclideRemoteConnection()).getFileForPath;
+exports.getService = (_nuclideRemoteConnection2 || _nuclideRemoteConnection()).getService;
+exports.getServiceLogger = (_nuclideRemoteConnection2 || _nuclideRemoteConnection()).getServiceLogger;
+exports.getServiceByNuclideUri = (_nuclideRemoteConnection2 || _nuclideRemoteConnection()).getServiceByNuclideUri;
 
 function getFileSystemServiceByNuclideUri(uri) {
-  var service = (0, _nuclideRemoteConnection.getServiceByNuclideUri)('FileSystemService', uri);
-  (0, _assert2['default'])(service);
+  var service = (0, (_nuclideRemoteConnection2 || _nuclideRemoteConnection()).getServiceByNuclideUri)('FileSystemService', uri);
+  (0, (_assert2 || _assert()).default)(service);
   return service;
 }

@@ -10,37 +10,49 @@ Object.defineProperty(exports, '__esModule', {
  * the root directory of this source tree.
  */
 
-exports['default'] = trackActions;
+exports.default = trackActions;
 exports.createTrackingEventStream = createTrackingEventStream;
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _assert = require('assert');
+var _assert2;
 
-var _assert2 = _interopRequireDefault(_assert);
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
-var _ActionTypes = require('./ActionTypes');
+var _ActionTypes2;
 
-var ActionTypes = _interopRequireWildcard(_ActionTypes);
+function _ActionTypes() {
+  return _ActionTypes2 = _interopRequireWildcard(require('./ActionTypes'));
+}
 
-var _TrackingEventTypes = require('./TrackingEventTypes');
+var _TrackingEventTypes2;
 
-var TrackingEventTypes = _interopRequireWildcard(_TrackingEventTypes);
+function _TrackingEventTypes() {
+  return _TrackingEventTypes2 = _interopRequireWildcard(require('./TrackingEventTypes'));
+}
 
-var _normalizeEventString = require('./normalizeEventString');
+var _normalizeEventString2;
 
-var _normalizeEventString2 = _interopRequireDefault(_normalizeEventString);
+function _normalizeEventString() {
+  return _normalizeEventString2 = _interopRequireDefault(require('./normalizeEventString'));
+}
 
-var _nuclideAnalytics = require('../../nuclide-analytics');
+var _nuclideAnalytics2;
+
+function _nuclideAnalytics() {
+  return _nuclideAnalytics2 = require('../../nuclide-analytics');
+}
 
 /**
  * Subscribe to the action stream and track things of interest.
  */
 
 function trackActions(action$) {
-  return (0, _nuclideAnalytics.trackEvents)(createTrackingEventStream(action$));
+  return (0, (_nuclideAnalytics2 || _nuclideAnalytics()).trackEvents)(createTrackingEventStream(action$));
 }
 
 /**
@@ -82,16 +94,16 @@ function toTrackingEvents(typedAction) {
 function createCustomTrackingEvent(event) {
   switch (event.type) {
 
-    case TrackingEventTypes.GADGET_CREATED:
+    case (_TrackingEventTypes2 || _TrackingEventTypes()).GADGET_CREATED:
       {
-        (0, _assert2['default'])(event.data && event.data.gadgetId);
-        return { type: (0, _normalizeEventString2['default'])(event.data.gadgetId) + '-gadget-created' };
+        (0, (_assert2 || _assert()).default)(event.data && event.data.gadgetId);
+        return { type: (0, (_normalizeEventString2 || _normalizeEventString()).default)(event.data.gadgetId) + '-gadget-created' };
       }
 
-    case TrackingEventTypes.GADGET_DESERIALIZED:
+    case (_TrackingEventTypes2 || _TrackingEventTypes()).GADGET_DESERIALIZED:
       {
-        (0, _assert2['default'])(event.data && event.data.gadgetId);
-        return { type: (0, _normalizeEventString2['default'])(event.data.gadgetId) + '-gadget-deserialized' };
+        (0, (_assert2 || _assert()).default)(event.data && event.data.gadgetId);
+        return { type: (0, (_normalizeEventString2 || _normalizeEventString()).default)(event.data.gadgetId) + '-gadget-deserialized' };
       }
 
   }
@@ -106,13 +118,13 @@ function toTrackingEvent(action) {
 
   switch (type) {
 
-    case ActionTypes.CREATE_PANE_ITEM:
+    case (_ActionTypes2 || _ActionTypes()).CREATE_PANE_ITEM:
       {
         var gadgetId = payload.gadgetId;
         var isNew = payload.isNew;
 
         return {
-          type: isNew ? TrackingEventTypes.GADGET_CREATED : TrackingEventTypes.GADGET_DESERIALIZED,
+          type: isNew ? (_TrackingEventTypes2 || _TrackingEventTypes()).GADGET_CREATED : (_TrackingEventTypes2 || _TrackingEventTypes()).GADGET_DESERIALIZED,
           data: { gadgetId: gadgetId }
         };
       }

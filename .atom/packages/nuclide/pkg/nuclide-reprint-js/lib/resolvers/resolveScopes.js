@@ -1,6 +1,4 @@
-
-
-var buildScopes = require('../utils/buildScopes');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -10,11 +8,41 @@ var buildScopes = require('../utils/buildScopes');
  * the root directory of this source tree.
  */
 
-var invariant = require('assert');
-var isMarker = require('../utils/isMarker');
-var isScopeMarker = require('../utils/isScopeMarker');
-var markers = require('../constants/markers');
-var translateScopeMarker = require('../utils/translateScopeMarker');
+var _utilsBuildScopes2;
+
+function _utilsBuildScopes() {
+  return _utilsBuildScopes2 = _interopRequireDefault(require('../utils/buildScopes'));
+}
+
+var _assert2;
+
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
+
+var _utilsIsMarker2;
+
+function _utilsIsMarker() {
+  return _utilsIsMarker2 = _interopRequireDefault(require('../utils/isMarker'));
+}
+
+var _utilsIsScopeMarker2;
+
+function _utilsIsScopeMarker() {
+  return _utilsIsScopeMarker2 = _interopRequireDefault(require('../utils/isScopeMarker'));
+}
+
+var _constantsMarkers2;
+
+function _constantsMarkers() {
+  return _constantsMarkers2 = _interopRequireDefault(require('../constants/markers'));
+}
+
+var _utilsTranslateScopeMarker2;
+
+function _utilsTranslateScopeMarker() {
+  return _utilsTranslateScopeMarker2 = _interopRequireDefault(require('../utils/translateScopeMarker'));
+}
 
 var MIN_RELEVANT_SCOPE_VALUE = 10;
 
@@ -36,7 +64,7 @@ function resolveScopesOnce(lines, options) {
     return Math.max(options.maxLineLength - indent * options.tabWidth, 40);
   };
 
-  var scopes = buildScopes(lines);
+  var scopes = (0, (_utilsBuildScopes2 || _utilsBuildScopes()).default)(lines);
 
   // Compute a value for each scope. Higher values mean it contains more things.
   var scopeValue = new Map();
@@ -46,7 +74,7 @@ function resolveScopesOnce(lines, options) {
       if (!scopeValue.has(scopes[i])) {
         scopeValue.set(scopes[i], 0);
       }
-      var value = isMarker(line) || /^\s*$/.test(line) ? 0 : 1;
+      var value = (0, (_utilsIsMarker2 || _utilsIsMarker()).default)(line) || /^\s*$/.test(line) ? 0 : 1;
       scopeValue.set(scopes[i], scopeValue.get(scopes[i]) + value);
     }
   }
@@ -57,7 +85,7 @@ function resolveScopesOnce(lines, options) {
   var scopeDepth = new Map();
   for (var i = 0; i < lines.length; i++) {
     var line = lines[i];
-    if (line === markers.openScope) {
+    if (line === (_constantsMarkers2 || _constantsMarkers()).default.openScope) {
       depth++;
     }
     if (!scopeDepth.has(scopes[i])) {
@@ -67,7 +95,7 @@ function resolveScopesOnce(lines, options) {
     if (thisScopeDepth) {
       scopeDepth.set(scopes[i], Math.min(thisScopeDepth, depth));
     }
-    if (line === markers.closeScope) {
+    if (line === (_constantsMarkers2 || _constantsMarkers()).default.closeScope) {
       depth--;
     }
   }
@@ -83,9 +111,9 @@ function resolveScopesOnce(lines, options) {
   for (var i = 0; i < lines.length; i++) {
     var line = lines[i];
 
-    if (line === markers.indent) {
+    if (line === (_constantsMarkers2 || _constantsMarkers()).default.indent) {
       indent++;
-    } else if (line === markers.dedent) {
+    } else if (line === (_constantsMarkers2 || _constantsMarkers()).default.dedent) {
       indent--;
     }
 
@@ -99,7 +127,7 @@ function resolveScopesOnce(lines, options) {
     // We want to trim the last line when checking the length in case it
     // causes the break.
     var trimmedLength = len + trimRightLength(line);
-    invariant(space, 'Space must be defined');
+    (0, (_assert2 || _assert()).default)(space, 'Space must be defined');
     if (trimmedLength > space && start != null && scopeToBreak == null) {
       var bestScope = null;
       for (var j = i; j >= start; j--) {
@@ -141,8 +169,8 @@ function resolveScopesOnce(lines, options) {
 
   // Break relevant lines.
   lines = lines.map(function (line, i) {
-    if (isScopeMarker(line) && breakScopes.has(scopes[i])) {
-      return translateScopeMarker(line, true);
+    if ((0, (_utilsIsScopeMarker2 || _utilsIsScopeMarker()).default)(line) && breakScopes.has(scopes[i])) {
+      return (0, (_utilsTranslateScopeMarker2 || _utilsTranslateScopeMarker()).default)(line, true);
     }
     return line;
   });
@@ -152,13 +180,13 @@ function resolveScopesOnce(lines, options) {
 
 function shouldReset(line) {
   var endsInNewLine = line && /\n$/.test(line);
-  return endsInNewLine || line === markers.hardBreak || line === markers.multiHardBreak;
+  return endsInNewLine || line === (_constantsMarkers2 || _constantsMarkers()).default.hardBreak || line === (_constantsMarkers2 || _constantsMarkers()).default.multiHardBreak;
 }
 
 function trimRightLength(line) {
-  if (isMarker(line)) {
+  if ((0, (_utilsIsMarker2 || _utilsIsMarker()).default)(line)) {
     // Only a comma marker retains any length when trimmed from the right.
-    if (line === markers.comma) {
+    if (line === (_constantsMarkers2 || _constantsMarkers()).default.comma) {
       return 1;
     } else {
       return 0;
@@ -171,12 +199,12 @@ function trimRightLength(line) {
 }
 
 function getLength(line) {
-  if (isMarker(line)) {
-    if (line === markers.scopeSpaceBreak) {
+  if ((0, (_utilsIsMarker2 || _utilsIsMarker()).default)(line)) {
+    if (line === (_constantsMarkers2 || _constantsMarkers()).default.scopeSpaceBreak) {
       return 1;
-    } else if (line === markers.comma) {
+    } else if (line === (_constantsMarkers2 || _constantsMarkers()).default.comma) {
       return 1;
-    } else if (line === markers.space) {
+    } else if (line === (_constantsMarkers2 || _constantsMarkers()).default.space) {
       return 1;
     } else {
       return 0;

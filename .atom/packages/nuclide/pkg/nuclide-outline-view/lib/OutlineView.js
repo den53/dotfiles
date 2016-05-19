@@ -14,29 +14,55 @@ var _createClass = (function () { function defineProperties(target, props) { for
 
 var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var _reactForAtom = require('react-for-atom');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _assert = require('assert');
+var _reactForAtom2;
 
-var _assert2 = _interopRequireDefault(_assert);
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
 
-var _classnames = require('classnames');
+var _assert2;
 
-var _classnames2 = _interopRequireDefault(_classnames);
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
-var _nuclideAnalytics = require('../../nuclide-analytics');
+var _classnames2;
 
-var _nuclideAtomHelpers = require('../../nuclide-atom-helpers');
+function _classnames() {
+  return _classnames2 = _interopRequireDefault(require('classnames'));
+}
 
-var _nuclideLogging = require('../../nuclide-logging');
+var _nuclideAnalytics2;
 
-var logger = (0, _nuclideLogging.getLogger)();
+function _nuclideAnalytics() {
+  return _nuclideAnalytics2 = require('../../nuclide-analytics');
+}
+
+var _nuclideAtomHelpers2;
+
+function _nuclideAtomHelpers() {
+  return _nuclideAtomHelpers2 = require('../../nuclide-atom-helpers');
+}
+
+var _nuclideLogging2;
+
+function _nuclideLogging() {
+  return _nuclideLogging2 = require('../../nuclide-logging');
+}
+
+var _nuclideUiLibLoadingSpinner2;
+
+function _nuclideUiLibLoadingSpinner() {
+  return _nuclideUiLibLoadingSpinner2 = require('../../nuclide-ui/lib/LoadingSpinner');
+}
+
+var logger = (0, (_nuclideLogging2 || _nuclideLogging()).getLogger)();
 
 var TOKEN_KIND_TO_CLASS_NAME_MAP = {
   'keyword': 'keyword',
@@ -68,7 +94,7 @@ var OutlineView = (function (_React$Component) {
     value: function componentDidMount() {
       var _this = this;
 
-      (0, _assert2['default'])(this.subscription == null);
+      (0, (_assert2 || _assert()).default)(this.subscription == null);
       this.subscription = this.props.outlines.subscribe(function (outline) {
         // If the outline view has focus, we don't want to re-render anything.
         if (_this !== atom.workspace.getActivePaneItem()) {
@@ -79,17 +105,17 @@ var OutlineView = (function (_React$Component) {
   }, {
     key: 'componentWillUnmount',
     value: function componentWillUnmount() {
-      (0, _assert2['default'])(this.subscription != null);
+      (0, (_assert2 || _assert()).default)(this.subscription != null);
       this.subscription.unsubscribe();
       this.subscription = null;
     }
   }, {
     key: 'render',
     value: function render() {
-      return _reactForAtom.React.createElement(
+      return (_reactForAtom2 || _reactForAtom()).React.createElement(
         'div',
         { className: 'pane-item padded nuclide-outline-view' },
-        _reactForAtom.React.createElement(OutlineViewComponent, { outline: this.state.outline })
+        (_reactForAtom2 || _reactForAtom()).React.createElement(OutlineViewComponent, { outline: this.state.outline })
       );
     }
   }, {
@@ -105,7 +131,7 @@ var OutlineView = (function (_React$Component) {
   }]);
 
   return OutlineView;
-})(_reactForAtom.React.Component);
+})((_reactForAtom2 || _reactForAtom()).React.Component);
 
 exports.OutlineView = OutlineView;
 
@@ -126,8 +152,17 @@ var OutlineViewComponent = (function (_React$Component2) {
         case 'empty':
         case 'not-text-editor':
           return null;
+        case 'loading':
+          return (_reactForAtom2 || _reactForAtom()).React.createElement(
+            'div',
+            { className: 'nuclide-outline-view-loading' },
+            (_reactForAtom2 || _reactForAtom()).React.createElement((_nuclideUiLibLoadingSpinner2 || _nuclideUiLibLoadingSpinner()).LoadingSpinner, {
+              className: 'inline-block',
+              size: (_nuclideUiLibLoadingSpinner2 || _nuclideUiLibLoadingSpinner()).LoadingSpinnerSizes.MEDIUM
+            })
+          );
         case 'no-provider':
-          return _reactForAtom.React.createElement(
+          return (_reactForAtom2 || _reactForAtom()).React.createElement(
             'span',
             null,
             'Outline view does not currently support ',
@@ -135,7 +170,7 @@ var OutlineViewComponent = (function (_React$Component2) {
             '.'
           );
         case 'provider-no-outline':
-          return _reactForAtom.React.createElement(
+          return (_reactForAtom2 || _reactForAtom()).React.createElement(
             'span',
             null,
             'No outline available.'
@@ -145,11 +180,11 @@ var OutlineViewComponent = (function (_React$Component2) {
         default:
           var errorText = 'Encountered unexpected outline kind ' + outline.kind;
           logger.error(errorText);
-          return _reactForAtom.React.createElement(
+          return (_reactForAtom2 || _reactForAtom()).React.createElement(
             'span',
             null,
             'Internal Error:',
-            _reactForAtom.React.createElement('br', null),
+            (_reactForAtom2 || _reactForAtom()).React.createElement('br', null),
             errorText
           );
       }
@@ -157,7 +192,7 @@ var OutlineViewComponent = (function (_React$Component2) {
   }]);
 
   return OutlineViewComponent;
-})(_reactForAtom.React.Component);
+})((_reactForAtom2 || _reactForAtom()).React.Component);
 
 function renderTree(editor, outline, index) {
   var onClick = function onClick() {
@@ -165,17 +200,17 @@ function renderTree(editor, outline, index) {
     if (pane == null) {
       return;
     }
-    (0, _nuclideAnalytics.track)('nuclide-outline-view:go-to-location');
+    (0, (_nuclideAnalytics2 || _nuclideAnalytics()).track)('nuclide-outline-view:go-to-location');
     pane.activate();
     pane.activateItem(editor);
-    (0, _nuclideAtomHelpers.goToLocationInEditor)(editor, outline.startPosition.row, outline.startPosition.column);
+    (0, (_nuclideAtomHelpers2 || _nuclideAtomHelpers()).goToLocationInEditor)(editor, outline.startPosition.row, outline.startPosition.column);
   };
 
-  var classes = (0, _classnames2['default'])('list-nested-item', { 'selected': outline.highlighted });
-  return _reactForAtom.React.createElement(
+  var classes = (0, (_classnames2 || _classnames()).default)('list-nested-item', { selected: outline.highlighted });
+  return (_reactForAtom2 || _reactForAtom()).React.createElement(
     'li',
     { className: classes, key: index },
-    _reactForAtom.React.createElement(
+    (_reactForAtom2 || _reactForAtom()).React.createElement(
       'div',
       { className: 'list-item nuclide-outline-view-item', onClick: onClick },
       renderItemText(outline)
@@ -196,7 +231,7 @@ function renderItemText(outline) {
 
 function renderTextToken(token, index) {
   var className = TOKEN_KIND_TO_CLASS_NAME_MAP[token.kind];
-  return _reactForAtom.React.createElement(
+  return (_reactForAtom2 || _reactForAtom()).React.createElement(
     'span',
     { className: className, key: index },
     token.value
@@ -210,7 +245,7 @@ function renderTrees(editor, outlines) {
   return(
     // Add `position: relative;` to let `li.selected` style position itself relative to the list
     // tree rather than to its container.
-    _reactForAtom.React.createElement(
+    (_reactForAtom2 || _reactForAtom()).React.createElement(
       'ul',
       { className: 'list-tree', style: { position: 'relative' } },
       outlines.map(function (outline, index) {

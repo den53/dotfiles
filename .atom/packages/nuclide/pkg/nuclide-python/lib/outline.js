@@ -23,7 +23,7 @@ var pythonTextToOutline = _asyncToGenerator(function* (showGlobalVariables, text
 exports.pythonTextToOutline = pythonTextToOutline;
 
 var getPythonTree = _asyncToGenerator(function* (text) {
-  var result = yield (0, _nuclideCommons.checkOutput)((0, _config.getPythonPath)(), [_path2['default'].join(__dirname, '../python/outline.py')], { stdin: text });
+  var result = yield (0, (_nuclideCommons2 || _nuclideCommons()).checkOutput)((0, (_config2 || _config()).getPythonPath)(), [(_path2 || _path()).default.join(__dirname, '../python/outline.py')], { stdin: text });
   if (result.exitCode !== 0) {
     logger.error('Python tree failed to get results: stderr: ' + result.stderr);
     return null;
@@ -31,31 +31,53 @@ var getPythonTree = _asyncToGenerator(function* (text) {
   return JSON.parse(result.stdout);
 });
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
-var _atom = require('atom');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _nuclideLogging = require('../../nuclide-logging');
+var _atom2;
 
-var _nuclideTokenizedText = require('../../nuclide-tokenized-text');
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var _path = require('path');
+var _nuclideLogging2;
 
-var _path2 = _interopRequireDefault(_path);
+function _nuclideLogging() {
+  return _nuclideLogging2 = require('../../nuclide-logging');
+}
 
-var _nuclideCommons = require('../../nuclide-commons');
+var _nuclideTokenizedText2;
 
-var _config = require('./config');
+function _nuclideTokenizedText() {
+  return _nuclideTokenizedText2 = require('../../nuclide-tokenized-text');
+}
+
+var _path2;
+
+function _path() {
+  return _path2 = _interopRequireDefault(require('path'));
+}
+
+var _nuclideCommons2;
+
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
+
+var _config2;
+
+function _config() {
+  return _config2 = require('./config');
+}
 
 var SHOW_NO_VARIABLES = 'none';
 var SHOW_CONSTANTS = 'constants';
 var SHOW_ALL_VARIABLES = 'all';
 
-var logger = (0, _nuclideLogging.getLogger)();
+var logger = (0, (_nuclideLogging2 || _nuclideLogging()).getLogger)();
 
 function treeToOutline(showGlobalVariables, tree) {
   switch (tree.kind) {
@@ -117,7 +139,7 @@ function assignToOutline(mode, tree) {
     return null;
   }
   return {
-    tokenizedText: [(0, _nuclideTokenizedText.plain)(id)],
+    tokenizedText: [(0, (_nuclideTokenizedText2 || _nuclideTokenizedText()).plain)(id)],
     startPosition: treeToPoint(target),
     children: []
   };
@@ -125,7 +147,7 @@ function assignToOutline(mode, tree) {
 
 function classDefToOutline(tree) {
   return {
-    tokenizedText: [(0, _nuclideTokenizedText.keyword)('class'), (0, _nuclideTokenizedText.whitespace)(' '), (0, _nuclideTokenizedText.method)(tree.name)],
+    tokenizedText: [(0, (_nuclideTokenizedText2 || _nuclideTokenizedText()).keyword)('class'), (0, (_nuclideTokenizedText2 || _nuclideTokenizedText()).whitespace)(' '), (0, (_nuclideTokenizedText2 || _nuclideTokenizedText()).method)(tree.name)],
     startPosition: treeToPoint(tree),
     children: treesToOutlineTrees(SHOW_NO_VARIABLES, tree.body)
   };
@@ -133,7 +155,7 @@ function classDefToOutline(tree) {
 
 function functionDefToOutline(tree) {
   return {
-    tokenizedText: [(0, _nuclideTokenizedText.keyword)('def'), (0, _nuclideTokenizedText.whitespace)(' '), (0, _nuclideTokenizedText.method)(tree.name), (0, _nuclideTokenizedText.plain)('(')].concat(_toConsumableArray(argsToText(tree.args)), [(0, _nuclideTokenizedText.plain)(')')]),
+    tokenizedText: [(0, (_nuclideTokenizedText2 || _nuclideTokenizedText()).keyword)('def'), (0, (_nuclideTokenizedText2 || _nuclideTokenizedText()).whitespace)(' '), (0, (_nuclideTokenizedText2 || _nuclideTokenizedText()).method)(tree.name), (0, (_nuclideTokenizedText2 || _nuclideTokenizedText()).plain)('(')].concat(_toConsumableArray(argsToText(tree.args)), [(0, (_nuclideTokenizedText2 || _nuclideTokenizedText()).plain)(')')]),
     startPosition: treeToPoint(tree),
     children: []
   };
@@ -143,29 +165,29 @@ function argsToText(args) {
 
   function startArg() {
     if (result.length > 0) {
-      result.push((0, _nuclideTokenizedText.plain)(','));
-      result.push((0, _nuclideTokenizedText.whitespace)(' '));
+      result.push((0, (_nuclideTokenizedText2 || _nuclideTokenizedText()).plain)(','));
+      result.push((0, (_nuclideTokenizedText2 || _nuclideTokenizedText()).whitespace)(' '));
     }
   }
   var result = [];
   var vararg = args.vararg;
   if (vararg != null) {
-    result.push((0, _nuclideTokenizedText.plain)('*'));
-    result.push((0, _nuclideTokenizedText.param)(vararg));
+    result.push((0, (_nuclideTokenizedText2 || _nuclideTokenizedText()).plain)('*'));
+    result.push((0, (_nuclideTokenizedText2 || _nuclideTokenizedText()).param)(vararg));
   }
   for (var arg of args.args) {
     startArg();
-    result.push((0, _nuclideTokenizedText.param)(arg.id));
+    result.push((0, (_nuclideTokenizedText2 || _nuclideTokenizedText()).param)(arg.id));
   }
   var kwarg = args.kwarg;
   if (kwarg != null) {
     startArg();
-    result.push((0, _nuclideTokenizedText.plain)('**'));
-    result.push((0, _nuclideTokenizedText.param)(kwarg));
+    result.push((0, (_nuclideTokenizedText2 || _nuclideTokenizedText()).plain)('**'));
+    result.push((0, (_nuclideTokenizedText2 || _nuclideTokenizedText()).param)(kwarg));
   }
   return result;
 }
 
 function treeToPoint(tree) {
-  return new _atom.Point(tree.lineno - 1, tree.col_offset);
+  return new (_atom2 || _atom()).Point(tree.lineno - 1, tree.col_offset);
 }

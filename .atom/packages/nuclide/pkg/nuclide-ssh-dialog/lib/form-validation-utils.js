@@ -11,7 +11,11 @@ exports.validateFormInputs = validateFormInputs;
  * the root directory of this source tree.
  */
 
-var _nuclideRemoteConnection = require('../../nuclide-remote-connection');
+var _nuclideRemoteConnection2;
+
+function _nuclideRemoteConnection() {
+  return _nuclideRemoteConnection2 = require('../../nuclide-remote-connection');
+}
 
 /*
  * This function checks that the required inputs to a connection profile are non-empty
@@ -61,7 +65,7 @@ function validateFormInputs(profileName, connectionDetails, defaultRemoteServerC
   } else {
     profileParams.authMethod = authMethod;
   }
-  if (authMethod === _nuclideRemoteConnection.SshHandshake.SupportedMethods.PRIVATE_KEY && !connectionDetails.pathToPrivateKey) {
+  if (authMethod === (_nuclideRemoteConnection2 || _nuclideRemoteConnection()).SshHandshake.SupportedMethods.PRIVATE_KEY && !connectionDetails.pathToPrivateKey) {
     missingFields.push('Private Key File (required for the authentication method you selected)');
   } else {
     profileParams.pathToPrivateKey = connectionDetails.pathToPrivateKey;
@@ -79,7 +83,7 @@ function validateFormInputs(profileName, connectionDetails, defaultRemoteServerC
   var warningMessage = '';
 
   // 1. If a password is provided, all parts of the profile will be save except the password.
-  if (authMethod === _nuclideRemoteConnection.SshHandshake.SupportedMethods.PASSWORD && connectionDetails.password) {
+  if (authMethod === (_nuclideRemoteConnection2 || _nuclideRemoteConnection()).SshHandshake.SupportedMethods.PASSWORD && connectionDetails.password) {
     warningMessage += '* You provided a password for this profile. ' + 'For security, Nuclide will save the other parts of this profile, ' + 'but not the password.\n';
   }
   // 2. Save the remote server command only if it is changed.

@@ -18,17 +18,41 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * the root directory of this source tree.
  */
 
-var _atom = require('atom');
+var _atom2;
 
-var _WorkingSet = require('./WorkingSet');
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var _nuclideCommons = require('../../nuclide-commons');
+var _WorkingSet2;
 
-var _nuclideAnalytics = require('../../nuclide-analytics');
+function _WorkingSet() {
+  return _WorkingSet2 = require('./WorkingSet');
+}
 
-var _uri = require('./uri');
+var _nuclideCommons2;
 
-var _nuclideLogging = require('../../nuclide-logging');
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
+
+var _nuclideAnalytics2;
+
+function _nuclideAnalytics() {
+  return _nuclideAnalytics2 = require('../../nuclide-analytics');
+}
+
+var _uri2;
+
+function _uri() {
+  return _uri2 = require('./uri');
+}
+
+var _nuclideLogging2;
+
+function _nuclideLogging() {
+  return _nuclideLogging2 = require('../../nuclide-logging');
+}
 
 var NEW_WORKING_SET_EVENT = 'new-working-set';
 var NEW_DEFINITIONS_EVENT = 'new-definitions';
@@ -38,8 +62,8 @@ var WorkingSetsStore = (function () {
   function WorkingSetsStore() {
     _classCallCheck(this, WorkingSetsStore);
 
-    this._emitter = new _atom.Emitter();
-    this._current = new _WorkingSet.WorkingSet();
+    this._emitter = new (_atom2 || _atom()).Emitter();
+    this._current = new (_WorkingSet2 || _WorkingSet()).WorkingSet();
     this._definitions = [];
     this._applicableDefinitions = [];
     this._notApplicableDefinitions = [];
@@ -125,7 +149,7 @@ var WorkingSetsStore = (function () {
   }, {
     key: 'deleteWorkingSet',
     value: function deleteWorkingSet(name) {
-      (0, _nuclideAnalytics.track)('working-sets-delete', { name: name });
+      (0, (_nuclideAnalytics2 || _nuclideAnalytics()).track)('working-sets-delete', { name: name });
 
       var definitions = this._definitions.filter(function (d) {
         return d.name !== name;
@@ -135,7 +159,7 @@ var WorkingSetsStore = (function () {
   }, {
     key: '_setDefinitions',
     value: function _setDefinitions(applicable, notApplicable, definitions) {
-      var somethingHasChanged = !_nuclideCommons.array.equal(this._applicableDefinitions, applicable) || !_nuclideCommons.array.equal(this._notApplicableDefinitions, notApplicable);
+      var somethingHasChanged = !(_nuclideCommons2 || _nuclideCommons()).array.equal(this._applicableDefinitions, applicable) || !(_nuclideCommons2 || _nuclideCommons()).array.equal(this._notApplicableDefinitions, notApplicable);
 
       if (somethingHasChanged) {
         this._applicableDefinitions = applicable;
@@ -164,7 +188,7 @@ var WorkingSetsStore = (function () {
         return d.uris;
       })));
 
-      var newWorkingSet = new _WorkingSet.WorkingSet(combinedUris);
+      var newWorkingSet = new (_WorkingSet2 || _WorkingSet()).WorkingSet(combinedUris);
       if (!this._current.equals(newWorkingSet)) {
         this._current = newWorkingSet;
         this._emitter.emit(NEW_WORKING_SET_EVENT, newWorkingSet);
@@ -184,11 +208,11 @@ var WorkingSetsStore = (function () {
 
       var newDefinitions = undefined;
       if (nameIndex < 0) {
-        (0, _nuclideAnalytics.track)('working-sets-create', { name: name, uris: workingSet.getUris().join(',') });
+        (0, (_nuclideAnalytics2 || _nuclideAnalytics()).track)('working-sets-create', { name: name, uris: workingSet.getUris().join(',') });
 
         newDefinitions = definitions.concat({ name: name, uris: workingSet.getUris(), active: false });
       } else {
-        (0, _nuclideAnalytics.track)('working-sets-update', { oldName: name, name: newName, uris: workingSet.getUris().join(',') });
+        (0, (_nuclideAnalytics2 || _nuclideAnalytics()).track)('working-sets-update', { oldName: name, name: newName, uris: workingSet.getUris().join(',') });
 
         var active = definitions[nameIndex].active;
         newDefinitions = [].concat(definitions.slice(0, nameIndex), { name: newName, uris: workingSet.getUris(), active: active }, definitions.slice(nameIndex + 1));
@@ -199,7 +223,7 @@ var WorkingSetsStore = (function () {
   }, {
     key: '_activateDefinition',
     value: function _activateDefinition(name, active) {
-      (0, _nuclideAnalytics.track)('working-sets-activate', { name: name, active: active.toString() });
+      (0, (_nuclideAnalytics2 || _nuclideAnalytics()).track)('working-sets-activate', { name: name, active: active.toString() });
 
       var definitions = this.getDefinitions();
       var newDefinitions = definitions.map(function (d) {
@@ -230,7 +254,7 @@ var WorkingSetsStore = (function () {
     value: function toggleLastSelected() {
       var _this2 = this;
 
-      (0, _nuclideAnalytics.track)('working-sets-toggle-last-selected');
+      (0, (_nuclideAnalytics2 || _nuclideAnalytics()).track)('working-sets-toggle-last-selected');
 
       if (this.getApplicableDefinitions().some(function (d) {
         return d.active;
@@ -271,21 +295,21 @@ var WorkingSetsStore = (function () {
   }, {
     key: '_isApplicable',
     value: function _isApplicable(definition) {
-      var workingSet = new _WorkingSet.WorkingSet(definition.uris);
+      var workingSet = new (_WorkingSet2 || _WorkingSet()).WorkingSet(definition.uris);
       var dirs = atom.project.getDirectories().filter(function (dir) {
         // Apparently sometimes Atom supplies an invalid directory, or a directory with an
         // invalid paths. See https://github.com/facebook/nuclide/issues/416
         if (dir == null) {
-          var logger = (0, _nuclideLogging.getLogger)();
+          var logger = (0, (_nuclideLogging2 || _nuclideLogging()).getLogger)();
 
           logger.warn('Received a null directory from Atom');
           return false;
         }
         try {
-          (0, _uri.normalizePathUri)(dir.getPath());
+          (0, (_uri2 || _uri()).normalizePathUri)(dir.getPath());
           return true;
         } catch (e) {
-          var logger = (0, _nuclideLogging.getLogger)();
+          var logger = (0, (_nuclideLogging2 || _nuclideLogging()).getLogger)();
 
           logger.warn('Failed to parse path supplied by Atom', dir.getPath());
           return false;

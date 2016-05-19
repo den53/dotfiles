@@ -42,7 +42,7 @@ function get(field, constructor) {
 }
 
 function clear(field) {
-  getMap()['delete'](field);
+  getMap().delete(field);
 }
 
 function reset(field, constructor) {

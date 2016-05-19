@@ -10,21 +10,35 @@ var _createClass = (function () { function defineProperties(target, props) { for
  * the root directory of this source tree.
  */
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _assert = require('assert');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _assert2 = _interopRequireDefault(_assert);
+var _assert2;
 
-var _nuclideCommons = require('../../nuclide-commons');
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
-var _nuclideAnalytics = require('../../nuclide-analytics');
+var _nuclideCommons2;
 
-var _TypeHintComponent = require('./TypeHintComponent');
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
+
+var _nuclideAnalytics2;
+
+function _nuclideAnalytics() {
+  return _nuclideAnalytics2 = require('../../nuclide-analytics');
+}
+
+var _TypeHintComponent2;
+
+function _TypeHintComponent() {
+  return _TypeHintComponent2 = require('./TypeHintComponent');
+}
 
 var TypeHintManager = (function () {
   function TypeHintManager() {
@@ -56,7 +70,7 @@ var TypeHintManager = (function () {
         var logger = require('../../nuclide-logging').getLogger();
         logger.error('Type hint provider has no name', provider);
       }
-      var typeHint = yield (0, _nuclideAnalytics.trackOperationTiming)(name + '.typeHint', function () {
+      var typeHint = yield (0, (_nuclideAnalytics2 || _nuclideAnalytics()).trackOperationTiming)(name + '.typeHint', function () {
         return provider.typeHint(editor, position);
       });
       if (!typeHint || this._marker) {
@@ -67,14 +81,14 @@ var TypeHintManager = (function () {
       var range = typeHint.range;
 
       // For now, actual hint text is required.
-      (0, _assert2['default'])(hint != null);
+      (0, (_assert2 || _assert()).default)(hint != null);
       // We track the timing above, but we still want to know the number of popups that are shown.
-      (0, _nuclideAnalytics.track)('type-hint-popup', {
+      (0, (_nuclideAnalytics2 || _nuclideAnalytics()).track)('type-hint-popup', {
         'scope': scopeName,
         'message': hint
       });
       return {
-        component: (0, _TypeHintComponent.makeTypeHintComponent)(hintTree || hint, grammar),
+        component: (0, (_TypeHintComponent2 || _TypeHintComponent()).makeTypeHintComponent)(hintTree || hint, grammar),
         range: range
       };
     })
@@ -96,7 +110,7 @@ var TypeHintManager = (function () {
   }, {
     key: 'removeProvider',
     value: function removeProvider(provider) {
-      _nuclideCommons.array.remove(this._typeHintProviders, provider);
+      (_nuclideCommons2 || _nuclideCommons()).array.remove(this._typeHintProviders, provider);
     }
   }]);
 

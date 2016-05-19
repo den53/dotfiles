@@ -10,13 +10,29 @@ Object.defineProperty(exports, '__esModule', {
  * the root directory of this source tree.
  */
 
-var _atom = require('atom');
+var _atom2;
 
-var _reactForAtom = require('react-for-atom');
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var _Block = require('./Block');
+var _reactForAtom2;
 
-var _DiagnosticsMessage = require('./DiagnosticsMessage');
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
+
+var _Block2;
+
+function _Block() {
+  return _Block2 = require('./Block');
+}
+
+var _DiagnosticsMessage2;
+
+function _DiagnosticsMessage() {
+  return _DiagnosticsMessage2 = require('./DiagnosticsMessage');
+}
 
 var GOTOLOCATION = function GOTOLOCATION(path, line) {
   atom.notifications.addInfo('Let\'s pretend I opened "' + path + '" at line ' + line + '.');
@@ -48,7 +64,7 @@ var messageFixable = {
   filePath: 'path/to/some/file.js',
   text: 'Something looks broken here, but it can be fixed automatically via the "fix" button.',
   fix: {
-    oldRange: new _atom.Range([1, 1], [1, 6]),
+    oldRange: new (_atom2 || _atom()).Range([1, 1], [1, 6]),
     newText: 'fixed'
   }
 };
@@ -63,12 +79,12 @@ var messageWithTrace = {
     type: 'Trace',
     text: 'A diagnostics message can contain multiple trace lines',
     filePath: 'path/to/random/file.js',
-    range: new _atom.Range([1, 1], [1, 6])
+    range: new (_atom2 || _atom()).Range([1, 1], [1, 6])
   }, {
     type: 'Trace',
     text: 'Trace lines can have paths and ranges, too.',
     filePath: 'path/to/another/file.js',
-    range: new _atom.Range([2, 1], [2, 6])
+    range: new (_atom2 || _atom()).Range([2, 1], [2, 6])
   }, {
     type: 'Trace',
     text: 'Paths and ranges are optional.'
@@ -76,13 +92,13 @@ var messageWithTrace = {
 };
 
 var DiagnosticMessageWarningExample = function DiagnosticMessageWarningExample() {
-  return _reactForAtom.React.createElement(
+  return (_reactForAtom2 || _reactForAtom()).React.createElement(
     'div',
     null,
-    _reactForAtom.React.createElement(
-      _Block.Block,
+    (_reactForAtom2 || _reactForAtom()).React.createElement(
+      (_Block2 || _Block()).Block,
       null,
-      _reactForAtom.React.createElement(_DiagnosticsMessage.DiagnosticsMessage, {
+      (_reactForAtom2 || _reactForAtom()).React.createElement((_DiagnosticsMessage2 || _DiagnosticsMessage()).DiagnosticsMessage, {
         message: messageWarning,
         goToLocation: GOTOLOCATION,
         fixer: FIXER
@@ -92,13 +108,13 @@ var DiagnosticMessageWarningExample = function DiagnosticMessageWarningExample()
 };
 
 var DiagnosticMessageErrorExample = function DiagnosticMessageErrorExample() {
-  return _reactForAtom.React.createElement(
+  return (_reactForAtom2 || _reactForAtom()).React.createElement(
     'div',
     null,
-    _reactForAtom.React.createElement(
-      _Block.Block,
+    (_reactForAtom2 || _reactForAtom()).React.createElement(
+      (_Block2 || _Block()).Block,
       null,
-      _reactForAtom.React.createElement(_DiagnosticsMessage.DiagnosticsMessage, {
+      (_reactForAtom2 || _reactForAtom()).React.createElement((_DiagnosticsMessage2 || _DiagnosticsMessage()).DiagnosticsMessage, {
         message: messageError,
         goToLocation: GOTOLOCATION,
         fixer: FIXER
@@ -108,13 +124,13 @@ var DiagnosticMessageErrorExample = function DiagnosticMessageErrorExample() {
 };
 
 var DiagnosticMessageFixableExample = function DiagnosticMessageFixableExample() {
-  return _reactForAtom.React.createElement(
+  return (_reactForAtom2 || _reactForAtom()).React.createElement(
     'div',
     null,
-    _reactForAtom.React.createElement(
-      _Block.Block,
+    (_reactForAtom2 || _reactForAtom()).React.createElement(
+      (_Block2 || _Block()).Block,
       null,
-      _reactForAtom.React.createElement(_DiagnosticsMessage.DiagnosticsMessage, {
+      (_reactForAtom2 || _reactForAtom()).React.createElement((_DiagnosticsMessage2 || _DiagnosticsMessage()).DiagnosticsMessage, {
         message: messageFixable,
         goToLocation: GOTOLOCATION,
         fixer: FIXER
@@ -124,13 +140,13 @@ var DiagnosticMessageFixableExample = function DiagnosticMessageFixableExample()
 };
 
 var DiagnosticMessageTraceExample = function DiagnosticMessageTraceExample() {
-  return _reactForAtom.React.createElement(
+  return (_reactForAtom2 || _reactForAtom()).React.createElement(
     'div',
     null,
-    _reactForAtom.React.createElement(
-      _Block.Block,
+    (_reactForAtom2 || _reactForAtom()).React.createElement(
+      (_Block2 || _Block()).Block,
       null,
-      _reactForAtom.React.createElement(_DiagnosticsMessage.DiagnosticsMessage, {
+      (_reactForAtom2 || _reactForAtom()).React.createElement((_DiagnosticsMessage2 || _DiagnosticsMessage()).DiagnosticsMessage, {
         message: messageWithTrace,
         goToLocation: GOTOLOCATION,
         fixer: FIXER

@@ -105,6 +105,15 @@ var LazyTreeNode = (function () {
     value: function getLabel() {
       throw new Error('subclasses must override this method');
     }
+
+    /**
+     * This can return a richer element for a node and will be used instead of the label if present.
+     */
+  }, {
+    key: 'getLabelElement',
+    value: function getLabelElement() {
+      return null;
+    }
   }, {
     key: 'isContainer',
     value: function isContainer() {

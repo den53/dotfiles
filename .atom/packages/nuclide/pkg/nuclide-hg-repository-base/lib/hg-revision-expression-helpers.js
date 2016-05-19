@@ -31,7 +31,7 @@ var fetchCommonAncestorOfHeadAndRevision = _asyncToGenerator(function* (revision
   };
 
   try {
-    var _ref = yield (0, _hgUtils.hgAsyncExecute)(args, options);
+    var _ref = yield (0, (_hgUtils2 || _hgUtils()).hgAsyncExecute)(args, options);
 
     var ancestorRevisionNumber = _ref.stdout;
 
@@ -66,7 +66,7 @@ var fetchRevisionInfoBetweenRevisions = _asyncToGenerator(function* (revisionFro
   };
 
   try {
-    var _ref2 = yield Promise.all([(0, _hgUtils.hgAsyncExecute)(revisionLogArgs, options), (0, _hgUtils.hgAsyncExecute)(bookmarksArgs, options)]);
+    var _ref2 = yield Promise.all([(0, (_hgUtils2 || _hgUtils()).hgAsyncExecute)(revisionLogArgs, options), (0, (_hgUtils2 || _hgUtils()).hgAsyncExecute)(bookmarksArgs, options)]);
 
     var _ref22 = _slicedToArray(_ref2, 2);
 
@@ -94,15 +94,21 @@ exports.fetchRevisionInfoBetweenRevisions = fetchRevisionInfoBetweenRevisions;
 exports.parseRevisionInfoOutput = parseRevisionInfoOutput;
 exports.parseBookmarksOutput = parseBookmarksOutput;
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
-var _hgUtils = require('./hg-utils');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _assert = require('assert');
+var _hgUtils2;
 
-var _assert2 = _interopRequireDefault(_assert);
+function _hgUtils() {
+  return _hgUtils2 = require('./hg-utils');
+}
+
+var _assert2;
+
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
 var logger = require('../../nuclide-logging').getLogger();
 
@@ -207,7 +213,7 @@ function parseBookmarksOutput(bookmarksOutput) {
       commitsToBookmarks.set(commitId, []);
     }
     var bookmarks = commitsToBookmarks.get(commitId);
-    (0, _assert2['default'])(bookmarks != null);
+    (0, (_assert2 || _assert()).default)(bookmarks != null);
     bookmarks.push(bookmarkString);
   }
   return commitsToBookmarks;

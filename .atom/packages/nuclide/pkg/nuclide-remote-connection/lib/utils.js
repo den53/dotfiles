@@ -8,13 +8,17 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
  * the root directory of this source tree.
  */
 
-var _path = require('path');
+var _path2;
 
-var _path2 = _interopRequireDefault(_path);
+function _path() {
+  return _path2 = _interopRequireDefault(require('path'));
+}
 
-var _fs = require('fs');
+var _fs2;
 
-var _fs2 = _interopRequireDefault(_fs);
+function _fs() {
+  return _fs2 = _interopRequireDefault(require('fs'));
+}
 
 /**
  * Returns if the `rootPath` directory contains the `checkPath` which could be:
@@ -28,19 +32,19 @@ function containsPathSync(rootPath, checkPath) {
   var realRootPath = null;
   var realCheckPath = null;
   try {
-    realRootPath = _fs2['default'].realpathSync(rootPath);
-    realCheckPath = _fs2['default'].realpathSync(checkPath);
+    realRootPath = (_fs2 || _fs()).default.realpathSync(rootPath);
+    realCheckPath = (_fs2 || _fs()).default.realpathSync(checkPath);
   } catch (e) {
     realRootPath = rootPath;
     realCheckPath = checkPath;
   }
 
-  var normalizedRootPath = _path2['default'].normalize(realRootPath);
-  var normalizedCheckPath = _path2['default'].normalize(realCheckPath);
+  var normalizedRootPath = (_path2 || _path()).default.normalize(realRootPath);
+  var normalizedCheckPath = (_path2 || _path()).default.normalize(realCheckPath);
 
-  var rootPathNumberOfParts = normalizedRootPath.split(_path2['default'].sep).length;
+  var rootPathNumberOfParts = normalizedRootPath.split((_path2 || _path()).default.sep).length;
   // Extract the matching piece of the normalized path to compare with the root path.
-  var rootPathMatch = normalizedCheckPath.split(_path2['default'].sep).slice(0, rootPathNumberOfParts).join(_path2['default'].sep);
+  var rootPathMatch = normalizedCheckPath.split((_path2 || _path()).default.sep).slice(0, rootPathNumberOfParts).join((_path2 || _path()).default.sep);
   return rootPathMatch === normalizedRootPath;
 }
 

@@ -17,7 +17,11 @@ exports.getWordTextAndRange = getWordTextAndRange;
  * the root directory of this source tree.
  */
 
-var _atom = require('atom');
+var _atom2;
+
+function _atom() {
+  return _atom2 = require('atom');
+}
 
 function defaultWordRegExpForEditor(textEditor) {
   var lastCursor = textEditor.getLastCursor();
@@ -49,7 +53,7 @@ function getWordTextAndRange(textEditor, position, wordRegExp) {
   }
 
   if (!textAndRange) {
-    textAndRange = { text: '', range: new _atom.Range(position, position) };
+    textAndRange = { text: '', range: new (_atom2 || _atom()).Range(position, position) };
   }
 
   return textAndRange;

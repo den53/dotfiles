@@ -1,12 +1,4 @@
-
-
-var Immutable = require('immutable');
-
-/**
- * This traverses an entire ast and determines which trailing comments are
- * duplicates of other leading comments. Comments are invalidated based on
- * their starting position.
- */
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -16,10 +8,21 @@ var Immutable = require('immutable');
  * the root directory of this source tree.
  */
 
+var _immutable2;
+
+function _immutable() {
+  return _immutable2 = _interopRequireDefault(require('immutable'));
+}
+
+/**
+ * This traverses an entire ast and determines which trailing comments are
+ * duplicates of other leading comments. Comments are invalidated based on
+ * their starting position.
+ */
 function getInvalidLeadingComments(node) {
   var result = [];
   traverse(node, result);
-  return Immutable.Set(result);
+  return (_immutable2 || _immutable()).default.Set(result);
 }
 
 /**

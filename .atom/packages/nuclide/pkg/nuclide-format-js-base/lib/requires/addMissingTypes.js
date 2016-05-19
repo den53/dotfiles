@@ -8,12 +8,22 @@
  * the root directory of this source tree.
  */
 
-var FirstNode = require('../utils/FirstNode');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var getUndeclaredTypes = require('../utils/getUndeclaredTypes');
+var _utilsFirstNode2;
+
+function _utilsFirstNode() {
+  return _utilsFirstNode2 = _interopRequireDefault(require('../utils/FirstNode'));
+}
+
+var _utilsGetUndeclaredTypes2;
+
+function _utilsGetUndeclaredTypes() {
+  return _utilsGetUndeclaredTypes2 = _interopRequireDefault(require('../utils/getUndeclaredTypes'));
+}
 
 function addMissingTypes(root, options) {
-  var first = FirstNode.get(root);
+  var first = (_utilsFirstNode2 || _utilsFirstNode()).default.get(root);
   if (!first) {
     return;
   }
@@ -26,7 +36,7 @@ function addMissingTypes(root, options) {
     typeImport: true
   };
 
-  getUndeclaredTypes(root, options).forEach(function (name) {
+  (0, (_utilsGetUndeclaredTypes2 || _utilsGetUndeclaredTypes()).default)(root, options).forEach(function (name) {
     var node = moduleMap.getRequire(name, requireOptions);
     _first.insertBefore(node);
   });

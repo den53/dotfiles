@@ -12,9 +12,17 @@ Object.defineProperty(exports, '__esModule', {
 
 var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i['return']) _i['return'](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError('Invalid attempt to destructure non-iterable instance'); } }; })();
 
-var _reactForAtom = require('react-for-atom');
+var _reactForAtom2;
 
-var _DiagnosticsMessageText = require('./DiagnosticsMessageText');
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
+
+var _DiagnosticsMessageText2;
+
+function _DiagnosticsMessageText() {
+  return _DiagnosticsMessageText2 = require('./DiagnosticsMessageText');
+}
 
 // TODO move LESS styles to nuclide-ui
 var DiagnosticsTraceItem = function DiagnosticsTraceItem(props) {
@@ -38,21 +46,21 @@ var DiagnosticsTraceItem = function DiagnosticsTraceItem(props) {
     var onClick = function onClick() {
       goToLocation(path, Math.max(trace.range ? trace.range.start.row : 0, 0));
     };
-    locSpan = _reactForAtom.React.createElement(
+    locSpan = (_reactForAtom2 || _reactForAtom()).React.createElement(
       'span',
       null,
       ': ',
-      _reactForAtom.React.createElement(
+      (_reactForAtom2 || _reactForAtom()).React.createElement(
         'a',
         { href: '#', onClick: onClick },
         locString
       )
     );
   }
-  return _reactForAtom.React.createElement(
+  return (_reactForAtom2 || _reactForAtom()).React.createElement(
     'div',
     null,
-    _reactForAtom.React.createElement(_DiagnosticsMessageText.DiagnosticsMessageText, { message: trace }),
+    (_reactForAtom2 || _reactForAtom()).React.createElement((_DiagnosticsMessageText2 || _DiagnosticsMessageText()).DiagnosticsMessageText, { message: trace }),
     locSpan
   );
 };

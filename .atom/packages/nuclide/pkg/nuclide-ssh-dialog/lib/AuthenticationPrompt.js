@@ -18,9 +18,17 @@ function _inherits(subClass, superClass) { if (typeof superClass !== 'function' 
  * the root directory of this source tree.
  */
 
-var _atom = require('atom');
+var _atom2;
 
-var _reactForAtom = require('react-for-atom');
+function _atom() {
+  return _atom2 = require('atom');
+}
+
+var _reactForAtom2;
+
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
 
 /** Component to prompt the user for authentication information. */
 
@@ -31,31 +39,36 @@ var AuthenticationPrompt = (function (_React$Component) {
     _classCallCheck(this, AuthenticationPrompt);
 
     _get(Object.getPrototypeOf(AuthenticationPrompt.prototype), 'constructor', this).call(this, props);
+    this._disposables = new (_atom2 || _atom()).CompositeDisposable();
+    this._onKeyUp = this._onKeyUp.bind(this);
   }
 
   _createClass(AuthenticationPrompt, [{
-    key: 'render',
-    value: function render() {
-      // Instructions may contain newlines that need to be converted to <br> tags.
-      var safeHtml = this.props.instructions.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/\\n/g, '<br>');
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      var _this = this;
 
-      // We need native-key-bindings so that delete works and we need
-      // _onKeyUp so that escape and enter work
-      return _reactForAtom.React.createElement(
-        'div',
-        { ref: 'root' },
-        _reactForAtom.React.createElement('div', {
-          className: 'block',
-          style: { whiteSpace: 'pre' },
-          dangerouslySetInnerHTML: { __html: safeHtml }
-        }),
-        _reactForAtom.React.createElement('input', {
-          type: 'password',
-          className: 'nuclide-password native-key-bindings',
-          ref: 'password',
-          onKeyUp: this._onKeyUp.bind(this)
-        })
-      );
+      // Hitting enter when this panel has focus should confirm the dialog.
+      this._disposables.add(atom.commands.add(this.refs.root, 'core:confirm', function (event) {
+        return _this.props.onConfirm();
+      }));
+
+      // Hitting escape should cancel the dialog.
+      this._disposables.add(atom.commands.add('atom-workspace', 'core:cancel', function (event) {
+        return _this.props.onCancel();
+      }));
+
+      this.refs.password.focus();
+    }
+  }, {
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
+      this._disposables.dispose();
+    }
+  }, {
+    key: 'getPassword',
+    value: function getPassword() {
+      return this.refs.password.value;
     }
   }, {
     key: '_onKeyUp',
@@ -69,42 +82,33 @@ var AuthenticationPrompt = (function (_React$Component) {
       }
     }
   }, {
-    key: 'componentDidMount',
-    value: function componentDidMount() {
-      var _this = this;
-
-      var disposables = this._disposables = new _atom.CompositeDisposable();
-      var root = _reactForAtom.ReactDOM.findDOMNode(this.refs['root']);
-
-      // Hitting enter when this panel has focus should confirm the dialog.
-      disposables.add(atom.commands.add(root, 'core:confirm', function (event) {
-        return _this.props.onConfirm();
-      }));
-
-      // Hitting escape when this panel has focus should cancel the dialog.
-      disposables.add(atom.commands.add(root, 'core:cancel', function (event) {
-        return _this.props.onCancel();
-      }));
-
-      _reactForAtom.ReactDOM.findDOMNode(this.refs.password).focus();
-    }
-  }, {
-    key: 'componentWillUnmount',
-    value: function componentWillUnmount() {
-      if (this._disposables) {
-        this._disposables.dispose();
-        this._disposables = null;
-      }
-    }
-  }, {
-    key: 'getPassword',
-    value: function getPassword() {
-      return _reactForAtom.ReactDOM.findDOMNode(this.refs.password).value;
+    key: 'render',
+    value: function render() {
+      // * Need native-key-bindings so that delete works and we need `_onKeyUp` so that escape and
+      //   enter work
+      // * `instructions` are pre-formatted, so apply `whiteSpace: pre` to maintain formatting coming
+      //   from the server.
+      return (_reactForAtom2 || _reactForAtom()).React.createElement(
+        'div',
+        { ref: 'root' },
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
+          'div',
+          { className: 'block', style: { whiteSpace: 'pre' } },
+          this.props.instructions
+        ),
+        (_reactForAtom2 || _reactForAtom()).React.createElement('input', {
+          tabIndex: '-1',
+          type: 'password',
+          className: 'nuclide-password native-key-bindings',
+          ref: 'password',
+          onKeyPress: this._onKeyUp
+        })
+      );
     }
   }]);
 
   return AuthenticationPrompt;
-})(_reactForAtom.React.Component);
+})((_reactForAtom2 || _reactForAtom()).React.Component);
 
-exports['default'] = AuthenticationPrompt;
-module.exports = exports['default'];
+exports.default = AuthenticationPrompt;
+module.exports = exports.default;

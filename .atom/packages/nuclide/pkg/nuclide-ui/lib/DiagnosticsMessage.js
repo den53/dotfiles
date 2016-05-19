@@ -10,21 +10,39 @@ Object.defineProperty(exports, '__esModule', {
  * the root directory of this source tree.
  */
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
 
-var _assert = require('assert');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _assert2 = _interopRequireDefault(_assert);
+var _assert2;
 
-var _reactForAtom = require('react-for-atom');
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
-var _Button = require('./Button');
+var _reactForAtom2;
 
-var _DiagnosticsMessageText = require('./DiagnosticsMessageText');
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
 
-var _DiagnosticsTraceItem = require('./DiagnosticsTraceItem');
+var _Button2;
+
+function _Button() {
+  return _Button2 = require('./Button');
+}
+
+var _DiagnosticsMessageText2;
+
+function _DiagnosticsMessageText() {
+  return _DiagnosticsMessageText2 = require('./DiagnosticsMessageText');
+}
+
+var _DiagnosticsTraceItem2;
+
+function _DiagnosticsTraceItem() {
+  return _DiagnosticsTraceItem2 = require('./DiagnosticsTraceItem');
+}
 
 function plainTextForItem(item) {
   var _require = require('../../nuclide-remote-uri');
@@ -37,7 +55,7 @@ function plainTextForItem(item) {
     // This will work in simple cases, anyway.
     mainComponent = item.html.replace('<br/>', '\n').replace(/<[^>]*>/g, '');
   } else {
-    (0, _assert2['default'])(item.text != null);
+    (0, (_assert2 || _assert()).default)(item.text != null);
     mainComponent = item.text;
   }
 
@@ -74,42 +92,42 @@ var DiagnosticsMessage = function DiagnosticsMessage(props) {
     var applyFix = function applyFix() {
       fixer(message);
     };
-    fixButton = _reactForAtom.React.createElement(
-      _Button.Button,
+    fixButton = (_reactForAtom2 || _reactForAtom()).React.createElement(
+      (_Button2 || _Button()).Button,
       { size: 'EXTRA_SMALL', onClick: applyFix },
       'Fix'
     );
   }
-  var header = _reactForAtom.React.createElement(
+  var header = (_reactForAtom2 || _reactForAtom()).React.createElement(
     'div',
     { className: 'nuclide-diagnostics-gutter-ui-popup-header' },
     fixButton,
-    _reactForAtom.React.createElement(
-      _Button.Button,
+    (_reactForAtom2 || _reactForAtom()).React.createElement(
+      (_Button2 || _Button()).Button,
       { size: 'EXTRA_SMALL', onClick: copy },
       'Copy'
     ),
-    _reactForAtom.React.createElement(
+    (_reactForAtom2 || _reactForAtom()).React.createElement(
       'span',
       { className: 'pull-right ' + providerClassName },
       message.providerName
     )
   );
   var traceElements = message.trace ? message.trace.map(function (traceItem, i) {
-    return _reactForAtom.React.createElement(_DiagnosticsTraceItem.DiagnosticsTraceItem, {
+    return (_reactForAtom2 || _reactForAtom()).React.createElement((_DiagnosticsTraceItem2 || _DiagnosticsTraceItem()).DiagnosticsTraceItem, {
       key: i,
       trace: traceItem,
       goToLocation: goToLocation
     });
   }) : null;
-  return _reactForAtom.React.createElement(
+  return (_reactForAtom2 || _reactForAtom()).React.createElement(
     'div',
     null,
     header,
-    _reactForAtom.React.createElement(
+    (_reactForAtom2 || _reactForAtom()).React.createElement(
       'div',
       null,
-      _reactForAtom.React.createElement(_DiagnosticsMessageText.DiagnosticsMessageText, { message: message })
+      (_reactForAtom2 || _reactForAtom()).React.createElement((_DiagnosticsMessageText2 || _DiagnosticsMessageText()).DiagnosticsMessageText, { message: message })
     ),
     traceElements
   );

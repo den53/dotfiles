@@ -15,11 +15,17 @@ exports.getOpenFileEditorForRemoteProject = getOpenFileEditorForRemoteProject;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _assert = require('assert');
+var _assert2;
 
-var _assert2 = _interopRequireDefault(_assert);
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
-var _nuclideRemoteUri = require('../../nuclide-remote-uri');
+var _nuclideRemoteUri2;
+
+function _nuclideRemoteUri() {
+  return _nuclideRemoteUri2 = require('../../nuclide-remote-uri');
+}
 
 var NUCLIDE_PROTOCOL_PREFIX = 'nuclide:/';
 var NUCLIDE_PROTOCOL_PREFIX_LENGTH = NUCLIDE_PROTOCOL_PREFIX.length;
@@ -55,20 +61,20 @@ function* getOpenFileEditorForRemoteProject(connectionConfig) {
       }
       var _uri = sanitizeNuclideUri(paneItem.getURI());
 
-      var _parse = (0, _nuclideRemoteUri.parse)(_uri);
+      var _ref = (0, (_nuclideRemoteUri2 || _nuclideRemoteUri()).parse)(_uri);
 
-      var fileHostname = _parse.hostname;
-      var _filePath = _parse.path;
+      var fileHostname = _ref.hostname;
+      var _filePath = _ref.path;
 
       if (fileHostname === connectionConfig.host && _filePath.startsWith(connectionConfig.cwd)) {
-        (0, _assert2['default'])(fileHostname);
+        (0, (_assert2 || _assert()).default)(fileHostname);
         yield {
           pane: _pane,
           editor: paneItem,
           // While restore opened files, the remote port might have been changed if the server
           // restarted after upgrade or user killed it. So we need to create a new uri using
           // the right port.
-          uri: (0, _nuclideRemoteUri.createRemoteUri)(fileHostname, connectionConfig.port, _filePath),
+          uri: (0, (_nuclideRemoteUri2 || _nuclideRemoteUri()).createRemoteUri)(fileHostname, connectionConfig.port, _filePath),
           filePath: _filePath
         };
       }

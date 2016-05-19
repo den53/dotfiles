@@ -1,4 +1,4 @@
-
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -8,7 +8,11 @@
  * the root directory of this source tree.
  */
 
-var markers = require('../constants/markers');
+var _constantsMarkers2;
+
+function _constantsMarkers() {
+  return _constantsMarkers2 = _interopRequireDefault(require('../constants/markers'));
+}
 
 /**
  * This removes all but the first cursor. Since cursors are added at the end of
@@ -18,9 +22,9 @@ function resolveDuplicateCursors(lines) {
   var seenCursor = false;
   return lines.map(function (line) {
     // $FlowFixMe(kad, t9954160)
-    if (line === markers.cursor) {
+    if (line === (_constantsMarkers2 || _constantsMarkers()).default.cursor) {
       if (seenCursor) {
-        return markers.empty;
+        return (_constantsMarkers2 || _constantsMarkers()).default.empty;
       }
       seenCursor = true;
     }

@@ -14,19 +14,29 @@ var _createClass = (function () { function defineProperties(target, props) { for
 
 var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var _nuclideUiLibDropdown = require('../../nuclide-ui/lib/Dropdown');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _reactForAtom = require('react-for-atom');
+var _nuclideUiLibDropdown2;
 
-var _nuclideRemoteUri = require('../../nuclide-remote-uri');
+function _nuclideUiLibDropdown() {
+  return _nuclideUiLibDropdown2 = require('../../nuclide-ui/lib/Dropdown');
+}
 
-var _nuclideRemoteUri2 = _interopRequireDefault(_nuclideRemoteUri);
+var _reactForAtom2;
+
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
+
+var _nuclideRemoteUri2;
+
+function _nuclideRemoteUri() {
+  return _nuclideRemoteUri2 = _interopRequireDefault(require('../../nuclide-remote-uri'));
+}
 
 var DebuggerLaunchAttachUI = (function (_React$Component) {
   _inherits(DebuggerLaunchAttachUI, _React$Component);
@@ -68,7 +78,7 @@ var DebuggerLaunchAttachUI = (function (_React$Component) {
     value: function render() {
       var connectionItems = this.state.connections.map(function (connection, index) {
         return {
-          label: _nuclideRemoteUri2['default'].isRemote(connection) ? _nuclideRemoteUri2['default'].getHostname(connection) : connection,
+          label: (_nuclideRemoteUri2 || _nuclideRemoteUri()).default.isRemote(connection) ? (_nuclideRemoteUri2 || _nuclideRemoteUri()).default.getHostname(connection) : connection,
           value: index
         };
       });
@@ -87,42 +97,42 @@ var DebuggerLaunchAttachUI = (function (_React$Component) {
         };
       });
 
-      return _reactForAtom.React.createElement(
+      return (_reactForAtom2 || _reactForAtom()).React.createElement(
         'div',
         { className: 'block padded' },
-        _reactForAtom.React.createElement(
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
           'div',
           { className: 'launch-attach-header' },
-          _reactForAtom.React.createElement(
+          (_reactForAtom2 || _reactForAtom()).React.createElement(
             'label',
             { className: 'inline-block' },
             'Connection: '
           ),
-          _reactForAtom.React.createElement(_nuclideUiLibDropdown.Dropdown, {
+          (_reactForAtom2 || _reactForAtom()).React.createElement((_nuclideUiLibDropdown2 || _nuclideUiLibDropdown()).Dropdown, {
             className: 'inline-block',
             menuItems: connectionItems,
             onSelectedChange: this._handleConnectionDropdownChange,
             selectedIndex: this.state.connectionsDropdownIndex,
             size: 'sm'
           }),
-          _reactForAtom.React.createElement(
+          (_reactForAtom2 || _reactForAtom()).React.createElement(
             'label',
             { className: 'inline-block' },
             'Type: '
           ),
-          _reactForAtom.React.createElement(_nuclideUiLibDropdown.Dropdown, {
+          (_reactForAtom2 || _reactForAtom()).React.createElement((_nuclideUiLibDropdown2 || _nuclideUiLibDropdown()).Dropdown, {
             className: 'inline-block',
             menuItems: debuggingTypeItems,
             onSelectedChange: this._handleDebuggingTypeDropdownChange,
             selectedIndex: this.state.debuggingTypeDropdownIndex,
             size: 'sm'
           }),
-          _reactForAtom.React.createElement(
+          (_reactForAtom2 || _reactForAtom()).React.createElement(
             'label',
             { className: 'inline-block' },
             'Action: '
           ),
-          _reactForAtom.React.createElement(_nuclideUiLibDropdown.Dropdown, {
+          (_reactForAtom2 || _reactForAtom()).React.createElement((_nuclideUiLibDropdown2 || _nuclideUiLibDropdown()).Dropdown, {
             className: 'inline-block',
             menuItems: providerActions,
             onSelectedChange: this._handleProviderActionsDropdownChange,
@@ -130,7 +140,7 @@ var DebuggerLaunchAttachUI = (function (_React$Component) {
             size: 'sm'
           })
         ),
-        _reactForAtom.React.createElement(
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
           'div',
           null,
           this.state.element
@@ -220,7 +230,7 @@ var DebuggerLaunchAttachUI = (function (_React$Component) {
       var element = provider.getComponent(action);
       // Assign an unique key to element so that react treats it as a new element.
       if (element != null) {
-        element = _reactForAtom.React.cloneElement(element, { key: provider.getUniqueKey() });
+        element = (_reactForAtom2 || _reactForAtom()).React.cloneElement(element, { key: provider.getUniqueKey() });
       }
       this.setState({
         element: element
@@ -229,7 +239,7 @@ var DebuggerLaunchAttachUI = (function (_React$Component) {
   }]);
 
   return DebuggerLaunchAttachUI;
-})(_reactForAtom.React.Component);
+})((_reactForAtom2 || _reactForAtom()).React.Component);
 
 exports.DebuggerLaunchAttachUI = DebuggerLaunchAttachUI;
 

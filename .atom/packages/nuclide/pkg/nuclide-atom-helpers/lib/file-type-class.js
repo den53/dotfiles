@@ -1,4 +1,4 @@
-
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -8,22 +8,31 @@
  * the root directory of this source tree.
  */
 
-var fs = require('fs-plus');
-var path = require('path');
+var _fsPlus2;
+
+function _fsPlus() {
+  return _fsPlus2 = _interopRequireDefault(require('fs-plus'));
+}
+
+var _path2;
+
+function _path() {
+  return _path2 = _interopRequireDefault(require('path'));
+}
 
 function fileTypeClass(filename) {
   var typeClass = undefined;
-  var ext = path.extname(filename);
+  var ext = (_path2 || _path()).default.extname(filename);
 
-  if (fs.isReadmePath(filename)) {
+  if ((_fsPlus2 || _fsPlus()).default.isReadmePath(filename)) {
     typeClass = 'icon-book';
-  } else if (fs.isCompressedExtension(ext)) {
+  } else if ((_fsPlus2 || _fsPlus()).default.isCompressedExtension(ext)) {
     typeClass = 'icon-file-zip';
-  } else if (fs.isImageExtension(ext)) {
+  } else if ((_fsPlus2 || _fsPlus()).default.isImageExtension(ext)) {
     typeClass = 'icon-file-media';
-  } else if (fs.isPdfExtension(ext)) {
+  } else if ((_fsPlus2 || _fsPlus()).default.isPdfExtension(ext)) {
     typeClass = 'icon-file-pdf';
-  } else if (fs.isBinaryExtension(ext)) {
+  } else if ((_fsPlus2 || _fsPlus()).default.isBinaryExtension(ext)) {
     typeClass = 'icon-file-binary';
   } else {
     typeClass = 'icon-file-text';

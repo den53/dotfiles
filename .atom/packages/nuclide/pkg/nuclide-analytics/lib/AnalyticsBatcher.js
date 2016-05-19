@@ -14,7 +14,11 @@ var _createClass = (function () { function defineProperties(target, props) { for
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _nuclideCommons = require('../../nuclide-commons');
+var _nuclideCommons2;
+
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
 
 var REPORTING_PERIOD = 1000;
 
@@ -25,7 +29,7 @@ var AnalyticsBatcher = (function () {
     _classCallCheck(this, AnalyticsBatcher);
 
     this._track = track;
-    this._queue = new _nuclideCommons.BatchProcessedQueue(REPORTING_PERIOD, function (events) {
+    this._queue = new (_nuclideCommons2 || _nuclideCommons()).BatchProcessedQueue(REPORTING_PERIOD, function (events) {
       _this._handleBatch(events);
     });
   }

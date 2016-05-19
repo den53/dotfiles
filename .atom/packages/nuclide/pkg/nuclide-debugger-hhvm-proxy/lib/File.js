@@ -12,7 +12,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * the root directory of this source tree.
  */
 
-var _nuclideCommons = require('../../nuclide-commons');
+var _nuclideCommons2;
+
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
 
 /**
  * A file in the file cache.
@@ -31,7 +35,7 @@ var File = (function () {
     value: _asyncToGenerator(function* () {
       var source = this._source;
       if (source === null) {
-        source = (yield _nuclideCommons.fsPromise.readFile(this._path, 'utf8')).toString();
+        source = (yield (_nuclideCommons2 || _nuclideCommons()).fsPromise.readFile(this._path, 'utf8')).toString();
         this._source = source;
       }
       return source;

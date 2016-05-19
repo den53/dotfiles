@@ -8,28 +8,44 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
  * the root directory of this source tree.
  */
 
-var _constants = require('./constants');
+var _constants2;
 
-var _nuclideAnalytics = require('../../nuclide-analytics');
+function _constants() {
+  return _constants2 = require('./constants');
+}
 
-var _atom = require('atom');
+var _nuclideAnalytics2;
 
-var _nuclideClient = require('../../nuclide-client');
+function _nuclideAnalytics() {
+  return _nuclideAnalytics2 = require('../../nuclide-analytics');
+}
+
+var _atom2;
+
+function _atom() {
+  return _atom2 = require('atom');
+}
+
+var _nuclideClient2;
+
+function _nuclideClient() {
+  return _nuclideClient2 = require('../../nuclide-client');
+}
 
 module.exports = {
   name: 'nuclide-ocaml',
-  grammarScopes: Array.from(_constants.GRAMMARS),
+  grammarScopes: Array.from((_constants2 || _constants()).GRAMMARS),
   scope: 'file',
   lintOnFly: false,
 
   lint: function lint(textEditor) {
-    return (0, _nuclideAnalytics.trackOperationTiming)('nuclide-ocaml.lint', _asyncToGenerator(function* () {
+    return (0, (_nuclideAnalytics2 || _nuclideAnalytics()).trackOperationTiming)('nuclide-ocaml.lint', _asyncToGenerator(function* () {
       var filePath = textEditor.getPath();
       if (filePath == null) {
         return [];
       }
 
-      var instance = (0, _nuclideClient.getServiceByNuclideUri)('MerlinService', filePath);
+      var instance = (0, (_nuclideClient2 || _nuclideClient()).getServiceByNuclideUri)('MerlinService', filePath);
       if (instance == null) {
         return [];
       }
@@ -43,7 +59,7 @@ module.exports = {
           type: diagnostic.type === 'warning' ? 'Warning' : 'Error',
           filePath: filePath,
           text: diagnostic.message,
-          range: new _atom.Range([diagnostic.start.line - 1, diagnostic.start.col], [diagnostic.end.line - 1, diagnostic.end.col])
+          range: new (_atom2 || _atom()).Range([diagnostic.start.line - 1, diagnostic.start.col], [diagnostic.end.line - 1, diagnostic.end.col])
         };
       });
     }));

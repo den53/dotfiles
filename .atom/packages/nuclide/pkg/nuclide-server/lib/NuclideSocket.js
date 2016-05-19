@@ -1,6 +1,6 @@
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-var _get = function get(_x2, _x3, _x4) { var _again = true; _function: while (_again) { var object = _x2, property = _x3, receiver = _x4; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x2 = parent; _x3 = property; _x4 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -10,33 +10,72 @@ var _get = function get(_x2, _x3, _x4) { var _again = true; _function: while (_a
  * the root directory of this source tree.
  */
 
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _config = require('./config');
+var _url2;
 
-var url = require('url');
+function _url() {
+  return _url2 = _interopRequireDefault(require('url'));
+}
 
-var _require = require('./utils');
+var _ws2;
 
-var asyncRequest = _require.asyncRequest;
+function _ws() {
+  return _ws2 = _interopRequireDefault(require('ws'));
+}
 
-var WebSocket = require('ws');
-var uuid = require('uuid');
+var _uuid2;
 
-var _require2 = require('events');
+function _uuid() {
+  return _uuid2 = _interopRequireDefault(require('uuid'));
+}
 
-var EventEmitter = _require2.EventEmitter;
+var _events2;
+
+function _events() {
+  return _events2 = require('events');
+}
+
+var _nuclideCommons2;
+
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
+
+var _WebSocketTransport2;
+
+function _WebSocketTransport() {
+  return _WebSocketTransport2 = require('./WebSocketTransport');
+}
+
+var _QueuedTransport2;
+
+function _QueuedTransport() {
+  return _QueuedTransport2 = require('./QueuedTransport');
+}
+
+var _XhrConnectionHeartbeat2;
+
+function _XhrConnectionHeartbeat() {
+  return _XhrConnectionHeartbeat2 = require('./XhrConnectionHeartbeat');
+}
+
+var _assert2;
+
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
 var logger = require('../../nuclide-logging').getLogger();
 
 var INITIAL_RECONNECT_TIME_MS = 10;
 var MAX_RECONNECT_TIME_MS = 5000;
-var HEARTBEAT_INTERVAL_MS = 5000;
-var MAX_HEARTBEAT_AWAY_RECONNECT_MS = 60000;
 
 // The Nuclide Socket class does several things:
 //   - Provides a transport mechanism for sending/receiving JSON messages
@@ -57,165 +96,148 @@ var MAX_HEARTBEAT_AWAY_RECONNECT_MS = 60000;
 //   - heartbeat: On receipt of successful heartbeat
 //   - heartbeat.error({code, originalCode, message}): On failure of heartbeat
 
-var NuclideSocket = (function (_EventEmitter) {
-  _inherits(NuclideSocket, _EventEmitter);
-
-  function NuclideSocket(serverUri) {
-    var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+var NuclideSocket = (function () {
+  function NuclideSocket(serverUri, options) {
+    var _this = this;
 
     _classCallCheck(this, NuclideSocket);
 
-    _get(Object.getPrototypeOf(NuclideSocket.prototype), 'constructor', this).call(this);
+    this._emitter = new (_events2 || _events()).EventEmitter();
     this._serverUri = serverUri;
     this._options = options;
-    this.id = uuid.v4();
+    this.id = (_uuid2 || _uuid()).default.v4();
     this._reconnectTime = INITIAL_RECONNECT_TIME_MS;
     this._reconnectTimer = null;
-    this._connected = false;
-    this._closed = false;
     this._previouslyConnected = false;
-    this._cachedMessages = [];
+    var transport = new (_QueuedTransport2 || _QueuedTransport()).QueuedTransport(this.id);
+    this._transport = transport;
+    transport.onMessage(function (message) {
+      _this._emitter.emit('message', message);
+    });
+    transport.onDisconnect(function () {
+      if (_this.isDisconnected()) {
+        _this._emitter.emit('status', false);
+        _this._emitter.emit('disconnect');
+        _this._scheduleReconnect();
+      }
+    });
 
-    var _url$parse = url.parse(serverUri);
+    var _default$parse = (_url2 || _url()).default.parse(serverUri);
 
-    var protocol = _url$parse.protocol;
-    var host = _url$parse.host;
+    var protocol = _default$parse.protocol;
+    var host = _default$parse.host;
 
     this._websocketUri = 'ws' + (protocol === 'https:' ? 's' : '') + '://' + host;
 
-    this._heartbeatConnectedOnce = false;
-    this._lastHeartbeat = null;
-    this._lastHeartbeatTime = null;
-    this._monitorServerHeartbeat();
+    this._heartbeat = new (_XhrConnectionHeartbeat2 || _XhrConnectionHeartbeat()).XhrConnectionHeartbeat(serverUri, options);
+    this._heartbeat.onConnectionRestored(function () {
+      _this._scheduleReconnect();
+    });
 
     this._reconnect();
   }
 
   _createClass(NuclideSocket, [{
+    key: 'isConnected',
+    value: function isConnected() {
+      return this._transport != null && this._transport.getState() === 'open';
+    }
+  }, {
+    key: 'isDisconnected',
+    value: function isDisconnected() {
+      return this._transport != null && this._transport.getState() === 'disconnected';
+    }
+  }, {
     key: 'waitForConnect',
     value: function waitForConnect() {
-      var _this = this;
+      var _this2 = this;
 
       return new Promise(function (resolve, reject) {
-        if (_this._connected) {
+        if (_this2.isConnected()) {
           return resolve();
         } else {
-          _this.on('connect', resolve);
-          _this.on('reconnect', resolve);
+          _this2.onConnect(resolve);
+          _this2.onReconnect(resolve);
         }
       });
     }
   }, {
     key: '_reconnect',
     value: function _reconnect() {
-      var _this2 = this;
+      var _this3 = this;
 
-      var _options = this._options;
-      var certificateAuthorityCertificate = _options.certificateAuthorityCertificate;
-      var clientKey = _options.clientKey;
-      var clientCertificate = _options.clientCertificate;
+      (0, (_assert2 || _assert()).default)(this.isDisconnected());
 
-      var websocket = new WebSocket(this._websocketUri, {
-        cert: clientCertificate,
-        key: clientKey,
-        ca: certificateAuthorityCertificate
-      });
+      var websocket = new (_ws2 || _ws()).default(this._websocketUri, this._options);
 
-      var onSocketOpen = function onSocketOpen() {
-        _this2._websocket = websocket;
-        _this2._reconnectTime = INITIAL_RECONNECT_TIME_MS;
-        // Handshake the server with my client id to manage my re-connect attemp, if it is.
-        websocket.send(_this2.id, function () {
-          _this2._connected = true;
-          _this2.emit('status', _this2._connected);
-          if (_this2._previouslyConnected) {
-            logger.info('WebSocket reconnected');
-            _this2.emit('reconnect');
-          } else {
-            logger.info('WebSocket connected');
-            _this2.emit('connect');
-          }
-          _this2._previouslyConnected = true;
-          _this2._cachedMessages.splice(0).forEach(function (message) {
-            return _this2.send(message.data);
-          });
-        });
-      };
-      websocket.on('open', onSocketOpen);
-
-      var onSocketClose = function onSocketClose() {
-        if (_this2._websocket !== websocket) {
-          return;
-        }
-        logger.info('WebSocket closed.');
-        _this2._websocket = null;
-        _this2._disconnect();
-        if (!_this2._closed) {
-          logger.info('WebSocket reconnecting after closed.');
-          _this2._scheduleReconnect();
-        }
-      };
-      websocket.on('close', onSocketClose);
-
+      // Need to add this otherwise unhandled errors during startup will result
+      // in uncaught exceptions. This is due to EventEmitter treating 'error'
+      // events specially.
       var onSocketError = function onSocketError(error) {
-        if (_this2._websocket !== websocket) {
-          return;
-        }
-        logger.error('WebSocket Error - reconnecting...', error);
-        _this2._cleanWebSocket();
-        _this2._scheduleReconnect();
+        logger.error('WebSocket Error - attempting connection...', error);
       };
       websocket.on('error', onSocketError);
 
-      var onSocketMessage = function onSocketMessage(data, flags) {
-        // flags.binary will be set if a binary data is received.
-        // flags.masked will be set if the data was masked.
-        var json = JSON.parse(data);
-        _this2.emit('message', json);
-      };
-
-      websocket.on('message', onSocketMessage);
-      // WebSocket inherits from EventEmitter, and doesn't dispose the listeners on close.
-      // Here, I added an expando property function to allow disposing those listeners on the created
-      // instance.
-      // $FlowFixMe -- no expandos
-      websocket.dispose = function () {
-        websocket.removeListener('open', onSocketOpen);
-        websocket.removeListener('close', onSocketClose);
-        websocket.removeListener('error', onSocketError);
-        websocket.removeListener('message', onSocketMessage);
-      };
-    }
-  }, {
-    key: '_disconnect',
-    value: function _disconnect() {
-      this._connected = false;
-      this.emit('status', this._connected);
-      this.emit('disconnect');
-    }
-  }, {
-    key: '_cleanWebSocket',
-    value: function _cleanWebSocket() {
-      var websocket = this._websocket;
-      if (websocket != null) {
-        // $FlowFixMe -- no expandos
-        websocket.dispose();
-        websocket.close();
-        this._websocket = null;
-      }
+      var onSocketOpen = _asyncToGenerator(function* () {
+        var sendIdResult = yield sendOneMessage(websocket, _this3.id);
+        switch (sendIdResult.kind) {
+          case 'close':
+            websocket.close();
+            logger.info('WebSocket closed before sending id handshake');
+            if (_this3.isDisconnected()) {
+              logger.info('WebSocket reconnecting after closed.');
+              _this3._scheduleReconnect();
+            }
+            break;
+          case 'error':
+            websocket.close();
+            logger.error('WebSocket Error before sending id handshake', sendIdResult.message);
+            if (_this3.isDisconnected()) {
+              logger.info('WebSocket reconnecting after error.');
+              _this3._scheduleReconnect();
+            }
+            break;
+          case 'success':
+            if (_this3.isDisconnected()) {
+              (function () {
+                var ws = new (_WebSocketTransport2 || _WebSocketTransport()).WebSocketTransport(_this3.id, websocket);
+                ws.onError(function (error) {
+                  ws.close();
+                });
+                (0, (_assert2 || _assert()).default)(_this3._transport != null);
+                _this3._transport.reconnect(ws);
+                websocket.removeListener('error', onSocketError);
+                _this3._emitter.emit('status', true);
+                if (_this3._previouslyConnected) {
+                  logger.info('WebSocket reconnected');
+                  _this3._emitter.emit('reconnect');
+                } else {
+                  logger.info('WebSocket connected');
+                  _this3._emitter.emit('connect');
+                }
+                _this3._previouslyConnected = true;
+                _this3._reconnectTime = INITIAL_RECONNECT_TIME_MS;
+              })();
+            }
+            break;
+        }
+      });
+      websocket.on('open', onSocketOpen);
     }
   }, {
     key: '_scheduleReconnect',
     value: function _scheduleReconnect() {
-      var _this3 = this;
+      var _this4 = this;
 
       if (this._reconnectTimer) {
         return;
       }
       // Exponential reconnect time trials.
       this._reconnectTimer = setTimeout(function () {
-        _this3._reconnectTimer = null;
-        _this3._reconnect();
+        _this4._reconnectTimer = null;
+        if (_this4.isDisconnected()) {
+          _this4._reconnect();
+        }
       }, this._reconnectTime);
       this._reconnectTime = this._reconnectTime * 2;
       if (this._reconnectTime > MAX_RECONNECT_TIME_MS) {
@@ -233,65 +255,8 @@ var NuclideSocket = (function (_EventEmitter) {
   }, {
     key: 'send',
     value: function send(data) {
-      var _this4 = this;
-
-      // Wrap the data in an object, because if `data` is a primitive data type,
-      // finding it in an array would return the first matching item, not necessarily the same
-      // inserted item.
-      var message = { data: data };
-      this._cachedMessages.push(message);
-      if (!this._connected) {
-        return;
-      }
-
-      var websocket = this._websocket;
-      if (websocket == null) {
-        return;
-      }
-      websocket.send(JSON.stringify(data), function (err) {
-        if (err) {
-          logger.warn('WebSocket error, but caching the message:', err);
-        } else {
-          var messageIndex = _this4._cachedMessages.indexOf(message);
-          if (messageIndex !== -1) {
-            _this4._cachedMessages.splice(messageIndex, 1);
-          }
-        }
-      });
-    }
-  }, {
-    key: 'xhrRequest',
-    value: _asyncToGenerator(function* (options) {
-      var _options2 = this._options;
-      var certificateAuthorityCertificate = _options2.certificateAuthorityCertificate;
-      var clientKey = _options2.clientKey;
-      var clientCertificate = _options2.clientCertificate;
-
-      if (certificateAuthorityCertificate && clientKey && clientCertificate) {
-        options.agentOptions = {
-          ca: certificateAuthorityCertificate,
-          key: clientKey,
-          cert: clientCertificate
-        };
-      }
-
-      options.uri = this._serverUri + '/' + options.uri;
-
-      var _ref = yield asyncRequest(options);
-
-      var body = _ref.body;
-
-      return body;
-    })
-  }, {
-    key: '_monitorServerHeartbeat',
-    value: function _monitorServerHeartbeat() {
-      var _this5 = this;
-
-      this._heartbeat();
-      this._heartbeatInterval = setInterval(function () {
-        return _this5._heartbeat();
-      }, HEARTBEAT_INTERVAL_MS);
+      (0, (_assert2 || _assert()).default)(this._transport != null);
+      this._transport.send(data);
     }
 
     // Resolves if the connection looks healthy.
@@ -299,73 +264,8 @@ var NuclideSocket = (function (_EventEmitter) {
   }, {
     key: 'testConnection',
     value: function testConnection() {
-      return this._sendHeartBeat();
+      return this._heartbeat.sendHeartBeat();
     }
-  }, {
-    key: '_sendHeartBeat',
-    value: _asyncToGenerator(function* () {
-      yield this.xhrRequest({
-        uri: _config.HEARTBEAT_CHANNEL,
-        method: 'POST'
-      });
-    })
-  }, {
-    key: '_heartbeat',
-    value: _asyncToGenerator(function* () {
-      try {
-        yield this._sendHeartBeat();
-        this._heartbeatConnectedOnce = true;
-        var now = Date.now();
-        this._lastHeartbeatTime = this._lastHeartbeatTime || now;
-        if (this._lastHeartbeat === 'away' || now - this._lastHeartbeatTime > MAX_HEARTBEAT_AWAY_RECONNECT_MS) {
-          // Trigger a websocket reconnect.
-          this._cleanWebSocket();
-          this._scheduleReconnect();
-        }
-        this._lastHeartbeat = 'here';
-        this._lastHeartbeatTime = now;
-        this.emit('heartbeat');
-      } catch (err) {
-        this._disconnect();
-        this._lastHeartbeat = 'away';
-        // Error code could could be one of:
-        // ['ENOTFOUND', 'ECONNREFUSED', 'ECONNRESET', 'ETIMEDOUT']
-        // A heuristic mapping is done between the xhr error code to the state of server connection.
-        var originalCode = err.code;
-        var message = err.message;
-
-        var code = null;
-        switch (originalCode) {
-          case 'ENOTFOUND':
-          // A socket operation failed because the network was down.
-          case 'ENETDOWN':
-          // The range of the temporary ports for connection are all taken,
-          // This is temporal with many http requests, but should be counted as a network away event.
-          case 'EADDRNOTAVAIL':
-          // The host server is unreachable, could be in a VPN.
-          case 'EHOSTUNREACH':
-          // A request timeout is considered a network away event.
-          case 'ETIMEDOUT':
-            code = 'NETWORK_AWAY';
-            break;
-          case 'ECONNREFUSED':
-            // Server shut down or port no longer accessible.
-            if (this._heartbeatConnectedOnce) {
-              code = 'SERVER_CRASHED';
-            } else {
-              code = 'PORT_NOT_ACCESSIBLE';
-            }
-            break;
-          case 'ECONNRESET':
-            code = 'INVALID_CERTIFICATE';
-            break;
-          default:
-            code = originalCode;
-            break;
-        }
-        this.emit('heartbeat.error', { code: code, originalCode: originalCode, message: message });
-      }
-    })
   }, {
     key: 'getServerUri',
     value: function getServerUri() {
@@ -374,29 +274,77 @@ var NuclideSocket = (function (_EventEmitter) {
   }, {
     key: 'close',
     value: function close() {
-      this._closed = true;
-      if (this._connected) {
-        this._disconnect();
+      var transport = this._transport;
+      if (transport != null) {
+        this._transport = null;
+        transport.close();
       }
-      if (this._reconnectTimer) {
-        clearTimeout(this._reconnectTimer);
-      }
-      this._cleanWebSocket();
-      this._cachedMessages = [];
+      this._clearReconnectTimer();
       this._reconnectTime = INITIAL_RECONNECT_TIME_MS;
-      if (this._heartbeatInterval != null) {
-        clearInterval(this._heartbeatInterval);
-      }
+      this._heartbeat.close();
     }
   }, {
-    key: 'isConnected',
-    value: function isConnected() {
-      return this._connected;
+    key: 'onHeartbeat',
+    value: function onHeartbeat(callback) {
+      return this._heartbeat.onHeartbeat(callback);
+    }
+  }, {
+    key: 'onHeartbeatError',
+    value: function onHeartbeatError(callback) {
+      return this._heartbeat.onHeartbeatError(callback);
+    }
+  }, {
+    key: 'onMessage',
+    value: function onMessage(callback) {
+      return (_nuclideCommons2 || _nuclideCommons()).event.attachEvent(this._emitter, 'message', callback);
+    }
+  }, {
+    key: 'onStatus',
+    value: function onStatus(callback) {
+      return (_nuclideCommons2 || _nuclideCommons()).event.attachEvent(this._emitter, 'status', callback);
+    }
+  }, {
+    key: 'onConnect',
+    value: function onConnect(callback) {
+      return (_nuclideCommons2 || _nuclideCommons()).event.attachEvent(this._emitter, 'connect', callback);
+    }
+  }, {
+    key: 'onReconnect',
+    value: function onReconnect(callback) {
+      return (_nuclideCommons2 || _nuclideCommons()).event.attachEvent(this._emitter, 'reconnect', callback);
+    }
+  }, {
+    key: 'onDisconnect',
+    value: function onDisconnect(callback) {
+      return (_nuclideCommons2 || _nuclideCommons()).event.attachEvent(this._emitter, 'disconnect', callback);
     }
   }]);
 
   return NuclideSocket;
-})(EventEmitter);
+})();
 
-module.exports = NuclideSocket;
+exports.NuclideSocket = NuclideSocket;
+
+function sendOneMessage(socket, message) {
+  return new Promise(function (resolve, reject) {
+    function finish(result) {
+      onError.dispose();
+      onClose.dispose();
+      resolve(result);
+    }
+    var onError = (_nuclideCommons2 || _nuclideCommons()).event.attachEvent(socket, 'event', function (err) {
+      return finish({ kind: 'error', message: err });
+    });
+    var onClose = (_nuclideCommons2 || _nuclideCommons()).event.attachEvent(socket, 'close', function () {
+      return finish({ kind: 'close' });
+    });
+    socket.send(message, function (error) {
+      if (error == null) {
+        finish({ kind: 'success' });
+      } else {
+        finish({ kind: 'error', message: error.toString() });
+      }
+    });
+  });
+}
 // ID from a setTimeout() call.

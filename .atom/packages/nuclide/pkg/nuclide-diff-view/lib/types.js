@@ -9,3 +9,9 @@ Object.defineProperty(exports, '__esModule', {
  * This source code is licensed under the license found in the LICENSE file in
  * the root directory of this source tree.
  */
+
+var _reactForAtom2;
+
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}

@@ -14,31 +14,55 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _createDecoratedClass = (function () { function defineProperties(target, descriptors, initializers) { for (var i = 0; i < descriptors.length; i++) { var descriptor = descriptors[i]; var decorators = descriptor.decorators; var key = descriptor.key; delete descriptor.key; delete descriptor.decorators; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor || descriptor.initializer) descriptor.writable = true; if (decorators) { for (var f = 0; f < decorators.length; f++) { var decorator = decorators[f]; if (typeof decorator === 'function') { descriptor = decorator(target, key, descriptor) || descriptor; } else { throw new TypeError('The decorator for method ' + descriptor.key + ' is of the invalid type ' + typeof decorator); } } if (descriptor.initializer !== undefined) { initializers[key] = descriptor; continue; } } Object.defineProperty(target, key, descriptor); } } return function (Constructor, protoProps, staticProps, protoInitializers, staticInitializers) { if (protoProps) defineProperties(Constructor.prototype, protoProps, protoInitializers); if (staticProps) defineProperties(Constructor, staticProps, staticInitializers); return Constructor; }; })();
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _atom = require('atom');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _nuclideDiagnosticsProviderBase = require('../../nuclide-diagnostics-provider-base');
+var _atom2;
 
-var _nuclideFeatureConfig = require('../../nuclide-feature-config');
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var _nuclideFeatureConfig2 = _interopRequireDefault(_nuclideFeatureConfig);
+var _nuclideDiagnosticsProviderBase2;
 
-var _nuclideAnalytics = require('../../nuclide-analytics');
+function _nuclideDiagnosticsProviderBase() {
+  return _nuclideDiagnosticsProviderBase2 = require('../../nuclide-diagnostics-provider-base');
+}
 
-var _nuclideAtomHelpers = require('../../nuclide-atom-helpers');
+var _nuclideFeatureConfig2;
 
-var _nuclideCommons = require('../../nuclide-commons');
+function _nuclideFeatureConfig() {
+  return _nuclideFeatureConfig2 = _interopRequireDefault(require('../../nuclide-feature-config'));
+}
 
-var _assert = require('assert');
+var _nuclideAnalytics2;
 
-var _assert2 = _interopRequireDefault(_assert);
+function _nuclideAnalytics() {
+  return _nuclideAnalytics2 = require('../../nuclide-analytics');
+}
 
-var RequestSerializer = _nuclideCommons.promises.RequestSerializer;
+var _nuclideAtomHelpers2;
+
+function _nuclideAtomHelpers() {
+  return _nuclideAtomHelpers2 = require('../../nuclide-atom-helpers');
+}
+
+var _nuclideCommons2;
+
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
+
+var _assert2;
+
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
+
+var RequestSerializer = (_nuclideCommons2 || _nuclideCommons()).promises.RequestSerializer;
 
 var ArcanistDiagnosticsProvider = (function () {
   function ArcanistDiagnosticsProvider(busySignalProvider) {
@@ -47,16 +71,16 @@ var ArcanistDiagnosticsProvider = (function () {
     _classCallCheck(this, ArcanistDiagnosticsProvider);
 
     this._busySignalProvider = busySignalProvider;
-    this._subscriptions = new _atom.CompositeDisposable();
+    this._subscriptions = new (_atom2 || _atom()).CompositeDisposable();
     var baseOptions = {
       enableForAllGrammars: true,
       shouldRunOnTheFly: false,
       onTextEditorEvent: this._runLintWithBusyMessage.bind(this),
       onNewUpdateSubscriber: this._receivedNewUpdateSubscriber.bind(this)
     };
-    this._providerBase = new _nuclideDiagnosticsProviderBase.DiagnosticsProviderBase(baseOptions);
+    this._providerBase = new (_nuclideDiagnosticsProviderBase2 || _nuclideDiagnosticsProviderBase()).DiagnosticsProviderBase(baseOptions);
     this._requestSerializer = new RequestSerializer();
-    this._subscriptions.add((0, _nuclideAtomHelpers.onWillDestroyTextBuffer)(function (buffer) {
+    this._subscriptions.add((0, (_nuclideAtomHelpers2 || _nuclideAtomHelpers()).onWillDestroyTextBuffer)(function (buffer) {
       var path = buffer.getPath();
       if (!path) {
         return;
@@ -89,21 +113,21 @@ var ArcanistDiagnosticsProvider = (function () {
     /** Do not call this directly -- call _runLintWithBusyMessage */
   }, {
     key: '_runLint',
-    decorators: [(0, _nuclideAnalytics.trackTiming)('nuclide-arcanist:lint')],
+    decorators: [(0, (_nuclideAnalytics2 || _nuclideAnalytics()).trackTiming)('nuclide-arcanist:lint')],
     value: _asyncToGenerator(function* (textEditor) {
       var _this3 = this;
 
       var filePath = textEditor.getPath();
-      (0, _assert2['default'])(filePath);
+      (0, (_assert2 || _assert()).default)(filePath);
       try {
-        var blacklistedLinters = _nuclideFeatureConfig2['default'].get('nuclide-arcanist.blacklistedLinters');
+        var blacklistedLinters = (_nuclideFeatureConfig2 || _nuclideFeatureConfig()).default.get('nuclide-arcanist.blacklistedLinters');
         var result = yield this._requestSerializer.run(require('../../nuclide-arcanist-client').findDiagnostics([filePath], blacklistedLinters));
         if (result.status === 'outdated') {
           return;
         }
         var diagnostics = result.result;
         var fileDiagnostics = diagnostics.map(function (diagnostic) {
-          var range = new _atom.Range([diagnostic.row, diagnostic.col], [diagnostic.row, textEditor.getBuffer().lineLengthForRow(diagnostic.row)]);
+          var range = new (_atom2 || _atom()).Range([diagnostic.row, diagnostic.col], [diagnostic.row, textEditor.getBuffer().lineLengthForRow(diagnostic.row)]);
           var text = undefined;
           if (Array.isArray(diagnostic.text)) {
             // Sometimes `arc lint` returns an array of strings for the text, rather than just a
@@ -160,7 +184,7 @@ var ArcanistDiagnosticsProvider = (function () {
         endCol = originalText.length - lastNewlineIndex - 1;
       }
 
-      return new _atom.Range([startRow, startCol], [endRow, endCol]);
+      return new (_atom2 || _atom()).Range([startRow, startCol], [endRow, endCol]);
     }
   }, {
     key: '_receivedNewUpdateSubscriber',

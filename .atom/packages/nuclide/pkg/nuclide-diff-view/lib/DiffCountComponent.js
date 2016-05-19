@@ -14,7 +14,11 @@ function _inherits(subClass, superClass) { if (typeof superClass !== 'function' 
  * the root directory of this source tree.
  */
 
-var _reactForAtom = require('react-for-atom');
+var _reactForAtom2;
+
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
 
 var DiffCountComponent = (function (_React$Component) {
   _inherits(DiffCountComponent, _React$Component);
@@ -38,7 +42,7 @@ var DiffCountComponent = (function (_React$Component) {
       if (count === 0) {
         return null;
       }
-      return _reactForAtom.React.createElement(
+      return (_reactForAtom2 || _reactForAtom()).React.createElement(
         'span',
         null,
         count > 99 ? '99+' : count
@@ -47,6 +51,6 @@ var DiffCountComponent = (function (_React$Component) {
   }]);
 
   return DiffCountComponent;
-})(_reactForAtom.React.Component);
+})((_reactForAtom2 || _reactForAtom()).React.Component);
 
 module.exports = DiffCountComponent;

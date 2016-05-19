@@ -18,9 +18,13 @@ function _inherits(subClass, superClass) { if (typeof superClass !== 'function' 
  * the root directory of this source tree.
  */
 
-var _reactForAtom = require('react-for-atom');
+var _reactForAtom2;
 
-var PropTypes = _reactForAtom.React.PropTypes;
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
+
+var PropTypes = (_reactForAtom2 || _reactForAtom()).React.PropTypes;
 
 var BasicStatsSectionComponent = (function (_React$Component) {
   _inherits(BasicStatsSectionComponent, _React$Component);
@@ -54,40 +58,40 @@ var BasicStatsSectionComponent = (function (_React$Component) {
         value: '' + this.props.activeRequests
       }];
 
-      return _reactForAtom.React.createElement(
+      return (_reactForAtom2 || _reactForAtom()).React.createElement(
         'table',
         { className: 'table' },
-        _reactForAtom.React.createElement(
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
           'thead',
           null,
-          _reactForAtom.React.createElement(
+          (_reactForAtom2 || _reactForAtom()).React.createElement(
             'tr',
             null,
-            _reactForAtom.React.createElement(
+            (_reactForAtom2 || _reactForAtom()).React.createElement(
               'th',
               null,
               'Metric'
             ),
-            _reactForAtom.React.createElement(
+            (_reactForAtom2 || _reactForAtom()).React.createElement(
               'th',
               null,
               'Value'
             )
           )
         ),
-        _reactForAtom.React.createElement(
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
           'tbody',
           null,
           stats.map(function (stat, s) {
-            return _reactForAtom.React.createElement(
+            return (_reactForAtom2 || _reactForAtom()).React.createElement(
               'tr',
               { key: s },
-              _reactForAtom.React.createElement(
+              (_reactForAtom2 || _reactForAtom()).React.createElement(
                 'th',
                 null,
                 stat.name
               ),
-              _reactForAtom.React.createElement(
+              (_reactForAtom2 || _reactForAtom()).React.createElement(
                 'td',
                 null,
                 stat.value
@@ -111,7 +115,7 @@ var BasicStatsSectionComponent = (function (_React$Component) {
   }]);
 
   return BasicStatsSectionComponent;
-})(_reactForAtom.React.Component);
+})((_reactForAtom2 || _reactForAtom()).React.Component);
 
-exports['default'] = BasicStatsSectionComponent;
-module.exports = exports['default'];
+exports.default = BasicStatsSectionComponent;
+module.exports = exports.default;

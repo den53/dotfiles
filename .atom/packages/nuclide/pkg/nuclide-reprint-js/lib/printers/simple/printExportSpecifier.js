@@ -8,16 +8,27 @@
  * the root directory of this source tree.
  */
 
-var flatten = require('../../utils/flatten');
-var markers = require('../../constants/markers');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _utilsFlatten2;
+
+function _utilsFlatten() {
+  return _utilsFlatten2 = _interopRequireDefault(require('../../utils/flatten'));
+}
+
+var _constantsMarkers2;
+
+function _constantsMarkers() {
+  return _constantsMarkers2 = _interopRequireDefault(require('../../constants/markers'));
+}
 
 function printExportSpecifier(print, node) {
   // I'm pretty sure it's safe to assume they are both Identifiers, but let's
   // be safe just in case.
   if (node.exported && node.exported.type === 'Identifier' && node.local && node.local.type === 'Identifier' && node.exported.name !== node.local.name) {
-    return flatten([print(node.local), markers.noBreak, markers.space, 'as', markers.noBreak, markers.space, print(node.exported)]);
+    return (0, (_utilsFlatten2 || _utilsFlatten()).default)([print(node.local), (_constantsMarkers2 || _constantsMarkers()).default.noBreak, (_constantsMarkers2 || _constantsMarkers()).default.space, 'as', (_constantsMarkers2 || _constantsMarkers()).default.noBreak, (_constantsMarkers2 || _constantsMarkers()).default.space, print(node.exported)]);
   } else {
-    return flatten(print(node.local));
+    return (0, (_utilsFlatten2 || _utilsFlatten()).default)(print(node.local));
   }
 }
 

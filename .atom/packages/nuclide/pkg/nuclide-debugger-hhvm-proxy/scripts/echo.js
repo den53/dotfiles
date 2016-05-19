@@ -7,7 +7,7 @@
  */
 
 /* Is not transpiled, allow `var` and console usage. */
-/* eslint-disable no-var, no-console */
+/* eslint-disable no-var, no-console, prefer-arrow-callback */
 
 // Starts listening for xdebug connections on the given port.
 // Once connected you can enter xdebug commands, messages from the xdebug connection
@@ -46,14 +46,20 @@ var rl = readline.createInterface({
   terminal: false,
 });
 
+var commandId = 0;
+var DBG_PROMPT_TEXT = 'xdebug> ';
+process.stdout.write(DBG_PROMPT_TEXT);
 rl.on('line', function(line) {
   if (socket) {
-    if (line === 'b') {
-      line = 'break -i 2\0';
+    line = line.trim();
+    if (line) {
+      ++commandId;
+      line += (' -i ' + commandId);
+      console.log('local: ' + line);
+      socket.write(line + '\0', undefined /* encoding */, function() {
+        console.log('finished writing: ' + line);
+      });
     }
-    console.log('local: ' + line);
-    socket.write(line + '\0', undefined /* encoding */, function() {
-      console.log('finished writing: ' + line);
-    });
   }
+  process.stdout.write(DBG_PROMPT_TEXT);
 });

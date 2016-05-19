@@ -12,15 +12,21 @@ Object.defineProperty(exports, '__esModule', {
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _nuclideAnalytics = require('../../nuclide-analytics');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _rxjs = require('rxjs');
+var _nuclideAnalytics2;
 
-var _rxjs2 = _interopRequireDefault(_rxjs);
+function _nuclideAnalytics() {
+  return _nuclideAnalytics2 = require('../../nuclide-analytics');
+}
+
+var _rxjs2;
+
+function _rxjs() {
+  return _rxjs2 = _interopRequireDefault(require('rxjs'));
+}
 
 /**
  * A utility for writing packages that tail log sources. Just give it a cold observable and let it
@@ -33,7 +39,7 @@ var LogTailer = (function () {
 
     this._input$ = input$;
     this._eventNames = eventNames;
-    this._message$ = new _rxjs2['default'].Subject();
+    this._message$ = new (_rxjs2 || _rxjs()).default.Subject();
     this._running = false;
   }
 
@@ -50,7 +56,7 @@ var LogTailer = (function () {
   }, {
     key: 'restart',
     value: function restart() {
-      (0, _nuclideAnalytics.track)(this._eventNames.restart);
+      (0, (_nuclideAnalytics2 || _nuclideAnalytics()).track)(this._eventNames.restart);
       this._stop(false);
       this._start(false);
     }
@@ -67,7 +73,7 @@ var LogTailer = (function () {
         return;
       }
       if (trackCall) {
-        (0, _nuclideAnalytics.track)(this._eventNames.start);
+        (0, (_nuclideAnalytics2 || _nuclideAnalytics()).track)(this._eventNames.start);
       }
 
       this._running = true;
@@ -80,7 +86,7 @@ var LogTailer = (function () {
         _this._message$.next(message);
       }, function (err) {
         _this._stop(false);
-        (0, _nuclideAnalytics.track)(_this._eventNames.error, { message: err.message });
+        (0, (_nuclideAnalytics2 || _nuclideAnalytics()).track)(_this._eventNames.error, { message: err.message });
       });
     }
   }, {
@@ -92,7 +98,7 @@ var LogTailer = (function () {
         return;
       }
       if (trackCall) {
-        (0, _nuclideAnalytics.track)(this._eventNames.stop);
+        (0, (_nuclideAnalytics2 || _nuclideAnalytics()).track)(this._eventNames.stop);
       }
 
       this._running = false;

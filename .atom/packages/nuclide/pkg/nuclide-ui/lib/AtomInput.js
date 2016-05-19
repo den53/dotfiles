@@ -12,6 +12,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
  * All rights reserved.
@@ -20,16 +22,23 @@ function _inherits(subClass, superClass) { if (typeof superClass !== 'function' 
  * the root directory of this source tree.
  */
 
-var classNames = require('classnames');
+var _classnames2;
 
-var _require = require('atom');
+function _classnames() {
+  return _classnames2 = _interopRequireDefault(require('classnames'));
+}
 
-var CompositeDisposable = _require.CompositeDisposable;
+var _atom2;
 
-var _require2 = require('react-for-atom');
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var React = _require2.React;
-var ReactDOM = _require2.ReactDOM;
+var _reactForAtom2;
+
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
 
 var ENTER_KEY_CODE = 13;
 var ESCAPE_KEY_CODE = 27;
@@ -72,7 +81,7 @@ var AtomInput = (function (_React$Component) {
     value: function componentDidMount() {
       var _this = this;
 
-      var disposables = this._disposables = new CompositeDisposable();
+      var disposables = this._disposables = new (_atom2 || _atom()).CompositeDisposable();
 
       // There does not appear to be any sort of infinite loop where calling
       // setState({value}) in response to onDidChange() causes another change
@@ -135,7 +144,7 @@ var AtomInput = (function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
-      var className = classNames(this.props.className, _defineProperty({
+      var className = (0, (_classnames2 || _classnames()).default)(this.props.className, _defineProperty({
         'atom-text-editor-unstyled': this.props.unstyled
       }, 'atom-text-editor-' + this.props.size, this.props.size != null));
 
@@ -144,7 +153,7 @@ var AtomInput = (function (_React$Component) {
         // component class when "Use Shadow DOM" is disabled, this element should never have children.
         // If an element has no children, React guarantees it will never re-render the element (which
         // would wipe out the web component's work in this case).
-        React.createElement('atom-text-editor', {
+        (_reactForAtom2 || _reactForAtom()).React.createElement('atom-text-editor', {
           'class': className,
           mini: true,
           onClick: this.props.onClick,
@@ -177,7 +186,7 @@ var AtomInput = (function (_React$Component) {
   }, {
     key: '_getTextEditorElement',
     value: function _getTextEditorElement() {
-      return ReactDOM.findDOMNode(this);
+      return (_reactForAtom2 || _reactForAtom()).ReactDOM.findDOMNode(this);
     }
   }, {
     key: '_analyzeKeyCodes',
@@ -204,6 +213,6 @@ var AtomInput = (function (_React$Component) {
   }]);
 
   return AtomInput;
-})(React.Component);
+})((_reactForAtom2 || _reactForAtom()).React.Component);
 
 exports.AtomInput = AtomInput;

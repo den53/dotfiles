@@ -24,7 +24,7 @@ var _findClangServerArgs = _asyncToGenerator(function* () {
 
   var libClangLibraryFile = undefined;
   if (process.platform === 'darwin') {
-    var result = yield (0, _nuclideCommons.checkOutput)('xcode-select', ['--print-path']);
+    var result = yield (0, (_nuclideCommons2 || _nuclideCommons()).checkOutput)('xcode-select', ['--print-path']);
     if (result.exitCode === 0) {
       libClangLibraryFile = result.stdout.trim() + '/Toolchains/XcodeDefault.xctoolchain/usr/lib/libclang.dylib';
     }
@@ -33,7 +33,7 @@ var _findClangServerArgs = _asyncToGenerator(function* () {
   var clangServerArgs = {
     libClangLibraryFile: libClangLibraryFile,
     pythonExecutable: 'python',
-    pythonPathEnv: _path2['default'].join(__dirname, '../pythonpath')
+    pythonPathEnv: (_path2 || _path()).default.join(__dirname, '../pythonpath')
   };
   if (typeof findClangServerArgs === 'function') {
     var clangServerArgsOverrides = yield findClangServerArgs();
@@ -60,29 +60,47 @@ var augmentDefaultFlags = _asyncToGenerator(function* (src, flags) {
 
 // List of supported methods. Keep in sync with the Python server.
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
-var _assert = require('assert');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _assert2 = _interopRequireDefault(_assert);
+var _assert2;
 
-var _path = require('path');
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
-var _path2 = _interopRequireDefault(_path);
+var _path2;
 
-var _split = require('split');
+function _path() {
+  return _path2 = _interopRequireDefault(require('path'));
+}
 
-var _split2 = _interopRequireDefault(_split);
+var _split2;
 
-var _events = require('events');
+function _split() {
+  return _split2 = _interopRequireDefault(require('split'));
+}
 
-var _nuclideCommons = require('../../nuclide-commons');
+var _events2;
 
-var _nuclideLogging = require('../../nuclide-logging');
+function _events() {
+  return _events2 = require('events');
+}
+
+var _nuclideCommons2;
+
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
+
+var _nuclideLogging2;
+
+function _nuclideLogging() {
+  return _nuclideLogging2 = require('../../nuclide-logging');
+}
 
 // Do not tie up the Buck server continuously retrying for flags.
 var FLAGS_RETRY_LIMIT = 2;
@@ -91,8 +109,8 @@ var FLAGS_RETRY_LIMIT = 2;
 // It's not silenceable and has no effect, so just ignore it.
 var DYLD_WARNING = 'dyld: warning, LC_RPATH';
 
-var logger = (0, _nuclideLogging.getLogger)();
-var pathToLibClangServer = _path2['default'].join(__dirname, '../python/clang_server.py');
+var logger = (0, (_nuclideLogging2 || _nuclideLogging()).getLogger)();
+var pathToLibClangServer = (_path2 || _path()).default.join(__dirname, '../python/clang_server.py');
 
 var getDefaultFlags = undefined;
 
@@ -102,11 +120,11 @@ var ClangServer = (function () {
 
     this._src = src;
     this._clangFlagsManager = clangFlagsManager;
-    this._emitter = new _events.EventEmitter();
+    this._emitter = new (_events2 || _events()).EventEmitter();
     this._nextRequestId = 0;
     this._lastProcessedRequestId = -1;
     this._pendingCompileRequests = 0;
-    this._getAsyncConnection = _nuclideCommons.promises.serializeAsyncCall(this._getAsyncConnectionImpl.bind(this));
+    this._getAsyncConnection = (_nuclideCommons2 || _nuclideCommons()).promises.serializeAsyncCall(this._getAsyncConnectionImpl.bind(this));
     this._disposed = false;
     this._flagsRetries = 0;
     this._flagsChanged = false;
@@ -131,7 +149,7 @@ var ClangServer = (function () {
         return 0;
       }
 
-      var _ref = yield (0, _nuclideCommons.checkOutput)('ps', ['-p', this._asyncConnection.process.pid.toString(), '-o', 'rss=']);
+      var _ref = yield (0, (_nuclideCommons2 || _nuclideCommons()).checkOutput)('ps', ['-p', this._asyncConnection.process.pid.toString(), '-o', 'rss=']);
 
       var exitCode = _ref.exitCode;
       var stdout = _ref.stdout;
@@ -202,7 +220,7 @@ var ClangServer = (function () {
   }, {
     key: 'makeRequest',
     value: _asyncToGenerator(function* (method, defaultFlags, params, blocking) {
-      (0, _assert2['default'])(!this._disposed, 'calling makeRequest on a disposed ClangServer');
+      (0, (_assert2 || _assert()).default)(!this._disposed, 'calling makeRequest on a disposed ClangServer');
       if (method === 'compile') {
         this._pendingCompileRequests++;
       } else if (!blocking && this._pendingCompileRequests) {
@@ -288,7 +306,7 @@ var ClangServer = (function () {
       if (this._asyncConnection == null) {
         try {
           var connection = yield this.createAsyncConnection(this._src);
-          connection.readableStream.pipe((0, _split2['default'])(JSON.parse)).on('data', function (response) {
+          connection.readableStream.pipe((0, (_split2 || _split()).default)(JSON.parse)).on('data', function (response) {
             var id = response['reqid'];
             _this3._emitter.emit(id, response);
           }).on('error', function (error) {
@@ -330,7 +348,7 @@ var ClangServer = (function () {
           env.LIB_CLANG_LIBRARY_FILE = libClangLibraryFile;
         }
         var options = {
-          cwd: _path2['default'].dirname(pathToLibClangServer),
+          cwd: (_path2 || _path()).default.dirname(pathToLibClangServer),
           // The process should use its ordinary stderr for errors.
           stdio: ['pipe', null, 'pipe', 'pipe'],
           detached: false, // When Atom is killed, clang_server.py should be killed, too.
@@ -340,7 +358,7 @@ var ClangServer = (function () {
         // Note that safeSpawn() often overrides options.env.PATH, but that only happens when
         // options.env is undefined (which is not the case here). This will only be an issue if the
         // system cannot find `pythonExecutable`.
-        var child = yield (0, _nuclideCommons.safeSpawn)(pythonExecutable, /* args */[pathToLibClangServer], options);
+        var child = yield (0, (_nuclideCommons2 || _nuclideCommons()).safeSpawn)(pythonExecutable, /* args */[pathToLibClangServer], options);
 
         child.on('close', function (exitCode) {
           if (!_this4._disposed) {
@@ -393,8 +411,8 @@ var ClangServer = (function () {
   return ClangServer;
 })();
 
-exports['default'] = ClangServer;
-module.exports = exports['default'];
+exports.default = ClangServer;
+module.exports = exports.default;
 
 // Cache the flags-fetching promise so we don't end up invoking Buck twice.
 

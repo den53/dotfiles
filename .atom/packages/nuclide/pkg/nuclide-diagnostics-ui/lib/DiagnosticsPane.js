@@ -16,17 +16,37 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var _paneUtils = require('./paneUtils');
+var _paneUtils2;
 
-var _nuclideAtomHelpers = require('../../nuclide-atom-helpers');
+function _paneUtils() {
+  return _paneUtils2 = require('./paneUtils');
+}
 
-var _nuclideUiLibPanelComponentScroller = require('../../nuclide-ui/lib/PanelComponentScroller');
+var _nuclideAtomHelpers2;
 
-var _reactForAtom = require('react-for-atom');
+function _nuclideAtomHelpers() {
+  return _nuclideAtomHelpers2 = require('../../nuclide-atom-helpers');
+}
 
-var _nuclideAnalytics = require('../../nuclide-analytics');
+var _nuclideUiLibPanelComponentScroller2;
 
-var PropTypes = _reactForAtom.React.PropTypes;
+function _nuclideUiLibPanelComponentScroller() {
+  return _nuclideUiLibPanelComponentScroller2 = require('../../nuclide-ui/lib/PanelComponentScroller');
+}
+
+var _reactForAtom2;
+
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
+
+var _nuclideAnalytics2;
+
+function _nuclideAnalytics() {
+  return _nuclideAnalytics2 = require('../../nuclide-analytics');
+}
+
+var PropTypes = (_reactForAtom2 || _reactForAtom()).React.PropTypes;
 
 var DEFAULT_LINE_TEXT_HEIGHT = 15;
 var PIXELS_PER_CHAR = 6;
@@ -63,7 +83,7 @@ function sourceColumnCellDataGetter(cellDataKey, diagnostic) {
 function plainTextColumnCellRenderer(text) {
   // For consistency with messageColumnCellDataGetter(), render plaintext in a <span> so that
   // everything lines up.
-  return _reactForAtom.React.createElement(
+  return (_reactForAtom2 || _reactForAtom()).React.createElement(
     'span',
     null,
     text
@@ -72,7 +92,7 @@ function plainTextColumnCellRenderer(text) {
 
 function typeColumnCellRenderer(text) {
   var highlightClassName = TypeToHighlightClassName[text.toUpperCase()] || 'highlight';
-  return _reactForAtom.React.createElement(
+  return (_reactForAtom2 || _reactForAtom()).React.createElement(
     'span',
     { className: highlightClassName },
     text
@@ -105,7 +125,7 @@ function messageColumnCellRenderer(message) {
   if (message.isPlainText) {
     return plainTextColumnCellRenderer(message.text);
   } else {
-    return _reactForAtom.React.createElement('span', { dangerouslySetInnerHTML: { __html: message.text } });
+    return (_reactForAtom2 || _reactForAtom()).React.createElement('span', { dangerouslySetInnerHTML: { __html: message.text } });
   }
 }
 
@@ -114,36 +134,36 @@ function onRowClick(event, rowIndex, rowData) {
     return;
   }
 
-  (0, _nuclideAnalytics.track)('diagnostics-panel-goto-location');
+  (0, (_nuclideAnalytics2 || _nuclideAnalytics()).track)('diagnostics-panel-goto-location');
 
   var uri = rowData.filePath;
   // If initialLine is N, Atom will navigate to line N+1.
   // Flow sometimes reports a row of -1, so this ensures the line is at least one.
   var line = Math.max(rowData.range ? rowData.range.start.row : 0, 0);
   var column = 0;
-  (0, _nuclideAtomHelpers.goToLocation)(uri, line, column);
+  (0, (_nuclideAtomHelpers2 || _nuclideAtomHelpers()).goToLocation)(uri, line, column);
 }
 
 /*
  * Returns markup similar to that produced by fixed-data-table v0.6.0.
  */
 function Cell(props) {
-  return _reactForAtom.React.createElement(
+  return (_reactForAtom2 || _reactForAtom()).React.createElement(
     'div',
     {
       className: 'fixedDataTableCellLayout_main public_fixedDataTableCell_main',
       style: props.style,
       title: props.title },
-    _reactForAtom.React.createElement(
+    (_reactForAtom2 || _reactForAtom()).React.createElement(
       'div',
       { className: 'fixedDataTableCellLayout_wrap1 public_fixedDataTableCell_wrap1' },
-      _reactForAtom.React.createElement(
+      (_reactForAtom2 || _reactForAtom()).React.createElement(
         'div',
         { className: 'fixedDataTableCellLayout_wrap2 public_fixedDataTableCell_wrap2' },
-        _reactForAtom.React.createElement(
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
           'div',
           { className: 'fixedDataTableCellLayout_wrap3 public_fixedDataTableCell_wrap3' },
-          _reactForAtom.React.createElement(
+          (_reactForAtom2 || _reactForAtom()).React.createElement(
             'div',
             { className: 'public_fixedDataTableCell_cellContent' },
             props.children
@@ -220,7 +240,7 @@ var DiagnosticsPane = (function (_React$Component) {
 
       var _loop = function (index) {
         var diag = _this.props.diagnostics[index];
-        diagnosticCells.push(_reactForAtom.React.createElement(
+        diagnosticCells.push((_reactForAtom2 || _reactForAtom()).React.createElement(
           'div',
           {
             className: 'fixedDataTableCellGroupLayout_cellGroup nuclide-diagnostics-pane__actionable',
@@ -229,29 +249,29 @@ var DiagnosticsPane = (function (_React$Component) {
               onRowClick(e, index, diag);
             },
             style: { height: _this._rowHeightGetter(index) } },
-          _reactForAtom.React.createElement(
+          (_reactForAtom2 || _reactForAtom()).React.createElement(
             Cell,
             { style: { width: _this.state.widths.type + 'px' } },
             typeColumnCellRenderer(typeColumnCellDataGetter('type', diag))
           ),
-          _reactForAtom.React.createElement(
+          (_reactForAtom2 || _reactForAtom()).React.createElement(
             Cell,
             { style: { width: _this.state.widths.providerName + 'px' } },
             plainTextColumnCellRenderer(sourceColumnCellDataGetter('providerName', diag))
           ),
-          _this.props.showFileName ? _reactForAtom.React.createElement(
+          _this.props.showFileName ? (_reactForAtom2 || _reactForAtom()).React.createElement(
             Cell,
             {
               style: { width: _this.state.widths.filePath + 'px' },
-              title: (0, _paneUtils.fileColumnCellDataGetter)('filePath', diag) },
-            plainTextColumnCellRenderer((0, _paneUtils.fileColumnCellDataGetter)('filePath', diag))
+              title: (0, (_paneUtils2 || _paneUtils()).fileColumnCellDataGetter)('filePath', diag) },
+            plainTextColumnCellRenderer((0, (_paneUtils2 || _paneUtils()).fileColumnCellDataGetter)('filePath', diag))
           ) : null,
-          _reactForAtom.React.createElement(
+          (_reactForAtom2 || _reactForAtom()).React.createElement(
             Cell,
             { style: { width: _this.state.widths.range + 'px' } },
             plainTextColumnCellRenderer(locationColumnCellDataGetter('range', diag))
           ),
-          _reactForAtom.React.createElement(
+          (_reactForAtom2 || _reactForAtom()).React.createElement(
             Cell,
             { style: { width: _this._getMessageWidth() + 'px' } },
             messageColumnCellRenderer(messageColumnCellDataGetter('message', diag))
@@ -264,13 +284,13 @@ var DiagnosticsPane = (function (_React$Component) {
       }
 
       if (this.props.diagnostics.length > MAX_RESULTS_COUNT) {
-        diagnosticCells.push(_reactForAtom.React.createElement(
+        diagnosticCells.push((_reactForAtom2 || _reactForAtom()).React.createElement(
           'div',
           { className: 'fixedDataTableCellGroupLayout_cellGroup', key: 'maxResultsMessage' },
-          _reactForAtom.React.createElement(
+          (_reactForAtom2 || _reactForAtom()).React.createElement(
             'div',
             { className: 'public_fixedDataTableCell_cellContent text-center' },
-            _reactForAtom.React.createElement(
+            (_reactForAtom2 || _reactForAtom()).React.createElement(
               'em',
               null,
               'Max results (',
@@ -281,47 +301,47 @@ var DiagnosticsPane = (function (_React$Component) {
         ));
       }
 
-      return _reactForAtom.React.createElement(
+      return (_reactForAtom2 || _reactForAtom()).React.createElement(
         'div',
         { className: 'fixedDataTableLayout_main' },
-        _reactForAtom.React.createElement(
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
           'div',
           { className: 'public_fixedDataTable_main' },
-          _reactForAtom.React.createElement(
+          (_reactForAtom2 || _reactForAtom()).React.createElement(
             'div',
             { className: 'public_fixedDataTable_header' },
-            _reactForAtom.React.createElement(
+            (_reactForAtom2 || _reactForAtom()).React.createElement(
               'div',
               { className: 'fixedDataTableCellGroupLayout_cellGroup', style: { height: '30px' } },
-              _reactForAtom.React.createElement(
+              (_reactForAtom2 || _reactForAtom()).React.createElement(
                 Cell,
                 { style: { width: this.state.widths.type + 'px' } },
                 'Type'
               ),
-              _reactForAtom.React.createElement(
+              (_reactForAtom2 || _reactForAtom()).React.createElement(
                 Cell,
                 { style: { width: this.state.widths.providerName + 'px' } },
                 'Source'
               ),
-              this.props.showFileName ? _reactForAtom.React.createElement(
+              this.props.showFileName ? (_reactForAtom2 || _reactForAtom()).React.createElement(
                 Cell,
                 { style: { width: this.state.widths.filePath + 'px' } },
                 'File'
               ) : null,
-              _reactForAtom.React.createElement(
+              (_reactForAtom2 || _reactForAtom()).React.createElement(
                 Cell,
                 { style: { width: this.state.widths.range + 'px' } },
                 'Line'
               ),
-              _reactForAtom.React.createElement(
+              (_reactForAtom2 || _reactForAtom()).React.createElement(
                 Cell,
                 { style: { width: this._getMessageWidth() + 'px' } },
                 'Description'
               )
             )
           ),
-          _reactForAtom.React.createElement(
-            _nuclideUiLibPanelComponentScroller.PanelComponentScroller,
+          (_reactForAtom2 || _reactForAtom()).React.createElement(
+            (_nuclideUiLibPanelComponentScroller2 || _nuclideUiLibPanelComponentScroller()).PanelComponentScroller,
             { flexDirection: 'column' },
             diagnosticCells
           )
@@ -331,6 +351,6 @@ var DiagnosticsPane = (function (_React$Component) {
   }]);
 
   return DiagnosticsPane;
-})(_reactForAtom.React.Component);
+})((_reactForAtom2 || _reactForAtom()).React.Component);
 
 module.exports = DiagnosticsPane;

@@ -10,10 +10,11 @@ Object.defineProperty(exports, '__esModule', {
  * the root directory of this source tree.
  */
 
-var _require = require('react-for-atom');
+var _reactForAtom2;
 
-var React = _require.React;
-var PropTypes = React.PropTypes;
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
 
 // Globally unique ID used as the "name" attribute to group radio inputs.
 var uid = 0;
@@ -21,13 +22,12 @@ var uid = 0;
 /**
  * A managed radio group component. Accepts arbitrary React elements as labels.
  */
-var RadioGroup = React.createClass({
-  displayName: 'RadioGroup',
+var RadioGroup = (_reactForAtom2 || _reactForAtom()).React.createClass({
 
   propTypes: {
-    optionLabels: PropTypes.arrayOf(PropTypes.node).isRequired,
-    selectedIndex: PropTypes.number.isRequired,
-    onSelectedChange: PropTypes.func.isRequired
+    optionLabels: (_reactForAtom2 || _reactForAtom()).React.PropTypes.arrayOf((_reactForAtom2 || _reactForAtom()).React.PropTypes.node).isRequired,
+    selectedIndex: (_reactForAtom2 || _reactForAtom()).React.PropTypes.number.isRequired,
+    onSelectedChange: (_reactForAtom2 || _reactForAtom()).React.PropTypes.func.isRequired
   },
 
   getDefaultProps: function getDefaultProps() {
@@ -49,17 +49,17 @@ var RadioGroup = React.createClass({
 
     var checkboxes = this.props.optionLabels.map(function (labelContent, i) {
       var id = 'nuclide-radiogroup-' + uid + '-' + i;
-      return React.createElement(
+      return (_reactForAtom2 || _reactForAtom()).React.createElement(
         'div',
         { key: i },
-        React.createElement('input', {
+        (_reactForAtom2 || _reactForAtom()).React.createElement('input', {
           type: 'radio',
           checked: i === _this.props.selectedIndex,
           name: 'radiogroup-' + _this.state.uid,
           id: id,
           onChange: _this.props.onSelectedChange.bind(null, i)
         }),
-        React.createElement(
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
           'label',
           {
             className: 'nuclide-ui-radiogroup-label',
@@ -68,7 +68,7 @@ var RadioGroup = React.createClass({
         )
       );
     });
-    return React.createElement(
+    return (_reactForAtom2 || _reactForAtom()).React.createElement(
       'div',
       null,
       checkboxes

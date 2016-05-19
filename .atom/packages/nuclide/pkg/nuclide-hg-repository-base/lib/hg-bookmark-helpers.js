@@ -7,10 +7,10 @@
  */
 
 var fetchCurrentBookmark = _asyncToGenerator(function* (repoPath) {
-  var bookmarkFile = path.join(repoPath, 'bookmarks.current');
+  var bookmarkFile = (_path2 || _path()).default.join(repoPath, 'bookmarks.current');
   var result = undefined;
   try {
-    result = yield fsPromise.readFile(bookmarkFile, 'utf-8');
+    result = yield (_nuclideCommons2 || _nuclideCommons()).fsPromise.readFile(bookmarkFile, 'utf-8');
   } catch (e) {
     if (!(e.code === 'ENOENT')) {
       // We expect an error if the bookmark file doesn't exist. Otherwise, the
@@ -25,6 +25,8 @@ var fetchCurrentBookmark = _asyncToGenerator(function* (repoPath) {
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
  * All rights reserved.
@@ -33,11 +35,17 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
  * the root directory of this source tree.
  */
 
-var _require = require('../../nuclide-commons');
+var _nuclideCommons2;
 
-var fsPromise = _require.fsPromise;
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
 
-var path = require('path');
+var _path2;
+
+function _path() {
+  return _path2 = _interopRequireDefault(require('path'));
+}
 
 module.exports = {
   fetchCurrentBookmark: fetchCurrentBookmark

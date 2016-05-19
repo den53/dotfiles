@@ -2,8 +2,6 @@ Object.defineProperty(exports, '__esModule', {
   value: true
 });
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
  * All rights reserved.
@@ -12,15 +10,26 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
  * the root directory of this source tree.
  */
 
-var _assert = require('assert');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _assert2 = _interopRequireDefault(_assert);
+var _assert2;
 
-var _url = require('url');
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
-var _url2 = _interopRequireDefault(_url);
+var _url2;
 
-var request = require('request');
+function _url() {
+  return _url2 = _interopRequireDefault(require('url'));
+}
+
+var _request2;
+
+function _request() {
+  return _request2 = _interopRequireDefault(require('request'));
+}
+
 var MAX_REQUEST_LENGTH = 1e6;
 
 /**
@@ -38,7 +47,7 @@ function asyncRequest(options) {
     }
     // TODO(t8118670): This can cause an uncaught exception.
     // Likely requires a fix to 'request'.
-    request(options, function (error, response, body) {
+    (0, (_request2 || _request()).default)(options, function (error, response, body) {
       if (error) {
         reject(error);
       } else if (response.statusCode < 200 || response.statusCode >= 300) {
@@ -106,8 +115,8 @@ function parseRequestBody(httpRequest, isJson) {
  * Parses the url parameters ?abc=erf&lol=432c
  */
 function getQueryParameters(requestUrl) {
-  var components = _url2['default'].parse(requestUrl, true);
-  (0, _assert2['default'])(components != null);
+  var components = (_url2 || _url()).default.parse(requestUrl, true);
+  (0, (_assert2 || _assert()).default)(components != null);
   var query = components.query;
 
   return query;

@@ -11,7 +11,7 @@ exports.startNuclideServer = startNuclideServer;
  */
 
 var addRemoteProject = _asyncToGenerator(function* (projectPath) {
-  return yield _nuclideRemoteConnection.RemoteConnection._createInsecureConnectionForTesting(projectPath, DEFAULT_PORT);
+  return yield (_nuclideRemoteConnection2 || _nuclideRemoteConnection()).RemoteConnection._createInsecureConnectionForTesting(projectPath, DEFAULT_PORT);
 }
 
 /**
@@ -22,21 +22,21 @@ var addRemoteProject = _asyncToGenerator(function* (projectPath) {
 exports.addRemoteProject = addRemoteProject;
 
 var stopNuclideServer = _asyncToGenerator(function* (connection) {
-  var service = (0, _nuclideClient.getServiceByNuclideUri)('FlowService', connection.getUriForInitialWorkingDirectory());
-  (0, _assert2['default'])(service);
+  var service = (0, (_nuclideClient2 || _nuclideClient()).getServiceByNuclideUri)('FlowService', connection.getUriForInitialWorkingDirectory());
+  (0, (_assert2 || _assert()).default)(service);
   service.dispose();
   // If this ever fires, either ensure that your test closes all RemoteConnections
   // or we can add a force shutdown method to ServerConnection.
-  (0, _assert2['default'])(connection.isOnlyConnection());
+  (0, (_assert2 || _assert()).default)(connection.isOnlyConnection());
   var attemptShutdown = true;
   connection.close(attemptShutdown);
 });
 
 exports.stopNuclideServer = stopNuclideServer;
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -46,17 +46,29 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
  * the root directory of this source tree.
  */
 
-var _assert = require('assert');
+var _assert2;
 
-var _assert2 = _interopRequireDefault(_assert);
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
-var _nuclideRemoteConnection = require('../../nuclide-remote-connection');
+var _nuclideRemoteConnection2;
 
-var _nuclideClient = require('../../nuclide-client');
+function _nuclideRemoteConnection() {
+  return _nuclideRemoteConnection2 = require('../../nuclide-remote-connection');
+}
 
-var _child_process = require('child_process');
+var _nuclideClient2;
 
-var _child_process2 = _interopRequireDefault(_child_process);
+function _nuclideClient() {
+  return _nuclideClient2 = require('../../nuclide-client');
+}
+
+var _child_process2;
+
+function _child_process() {
+  return _child_process2 = _interopRequireDefault(require('child_process'));
+}
 
 var DEFAULT_PORT = 9090;
 
@@ -66,5 +78,5 @@ var DEFAULT_PORT = 9090;
  */
 
 function startNuclideServer() {
-  _child_process2['default'].spawnSync(require.resolve('../../nuclide-server/nuclide-start-server'), ['-k', '--port=' + DEFAULT_PORT]);
+  (_child_process2 || _child_process()).default.spawnSync(require.resolve('../../nuclide-server/nuclide-start-server'), ['-k', '--port=' + DEFAULT_PORT]);
 }

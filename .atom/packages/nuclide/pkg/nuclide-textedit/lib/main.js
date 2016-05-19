@@ -14,11 +14,17 @@ exports.applyTextEdit = applyTextEdit;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _assert = require('assert');
+var _assert2;
 
-var _assert2 = _interopRequireDefault(_assert);
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
-var _nuclideAtomHelpers = require('../../nuclide-atom-helpers');
+var _nuclideAtomHelpers2;
+
+function _nuclideAtomHelpers() {
+  return _nuclideAtomHelpers2 = require('../../nuclide-atom-helpers');
+}
 
 /**
  * Attempts to apply the patch to the given file.
@@ -31,8 +37,8 @@ var _nuclideAtomHelpers = require('../../nuclide-atom-helpers');
  */
 
 function applyTextEdit(path, edit) {
-  var editor = (0, _nuclideAtomHelpers.existingEditorForUri)(path);
-  (0, _assert2['default'])(editor != null);
+  var editor = (0, (_nuclideAtomHelpers2 || _nuclideAtomHelpers()).existingEditorForUri)(path);
+  (0, (_assert2 || _assert()).default)(editor != null);
   var buffer = editor.getBuffer();
   if (edit.oldRange.start.row === edit.oldRange.end.row) {
     // A little extra validation when the old range spans only one line. In particular, this helps

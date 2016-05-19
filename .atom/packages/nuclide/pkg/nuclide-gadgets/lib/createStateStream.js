@@ -10,30 +10,36 @@ Object.defineProperty(exports, '__esModule', {
  * the root directory of this source tree.
  */
 
-exports['default'] = createStateStream;
+exports.default = createStateStream;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 
-var _ActionTypes = require('./ActionTypes');
+var _ActionTypes2;
 
-var ActionTypes = _interopRequireWildcard(_ActionTypes);
+function _ActionTypes() {
+  return _ActionTypes2 = _interopRequireWildcard(require('./ActionTypes'));
+}
 
-var _immutable = require('immutable');
+var _immutable2;
 
-var _immutable2 = _interopRequireDefault(_immutable);
+function _immutable() {
+  return _immutable2 = _interopRequireDefault(require('immutable'));
+}
 
-var _rxjs = require('rxjs');
+var _rxjs2;
 
-var _rxjs2 = _interopRequireDefault(_rxjs);
+function _rxjs() {
+  return _rxjs2 = _interopRequireDefault(require('rxjs'));
+}
 
 /**
  * Convert a stream of actions into a stream of application states.
  */
 
 function createStateStream(action$, initialState) {
-  var state$ = new _rxjs2['default'].BehaviorSubject(initialState);
+  var state$ = new (_rxjs2 || _rxjs()).default.BehaviorSubject(initialState);
   action$.scan(handleAction, initialState).subscribe(state$);
   return state$;
 }
@@ -44,7 +50,7 @@ function createStateStream(action$, initialState) {
 function handleAction(state, action) {
   switch (action.type) {
 
-    case ActionTypes.CREATE_PANE_ITEM:
+    case (_ActionTypes2 || _ActionTypes()).CREATE_PANE_ITEM:
       {
         var _action$payload = action.payload;
         var item = _action$payload.item;
@@ -57,22 +63,22 @@ function handleAction(state, action) {
         });
       }
 
-    case ActionTypes.DEACTIVATE:
+    case (_ActionTypes2 || _ActionTypes()).DEACTIVATE:
       {
-        return state.set('gadgets', _immutable2['default'].Map());
+        return state.set('gadgets', (_immutable2 || _immutable()).default.Map());
       }
 
-    case ActionTypes.DESTROY_PANE_ITEM:
+    case (_ActionTypes2 || _ActionTypes()).DESTROY_PANE_ITEM:
       {
         var item = action.payload.item;
 
         return state.merge({
-          components: state.get('components')['delete'](item),
-          props: state.get('props')['delete'](item)
+          components: state.get('components').delete(item),
+          props: state.get('props').delete(item)
         });
       }
 
-    case ActionTypes.REGISTER_GADGET:
+    case (_ActionTypes2 || _ActionTypes()).REGISTER_GADGET:
       {
         var gadgets = state.get('gadgets');
         var gadget = action.payload.gadget;
@@ -80,7 +86,7 @@ function handleAction(state, action) {
         return state.set('gadgets', gadgets.set(gadget.gadgetId, gadget));
       }
 
-    case ActionTypes.UNREGISTER_GADGET:
+    case (_ActionTypes2 || _ActionTypes()).UNREGISTER_GADGET:
       {
         var _ret = (function () {
           var gadgets = state.get('gadgets');
@@ -96,7 +102,7 @@ function handleAction(state, action) {
         if (typeof _ret === 'object') return _ret.v;
       }
 
-    case ActionTypes.UPDATE_PANE_ITEM:
+    case (_ActionTypes2 || _ActionTypes()).UPDATE_PANE_ITEM:
       {
         var _action$payload2 = action.payload;
         var item = _action$payload2.item;
@@ -110,4 +116,4 @@ function handleAction(state, action) {
 
   }
 }
-module.exports = exports['default'];
+module.exports = exports.default;

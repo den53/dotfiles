@@ -17,7 +17,7 @@ var activateAllPackages = _asyncToGenerator(function* () {
 
   // TODO(jonaldislarry) These package(s) cannot be activated manually -- t9243542.
   ['nuclide-fuzzy-filename-provider'].forEach(function (name) {
-    return (0, _libMain.__testUseOnly_removeFeature)(name);
+    return (0, (_libMain2 || _libMain()).__testUseOnly_removeFeature)(name);
   });
 
   var packageNames = atom.packages.getAvailablePackageNames().filter(function (name) {
@@ -33,10 +33,10 @@ var activateAllPackages = _asyncToGenerator(function* () {
 
   // Ensure 3rd-party packages are not installed via the 'atom-package-deps' package when the
   // 'nuclide' package is activated. It makes network requests that never return in a test env.
-  _nuclideFeatureConfig2['default'].set('installRecommendedPackages', false);
+  (_nuclideFeatureConfig2 || _nuclideFeatureConfig()).default.set('installRecommendedPackages', false);
 
   // Include the path to the nuclide package.
-  packageNames.push(_path2['default'].dirname(require.resolve('../../../package.json')));
+  packageNames.push((_path2 || _path()).default.dirname(require.resolve('../../../package.json')));
   yield Promise.all(packageNames.map(function (pack) {
     return atom.packages.activatePackage(pack);
   }));
@@ -48,9 +48,9 @@ var activateAllPackages = _asyncToGenerator(function* () {
 exports.activateAllPackages = activateAllPackages;
 exports.deactivateAllPackages = deactivateAllPackages;
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -60,15 +60,23 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
  * the root directory of this source tree.
  */
 
-var _nuclideFeatureConfig = require('../../nuclide-feature-config');
+var _nuclideFeatureConfig2;
 
-var _nuclideFeatureConfig2 = _interopRequireDefault(_nuclideFeatureConfig);
+function _nuclideFeatureConfig() {
+  return _nuclideFeatureConfig2 = _interopRequireDefault(require('../../nuclide-feature-config'));
+}
 
-var _path = require('path');
+var _path2;
 
-var _path2 = _interopRequireDefault(_path);
+function _path() {
+  return _path2 = _interopRequireDefault(require('path'));
+}
 
-var _libMain = require('../../../lib/main');
+var _libMain2;
+
+function _libMain() {
+  return _libMain2 = require('../../../lib/main');
+}
 
 function deactivateAllPackages() {
   atom.packages.deactivatePackages();

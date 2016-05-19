@@ -1,4 +1,4 @@
-var _nuclideCommons = require('../../nuclide-commons');
+var _nuclideCommons2;
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -8,11 +8,19 @@ var _nuclideCommons = require('../../nuclide-commons');
  * the root directory of this source tree.
  */
 
-var _nuclideFuzzyNative = require('../../nuclide-fuzzy-native');
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
+
+var _nuclideFuzzyNative2;
+
+function _nuclideFuzzyNative() {
+  return _nuclideFuzzyNative2 = require('../../nuclide-fuzzy-native');
+}
 
 // Returns paths of currently opened editor tabs.
 function getOpenTabsMatching(query) {
-  var matcher = new _nuclideFuzzyNative.Matcher(_nuclideCommons.array.compact(atom.workspace.getTextEditors().map(function (editor) {
+  var matcher = new (_nuclideFuzzyNative2 || _nuclideFuzzyNative()).Matcher((_nuclideCommons2 || _nuclideCommons()).array.compact(atom.workspace.getTextEditors().map(function (editor) {
     return editor.getPath();
   })));
   return matcher.match(query, { recordMatchIndexes: true }).map(function (result) {

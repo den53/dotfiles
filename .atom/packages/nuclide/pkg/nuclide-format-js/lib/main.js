@@ -13,7 +13,11 @@ Object.defineProperty(exports, '__esModule', {
 exports.activate = activate;
 exports.deactivate = deactivate;
 
-var _atom = require('atom');
+var _atom2;
+
+function _atom() {
+  return _atom2 = require('atom');
+}
 
 var subscriptions = null;
 
@@ -29,7 +33,7 @@ function activate(state) {
   var calculateOptions = _require.calculateOptions;
   var observeSettings = _require.observeSettings;
 
-  var localSubscriptions = new _atom.CompositeDisposable();
+  var localSubscriptions = new (_atom2 || _atom()).CompositeDisposable();
   localSubscriptions.add(atom.commands.add('atom-text-editor', 'nuclide-format-js:format',
   // Atom prevents in-command modification to text editor content.
   function () {

@@ -14,49 +14,81 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _atom = require('atom');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _FileTreeConstants = require('./FileTreeConstants');
+var _atom2;
 
-var _FileSystemActions = require('./FileSystemActions');
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var _FileSystemActions2 = _interopRequireDefault(_FileSystemActions);
+var _FileTreeConstants2;
 
-var _FileTreeActions = require('./FileTreeActions');
+function _FileTreeConstants() {
+  return _FileTreeConstants2 = require('./FileTreeConstants');
+}
 
-var _FileTreeActions2 = _interopRequireDefault(_FileTreeActions);
+var _FileSystemActions2;
 
-var _FileTreeContextMenu = require('./FileTreeContextMenu');
+function _FileSystemActions() {
+  return _FileSystemActions2 = _interopRequireDefault(require('./FileSystemActions'));
+}
 
-var _FileTreeContextMenu2 = _interopRequireDefault(_FileTreeContextMenu);
+var _FileTreeActions2;
 
-var _FileTreeHelpers = require('./FileTreeHelpers');
+function _FileTreeActions() {
+  return _FileTreeActions2 = _interopRequireDefault(require('./FileTreeActions'));
+}
 
-var _FileTreeHelpers2 = _interopRequireDefault(_FileTreeHelpers);
+var _FileTreeContextMenu2;
 
-var _FileTreeStore = require('./FileTreeStore');
+function _FileTreeContextMenu() {
+  return _FileTreeContextMenu2 = _interopRequireDefault(require('./FileTreeContextMenu'));
+}
 
-var _immutable = require('immutable');
+var _FileTreeHelpers2;
 
-var _immutable2 = _interopRequireDefault(_immutable);
+function _FileTreeHelpers() {
+  return _FileTreeHelpers2 = _interopRequireDefault(require('./FileTreeHelpers'));
+}
 
-var _nuclideAnalytics = require('../../nuclide-analytics');
+var _FileTreeStore2;
 
-var _os = require('os');
+function _FileTreeStore() {
+  return _FileTreeStore2 = require('./FileTreeStore');
+}
 
-var _os2 = _interopRequireDefault(_os);
+var _immutable2;
 
-var _shell = require('shell');
+function _immutable() {
+  return _immutable2 = _interopRequireDefault(require('immutable'));
+}
 
-var _shell2 = _interopRequireDefault(_shell);
+var _nuclideAnalytics2;
 
-var _assert = require('assert');
+function _nuclideAnalytics() {
+  return _nuclideAnalytics2 = require('../../nuclide-analytics');
+}
 
-var _assert2 = _interopRequireDefault(_assert);
+var _os2;
+
+function _os() {
+  return _os2 = _interopRequireDefault(require('os'));
+}
+
+var _shell2;
+
+function _shell() {
+  return _shell2 = _interopRequireDefault(require('shell'));
+}
+
+var _assert2;
+
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
 var VALID_FILTER_CHARS = '!#./0123456789:;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ' + '_abcdefghijklmnopqrstuvwxyz~';
 
@@ -66,11 +98,11 @@ var FileTreeController = (function () {
 
     _classCallCheck(this, FileTreeController);
 
-    this._actions = _FileTreeActions2['default'].getInstance();
-    this._store = _FileTreeStore.FileTreeStore.getInstance();
-    this._repositories = new _immutable2['default'].Set();
-    this._subscriptionForRepository = new _immutable2['default'].Map();
-    this._subscriptions = new _atom.CompositeDisposable(new _atom.Disposable(function () {
+    this._actions = (_FileTreeActions2 || _FileTreeActions()).default.getInstance();
+    this._store = (_FileTreeStore2 || _FileTreeStore()).FileTreeStore.getInstance();
+    this._repositories = new (_immutable2 || _immutable()).default.Set();
+    this._subscriptionForRepository = new (_immutable2 || _immutable()).default.Map();
+    this._subscriptions = new (_atom2 || _atom()).CompositeDisposable(new (_atom2 || _atom()).Disposable(function () {
       if (_this._cwdApiSubscription != null) {
         _this._cwdApiSubscription.dispose();
       }
@@ -98,16 +130,16 @@ var FileTreeController = (function () {
       var char = String.fromCharCode(c);
       letterKeyBindings['nuclide-file-tree:go-to-letter-' + char] = this._handlePrefixKeypress.bind(this, char);
     }
-    this._subscriptions.add(atom.commands.add(_FileTreeConstants.EVENT_HANDLER_SELECTOR, _extends({
+    this._subscriptions.add(atom.commands.add((_FileTreeConstants2 || _FileTreeConstants()).EVENT_HANDLER_SELECTOR, _extends({
       'core:move-down': this._moveDown.bind(this),
       'core:move-up': this._moveUp.bind(this),
       'core:move-to-top': this._moveToTop.bind(this),
       'core:move-to-bottom': this._moveToBottom.bind(this),
       'nuclide-file-tree:add-file': function nuclideFileTreeAddFile() {
-        _FileSystemActions2['default'].openAddFileDialog(_this._openAndRevealFilePath.bind(_this));
+        (_FileSystemActions2 || _FileSystemActions()).default.openAddFileDialog(_this._openAndRevealFilePath.bind(_this));
       },
       'nuclide-file-tree:add-folder': function nuclideFileTreeAddFolder() {
-        _FileSystemActions2['default'].openAddFolderDialog(_this._openAndRevealDirectoryPath.bind(_this));
+        (_FileSystemActions2 || _FileSystemActions()).default.openAddFolderDialog(_this._openAndRevealDirectoryPath.bind(_this));
       },
       'nuclide-file-tree:collapse-directory': this._collapseSelection.bind(this, /*deep*/false),
       'nuclide-file-tree:recursive-collapse-directory': this._collapseSelection.bind(this, true),
@@ -123,10 +155,10 @@ var FileTreeController = (function () {
       'nuclide-file-tree:remove': this._deleteSelection.bind(this),
       'nuclide-file-tree:remove-project-folder-selection': this._removeRootFolderSelection.bind(this),
       'nuclide-file-tree:rename-selection': function nuclideFileTreeRenameSelection() {
-        return _FileSystemActions2['default'].openRenameDialog();
+        return (_FileSystemActions2 || _FileSystemActions()).default.openRenameDialog();
       },
       'nuclide-file-tree:duplicate-selection': function nuclideFileTreeDuplicateSelection() {
-        _FileSystemActions2['default'].openDuplicateDialog(_this._openAndRevealFilePath.bind(_this));
+        (_FileSystemActions2 || _FileSystemActions()).default.openDuplicateDialog(_this._openAndRevealFilePath.bind(_this));
       },
       'nuclide-file-tree:search-in-directory': this._searchInDirectory.bind(this),
       'nuclide-file-tree:show-in-file-manager': this._showInFileManager.bind(this),
@@ -138,7 +170,7 @@ var FileTreeController = (function () {
     if (state && state.tree) {
       this._store.loadData(state.tree);
     }
-    this._contextMenu = new _FileTreeContextMenu2['default']();
+    this._contextMenu = new (_FileTreeContextMenu2 || _FileTreeContextMenu()).default();
   }
 
   _createClass(FileTreeController, [{
@@ -200,7 +232,7 @@ var FileTreeController = (function () {
     key: '_openAndRevealDirectoryPath',
     value: function _openAndRevealDirectoryPath(path) {
       if (path != null) {
-        this.revealNodeKey(_FileTreeHelpers2['default'].dirPathToKey(path));
+        this.revealNodeKey((_FileTreeHelpers2 || _FileTreeHelpers()).default.dirPathToKey(path));
       }
     }
   }, {
@@ -209,10 +241,10 @@ var FileTreeController = (function () {
       // If the remote-projects package hasn't loaded yet remote directories will be instantiated as
       // local directories but with invalid paths. We need to exclude those.
       var rootDirectories = atom.project.getDirectories().filter(function (directory) {
-        return _FileTreeHelpers2['default'].isValidDirectory(directory);
+        return (_FileTreeHelpers2 || _FileTreeHelpers()).default.isValidDirectory(directory);
       });
       var rootKeys = rootDirectories.map(function (directory) {
-        return _FileTreeHelpers2['default'].dirPathToKey(directory.getPath());
+        return (_FileTreeHelpers2 || _FileTreeHelpers()).default.dirPathToKey(directory.getPath());
       });
       this._actions.setRootKeys(rootKeys);
       this._actions.updateRepositories(rootDirectories);
@@ -294,7 +326,7 @@ var FileTreeController = (function () {
       if (node == null) {
         return;
       }
-      var path = _FileTreeHelpers2['default'].keyToPath(node.uri);
+      var path = (_FileTreeHelpers2 || _FileTreeHelpers()).default.keyToPath(node.uri);
       if (this._cwdApi != null) {
         this._cwdApi.setCwd(path);
       }
@@ -308,10 +340,10 @@ var FileTreeController = (function () {
         this._actions.setCwd(null);
         this._cwdApiSubscription = null;
       } else {
-        (0, _assert2['default'])(this._cwdApiSubscription == null);
+        (0, (_assert2 || _assert()).default)(this._cwdApiSubscription == null);
         this._cwdApiSubscription = cwdApi.observeCwd(function (directory) {
           var path = directory == null ? null : directory.getPath();
-          var rootKey = path && _FileTreeHelpers2['default'].dirPathToKey(path);
+          var rootKey = path && (_FileTreeHelpers2 || _FileTreeHelpers()).default.dirPathToKey(path);
           _this2._actions.setCwd(rootKey);
         });
       }
@@ -427,7 +459,7 @@ var FileTreeController = (function () {
       });
       if (rootPaths.size === 0) {
         var selectedPaths = nodes.map(function (node) {
-          return _FileTreeHelpers2['default'].keyToPath(node.uri);
+          return (_FileTreeHelpers2 || _FileTreeHelpers()).default.keyToPath(node.uri);
         });
         var message = 'Are you sure you want to delete the following ' + (nodes.size > 1 ? 'items?' : 'item?');
         atom.confirm({
@@ -437,7 +469,7 @@ var FileTreeController = (function () {
             },
             'Cancel': function Cancel() {}
           },
-          detailedMessage: 'You are deleting:' + _os2['default'].EOL + selectedPaths.join(_os2['default'].EOL),
+          detailedMessage: 'You are deleting:' + (_os2 || _os()).default.EOL + selectedPaths.join((_os2 || _os()).default.EOL),
           message: message
         });
       } else {
@@ -512,7 +544,7 @@ var FileTreeController = (function () {
       // Only perform the default action if a single node is selected.
       if (singleSelectedNode != null && !singleSelectedNode.isContainer) {
         // for: is this feature used enough to justify uncollapsing?
-        (0, _nuclideAnalytics.track)('filetree-split-file', {
+        (0, (_nuclideAnalytics2 || _nuclideAnalytics()).track)('filetree-split-file', {
           orientation: orientation,
           side: side
         });
@@ -562,7 +594,7 @@ var FileTreeController = (function () {
             }
           });
           // actually close the project
-          atom.project.removePath(_FileTreeHelpers2['default'].keyToPath(rootNode.uri));
+          atom.project.removePath((_FileTreeHelpers2 || _FileTreeHelpers()).default.keyToPath(rootNode.uri));
         })();
       }
     }
@@ -581,7 +613,7 @@ var FileTreeController = (function () {
         // Only allow revealing a single directory/file at a time. Return otherwise.
         return;
       }
-      _shell2['default'].showItemInFolder(node.uri);
+      (_shell2 || _shell()).default.showItemInFolder(node.uri);
     }
   }, {
     key: '_copyFullPath',

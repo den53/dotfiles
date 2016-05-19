@@ -8,12 +8,23 @@
  * the root directory of this source tree.
  */
 
-var flatten = require('../../utils/flatten');
-var markers = require('../../constants/markers');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _utilsFlatten2;
+
+function _utilsFlatten() {
+  return _utilsFlatten2 = _interopRequireDefault(require('../../utils/flatten'));
+}
+
+var _constantsMarkers2;
+
+function _constantsMarkers() {
+  return _constantsMarkers2 = _interopRequireDefault(require('../../constants/markers'));
+}
 
 function printObjectTypeProperty(print, node) {
   // TODO: What does static mean here?
-  return flatten([print(node.key), markers.noBreak, node.optional ? '?:' : ':', markers.noBreak, markers.space, print(node.value)]);
+  return (0, (_utilsFlatten2 || _utilsFlatten()).default)([print(node.key), (_constantsMarkers2 || _constantsMarkers()).default.noBreak, node.optional ? '?:' : ':', (_constantsMarkers2 || _constantsMarkers()).default.noBreak, (_constantsMarkers2 || _constantsMarkers()).default.space, print(node.value)]);
 }
 
 module.exports = printObjectTypeProperty;

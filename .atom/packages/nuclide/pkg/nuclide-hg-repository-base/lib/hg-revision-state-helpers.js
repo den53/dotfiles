@@ -19,7 +19,7 @@ var fetchFileContentAtRevision = _asyncToGenerator(function* (filePath, revision
     cwd: workingDirectory
   };
 
-  var _ref = yield (0, _hgUtils.hgAsyncExecute)(args, execOptions);
+  var _ref = yield (0, (_hgUtils2 || _hgUtils()).hgAsyncExecute)(args, execOptions);
 
   var contents = _ref.stdout;
 
@@ -41,7 +41,7 @@ var fetchFilesChangedAtRevision = _asyncToGenerator(function* (revision, working
     cwd: workingDirectory
   };
 
-  var _ref2 = yield (0, _hgUtils.hgAsyncExecute)(args, execOptions);
+  var _ref2 = yield (0, (_hgUtils2 || _hgUtils()).hgAsyncExecute)(args, execOptions);
 
   var stdout = _ref2.stdout;
 
@@ -58,8 +58,6 @@ var fetchFilesChangedAtRevision = _asyncToGenerator(function* (revision, working
  */
 );
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
 /*
@@ -70,15 +68,25 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
  * the root directory of this source tree.
  */
 
-var _hgUtils = require('./hg-utils');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _path = require('path');
+var _hgUtils2;
 
-var _path2 = _interopRequireDefault(_path);
+function _hgUtils() {
+  return _hgUtils2 = require('./hg-utils');
+}
 
-var _assert = require('assert');
+var _path2;
 
-var _assert2 = _interopRequireDefault(_assert);
+function _path() {
+  return _path2 = _interopRequireDefault(require('path'));
+}
+
+var _assert2;
+
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
 var ALL_FILES_LABEL = 'files:';
 var FILE_ADDS_LABEL = 'file-adds:';
@@ -111,7 +119,7 @@ var COPIED_FILE_PAIR_REGEX = /(.+) \((.+)/;function parseRevisionFileChangeOutpu
   // Parse the lines, now in the form: new_file (previous_file)
   copiedFiles = copiedFiles.map(function (filePathPair) {
     var fileNameMatches = filePathPair.match(COPIED_FILE_PAIR_REGEX);
-    (0, _assert2['default'])(fileNameMatches);
+    (0, (_assert2 || _assert()).default)(fileNameMatches);
     return {
       from: absolutize(fileNameMatches[2], workingDirectory),
       to: absolutize(fileNameMatches[1], workingDirectory)
@@ -132,7 +140,7 @@ var COPIED_FILE_PAIR_REGEX = /(.+) \((.+)/;function parseRevisionFileChangeOutpu
 }
 
 function absolutize(filePath, workingDirectory) {
-  return _path2['default'].join(workingDirectory, filePath);
+  return (_path2 || _path()).default.join(workingDirectory, filePath);
 }
 
 function absolutizeAll(filePaths, workingDirectory) {

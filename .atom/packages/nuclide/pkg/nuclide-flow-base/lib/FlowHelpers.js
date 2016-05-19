@@ -13,7 +13,7 @@ var isFlowInstalled = _asyncToGenerator(function* () {
 
 var canFindFlow = _asyncToGenerator(function* (flowPath) {
   try {
-    yield asyncExecute('which', [flowPath]);
+    yield (0, (_nuclideCommons2 || _nuclideCommons()).asyncExecute)('which', [flowPath]);
     return true;
   } catch (e) {
     return false;
@@ -27,15 +27,11 @@ var canFindFlow = _asyncToGenerator(function* (flowPath) {
  */
 );
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
-var _assert = require('assert');
-
-var _assert2 = _interopRequireDefault(_assert);
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -45,23 +41,38 @@ var _assert2 = _interopRequireDefault(_assert);
  * the root directory of this source tree.
  */
 
-var path = require('path');
+var _path2;
 
-var _require = require('../../nuclide-commons');
+function _path() {
+  return _path2 = _interopRequireDefault(require('path'));
+}
 
-var asyncExecute = _require.asyncExecute;
-var fsPromise = _require.fsPromise;
+var _nuclideCommons2;
 
-var LRU = require('lru-cache');
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
 
-var flowConfigDirCache = LRU({
+var _lruCache2;
+
+function _lruCache() {
+  return _lruCache2 = _interopRequireDefault(require('lru-cache'));
+}
+
+var _assert2;
+
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
+
+var flowConfigDirCache = (0, (_lruCache2 || _lruCache()).default)({
   max: 10,
   length: function length(n) {
     return n.length;
   },
   maxAge: 1000 * 30 });
 //30 seconds
-var flowPathCache = LRU({
+var flowPathCache = (0, (_lruCache2 || _lruCache()).default)({
   max: 10,
   maxAge: 1000 * 30 });
 
@@ -167,7 +178,7 @@ function groupParamNames(paramNames) {
 }
 
 function isOptional(param) {
-  (0, _assert2['default'])(param.length > 0);
+  (0, (_assert2 || _assert()).default)(param.length > 0);
   var lastChar = param[param.length - 1];
   return lastChar === '?';
 }
@@ -189,7 +200,7 @@ function getStopFlowOnExit() {
 
 function findFlowConfigDir(localFile) {
   if (!flowConfigDirCache.has(localFile)) {
-    var flowConfigDir = fsPromise.findNearestFile('.flowconfig', path.dirname(localFile));
+    var flowConfigDir = (_nuclideCommons2 || _nuclideCommons()).fsPromise.findNearestFile('.flowconfig', (_path2 || _path()).default.dirname(localFile));
     flowConfigDirCache.set(localFile, flowConfigDir);
   }
   return flowConfigDirCache.get(localFile);

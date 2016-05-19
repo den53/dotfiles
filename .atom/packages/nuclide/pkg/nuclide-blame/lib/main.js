@@ -18,21 +18,35 @@ exports.consumeBlameGutterClass = consumeBlameGutterClass;
 exports.consumeBlameProvider = consumeBlameProvider;
 exports.addItemsToFileTreeContextMenu = addItemsToFileTreeContextMenu;
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _atom = require('atom');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _nuclideAnalytics = require('../../nuclide-analytics');
+var _atom2;
 
-var _nuclideHgGitBridge = require('../../nuclide-hg-git-bridge');
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var _assert = require('assert');
+var _nuclideAnalytics2;
 
-var _assert2 = _interopRequireDefault(_assert);
+function _nuclideAnalytics() {
+  return _nuclideAnalytics2 = require('../../nuclide-analytics');
+}
+
+var _nuclideHgGitBridge2;
+
+function _nuclideHgGitBridge() {
+  return _nuclideHgGitBridge2 = require('../../nuclide-hg-git-bridge');
+}
+
+var _assert2;
+
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
 var PACKAGES_MISSING_MESSAGE = 'Could not open blame: the nuclide-blame package needs other Atom packages to provide:\n  - a gutter UI class\n  - at least one blame provider\n\nYou are missing one of these.';
 
@@ -47,7 +61,7 @@ var Activation = (function () {
     this._registeredProviders = new Set();
     this._textEditorToBlameGutter = new Map();
     this._textEditorToDestroySubscription = new Map();
-    this._packageDisposables = new _atom.CompositeDisposable();
+    this._packageDisposables = new (_atom2 || _atom()).CompositeDisposable();
     this._packageDisposables.add(atom.contextMenu.add({
       'atom-text-editor': [{
         label: 'Toggle Blame',
@@ -92,7 +106,7 @@ var Activation = (function () {
       var blameGutter = this._textEditorToBlameGutter.get(editor);
       if (blameGutter != null) {
         blameGutter.destroy();
-        this._textEditorToBlameGutter['delete'](editor);
+        this._textEditorToBlameGutter.delete(editor);
       }
     }
   }, {
@@ -117,7 +131,7 @@ var Activation = (function () {
 
         if (providerForEditor) {
           var blameGutterClass = this._blameGutterClass;
-          (0, _assert2['default'])(blameGutterClass);
+          (0, (_assert2 || _assert()).default)(blameGutterClass);
           blameGutter = new blameGutterClass('nuclide-blame', editor, providerForEditor);
           this._textEditorToBlameGutter.set(editor, blameGutter);
           var destroySubscription = editor.onDidDestroy(function () {
@@ -145,9 +159,9 @@ var Activation = (function () {
       var blameGutter = this._textEditorToBlameGutter.get(editor);
       if (blameGutter) {
         blameGutter.destroy();
-        this._textEditorToBlameGutter['delete'](editor);
+        this._textEditorToBlameGutter.delete(editor);
       }
-      this._textEditorToDestroySubscription['delete'](editor);
+      this._textEditorToDestroySubscription.delete(editor);
     }
 
     /**
@@ -156,7 +170,7 @@ var Activation = (function () {
 
   }, {
     key: '_showBlame',
-    decorators: [(0, _nuclideAnalytics.trackTiming)('blame.showBlame')],
+    decorators: [(0, (_nuclideAnalytics2 || _nuclideAnalytics()).trackTiming)('blame.showBlame')],
     value: function _showBlame(event) {
       var editor = atom.workspace.getActiveTextEditor();
       if (editor != null) {
@@ -165,7 +179,7 @@ var Activation = (function () {
     }
   }, {
     key: '_hideBlame',
-    decorators: [(0, _nuclideAnalytics.trackTiming)('blame.hideBlame')],
+    decorators: [(0, (_nuclideAnalytics2 || _nuclideAnalytics()).trackTiming)('blame.hideBlame')],
     value: function _hideBlame(event) {
       var editor = atom.workspace.getActiveTextEditor();
       if (editor != null) {
@@ -197,11 +211,11 @@ var Activation = (function () {
       // This package only expects one gutter UI. It will take the first one.
       if (this._blameGutterClass == null) {
         this._blameGutterClass = blameGutterClass;
-        return new _atom.Disposable(function () {
+        return new (_atom2 || _atom()).Disposable(function () {
           _this3._blameGutterClass = null;
         });
       } else {
-        return new _atom.Disposable(function () {});
+        return new (_atom2 || _atom()).Disposable(function () {});
       }
     }
   }, {
@@ -210,40 +224,41 @@ var Activation = (function () {
       var _this4 = this;
 
       this._registeredProviders.add(provider);
-      return new _atom.Disposable(function () {
+      return new (_atom2 || _atom()).Disposable(function () {
         if (_this4._registeredProviders) {
-          _this4._registeredProviders['delete'](provider);
+          _this4._registeredProviders.delete(provider);
         }
       });
     }
   }, {
     key: 'addItemsToFileTreeContextMenu',
     value: function addItemsToFileTreeContextMenu(contextMenu) {
-      var menuItemDescriptions = new _atom.CompositeDisposable();
-      menuItemDescriptions.add(atom.commands.add(contextMenu.getCSSSelectorForFileTree(),
-      /* eslint-disable nuclide-internal/command-menu-items */
-      // This does not belong in a menu because it should not be a public command:
-      // it should be a callback, but ContextMenuManager forces our hand.
-      'nuclide-blame:toggle-blame-file-tree',
-      /* eslint-enable nuclide-internal/command-menu-items */
-      _asyncToGenerator(function* () {
-        var _require2 = require('../../nuclide-atom-helpers');
+      var _this5 = this;
 
-        var goToLocation = _require2.goToLocation;
-
-        findBlameableNodes(contextMenu).forEach(_asyncToGenerator(function* (node) {
-          var editor = yield goToLocation(node.uri);
-          atom.commands.dispatch(atom.views.getView(editor), 'nuclide-blame:toggle-blame');
-        }));
-      })), contextMenu.addItemToSourceControlMenu({
+      var contextDisposable = contextMenu.addItemToSourceControlMenu({
         label: 'Toggle Blame',
-        command: 'nuclide-blame:toggle-blame-file-tree',
+        callback: _asyncToGenerator(function* () {
+          var _require2 = require('../../nuclide-atom-helpers');
+
+          var goToLocation = _require2.goToLocation;
+
+          findBlameableNodes(contextMenu).forEach(_asyncToGenerator(function* (node) {
+            var editor = yield goToLocation(node.uri);
+            atom.commands.dispatch(atom.views.getView(editor), 'nuclide-blame:toggle-blame');
+          }));
+        }),
         shouldDisplay: function shouldDisplay() {
           return findBlameableNodes(contextMenu).length > 0;
         }
-      }, TOGGLE_BLAME_FILE_TREE_CONTEXT_MENU_PRIORITY));
-      this._packageDisposables.add(menuItemDescriptions);
-      return menuItemDescriptions;
+      }, TOGGLE_BLAME_FILE_TREE_CONTEXT_MENU_PRIORITY);
+
+      this._packageDisposables.add(contextDisposable);
+      // We don't need to dispose of the contextDisposable when the provider is disabled -
+      // it needs to be handled by the provider itself. We only should remove it from the list
+      // of the disposables we maintain.
+      return new (_atom2 || _atom()).Disposable(function () {
+        return _this5._packageDisposables.remove(contextDisposable);
+      });
     }
   }]);
 
@@ -256,7 +271,7 @@ function findBlameableNodes(contextMenu) {
     if (node == null || !node.uri) {
       continue;
     }
-    var repo = (0, _nuclideHgGitBridge.repositoryForPath)(node.uri);
+    var repo = (0, (_nuclideHgGitBridge2 || _nuclideHgGitBridge()).repositoryForPath)(node.uri);
     if (!node.isContainer && repo != null && repo.getType() === 'hg') {
       nodes.push(node);
     }
@@ -280,17 +295,17 @@ function deactivate() {
 }
 
 function consumeBlameGutterClass(blameGutter) {
-  (0, _assert2['default'])(activation);
+  (0, (_assert2 || _assert()).default)(activation);
   return activation.consumeBlameGutterClass(blameGutter);
 }
 
 function consumeBlameProvider(provider) {
-  (0, _assert2['default'])(activation);
+  (0, (_assert2 || _assert()).default)(activation);
   return activation.consumeBlameProvider(provider);
 }
 
 function addItemsToFileTreeContextMenu(contextMenu) {
-  (0, _assert2['default'])(activation);
+  (0, (_assert2 || _assert()).default)(activation);
   return activation.addItemsToFileTreeContextMenu(contextMenu);
 }
 

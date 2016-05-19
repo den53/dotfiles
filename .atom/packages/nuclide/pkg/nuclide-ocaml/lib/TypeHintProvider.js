@@ -16,11 +16,23 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _atom = require('atom');
+var _atom2;
 
-var _nuclideAnalytics = require('../../nuclide-analytics');
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var _nuclideClient = require('../../nuclide-client');
+var _nuclideAnalytics2;
+
+function _nuclideAnalytics() {
+  return _nuclideAnalytics2 = require('../../nuclide-analytics');
+}
+
+var _nuclideClient2;
+
+function _nuclideClient() {
+  return _nuclideClient2 = require('../../nuclide-client');
+}
 
 // Ignore typehints that span too many lines. These tend to be super spammy.
 var MAX_LINES = 10;
@@ -36,13 +48,13 @@ var TypeHintProvider = (function () {
 
   _createDecoratedClass(TypeHintProvider, [{
     key: 'typeHint',
-    decorators: [(0, _nuclideAnalytics.trackTiming)('nuclide-ocaml.typeHint')],
+    decorators: [(0, (_nuclideAnalytics2 || _nuclideAnalytics()).trackTiming)('nuclide-ocaml.typeHint')],
     value: _asyncToGenerator(function* (editor, position) {
       var path = editor.getPath();
       if (path == null) {
         return null;
       }
-      var instance = (0, _nuclideClient.getServiceByNuclideUri)('MerlinService', path);
+      var instance = (0, (_nuclideClient2 || _nuclideClient()).getServiceByNuclideUri)('MerlinService', path);
       if (instance == null) {
         return null;
       }
@@ -61,7 +73,7 @@ var TypeHintProvider = (function () {
       }
       return {
         hint: hint,
-        range: new _atom.Range(new _atom.Point(type.start.line - 1, type.start.col), new _atom.Point(type.end.line - 1, type.end.col))
+        range: new (_atom2 || _atom()).Range(new (_atom2 || _atom()).Point(type.start.line - 1, type.start.col), new (_atom2 || _atom()).Point(type.end.line - 1, type.end.col))
       };
     })
   }]);

@@ -20,9 +20,17 @@ exports.deactivate = deactivate;
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _atom = require('atom');
+var _atom2;
 
-var _nuclideClient = require('../../nuclide-client');
+function _atom() {
+  return _atom2 = require('atom');
+}
+
+var _nuclideClient2;
+
+function _nuclideClient() {
+  return _nuclideClient2 = require('../../nuclide-client');
+}
 
 var providerInstance = undefined;
 function getProviderInstance() {
@@ -37,7 +45,7 @@ var Activation = (function () {
   function Activation(state) {
     _classCallCheck(this, Activation);
 
-    this._disposables = new _atom.CompositeDisposable();
+    this._disposables = new (_atom2 || _atom()).CompositeDisposable();
   }
 
   _createClass(Activation, [{
@@ -77,7 +85,7 @@ function initSearch(projectPaths) {
     if (projectRoots.has(projectPath)) {
       return;
     }
-    var service = (0, _nuclideClient.getServiceByNuclideUri)('FuzzyFileSearchService', projectPath);
+    var service = (0, (_nuclideClient2 || _nuclideClient()).getServiceByNuclideUri)('FuzzyFileSearchService', projectPath);
     if (service) {
       // It doesn't matter what the search term is. Empirically, doing an initial
       // search speeds up the next search much more than simply doing the setup

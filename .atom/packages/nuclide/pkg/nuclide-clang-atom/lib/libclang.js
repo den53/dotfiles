@@ -1,5 +1,3 @@
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
 /*
@@ -10,18 +8,28 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
  * the root directory of this source tree.
  */
 
-var _nuclideFeatureConfig = require('../../nuclide-feature-config');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _nuclideFeatureConfig2 = _interopRequireDefault(_nuclideFeatureConfig);
+var _nuclideFeatureConfig2;
 
-var _assert = require('assert');
+function _nuclideFeatureConfig() {
+  return _nuclideFeatureConfig2 = _interopRequireDefault(require('../../nuclide-feature-config'));
+}
 
-var _assert2 = _interopRequireDefault(_assert);
+var _assert2;
 
-var _nuclideRemoteConnection = require('../../nuclide-remote-connection');
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
+
+var _nuclideRemoteConnection2;
+
+function _nuclideRemoteConnection() {
+  return _nuclideRemoteConnection2 = require('../../nuclide-remote-connection');
+}
 
 function getDefaultFlags() {
-  var config = _nuclideFeatureConfig2['default'].get('nuclide-clang-atom');
+  var config = (_nuclideFeatureConfig2 || _nuclideFeatureConfig()).default.get('nuclide-clang-atom');
   if (!config.enableDefaultFlags) {
     return null;
   }
@@ -35,8 +43,8 @@ module.exports = {
     var contents = editor.getText();
 
     var defaultFlags = getDefaultFlags();
-    var service = (0, _nuclideRemoteConnection.getServiceByNuclideUri)('ClangService', src);
-    (0, _assert2['default'])(service);
+    var service = (0, (_nuclideRemoteConnection2 || _nuclideRemoteConnection()).getServiceByNuclideUri)('ClangService', src);
+    (0, (_assert2 || _assert()).default)(service);
 
     return service.compile(src, contents, clean, defaultFlags).toPromise();
   }),
@@ -50,8 +58,8 @@ module.exports = {
     var tokenStartColumn = column - prefix.length;
 
     var defaultFlags = getDefaultFlags();
-    var service = (0, _nuclideRemoteConnection.getServiceByNuclideUri)('ClangService', src);
-    (0, _assert2['default'])(service);
+    var service = (0, (_nuclideRemoteConnection2 || _nuclideRemoteConnection()).getServiceByNuclideUri)('ClangService', src);
+    (0, (_assert2 || _assert()).default)(service);
 
     return service.getCompletions(src, editor.getText(), line, column, tokenStartColumn, prefix, defaultFlags);
   }),
@@ -64,8 +72,8 @@ module.exports = {
     var src = editor.getPath();
     var defaultFlags = getDefaultFlags();
 
-    var service = (0, _nuclideRemoteConnection.getServiceByNuclideUri)('ClangService', src);
-    (0, _assert2['default'])(service);
+    var service = (0, (_nuclideRemoteConnection2 || _nuclideRemoteConnection()).getServiceByNuclideUri)('ClangService', src);
+    (0, (_assert2 || _assert()).default)(service);
 
     return service.getDeclaration(src, editor.getText(), line, column, defaultFlags);
   }),
@@ -74,8 +82,8 @@ module.exports = {
     var src = editor.getPath();
     var defaultFlags = getDefaultFlags();
 
-    var service = (0, _nuclideRemoteConnection.getServiceByNuclideUri)('ClangService', src);
-    (0, _assert2['default'])(service);
+    var service = (0, (_nuclideRemoteConnection2 || _nuclideRemoteConnection()).getServiceByNuclideUri)('ClangService', src);
+    (0, (_assert2 || _assert()).default)(service);
 
     return service.getOutline(src, editor.getText(), defaultFlags);
   }),
@@ -87,8 +95,8 @@ module.exports = {
     var startIndex = buffer.characterIndexForPosition(range.start);
     var endIndex = buffer.characterIndexForPosition(range.end);
 
-    var service = (0, _nuclideRemoteConnection.getServiceByNuclideUri)('ClangService', fileUri);
-    (0, _assert2['default'])(service);
+    var service = (0, (_nuclideRemoteConnection2 || _nuclideRemoteConnection()).getServiceByNuclideUri)('ClangService', fileUri);
+    (0, (_assert2 || _assert()).default)(service);
 
     return service.formatCode(fileUri, editor.getText(), cursor, startIndex, endIndex - startIndex);
   },
@@ -96,8 +104,8 @@ module.exports = {
   reset: function reset(editor) {
     var src = editor.getPath();
     if (src != null) {
-      var service = (0, _nuclideRemoteConnection.getServiceByNuclideUri)('ClangService', src);
-      (0, _assert2['default'])(service);
+      var service = (0, (_nuclideRemoteConnection2 || _nuclideRemoteConnection()).getServiceByNuclideUri)('ClangService', src);
+      (0, (_assert2 || _assert()).default)(service);
       return service.reset(src);
     }
   }

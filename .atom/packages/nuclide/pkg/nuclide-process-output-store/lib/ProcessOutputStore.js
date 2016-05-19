@@ -12,7 +12,11 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _atom = require('atom');
+var _atom2;
+
+function _atom() {
+  return _atom2 = require('atom');
+}
 
 /**
  * This class creates and stores the output of a process and can push updates
@@ -24,8 +28,8 @@ var ProcessOutputStore = (function () {
     _classCallCheck(this, ProcessOutputStore);
 
     this._runProcess = runProcess;
-    this._emitter = new _atom.Emitter();
-    this._listenerSubscriptions = new _atom.CompositeDisposable();
+    this._emitter = new (_atom2 || _atom()).Emitter();
+    this._listenerSubscriptions = new (_atom2 || _atom()).CompositeDisposable();
   }
 
   _createClass(ProcessOutputStore, [{

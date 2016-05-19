@@ -14,7 +14,7 @@ Object.defineProperty(exports, '__esModule', {
 var track = undefined;
 exports.track = track;
 try {
-  exports.track = track = require('../fb/analytics').track;
+  exports.track = exports.track = track = require('../fb/analytics').track;
 } catch (e) {
-  exports.track = track = require('./analytics').track;
+  exports.track = exports.track = track = require('./analytics').track;
 }

@@ -2,25 +2,13 @@ var _createClass = (function () { function defineProperties(target, props) { for
 
 var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var _assert = require('assert');
-
-var _assert2 = _interopRequireDefault(_assert);
-
-var _nuclideDebuggerAtom = require('../../nuclide-debugger-atom');
-
-var _nuclideCommons = require('../../nuclide-commons');
-
-var _rxjs = require('rxjs');
-
-var _rxjs2 = _interopRequireDefault(_rxjs);
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -30,7 +18,35 @@ var _rxjs2 = _interopRequireDefault(_rxjs);
  * the root directory of this source tree.
  */
 
-var WebSocketServer = require('ws').Server;
+var _ws2;
+
+function _ws() {
+  return _ws2 = _interopRequireDefault(require('ws'));
+}
+
+var _assert2;
+
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
+
+var _nuclideDebuggerAtom2;
+
+function _nuclideDebuggerAtom() {
+  return _nuclideDebuggerAtom2 = require('../../nuclide-debugger-atom');
+}
+
+var _nuclideCommons2;
+
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
+
+var _rxjs2;
+
+function _rxjs() {
+  return _rxjs2 = _interopRequireDefault(require('rxjs'));
+}
 
 var NodeDebuggerInstance = (function (_DebuggerInstance) {
   _inherits(NodeDebuggerInstance, _DebuggerInstance);
@@ -43,7 +59,7 @@ var NodeDebuggerInstance = (function (_DebuggerInstance) {
     _get(Object.getPrototypeOf(NodeDebuggerInstance.prototype), 'constructor', this).call(this, processInfo);
     this._debugPort = debugPort;
     this._server = null;
-    this._close$ = new _rxjs2['default'].Subject();
+    this._close$ = new (_rxjs2 || _rxjs()).default.Subject();
     this._close$.first().subscribe(function () {
       _this.dispose();
     });
@@ -64,7 +80,7 @@ var NodeDebuggerInstance = (function (_DebuggerInstance) {
       // TODO(natthu): Assign random port instead.
       var wsPort = 8080;
       if (!this._server) {
-        this._server = new WebSocketServer({ port: wsPort });
+        this._server = new (_ws2 || _ws()).default.Server({ port: wsPort });
         this._server.on('connection', function (websocket) {
           var config = {
             debugPort: _this2._debugPort,
@@ -76,7 +92,7 @@ var NodeDebuggerInstance = (function (_DebuggerInstance) {
           var Session = _require.Session;
 
           var session = new Session(config, _this2._debugPort, websocket);
-          _rxjs2['default'].Observable.fromEvent(session, 'close').subscribe(_this2._close$);
+          (_rxjs2 || _rxjs()).default.Observable.fromEvent(session, 'close').subscribe(_this2._close$);
         });
       }
       // create an instance of DebugServer, and get its ws port.
@@ -85,12 +101,12 @@ var NodeDebuggerInstance = (function (_DebuggerInstance) {
   }, {
     key: 'onSessionEnd',
     value: function onSessionEnd(callback) {
-      return new _nuclideCommons.DisposableSubscription(this._close$.first().subscribe(callback));
+      return new (_nuclideCommons2 || _nuclideCommons()).DisposableSubscription(this._close$.first().subscribe(callback));
     }
   }]);
 
   return NodeDebuggerInstance;
-})(_nuclideDebuggerAtom.DebuggerInstance);
+})((_nuclideDebuggerAtom2 || _nuclideDebuggerAtom()).DebuggerInstance);
 
 var NodeDebuggerProcessInfo = (function (_DebuggerProcessInfo) {
   _inherits(NodeDebuggerProcessInfo, _DebuggerProcessInfo);
@@ -118,7 +134,7 @@ var NodeDebuggerProcessInfo = (function (_DebuggerProcessInfo) {
   }, {
     key: 'compareDetails',
     value: function compareDetails(other) {
-      (0, _assert2['default'])(other instanceof NodeDebuggerProcessInfo);
+      (0, (_assert2 || _assert()).default)(other instanceof NodeDebuggerProcessInfo);
       return this._command === other._command ? this.pid - other.pid : this._command < other._command ? -1 : 1;
     }
   }, {
@@ -129,7 +145,7 @@ var NodeDebuggerProcessInfo = (function (_DebuggerProcessInfo) {
   }]);
 
   return NodeDebuggerProcessInfo;
-})(_nuclideDebuggerAtom.DebuggerProcessInfo);
+})((_nuclideDebuggerAtom2 || _nuclideDebuggerAtom()).DebuggerProcessInfo);
 
 function getProcessInfoList() {
   var _require2 = require('../../nuclide-commons');

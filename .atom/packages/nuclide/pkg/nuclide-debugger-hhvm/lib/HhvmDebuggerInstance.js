@@ -2,18 +2,6 @@ Object.defineProperty(exports, '__esModule', {
   value: true
 });
 
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
  * All rights reserved.
@@ -22,44 +10,89 @@ function _inherits(subClass, superClass) { if (typeof superClass !== 'function' 
  * the root directory of this source tree.
  */
 
-var _utils = require('./utils');
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-var _utils2 = _interopRequireDefault(_utils);
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
-var _assert = require('assert');
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
-var _assert2 = _interopRequireDefault(_assert);
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _nuclideDebuggerAtom = require('../../nuclide-debugger-atom');
+function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var _ObservableManager = require('./ObservableManager');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _atom = require('atom');
+var _utils2;
 
-var log = _utils2['default'].log;
-var logInfo = _utils2['default'].logInfo;
-var logError = _utils2['default'].logError;
-var setLogLevel = _utils2['default'].setLogLevel;
+function _utils() {
+  return _utils2 = _interopRequireDefault(require('./utils'));
+}
 
-var featureConfig = require('../../nuclide-feature-config');
+var _assert2;
 
-var _require = require('./ChromeMessageRemoting');
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
-var translateMessageFromServer = _require.translateMessageFromServer;
-var translateMessageToServer = _require.translateMessageToServer;
+var _nuclideDebuggerAtom2;
 
-var remoteUri = require('../../nuclide-remote-uri');
+function _nuclideDebuggerAtom() {
+  return _nuclideDebuggerAtom2 = require('../../nuclide-debugger-atom');
+}
 
-var _require2 = require('atom');
+var _ObservableManager2;
 
-var Disposable = _require2.Disposable;
+function _ObservableManager() {
+  return _ObservableManager2 = require('./ObservableManager');
+}
 
-var WebSocketServer = require('ws').Server;
+var _atom2;
+
+function _atom() {
+  return _atom2 = require('atom');
+}
+
+var _nuclideFeatureConfig2;
+
+function _nuclideFeatureConfig() {
+  return _nuclideFeatureConfig2 = _interopRequireDefault(require('../../nuclide-feature-config'));
+}
+
+var _ChromeMessageRemoting2;
+
+function _ChromeMessageRemoting() {
+  return _ChromeMessageRemoting2 = require('./ChromeMessageRemoting');
+}
+
+var _nuclideRemoteUri2;
+
+function _nuclideRemoteUri() {
+  return _nuclideRemoteUri2 = _interopRequireDefault(require('../../nuclide-remote-uri'));
+}
+
+var _atom4;
+
+function _atom3() {
+  return _atom4 = require('atom');
+}
+
+var _ws2;
+
+function _ws() {
+  return _ws2 = _interopRequireDefault(require('ws'));
+}
 
 var stringifyError = require('../../nuclide-commons').error.stringifyError;
 
+var _default = (_utils2 || _utils()).default;
+
+var log = _default.log;
+var logInfo = _default.logInfo;
+var logError = _default.logError;
+var setLogLevel = _default.setLogLevel;
+
 function getConfig() {
-  return featureConfig.get('nuclide-debugger-hhvm');
+  return (_nuclideFeatureConfig2 || _nuclideFeatureConfig()).default.get('nuclide-debugger-hhvm');
 }
 
 var HhvmDebuggerInstance = (function (_DebuggerInstance) {
@@ -75,7 +108,7 @@ var HhvmDebuggerInstance = (function (_DebuggerInstance) {
     this._webSocket = null;
     this._sessionEndCallback = null;
     this._observableManager = null;
-    this._disposables = new _atom.CompositeDisposable();
+    this._disposables = new (_atom2 || _atom()).CompositeDisposable();
     setLogLevel(getConfig().logLevel);
   }
 
@@ -88,17 +121,17 @@ var HhvmDebuggerInstance = (function (_DebuggerInstance) {
 
       logInfo('Connecting to: ' + this.getTargetUri());
 
-      var _require3 = require('../../nuclide-client');
+      var _require = require('../../nuclide-client');
 
-      var getServiceByNuclideUri = _require3.getServiceByNuclideUri;
+      var getServiceByNuclideUri = _require.getServiceByNuclideUri;
 
       var service = getServiceByNuclideUri('HhvmDebuggerProxyService', this.getTargetUri());
-      (0, _assert2['default'])(service);
+      (0, (_assert2 || _assert()).default)(service);
       var proxy = new service.HhvmDebuggerProxyService();
       this._disposables.add(proxy);
       this._proxy = proxy;
-      this._observableManager = new _ObservableManager.ObservableManager(proxy.getNotificationObservable(), proxy.getServerMessageObservable(), proxy.getOutputWindowObservable().map(function (message) {
-        var serverMessage = translateMessageFromServer(remoteUri.getHostname(_this.getTargetUri()), remoteUri.getPort(_this.getTargetUri()), message);
+      this._observableManager = new (_ObservableManager2 || _ObservableManager()).ObservableManager(proxy.getNotificationObservable(), proxy.getServerMessageObservable(), proxy.getOutputWindowObservable().map(function (message) {
+        var serverMessage = (0, (_ChromeMessageRemoting2 || _ChromeMessageRemoting()).translateMessageFromServer)((_nuclideRemoteUri2 || _nuclideRemoteUri()).default.getHostname(_this.getTargetUri()), (_nuclideRemoteUri2 || _nuclideRemoteUri()).default.getPort(_this.getTargetUri()), message);
         return JSON.parse(serverMessage);
       }), this._sendServerMessageToChromeUi.bind(this), this._endSession.bind(this));
       this._disposables.add(this._observableManager);
@@ -107,7 +140,7 @@ var HhvmDebuggerInstance = (function (_DebuggerInstance) {
       var sessionConfig = {
         xdebugAttachPort: config.xdebugAttachPort,
         xdebugLaunchingPort: config.xdebugLaunchingPort,
-        targetUri: remoteUri.getPath(this.getTargetUri()),
+        targetUri: (_nuclideRemoteUri2 || _nuclideRemoteUri()).default.getPath(this.getTargetUri()),
         logLevel: config.logLevel,
         endDebugWhenNoRequests: false,
         phpRuntimePath: config.phpRuntimePath,
@@ -117,7 +150,7 @@ var HhvmDebuggerInstance = (function (_DebuggerInstance) {
 
       if (!isValidRegex(config.scriptRegex)) {
         // TODO: User facing error message?
-        (0, _assert2['default'])(config.scriptRegex != null);
+        (0, (_assert2 || _assert()).default)(config.scriptRegex != null);
         logError('nuclide-debugger-hhvm config scriptRegex is not a valid regular expression: ' + config.scriptRegex);
       } else {
         sessionConfig.scriptRegex = config.scriptRegex;
@@ -125,7 +158,7 @@ var HhvmDebuggerInstance = (function (_DebuggerInstance) {
 
       if (!isValidRegex(config.idekeyRegex)) {
         // TODO: User facing error message?
-        (0, _assert2['default'])(config.idekeyRegex != null);
+        (0, (_assert2 || _assert()).default)(config.idekeyRegex != null);
         logError('nuclide-debugger-hhvm config idekeyRegex is not a valid regular expression: ' + config.idekeyRegex);
       } else {
         sessionConfig.idekeyRegex = config.idekeyRegex;
@@ -133,7 +166,7 @@ var HhvmDebuggerInstance = (function (_DebuggerInstance) {
 
       // Set config related to script launching.
       if (this._launchScriptPath != null) {
-        (0, _assert2['default'])(config.xdebugLaunchingPort != null);
+        (0, (_assert2 || _assert()).default)(config.xdebugLaunchingPort != null);
         sessionConfig.xdebugAttachPort = config.xdebugLaunchingPort;
         sessionConfig.endDebugWhenNoRequests = true;
         sessionConfig.launchScriptPath = this._launchScriptPath;
@@ -145,7 +178,7 @@ var HhvmDebuggerInstance = (function (_DebuggerInstance) {
       // setup web socket
       // TODO: Assign random port rather than using fixed port.
       var wsPort = 2000;
-      var server = new WebSocketServer({ port: wsPort });
+      var server = new (_ws2 || _ws()).default.Server({ port: wsPort });
       this._server = server;
       server.on('error', function (error) {
         logError('Server error: ' + error);
@@ -166,10 +199,10 @@ var HhvmDebuggerInstance = (function (_DebuggerInstance) {
         webSocket.on('error', _this._onSocketError.bind(_this));
         webSocket.on('close', _this._onSocketClose.bind(_this));
       });
-      this._disposables.add(new Disposable(function () {
+      this._disposables.add(new (_atom4 || _atom3()).Disposable(function () {
         return _this._disposeServer();
       }));
-      this._disposables.add(new Disposable(function () {
+      this._disposables.add(new (_atom4 || _atom3()).Disposable(function () {
         return _this._disposeWebSocket();
       }));
 
@@ -183,8 +216,8 @@ var HhvmDebuggerInstance = (function (_DebuggerInstance) {
       var _this2 = this;
 
       this._sessionEndCallback = callback;
-      return new Disposable(function () {
-        return _this2._sessionEndCallback = null;
+      return new (_atom4 || _atom3()).Disposable(function () {
+        _this2._sessionEndCallback = null;
       });
     }
   }, {
@@ -192,7 +225,7 @@ var HhvmDebuggerInstance = (function (_DebuggerInstance) {
     value: function _sendServerMessageToChromeUi(message) {
       var webSocket = this._webSocket;
       if (webSocket != null) {
-        webSocket.send(translateMessageFromServer(remoteUri.getHostname(this.getTargetUri()), remoteUri.getPort(this.getTargetUri()), message));
+        webSocket.send((0, (_ChromeMessageRemoting2 || _ChromeMessageRemoting()).translateMessageFromServer)((_nuclideRemoteUri2 || _nuclideRemoteUri()).default.getHostname(this.getTargetUri()), (_nuclideRemoteUri2 || _nuclideRemoteUri()).default.getPort(this.getTargetUri()), message));
       }
     }
   }, {
@@ -210,7 +243,7 @@ var HhvmDebuggerInstance = (function (_DebuggerInstance) {
       log('Recieved webSocket message: ' + message);
       var proxy = this._proxy;
       if (proxy) {
-        proxy.sendCommand(translateMessageToServer(message));
+        proxy.sendCommand((0, (_ChromeMessageRemoting2 || _ChromeMessageRemoting()).translateMessageToServer)(message));
       }
     }
   }, {
@@ -252,7 +285,7 @@ var HhvmDebuggerInstance = (function (_DebuggerInstance) {
   }]);
 
   return HhvmDebuggerInstance;
-})(_nuclideDebuggerAtom.DebuggerInstance);
+})((_nuclideDebuggerAtom2 || _nuclideDebuggerAtom()).DebuggerInstance);
 
 exports.HhvmDebuggerInstance = HhvmDebuggerInstance;
 function isValidRegex(value) {

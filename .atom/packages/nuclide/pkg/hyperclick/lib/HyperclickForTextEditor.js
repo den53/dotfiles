@@ -12,25 +12,43 @@ Object.defineProperty(exports, '__esModule', {
 
 var _createDecoratedClass = (function () { function defineProperties(target, descriptors, initializers) { for (var i = 0; i < descriptors.length; i++) { var descriptor = descriptors[i]; var decorators = descriptor.decorators; var key = descriptor.key; delete descriptor.key; delete descriptor.decorators; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor || descriptor.initializer) descriptor.writable = true; if (decorators) { for (var f = 0; f < decorators.length; f++) { var decorator = decorators[f]; if (typeof decorator === 'function') { descriptor = decorator(target, key, descriptor) || descriptor; } else { throw new TypeError('The decorator for method ' + descriptor.key + ' is of the invalid type ' + typeof decorator); } } if (descriptor.initializer !== undefined) { initializers[key] = descriptor; continue; } } Object.defineProperty(target, key, descriptor); } } return function (Constructor, protoProps, staticProps, protoInitializers, staticInitializers) { if (protoProps) defineProperties(Constructor.prototype, protoProps, protoInitializers); if (staticProps) defineProperties(Constructor, staticProps, staticInitializers); return Constructor; }; })();
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _atom = require('atom');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _hyperclickUtils = require('./hyperclick-utils');
+var _atom2;
 
-var _assert = require('assert');
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var _assert2 = _interopRequireDefault(_assert);
+var _hyperclickUtils2;
 
-var _nuclideAnalytics = require('../../nuclide-analytics');
+function _hyperclickUtils() {
+  return _hyperclickUtils2 = require('./hyperclick-utils');
+}
 
-var _nuclideLogging = require('../../nuclide-logging');
+var _assert2;
 
-var logger = (0, _nuclideLogging.getLogger)();
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
+
+var _nuclideAnalytics2;
+
+function _nuclideAnalytics() {
+  return _nuclideAnalytics2 = require('../../nuclide-analytics');
+}
+
+var _nuclideLogging2;
+
+function _nuclideLogging() {
+  return _nuclideLogging2 = require('../../nuclide-logging');
+}
+
+var logger = (0, (_nuclideLogging2 || _nuclideLogging()).getLogger)();
 
 /**
  * Construct this object to enable Hyperclick in a text editor.
@@ -58,7 +76,7 @@ var HyperclickForTextEditor = (function () {
     this._navigationMarkers = null;
 
     this._lastWordRange = null;
-    this._subscriptions = new _atom.CompositeDisposable();
+    this._subscriptions = new (_atom2 || _atom()).CompositeDisposable();
 
     this._onMouseMove = this._onMouseMove.bind(this);
     this._textEditorView.addEventListener('mousemove', this._onMouseMove);
@@ -89,7 +107,7 @@ var HyperclickForTextEditor = (function () {
       var getLinesDomNode = function getLinesDomNode() {
         var component = _this2._textEditorView.component;
 
-        (0, _assert2['default'])(component);
+        (0, (_assert2 || _assert()).default)(component);
         return component.linesComponent.getDomNode();
       };
       var removeMouseDownListener = function removeMouseDownListener() {
@@ -102,7 +120,7 @@ var HyperclickForTextEditor = (function () {
       var addMouseDownListener = function addMouseDownListener() {
         getLinesDomNode().addEventListener('mousedown', _this2._onMouseDown);
       };
-      this._subscriptions.add(new _atom.Disposable(removeMouseDownListener));
+      this._subscriptions.add(new (_atom2 || _atom()).Disposable(removeMouseDownListener));
       this._subscriptions.add(this._textEditorView.onDidDetach(removeMouseDownListener));
       this._subscriptions.add(this._textEditorView.onDidAttach(addMouseDownListener));
       addMouseDownListener();
@@ -113,7 +131,7 @@ var HyperclickForTextEditor = (function () {
       if (Array.isArray(suggestion.callback) && suggestion.callback.length > 0) {
         this._hyperclick.showSuggestionList(this._textEditor, suggestion);
       } else {
-        (0, _assert2['default'])(typeof suggestion.callback === 'function');
+        (0, (_assert2 || _assert()).default)(typeof suggestion.callback === 'function');
         suggestion.callback();
       }
     }
@@ -145,9 +163,9 @@ var HyperclickForTextEditor = (function () {
         return;
       }
 
-      var _getWordTextAndRange = (0, _hyperclickUtils.getWordTextAndRange)(this._textEditor, this._getMousePositionAsBufferPosition());
+      var _ref = (0, (_hyperclickUtils2 || _hyperclickUtils()).getWordTextAndRange)(this._textEditor, this._getMousePositionAsBufferPosition());
 
-      var range = _getWordTextAndRange.range;
+      var range = _ref.range;
 
       this._lastWordRange = range;
 
@@ -212,7 +230,7 @@ var HyperclickForTextEditor = (function () {
       if (this._lastSuggestionAtMouse != null) {
         var range = this._lastSuggestionAtMouse.range;
 
-        (0, _assert2['default'])(range, 'Hyperclick result must have a valid Range');
+        (0, (_assert2 || _assert()).default)(range, 'Hyperclick result must have a valid Range');
         if (this._isPositionInRange(position, range)) {
           return;
         }
@@ -225,7 +243,7 @@ var HyperclickForTextEditor = (function () {
       }
 
       this._isLoading = true;
-      this._loadingTracker = (0, _nuclideAnalytics.startTracking)('hyperclick-loading');
+      this._loadingTracker = (0, (_nuclideAnalytics2 || _nuclideAnalytics()).startTracking)('hyperclick-loading');
 
       try {
         this._lastPosition = position;
@@ -258,8 +276,8 @@ var HyperclickForTextEditor = (function () {
     value: function _getMousePositionAsBufferPosition() {
       var component = this._textEditorView.component;
 
-      (0, _assert2['default'])(component);
-      (0, _assert2['default'])(this._lastMouseEvent);
+      (0, (_assert2 || _assert()).default)(component);
+      (0, (_assert2 || _assert()).default)(this._lastMouseEvent);
       var screenPosition = component.screenPositionForMouseEvent(this._lastMouseEvent);
       try {
         return this._textEditor.bufferPositionForScreenPosition(screenPosition);
@@ -269,7 +287,7 @@ var HyperclickForTextEditor = (function () {
         // it triggers TextEditorElement's `mousemove` with invalid screen position.
         // This falls back to returning the start of the editor.
         logger.error('Hyperclick: Error getting buffer position for screen position:', error);
-        return new _atom.Point(0, 0);
+        return new (_atom2 || _atom()).Point(0, 0);
       }
     }
   }, {
@@ -280,7 +298,7 @@ var HyperclickForTextEditor = (function () {
       }
       var range = this._lastSuggestionAtMouse.range;
 
-      (0, _assert2['default'])(range, 'Hyperclick result must have a valid Range');
+      (0, (_assert2 || _assert()).default)(range, 'Hyperclick result must have a valid Range');
       return this._isPositionInRange(this._getMousePositionAsBufferPosition(), range);
     }
   }, {
@@ -309,7 +327,7 @@ var HyperclickForTextEditor = (function () {
     }
   }, {
     key: '_confirmSuggestionAtCursor',
-    decorators: [(0, _nuclideAnalytics.trackTiming)('hyperclick:confirm-cursor')],
+    decorators: [(0, (_nuclideAnalytics2 || _nuclideAnalytics()).trackTiming)('hyperclick:confirm-cursor')],
     value: _asyncToGenerator(function* () {
       var suggestion = yield this._hyperclick.getSuggestion(this._textEditor, this._textEditor.getCursorBufferPosition());
       if (suggestion) {
@@ -381,5 +399,5 @@ var HyperclickForTextEditor = (function () {
   return HyperclickForTextEditor;
 })();
 
-exports['default'] = HyperclickForTextEditor;
-module.exports = exports['default'];
+exports.default = HyperclickForTextEditor;
+module.exports = exports.default;

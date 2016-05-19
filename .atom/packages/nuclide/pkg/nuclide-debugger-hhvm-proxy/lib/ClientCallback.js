@@ -4,9 +4,9 @@ Object.defineProperty(exports, '__esModule', {
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -16,11 +16,17 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * the root directory of this source tree.
  */
 
-var _utils = require('./utils');
+var _utils2;
 
-var _utils2 = _interopRequireDefault(_utils);
+function _utils() {
+  return _utils2 = _interopRequireDefault(require('./utils'));
+}
 
-var _rxjs = require('rxjs');
+var _rxjs2;
+
+function _rxjs() {
+  return _rxjs2 = require('rxjs');
+}
 
 function createMessage(method, params) {
   var result = { method: method };
@@ -45,9 +51,9 @@ var ClientCallback = (function () {
   function ClientCallback() {
     _classCallCheck(this, ClientCallback);
 
-    this._serverMessageObservable = new _rxjs.Subject();
-    this._notificationObservable = new _rxjs.Subject();
-    this._outputWindowObservable = new _rxjs.Subject();
+    this._serverMessageObservable = new (_rxjs2 || _rxjs()).Subject();
+    this._notificationObservable = new (_rxjs2 || _rxjs()).Subject();
+    this._outputWindowObservable = new (_rxjs2 || _rxjs()).Subject();
   }
 
   _createClass(ClientCallback, [{
@@ -68,7 +74,7 @@ var ClientCallback = (function () {
   }, {
     key: 'sendUserMessage',
     value: function sendUserMessage(type, message) {
-      _utils2['default'].log('sendUserMessage(' + type + '): ' + JSON.stringify(message));
+      (_utils2 || _utils()).default.log('sendUserMessage(' + type + '): ' + JSON.stringify(message));
       switch (type) {
         case 'notification':
           this._notificationObservable.next({
@@ -87,14 +93,14 @@ var ClientCallback = (function () {
           });
           break;
         default:
-          _utils2['default'].logError('Unknown UserMessageType: ' + type);
+          (_utils2 || _utils()).default.logError('Unknown UserMessageType: ' + type);
       }
     }
   }, {
     key: 'unknownMethod',
     value: function unknownMethod(id, domain, method, params) {
       var message = 'Unknown chrome dev tools method: ' + domain + '.' + method;
-      _utils2['default'].log(message);
+      (_utils2 || _utils()).default.log(message);
       this.replyWithError(id, message);
     }
   }, {
@@ -120,13 +126,13 @@ var ClientCallback = (function () {
     key: '_sendJsonObject',
     value: function _sendJsonObject(observable, value) {
       var message = JSON.stringify(value);
-      _utils2['default'].log('Sending JSON: ' + message);
+      (_utils2 || _utils()).default.log('Sending JSON: ' + message);
       observable.next(message);
     }
   }, {
     key: 'dispose',
     value: function dispose() {
-      _utils2['default'].log('Called ClientCallback dispose method.');
+      (_utils2 || _utils()).default.log('Called ClientCallback dispose method.');
       this._notificationObservable.complete();
       this._serverMessageObservable.complete();
       this._outputWindowObservable.complete();

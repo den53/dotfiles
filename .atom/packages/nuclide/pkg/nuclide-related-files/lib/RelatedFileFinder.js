@@ -12,19 +12,29 @@ Object.defineProperty(exports, '__esModule', {
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _assert = require('assert');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _assert2 = _interopRequireDefault(_assert);
+var _assert2;
 
-var _nuclideRemoteConnection = require('../../nuclide-remote-connection');
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
-var _nuclideRemoteUri = require('../../nuclide-remote-uri');
+var _nuclideRemoteConnection2;
+
+function _nuclideRemoteConnection() {
+  return _nuclideRemoteConnection2 = require('../../nuclide-remote-connection');
+}
+
+var _nuclideRemoteUri2;
+
+function _nuclideRemoteUri() {
+  return _nuclideRemoteUri2 = require('../../nuclide-remote-uri');
+}
 
 /**
  * Finds related files, to be used in `JumpToRelatedFile`.
@@ -53,16 +63,16 @@ var RelatedFileFinder = (function () {
     value: _asyncToGenerator(function* (filePath) {
       var _this = this;
 
-      var dirName = (0, _nuclideRemoteUri.dirname)(filePath);
+      var dirName = (0, (_nuclideRemoteUri2 || _nuclideRemoteUri()).dirname)(filePath);
       var prefix = this._getPrefix(filePath);
 
-      var service = (0, _nuclideRemoteConnection.getServiceByNuclideUri)('FileSystemService', filePath);
-      (0, _assert2['default'])(service);
-      var listing = yield service.readdir((0, _nuclideRemoteUri.getPath)(dirName));
+      var service = (0, (_nuclideRemoteConnection2 || _nuclideRemoteConnection()).getServiceByNuclideUri)('FileSystemService', filePath);
+      (0, (_assert2 || _assert()).default)(service);
+      var listing = yield service.readdir((0, (_nuclideRemoteUri2 || _nuclideRemoteUri()).getPath)(dirName));
       var relatedFiles = listing.filter(function (otherFilePath) {
         return otherFilePath.stats.isFile() && _this._getPrefix(otherFilePath.file) === prefix;
       }).map(function (otherFilePath) {
-        return (0, _nuclideRemoteUri.join)(dirName, otherFilePath.file);
+        return (0, (_nuclideRemoteUri2 || _nuclideRemoteUri()).join)(dirName, otherFilePath.file);
       }).sort();
 
       var index = relatedFiles.indexOf(filePath);
@@ -78,7 +88,7 @@ var RelatedFileFinder = (function () {
   }, {
     key: '_getPrefix',
     value: function _getPrefix(filePath) {
-      var base = (0, _nuclideRemoteUri.basename)(filePath);
+      var base = (0, (_nuclideRemoteUri2 || _nuclideRemoteUri()).basename)(filePath);
       // Strip off the extension.
       var pos = base.lastIndexOf('.');
       if (pos !== -1) {
@@ -93,5 +103,5 @@ var RelatedFileFinder = (function () {
   return RelatedFileFinder;
 })();
 
-exports['default'] = RelatedFileFinder;
-module.exports = exports['default'];
+exports.default = RelatedFileFinder;
+module.exports = exports.default;

@@ -12,29 +12,39 @@ Object.defineProperty(exports, '__esModule', {
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
 
-var _reactForAtom = require('react-for-atom');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _classnames = require('classnames');
+var _reactForAtom2;
 
-var _classnames2 = _interopRequireDefault(_classnames);
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
 
-var _nuclideUiLibDiagnosticsMessage = require('../../nuclide-ui/lib/DiagnosticsMessage');
+var _classnames2;
+
+function _classnames() {
+  return _classnames2 = _interopRequireDefault(require('classnames'));
+}
+
+var _nuclideUiLibDiagnosticsMessage2;
+
+function _nuclideUiLibDiagnosticsMessage() {
+  return _nuclideUiLibDiagnosticsMessage2 = require('../../nuclide-ui/lib/DiagnosticsMessage');
+}
 
 function renderMessage(fixer, goToLocation, message, index) {
-  var className = (0, _classnames2['default'])(
+  var className = (0, (_classnames2 || _classnames()).default)(
   // native-key-bindings and tabIndex=-1 are both needed to allow copying the text in the popup.
   'native-key-bindings', 'nuclide-diagnostics-gutter-ui-popup-diagnostic', {
     'nuclide-diagnostics-gutter-ui-popup-error': message.type === 'Error',
     'nuclide-diagnostics-gutter-ui-popup-warning': message.type !== 'Error'
   });
-  return _reactForAtom.React.createElement(
+  return (_reactForAtom2 || _reactForAtom()).React.createElement(
     'div',
     { className: className, key: index, tabIndex: -1 },
-    _reactForAtom.React.createElement(_nuclideUiLibDiagnosticsMessage.DiagnosticsMessage, {
+    (_reactForAtom2 || _reactForAtom()).React.createElement((_nuclideUiLibDiagnosticsMessage2 || _nuclideUiLibDiagnosticsMessage()).DiagnosticsMessage, {
       fixer: fixer,
       goToLocation: goToLocation,
       key: index,
@@ -53,7 +63,7 @@ var DiagnosticsPopup = function DiagnosticsPopup(props) {
 
   var rest = _objectWithoutProperties(props, ['fixer', 'goToLocation', 'left', 'messages', 'top']);
 
-  return _reactForAtom.React.createElement(
+  return (_reactForAtom2 || _reactForAtom()).React.createElement(
     'div',
     _extends({
       className: 'nuclide-diagnostics-gutter-ui-popup',

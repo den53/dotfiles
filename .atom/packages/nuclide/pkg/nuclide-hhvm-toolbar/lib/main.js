@@ -14,20 +14,31 @@ var _createClass = (function () { function defineProperties(target, props) { for
 
 exports.activate = activate;
 exports.consumeToolBar = consumeToolBar;
+exports.getDistractionFreeModeProvider = getDistractionFreeModeProvider;
 exports.deactivate = deactivate;
 exports.serialize = serialize;
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _atom = require('atom');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _reactForAtom = require('react-for-atom');
+var _atom2;
 
-var _assert = require('assert');
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var _assert2 = _interopRequireDefault(_assert);
+var _reactForAtom2;
+
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
+
+var _assert2;
+
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
 var Activation = (function () {
   function Activation(state) {
@@ -39,7 +50,7 @@ var Activation = (function () {
       panelVisible: state != null && state.panelVisible != null ? state.panelVisible : true
     };
 
-    this._disposables = new _atom.CompositeDisposable();
+    this._disposables = new (_atom2 || _atom()).CompositeDisposable();
     this._projectStore = new ProjectStore();
     this._addCommands();
     this._createToolbar();
@@ -68,9 +79,24 @@ var Activation = (function () {
         priority: 501
       });
       toolBarButton.innerHTML = hhvmIcon();
-      this._disposables.add(new _atom.Disposable(function () {
+      this._disposables.add(new (_atom2 || _atom()).Disposable(function () {
         toolBar.removeItems();
       }));
+    }
+  }, {
+    key: 'getDistractionFreeModeProvider',
+    value: function getDistractionFreeModeProvider() {
+      var _this2 = this;
+
+      return {
+        name: 'nuclide-hhvm-toolbar',
+        isVisible: function isVisible() {
+          return _this2._state.panelVisible;
+        },
+        toggle: function toggle() {
+          return _this2.togglePanel();
+        }
+      };
     }
   }, {
     key: '_createToolbar',
@@ -78,10 +104,10 @@ var Activation = (function () {
       var NuclideToolbar = require('./NuclideToolbar');
       var item = document.createElement('div');
 
-      var component = _reactForAtom.ReactDOM.render(_reactForAtom.React.createElement(NuclideToolbar, {
+      var component = (_reactForAtom2 || _reactForAtom()).ReactDOM.render((_reactForAtom2 || _reactForAtom()).React.createElement(NuclideToolbar, {
         projectStore: this._projectStore
       }), item);
-      (0, _assert2['default'])(component instanceof NuclideToolbar);
+      (0, (_assert2 || _assert()).default)(component instanceof NuclideToolbar);
       this._nuclideToolbar = component;
 
       var panel = atom.workspace.addTopPanel({
@@ -91,7 +117,7 @@ var Activation = (function () {
         // this ensures the popover in this build toolbar stacks on top of other UI.
         priority: 200
       });
-      this._disposables.add(new _atom.Disposable(function () {
+      this._disposables.add(new (_atom2 || _atom()).Disposable(function () {
         return panel.destroy();
       }));
       this._panel = panel;
@@ -126,10 +152,10 @@ var Activation = (function () {
     key: 'dispose',
     value: function dispose() {
       if (this._nuclideToolbar) {
-        var toolbarNode = _reactForAtom.ReactDOM.findDOMNode(this._nuclideToolbar);
+        var toolbarNode = (_reactForAtom2 || _reactForAtom()).ReactDOM.findDOMNode(this._nuclideToolbar);
         // If the toolbar is currently hidden for some reason, then toolbarNode will be null.
         if (toolbarNode) {
-          _reactForAtom.ReactDOM.unmountComponentAtNode(toolbarNode.parentNode);
+          (_reactForAtom2 || _reactForAtom()).ReactDOM.unmountComponentAtNode(toolbarNode.parentNode);
         }
       }
       this._projectStore.dispose();
@@ -155,8 +181,13 @@ function activate(state) {
 }
 
 function consumeToolBar(getToolBar) {
-  (0, _assert2['default'])(activation);
+  (0, (_assert2 || _assert()).default)(activation);
   return activation.consumeToolBar(getToolBar);
+}
+
+function getDistractionFreeModeProvider() {
+  (0, (_assert2 || _assert()).default)(activation != null);
+  return activation.getDistractionFreeModeProvider();
 }
 
 function deactivate() {

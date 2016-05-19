@@ -3,12 +3,12 @@ var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
 var readFileContents = _asyncToGenerator(function* (uri) {
-  var localPath = getPath(uri);
+  var localPath = (0, (_nuclideRemoteUri2 || _nuclideRemoteUri()).getPath)(uri);
   var contents = undefined;
   try {
-    contents = (yield getFileSystemServiceByNuclideUri(uri).readFile(localPath)).toString('utf8');
+    contents = (yield (0, (_nuclideClient2 || _nuclideClient()).getFileSystemServiceByNuclideUri)(uri).readFile(localPath)).toString('utf8');
   } catch (e) {
-    getLogger().error('find-references: could not load file ' + uri, e);
+    (0, (_nuclideLogging2 || _nuclideLogging()).getLogger)().error('find-references: could not load file ' + uri, e);
     return null;
   }
   return contents;
@@ -26,21 +26,29 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
  * the root directory of this source tree.
  */
 
-var _require = require('../../nuclide-commons');
+var _nuclideCommons2;
 
-var array = _require.array;
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
 
-var _require2 = require('../../nuclide-logging');
+var _nuclideLogging2;
 
-var getLogger = _require2.getLogger;
+function _nuclideLogging() {
+  return _nuclideLogging2 = require('../../nuclide-logging');
+}
 
-var _require3 = require('../../nuclide-client');
+var _nuclideClient2;
 
-var getFileSystemServiceByNuclideUri = _require3.getFileSystemServiceByNuclideUri;
+function _nuclideClient() {
+  return _nuclideClient2 = require('../../nuclide-client');
+}
 
-var _require4 = require('../../nuclide-remote-uri');
+var _nuclideRemoteUri2;
 
-var getPath = _require4.getPath;
+function _nuclideRemoteUri() {
+  return _nuclideRemoteUri2 = require('../../nuclide-remote-uri');
+}
 
 var FRAGMENT_GRAMMARS = {
   'text.html.hack': 'source.hackfragment',
@@ -96,7 +104,7 @@ var FindReferencesModel = (function () {
     key: 'getFileReferences',
     value: _asyncToGenerator(function* (offset, limit) {
       var fileReferences = yield Promise.all(this._references.slice(offset, offset + limit).map(this._makeFileReferences.bind(this)));
-      return array.compact(fileReferences);
+      return (_nuclideCommons2 || _nuclideCommons()).array.compact(fileReferences);
     })
   }, {
     key: 'getBasePath',

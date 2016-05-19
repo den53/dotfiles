@@ -1,9 +1,5 @@
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _utils = require('./utils');
-
-var _utils2 = _interopRequireDefault(_utils);
-
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
  * All rights reserved.
@@ -12,9 +8,25 @@ var _utils2 = _interopRequireDefault(_utils);
  * the root directory of this source tree.
  */
 
-var url = require('url');
-var remoteUri = require('../../nuclide-remote-uri');
-var log = _utils2['default'].log;
+var _url2;
+
+function _url() {
+  return _url2 = _interopRequireDefault(require('url'));
+}
+
+var _nuclideRemoteUri2;
+
+function _nuclideRemoteUri() {
+  return _nuclideRemoteUri2 = _interopRequireDefault(require('../../nuclide-remote-uri'));
+}
+
+var _utils2;
+
+function _utils() {
+  return _utils2 = _interopRequireDefault(require('./utils'));
+}
+
+var log = (_utils2 || _utils()).default.log;
 
 function translateMessageFromServer(hostname, port, message) {
   return translateMessage(message, function (uri) {
@@ -58,9 +70,9 @@ function translateField(obj, field, translateUri) {
 }
 
 function translateUriFromServer(hostname, port, uri) {
-  var components = remoteUri.parse(uri);
+  var components = (_nuclideRemoteUri2 || _nuclideRemoteUri()).default.parse(uri);
   if (components.protocol === 'file:') {
-    var result = remoteUri.createRemoteUri(hostname, port, components.pathname);
+    var result = (_nuclideRemoteUri2 || _nuclideRemoteUri()).default.createRemoteUri(hostname, port, components.pathname);
     log('Translated URI from ' + uri + ' to ' + result);
     return result;
   } else {
@@ -69,11 +81,11 @@ function translateUriFromServer(hostname, port, uri) {
 }
 
 function translateUriToServer(uri) {
-  if (remoteUri.isRemote(uri)) {
-    var result = url.format({
+  if ((_nuclideRemoteUri2 || _nuclideRemoteUri()).default.isRemote(uri)) {
+    var result = (_url2 || _url()).default.format({
       protocol: 'file',
       slashes: true,
-      pathname: remoteUri.getPath(uri)
+      pathname: (_nuclideRemoteUri2 || _nuclideRemoteUri()).default.getPath(uri)
     });
     log('Translated URI from ' + uri + ' to ' + result);
     return result;

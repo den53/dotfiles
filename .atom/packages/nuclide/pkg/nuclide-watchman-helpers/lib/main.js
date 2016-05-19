@@ -1,4 +1,8 @@
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
 
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -8,22 +12,17 @@
  * the root directory of this source tree.
  */
 
-module.exports = Object.defineProperties({}, {
-  WatchmanClient: {
-    get: function get() {
-      return require('./WatchmanClient');
-    },
-    configurable: true,
-    enumerable: true
-  },
-  WatchmanSubscription: {
+var _WatchmanClient2;
 
-    // Exposed for testing.
+function _WatchmanClient() {
+  return _WatchmanClient2 = _interopRequireDefault(require('./WatchmanClient'));
+}
 
-    get: function get() {
-      return require('./WatchmanSubscription');
-    },
-    configurable: true,
-    enumerable: true
-  }
-});
+var _WatchmanSubscription2;
+
+function _WatchmanSubscription() {
+  return _WatchmanSubscription2 = _interopRequireDefault(require('./WatchmanSubscription'));
+}
+
+exports.WatchmanClient = (_WatchmanClient2 || _WatchmanClient()).default;
+exports.WatchmanSubscription = (_WatchmanSubscription2 || _WatchmanSubscription()).default;

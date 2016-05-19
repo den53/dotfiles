@@ -8,12 +8,28 @@
  * the root directory of this source tree.
  */
 
-var flatten = require('../../utils/flatten');
-var printArrayOfStatements = require('../common/printArrayOfStatements');
-var printComments = require('../common/printComments');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _utilsFlatten2;
+
+function _utilsFlatten() {
+  return _utilsFlatten2 = _interopRequireDefault(require('../../utils/flatten'));
+}
+
+var _commonPrintArrayOfStatements2;
+
+function _commonPrintArrayOfStatements() {
+  return _commonPrintArrayOfStatements2 = _interopRequireDefault(require('../common/printArrayOfStatements'));
+}
+
+var _commonPrintComments2;
+
+function _commonPrintComments() {
+  return _commonPrintComments2 = _interopRequireDefault(require('../common/printComments'));
+}
 
 function printProgram(print, node) {
-  return flatten([printComments(node.innerComments), printArrayOfStatements(print, node.body)]);
+  return (0, (_utilsFlatten2 || _utilsFlatten()).default)([(0, (_commonPrintComments2 || _commonPrintComments()).default)(node.innerComments), (0, (_commonPrintArrayOfStatements2 || _commonPrintArrayOfStatements()).default)(print, node.body)]);
 }
 
 module.exports = printProgram;

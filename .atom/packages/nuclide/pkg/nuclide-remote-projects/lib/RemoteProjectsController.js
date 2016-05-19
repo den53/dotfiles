@@ -1,8 +1,8 @@
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -12,37 +12,63 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * the root directory of this source tree.
  */
 
-var _assert = require('assert');
+var _assert2;
 
-var _assert2 = _interopRequireDefault(_assert);
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
-var _nuclideRemoteConnection = require('../../nuclide-remote-connection');
+var _nuclideRemoteConnection2;
 
-var _require = require('react-for-atom');
+function _nuclideRemoteConnection() {
+  return _nuclideRemoteConnection2 = require('../../nuclide-remote-connection');
+}
 
-var React = _require.React;
-var ReactDOM = _require.ReactDOM;
+var _reactForAtom2;
 
-var _require2 = require('atom');
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
 
-var CompositeDisposable = _require2.CompositeDisposable;
-var Disposable = _require2.Disposable;
+var _atom2;
 
-var StatusBarTile = require('./ui/StatusBarTile');
-var remoteUri = require('../../nuclide-remote-uri');
-var ConnectionState = require('./ConnectionState');
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var onWorkspaceDidStopChangingActivePaneItem = require('../../nuclide-atom-helpers').atomEventDebounce.onWorkspaceDidStopChangingActivePaneItem;
+var _uiStatusBarTile2;
+
+function _uiStatusBarTile() {
+  return _uiStatusBarTile2 = _interopRequireDefault(require('./ui/StatusBarTile'));
+}
+
+var _nuclideRemoteUri2;
+
+function _nuclideRemoteUri() {
+  return _nuclideRemoteUri2 = _interopRequireDefault(require('../../nuclide-remote-uri'));
+}
+
+var _ConnectionState2;
+
+function _ConnectionState() {
+  return _ConnectionState2 = _interopRequireDefault(require('./ConnectionState'));
+}
+
+var _nuclideAtomHelpers2;
+
+function _nuclideAtomHelpers() {
+  return _nuclideAtomHelpers2 = require('../../nuclide-atom-helpers');
+}
 
 var RemoteProjectsController = (function () {
   function RemoteProjectsController() {
     _classCallCheck(this, RemoteProjectsController);
 
     this._statusBarTile = null;
-    this._disposables = new CompositeDisposable();
+    this._disposables = new (_atom2 || _atom()).CompositeDisposable();
 
     this._statusSubscription = null;
-    this._disposables.add(atom.workspace.onDidChangeActivePaneItem(this._disposeSubscription.bind(this)), onWorkspaceDidStopChangingActivePaneItem(this._updateConnectionStatus.bind(this)));
+    this._disposables.add(atom.workspace.onDidChangeActivePaneItem(this._disposeSubscription.bind(this)), (_nuclideAtomHelpers2 || _nuclideAtomHelpers()).atomEventDebounce.onWorkspaceDidStopChangingActivePaneItem(this._updateConnectionStatus.bind(this)));
   }
 
   _createClass(RemoteProjectsController, [{
@@ -63,7 +89,7 @@ var RemoteProjectsController = (function () {
       this._disposeSubscription();
 
       if (!atom.workspace.isTextEditor(paneItem)) {
-        this._renderStatusBar(ConnectionState.NONE);
+        this._renderStatusBar((_ConnectionState2 || _ConnectionState()).default.NONE);
         return;
       }
       var textEditor = paneItem;
@@ -71,16 +97,16 @@ var RemoteProjectsController = (function () {
       if (!fileUri) {
         return;
       }
-      if (remoteUri.isLocal(fileUri)) {
-        this._renderStatusBar(ConnectionState.LOCAL, fileUri);
+      if ((_nuclideRemoteUri2 || _nuclideRemoteUri()).default.isLocal(fileUri)) {
+        this._renderStatusBar((_ConnectionState2 || _ConnectionState()).default.LOCAL, fileUri);
         return;
       }
 
       var updateStatus = function updateStatus(isConnected) {
-        _this._renderStatusBar(isConnected ? ConnectionState.CONNECTED : ConnectionState.DISCONNECTED, fileUri);
+        _this._renderStatusBar(isConnected ? (_ConnectionState2 || _ConnectionState()).default.CONNECTED : (_ConnectionState2 || _ConnectionState()).default.DISCONNECTED, fileUri);
       };
 
-      var connection = _nuclideRemoteConnection.RemoteConnection.getForUri(fileUri);
+      var connection = (_nuclideRemoteConnection2 || _nuclideRemoteConnection()).RemoteConnection.getForUri(fileUri);
       if (connection == null) {
         updateStatus(false);
         return;
@@ -88,11 +114,8 @@ var RemoteProjectsController = (function () {
 
       var socket = connection.getConnection().getSocket();
       updateStatus(socket.isConnected());
-      socket.on('status', updateStatus);
 
-      this._statusSubscription = new Disposable(function () {
-        socket.removeListener('status', updateStatus);
-      });
+      this._statusSubscription = socket.onStatus(updateStatus);
       this._disposables.add(this._statusSubscription);
     }
   }, {
@@ -104,19 +127,19 @@ var RemoteProjectsController = (function () {
       this._statusBarDiv.className = 'nuclide-remote-projects inline-block';
 
       var tooltip = atom.tooltips.add(this._statusBarDiv, { title: 'Click to show details of connection.' });
-      (0, _assert2['default'])(this._statusBarDiv);
+      (0, (_assert2 || _assert()).default)(this._statusBarDiv);
       var rightTile = statusBar.addLeftTile({
         item: this._statusBarDiv,
         priority: -99
       });
 
-      this._disposables.add(new Disposable(function () {
-        (0, _assert2['default'])(_this2._statusBarDiv);
+      this._disposables.add(new (_atom2 || _atom()).Disposable(function () {
+        (0, (_assert2 || _assert()).default)(_this2._statusBarDiv);
         var parentNode = _this2._statusBarDiv.parentNode;
         if (parentNode) {
           parentNode.removeChild(_this2._statusBarDiv);
         }
-        ReactDOM.unmountComponentAtNode(_this2._statusBarDiv);
+        (_reactForAtom2 || _reactForAtom()).ReactDOM.unmountComponentAtNode(_this2._statusBarDiv);
         _this2._statusBarDiv = null;
         rightTile.destroy();
         tooltip.dispose();
@@ -134,11 +157,11 @@ var RemoteProjectsController = (function () {
         return;
       }
 
-      var component = ReactDOM.render(React.createElement(StatusBarTile, {
+      var component = (_reactForAtom2 || _reactForAtom()).ReactDOM.render((_reactForAtom2 || _reactForAtom()).React.createElement((_uiStatusBarTile2 || _uiStatusBarTile()).default, {
         connectionState: connectionState,
         fileUri: fileUri
       }), this._statusBarDiv);
-      (0, _assert2['default'])(component instanceof StatusBarTile);
+      (0, (_assert2 || _assert()).default)(component instanceof (_uiStatusBarTile2 || _uiStatusBarTile()).default);
       this._statusBarTile = component;
     }
   }, {

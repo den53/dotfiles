@@ -4,9 +4,9 @@ Object.defineProperty(exports, '__esModule', {
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -16,20 +16,40 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * the root directory of this source tree.
  */
 
-var _atom = require('atom');
+var _atom2;
 
-var _nuclideDebuggerCommonLibOutputServiceManager = require('../../nuclide-debugger-common/lib/OutputServiceManager');
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var _utils = require('./utils');
+var _nuclideDebuggerCommonLibOutputServiceManager2;
 
-var _utils2 = _interopRequireDefault(_utils);
+function _nuclideDebuggerCommonLibOutputServiceManager() {
+  return _nuclideDebuggerCommonLibOutputServiceManager2 = require('../../nuclide-debugger-common/lib/OutputServiceManager');
+}
 
-var _rxjs = require('rxjs');
+var _utils2;
 
-var _nuclideCommons = require('../../nuclide-commons');
+function _utils() {
+  return _utils2 = _interopRequireDefault(require('./utils'));
+}
 
-var log = _utils2['default'].log;
-var logError = _utils2['default'].logError;
+var _default = (_utils2 || _utils()).default;
+
+var log = _default.log;
+var logError = _default.logError;
+
+var _rxjs2;
+
+function _rxjs() {
+  return _rxjs2 = require('rxjs');
+}
+
+var _nuclideCommons2;
+
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
 
 /**
  * The ObservableManager keeps track of the streams we use to talk to the server-side nuclide
@@ -53,30 +73,29 @@ var ObservableManager = (function () {
     this._outputWindowMessages = outputWindowMessages;
     this._sendServerMessageToChromeUi = sendServerMessageToChromeUi;
     this._onSessionEnd = onSessionEnd;
-    this._disposables = new _atom.CompositeDisposable();
+    this._disposables = new (_atom2 || _atom()).CompositeDisposable();
     this._subscribe();
   }
 
   _createClass(ObservableManager, [{
     key: '_subscribe',
     value: function _subscribe() {
-      this._disposables.add(new _nuclideCommons.DisposableSubscription(this._notifications.subscribe(this._handleNotificationMessage.bind(this), this._handleNotificationError.bind(this), this._handleNotificationEnd.bind(this))));
-      this._disposables.add(new _nuclideCommons.DisposableSubscription(this._serverMessages.subscribe(this._handleServerMessage.bind(this), this._handleServerError.bind(this), this._handleServerEnd.bind(this))));
-      this._registerOutputWindowLogging();
-      // Register a merged observable from shared streams that we can listen to for the onComplete.
       var sharedNotifications = this._notifications.share();
+      this._disposables.add(new (_nuclideCommons2 || _nuclideCommons()).DisposableSubscription(sharedNotifications.subscribe(this._handleNotificationMessage.bind(this), this._handleNotificationError.bind(this), this._handleNotificationEnd.bind(this))));
       var sharedServerMessages = this._serverMessages.share();
+      this._disposables.add(new (_nuclideCommons2 || _nuclideCommons()).DisposableSubscription(sharedServerMessages.subscribe(this._handleServerMessage.bind(this), this._handleServerError.bind(this), this._handleServerEnd.bind(this))));
       var sharedOutputWindow = this._outputWindowMessages.share();
-      _rxjs.Observable.merge(sharedNotifications, sharedServerMessages, sharedOutputWindow).subscribe({
+      this._registerOutputWindowLogging(sharedOutputWindow);
+      (_rxjs2 || _rxjs()).Observable.merge(sharedNotifications, sharedServerMessages, sharedOutputWindow).subscribe({
         complete: this._onCompleted.bind(this)
       });
     }
   }, {
     key: '_registerOutputWindowLogging',
-    value: function _registerOutputWindowLogging() {
-      var api = (0, _nuclideDebuggerCommonLibOutputServiceManager.getOutputService)();
+    value: function _registerOutputWindowLogging(sharedOutputWindowMessages) {
+      var api = (0, (_nuclideDebuggerCommonLibOutputServiceManager2 || _nuclideDebuggerCommonLibOutputServiceManager()).getOutputService)();
       if (api != null) {
-        var messages = this._outputWindowMessages.filter(function (messageObj) {
+        var messages = sharedOutputWindowMessages.filter(function (messageObj) {
           return messageObj.method === 'Console.messageAdded';
         }).map(function (messageObj) {
           return {
@@ -84,13 +103,12 @@ var ObservableManager = (function () {
             text: messageObj.params.message.text
           };
         });
-        var shared = messages.share();
-        shared.subscribe({
+        this._disposables.add(new (_nuclideCommons2 || _nuclideCommons()).DisposableSubscription(sharedOutputWindowMessages.subscribe({
           complete: this._handleOutputWindowEnd.bind(this)
-        });
+        })));
         this._disposables.add(api.registerOutputProvider({
           source: 'hhvm debugger',
-          messages: shared
+          messages: messages
         }));
       } else {
         logError('Cannot get output window service.');

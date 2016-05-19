@@ -4,11 +4,13 @@ Object.defineProperty(exports, '__esModule', {
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+// Responses to the DBGP 'status' command
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -18,17 +20,30 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * the root directory of this source tree.
  */
 
-var _utils = require('./utils');
+var _utils2;
 
-var _utils2 = _interopRequireDefault(_utils);
+function _utils() {
+  return _utils2 = _interopRequireDefault(require('./utils'));
+}
 
-var _helpers = require('./helpers');
+var _helpers2;
 
-var _events = require('events');
+function _helpers() {
+  return _helpers2 = require('./helpers');
+}
 
-var _DbgpMessageHandler = require('./DbgpMessageHandler');
+var _events2;
 
-// Responses to the DBGP 'status' command
+function _events() {
+  return _events2 = require('events');
+}
+
+var _DbgpMessageHandler2;
+
+function _DbgpMessageHandler() {
+  return _DbgpMessageHandler2 = require('./DbgpMessageHandler');
+}
+
 var STATUS_STARTING = 'starting';
 var STATUS_STOPPING = 'stopping';
 var STATUS_STOPPED = 'stopped';
@@ -51,6 +66,12 @@ var COMMAND_DETACH = 'detach';
 
 var DBGP_SOCKET_STATUS_EVENT = 'dbgp-socket-status';
 
+var DEFAULT_DBGP_PROPERTY = {
+  $: {
+    type: 'undefined'
+  }
+};
+
 /**
  * Handles sending and recieving dbgp messages over a net Socket.
  * Dbgp documentation can be found at http://xdebug.org/docs-dbgp.php
@@ -63,9 +84,9 @@ var DbgpSocket = (function () {
     this._socket = socket;
     this._transactionId = 0;
     this._calls = new Map();
-    this._emitter = new _events.EventEmitter();
+    this._emitter = new (_events2 || _events()).EventEmitter();
     this._isClosed = false;
-    this._messageHandler = (0, _DbgpMessageHandler.getDbgpMessageHandlerInstance)();
+    this._messageHandler = (0, (_DbgpMessageHandler2 || _DbgpMessageHandler()).getDbgpMessageHandlerInstance)();
 
     socket.on('end', this._onEnd.bind(this));
     socket.on('error', this._onError.bind(this));
@@ -82,7 +103,7 @@ var DbgpSocket = (function () {
     value: function _onError(error) {
       // Not sure if hhvm is alive or not
       // do not set _isClosed flag so that detach will be sent before dispose().
-      _utils2['default'].logError('socket error ' + error.code);
+      (_utils2 || _utils()).default.logError('socket error ' + error.code);
       this._emitStatus(STATUS_ERROR, error.code);
     }
   }, {
@@ -98,7 +119,7 @@ var DbgpSocket = (function () {
       var _this = this;
 
       var message = data.toString();
-      _utils2['default'].log('Recieved data: ' + message);
+      (_utils2 || _utils()).default.log('Recieved data: ' + message);
       var responses = [];
       try {
         responses = this._messageHandler.parseMessages(message);
@@ -119,29 +140,30 @@ var DbgpSocket = (function () {
           var transactionId = Number(transaction_id);
           var call = _this._calls.get(transactionId);
           if (!call) {
-            _utils2['default'].logError('Missing call for response: ' + message);
+            (_utils2 || _utils()).default.logError('Missing call for response: ' + message);
             return;
           }
-          _this._calls['delete'](transactionId);
+          _this._calls.delete(transactionId);
 
           if (call.command !== _command) {
-            _utils2['default'].logError('Bad command in response. Found ' + _command + '. expected ' + call.command);
+            (_utils2 || _utils()).default.logError('Bad command in response. Found ' + _command + '. expected ' + call.command);
             return;
           }
           try {
-            _utils2['default'].log('Completing call: ' + message);
+            (_utils2 || _utils()).default.log('Completing call: ' + message);
             call.complete(response);
           } catch (e) {
-            _utils2['default'].logError('Exception: ' + e.toString() + ' handling call: ' + message);
+            (_utils2 || _utils()).default.logError('Exception: ' + e.toString() + ' handling call: ' + message);
           }
         } else if (stream != null) {
           var outputType = stream.$.type;
-          var outputText = (0, _helpers.base64Decode)(stream._);
-          _utils2['default'].log(outputType + ' message received: ' + outputText);
+          // The body of the `stream` XML can be omitted, e.g. `echo null`, so we defend against this.
+          var outputText = stream._ != null ? (0, (_helpers2 || _helpers()).base64Decode)(stream._) : '';
+          (_utils2 || _utils()).default.log(outputType + ' message received: ' + outputText);
           var _status = outputType === 'stdout' ? STATUS_STDOUT : STATUS_STDERR;
           _this._emitStatus(_status, outputText);
         } else {
-          _utils2['default'].logError('Unexpected socket message: ' + message);
+          (_utils2 || _utils()).default.logError('Unexpected socket message: ' + message);
         }
       });
     }
@@ -192,11 +214,18 @@ var DbgpSocket = (function () {
           error: result.error[0],
           wasThrown: true
         };
+      } else if (result.property != null) {
+        return {
+          result: result.property[0],
+          wasThrown: false
+        };
+      } else {
+        (_utils2 || _utils()).default.log('Received non-error evaluateOnCallFrame response with no properties: ' + expression);
+        return {
+          result: DEFAULT_DBGP_PROPERTY,
+          wasThrown: false
+        };
       }
-      return {
-        result: result.property[0] || [],
-        wasThrown: false
-      };
     })
 
     // Returns one of:
@@ -260,17 +289,24 @@ var DbgpSocket = (function () {
   }, {
     key: 'runtimeEvaluate',
     value: _asyncToGenerator(function* (expr) {
-      var response = yield this._callDebugger('eval', '-- ' + (0, _helpers.base64Encode)(expr));
+      var response = yield this._callDebugger('eval', '-- ' + (0, (_helpers2 || _helpers()).base64Encode)(expr));
       if (response.error && response.error.length > 0) {
         return {
           error: response.error[0],
           wasThrown: true
         };
+      } else if (response != null) {
+        return {
+          result: response.property[0],
+          wasThrown: false
+        };
+      } else {
+        (_utils2 || _utils()).default.log('Received non-error runtimeEvaluate response with no properties: ' + expr);
+        return {
+          result: DEFAULT_DBGP_PROPERTY,
+          wasThrown: false
+        };
       }
-      return {
-        result: response.property[0] || [],
-        wasThrown: false
-      };
     })
 
     /**
@@ -342,10 +378,10 @@ var DbgpSocket = (function () {
     value: function _sendMessage(message) {
       var socket = this._socket;
       if (socket != null) {
-        _utils2['default'].log('Sending message: ' + message);
+        (_utils2 || _utils()).default.log('Sending message: ' + message);
         socket.write(message + '\x00');
       } else {
-        _utils2['default'].logError('Attempt to send message after dispose: ' + message);
+        (_utils2 || _utils()).default.logError('Attempt to send message after dispose: ' + message);
       }
     }
   }, {
@@ -353,7 +389,7 @@ var DbgpSocket = (function () {
     value: function _emitStatus(status) {
       var _emitter;
 
-      _utils2['default'].log('Emitting status: ' + status);
+      (_utils2 || _utils()).default.log('Emitting status: ' + status);
 
       for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
         args[_key - 1] = arguments[_key];

@@ -11,5 +11,5 @@ Object.defineProperty(exports, '__esModule', {
  */
 
 var DEBUGGER_LOGGER_CATEGORY = 'nuclide-debugger-lldb-server';
-exports['default'] = require('../../nuclide-logging').getCategoryLogger(DEBUGGER_LOGGER_CATEGORY);
-module.exports = exports['default'];
+exports.default = require('../../nuclide-logging').getCategoryLogger(DEBUGGER_LOGGER_CATEGORY);
+module.exports = exports.default;

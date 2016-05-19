@@ -12,7 +12,7 @@ exports.makeExpressionHphpdCompatible = makeExpressionHphpdCompatible;
  */
 
 var DEBUGGER_LOGGER_CATEGORY = 'nuclide-hhvm-debugger';
-exports['default'] = require('../../nuclide-logging').getCategoryLogger(DEBUGGER_LOGGER_CATEGORY);
+exports.default = require('../../nuclide-logging').getCategoryLogger(DEBUGGER_LOGGER_CATEGORY);
 
 function makeExpressionHphpdCompatible(params) {
   // Hphpd requires that '=' is prefixed to expressions, but xdebug doesn't require this, so

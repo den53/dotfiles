@@ -10,9 +10,9 @@ var fileSearchForDirectory = _asyncToGenerator(function* (directoryUri, pathSetU
     return fileSearch;
   }
 
-  var realpath = yield _nuclideCommons.fsPromise.realpath((0, _nuclideRemoteUri.parse)(directoryUri).path);
-  var paths = yield (0, _PathSetFactory.getPaths)(realpath);
-  var pathSet = new _PathSet.PathSet(paths);
+  var realpath = yield (_nuclideCommons2 || _nuclideCommons()).fsPromise.realpath((0, (_nuclideRemoteUri2 || _nuclideRemoteUri()).parse)(directoryUri).path);
+  var paths = yield (0, (_PathSetFactory2 || _PathSetFactory()).getPaths)(realpath);
+  var pathSet = new (_PathSet2 || _PathSet()).PathSet(paths);
 
   var thisPathSetUpdater = pathSetUpdater || getPathSetUpdater();
   try {
@@ -48,11 +48,11 @@ var doSearch = _asyncToGenerator(function* (directoryUri, query) {
 
 exports.doSearch = doSearch;
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -62,25 +62,49 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * the root directory of this source tree.
  */
 
-var _urlJoin = require('url-join');
+var _urlJoin2;
 
-var _urlJoin2 = _interopRequireDefault(_urlJoin);
+function _urlJoin() {
+  return _urlJoin2 = _interopRequireDefault(require('url-join'));
+}
 
-var _nuclideRemoteUri = require('../../nuclide-remote-uri');
+var _nuclideRemoteUri2;
 
-var _nuclideCommons = require('../../nuclide-commons');
+function _nuclideRemoteUri() {
+  return _nuclideRemoteUri2 = require('../../nuclide-remote-uri');
+}
 
-var _nuclideLogging = require('../../nuclide-logging');
+var _nuclideCommons2;
 
-var _PathSet = require('./PathSet');
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
 
-var _PathSetFactory = require('./PathSetFactory');
+var _nuclideLogging2;
 
-var _PathSetUpdater = require('./PathSetUpdater');
+function _nuclideLogging() {
+  return _nuclideLogging2 = require('../../nuclide-logging');
+}
 
-var _PathSetUpdater2 = _interopRequireDefault(_PathSetUpdater);
+var _PathSet2;
 
-var logger = (0, _nuclideLogging.getLogger)();
+function _PathSet() {
+  return _PathSet2 = require('./PathSet');
+}
+
+var _PathSetFactory2;
+
+function _PathSetFactory() {
+  return _PathSetFactory2 = require('./PathSetFactory');
+}
+
+var _PathSetUpdater2;
+
+function _PathSetUpdater() {
+  return _PathSetUpdater2 = _interopRequireDefault(require('./PathSetUpdater'));
+}
+
+var logger = (0, (_nuclideLogging2 || _nuclideLogging()).getLogger)();
 
 var FileSearch = (function () {
   function FileSearch(fullUri, pathSet) {
@@ -105,7 +129,7 @@ var FileSearch = (function () {
         }
         return {
           score: result.score,
-          path: (0, _urlJoin2['default'])(_this._originalUri, '/', result.value),
+          path: (0, (_urlJoin2 || _urlJoin()).default)(_this._originalUri, '/', result.value),
           matchIndexes: matchIndexes || []
         };
       });
@@ -122,7 +146,7 @@ var pathSetUpdater = undefined;
 
 function getPathSetUpdater() {
   if (!pathSetUpdater) {
-    exports.pathSetUpdater = pathSetUpdater = new _PathSetUpdater2['default']();
+    exports.pathSetUpdater = exports.pathSetUpdater = pathSetUpdater = new (_PathSetUpdater2 || _PathSetUpdater()).default();
   }
   return pathSetUpdater;
 }

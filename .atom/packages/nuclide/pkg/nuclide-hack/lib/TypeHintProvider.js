@@ -10,12 +10,12 @@ var _createDecoratedClass = (function () { function defineProperties(target, des
 
 var typeHintFromEditor = _asyncToGenerator(function* (editor, position) {
   var filePath = editor.getPath();
-  var hackLanguage = yield (0, _HackLanguage.getHackLanguageForUri)(filePath);
+  var hackLanguage = yield (0, (_HackLanguage2 || _HackLanguage()).getHackLanguageForUri)(filePath);
   if (!hackLanguage || !filePath) {
     return null;
   }
 
-  var match = (0, _utils.getIdentifierAndRange)(editor, position);
+  var match = (0, (_utils2 || _utils()).getIdentifierAndRange)(editor, position);
   if (match == null) {
     return null;
   }
@@ -37,11 +37,23 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _HackLanguage = require('./HackLanguage');
+var _HackLanguage2;
 
-var _utils = require('./utils');
+function _HackLanguage() {
+  return _HackLanguage2 = require('./HackLanguage');
+}
 
-var _nuclideAnalytics = require('../../nuclide-analytics');
+var _utils2;
+
+function _utils() {
+  return _utils2 = require('./utils');
+}
+
+var _nuclideAnalytics2;
+
+function _nuclideAnalytics() {
+  return _nuclideAnalytics2 = require('../../nuclide-analytics');
+}
 
 module.exports = (function () {
   function TypeHintProvider() {
@@ -50,7 +62,7 @@ module.exports = (function () {
 
   _createDecoratedClass(TypeHintProvider, [{
     key: 'typeHint',
-    decorators: [(0, _nuclideAnalytics.trackTiming)('hack.typeHint')],
+    decorators: [(0, (_nuclideAnalytics2 || _nuclideAnalytics()).trackTiming)('hack.typeHint')],
     value: function typeHint(editor, position) {
       return typeHintFromEditor(editor, position);
     }

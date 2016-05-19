@@ -18,7 +18,11 @@ function _inherits(subClass, superClass) { if (typeof superClass !== 'function' 
  * the root directory of this source tree.
  */
 
-var _reactForAtom = require('react-for-atom');
+var _reactForAtom2;
+
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
 
 var SPINNER = '';
 
@@ -40,7 +44,7 @@ var StatusBarTileComponent = (function (_React$Component) {
       } else {
         classes.push('nuclide-busy-signal-status-bar-idle');
       }
-      return _reactForAtom.React.createElement(
+      return (_reactForAtom2 || _reactForAtom()).React.createElement(
         'div',
         { className: classes.join(' ') },
         SPINNER
@@ -49,6 +53,6 @@ var StatusBarTileComponent = (function (_React$Component) {
   }]);
 
   return StatusBarTileComponent;
-})(_reactForAtom.React.Component);
+})((_reactForAtom2 || _reactForAtom()).React.Component);
 
 exports.StatusBarTileComponent = StatusBarTileComponent;

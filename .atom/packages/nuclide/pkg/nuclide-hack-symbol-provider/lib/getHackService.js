@@ -16,7 +16,7 @@ Object.defineProperty(exports, '__esModule', {
 
 var getHackService = _asyncToGenerator(function* (directory) {
   var directoryPath = directory.getPath();
-  var hackEnvironment = yield (0, _nuclideHackLibUtils.getHackEnvironmentDetails)(directoryPath);
+  var hackEnvironment = yield (0, (_nuclideHackLibUtils2 || _nuclideHackLibUtils()).getHackEnvironmentDetails)(directoryPath);
 
   // Note that service being non-null only verifies that the nuclide-server that corresponds to the
   // directory has the HackService registered: it does not guarantee that the specified
@@ -29,4 +29,8 @@ exports.getHackService = getHackService;
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
-var _nuclideHackLibUtils = require('../../nuclide-hack/lib/utils');
+var _nuclideHackLibUtils2;
+
+function _nuclideHackLibUtils() {
+  return _nuclideHackLibUtils2 = require('../../nuclide-hack/lib/utils');
+}

@@ -14,34 +14,59 @@ var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = 
 
 var _createDecoratedClass = (function () { function defineProperties(target, descriptors, initializers) { for (var i = 0; i < descriptors.length; i++) { var descriptor = descriptors[i]; var decorators = descriptor.decorators; var key = descriptor.key; delete descriptor.key; delete descriptor.decorators; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor || descriptor.initializer) descriptor.writable = true; if (decorators) { for (var f = 0; f < decorators.length; f++) { var decorator = decorators[f]; if (typeof decorator === 'function') { descriptor = decorator(target, key, descriptor) || descriptor; } else { throw new TypeError('The decorator for method ' + descriptor.key + ' is of the invalid type ' + typeof decorator); } } if (descriptor.initializer !== undefined) { initializers[key] = descriptor; continue; } } Object.defineProperty(target, key, descriptor); } } return function (Constructor, protoProps, staticProps, protoInitializers, staticInitializers) { if (protoProps) defineProperties(Constructor.prototype, protoProps, protoInitializers); if (staticProps) defineProperties(Constructor, staticProps, staticInitializers); return Constructor; }; })();
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _atom = require('atom');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _constants = require('./constants');
+var _atom2;
 
-var _nuclideCommons = require('../../nuclide-commons');
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var _nuclideAnalytics = require('../../nuclide-analytics');
+var _constants2;
 
-var _notifications = require('./notifications');
+function _constants() {
+  return _constants2 = require('./constants');
+}
 
-var _assert = require('assert');
+var _nuclideCommons2;
 
-var _assert2 = _interopRequireDefault(_assert);
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
 
-var _lruCache = require('lru-cache');
+var _nuclideAnalytics2;
 
-var _lruCache2 = _interopRequireDefault(_lruCache);
+function _nuclideAnalytics() {
+  return _nuclideAnalytics2 = require('../../nuclide-analytics');
+}
 
-var _nuclideLogging = require('../../nuclide-logging');
+var _notifications2;
 
-var logger = (0, _nuclideLogging.getLogger)();
-var serializeAsyncCall = _nuclideCommons.promises.serializeAsyncCall;
+function _notifications() {
+  return _notifications2 = require('./notifications');
+}
+
+var _assert2;
+
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
+
+var _lruCache2;
+
+function _lruCache() {
+  return _lruCache2 = _interopRequireDefault(require('lru-cache'));
+}
+
+var _nuclideLogging2;
+
+function _nuclideLogging() {
+  return _nuclideLogging2 = require('../../nuclide-logging');
+}
 
 var UPDATE_COMMIT_MERGE_FILES_EVENT = 'update-commit-merge-files';
 var UPDATE_DIRTY_FILES_EVENT = 'update-dirty-files';
@@ -58,25 +83,30 @@ var RepositoryStack = (function () {
     _classCallCheck(this, RepositoryStack);
 
     this._repository = repository;
-    this._emitter = new _atom.Emitter();
-    this._subscriptions = new _atom.CompositeDisposable();
+    this._emitter = new (_atom2 || _atom()).Emitter();
+    this._subscriptions = new (_atom2 || _atom()).CompositeDisposable();
     this._commitMergeFileChanges = new Map();
     this._lastCommitMergeFileChanges = new Map();
     this._dirtyFileChanges = new Map();
     this._isActive = false;
-    this._revisionIdToFileChanges = new _lruCache2['default']({ max: 100 });
+    this._revisionIdToFileChanges = new (_lruCache2 || _lruCache()).default({ max: 100 });
     this._selectedCompareCommitId = null;
     this._lastRevisionsFileHistory = null;
     this._lastRevisionsState = null;
-    this._serializedUpdateStatus = serializeAsyncCall(function () {
-      return _this._updateChangedStatus();
+    this._serializedUpdateStatus = (_nuclideCommons2 || _nuclideCommons()).promises.serializeAsyncCall(function () {
+      return _this._tryUpdateCommitMergeFileChanges();
     });
-    var debouncedSerializedUpdateStatus = (0, _nuclideCommons.debounce)(this._serializedUpdateStatus, UPDATE_STATUS_DEBOUNCE_MS, false);
-    debouncedSerializedUpdateStatus();
+    var debouncedSerializedUpdateStatus = (0, (_nuclideCommons2 || _nuclideCommons()).debounce)(this._serializedUpdateStatus, UPDATE_STATUS_DEBOUNCE_MS, false);
+    this._serializedUpdateStatus();
     // Get the initial project status, if it's not already there,
     // triggered by another integration, like the file tree.
     repository.getStatuses([repository.getProjectDirectory()]);
-    this._subscriptions.add(repository.onDidChangeStatuses(debouncedSerializedUpdateStatus));
+    this._subscriptions.add(repository.onDidChangeStatuses(function () {
+      // Do the lightweight dirty cache update to reflect the changes,
+      // While only commit merge changes consumers wait for its results.
+      _this._updateDirtyFileChanges();
+      debouncedSerializedUpdateStatus();
+    }));
   }
 
   _createDecoratedClass(RepositoryStack, [{
@@ -94,14 +124,13 @@ var RepositoryStack = (function () {
       this._isActive = false;
     }
   }, {
-    key: '_updateChangedStatus',
-    decorators: [(0, _nuclideAnalytics.trackTiming)('diff-view.update-change-status')],
+    key: '_tryUpdateCommitMergeFileChanges',
+    decorators: [(0, (_nuclideAnalytics2 || _nuclideAnalytics()).trackTiming)('diff-view.update-change-status')],
     value: _asyncToGenerator(function* () {
       try {
-        this._updateDirtyFileChanges();
         yield this._updateCommitMergeFileChanges();
       } catch (error) {
-        (0, _notifications.notifyInternalError)(error);
+        (0, (_notifications2 || _notifications()).notifyInternalError)(error);
       }
     })
   }, {
@@ -116,7 +145,7 @@ var RepositoryStack = (function () {
       var dirtyFileChanges = new Map();
       var statuses = this._repository.getAllPathStatuses();
       for (var filePath in statuses) {
-        var changeStatus = _constants.HgStatusToFileChangeStatus[statuses[filePath]];
+        var changeStatus = (_constants2 || _constants()).HgStatusToFileChangeStatus[statuses[filePath]];
         if (changeStatus != null) {
           dirtyFileChanges.set(filePath, changeStatus);
         }
@@ -164,7 +193,7 @@ var RepositoryStack = (function () {
       // That's because commit ids are unique and incremental.
       // Also, any write operation will update them.
       // That way, we guarantee we only update the revisions state if the revisions are changed.
-      if (lastRevisionsState == null || !_nuclideCommons.array.equal(lastRevisionsState.revisions, revisionsState.revisions, function (revision1, revision2) {
+      if (lastRevisionsState == null || !(_nuclideCommons2 || _nuclideCommons()).array.equal(lastRevisionsState.revisions, revisionsState.revisions, function (revision1, revision2) {
         return revision1.id === revision2.id;
       })) {
         this._emitter.emit(CHANGE_REVISIONS_EVENT, revisionsState);
@@ -180,7 +209,7 @@ var RepositoryStack = (function () {
         var revisionIds = revisionsState.revisions.map(function (revision) {
           return revision.id;
         });
-        if (_nuclideCommons.array.equal(revisionIds, fileHistoryRevisionIds)) {
+        if ((_nuclideCommons2 || _nuclideCommons()).array.equal(revisionIds, fileHistoryRevisionIds)) {
           revisionsFileHistory = this._lastRevisionsFileHistory;
         }
       }
@@ -190,7 +219,7 @@ var RepositoryStack = (function () {
         try {
           revisionsFileHistory = yield this._getRevisionFileHistoryPromise(revisionsState);
         } catch (error) {
-          logger.error('Cannot fetch revision history: ' + '(could happen with pending source-control history writing operations)', error);
+          (0, (_nuclideLogging2 || _nuclideLogging()).getLogger)().error('Cannot fetch revision history: ' + '(could happen with pending source-control history writing operations)', error);
           return;
         }
       }
@@ -242,12 +271,12 @@ var RepositoryStack = (function () {
         compareCommitId = null;
       }
       var latestToOldestRevisions = revisions.slice().reverse();
-      if (compareCommitId == null && latestToOldestRevisions.length > 1) {
+      if (compareCommitId == null && latestToOldestRevisions.length > 0) {
         // If the user has already committed, most of the times, he'd be working on an amend.
         // So, the heuristic here is to compare against the previous version,
         // not the just-committed one, while the revisions timeline
         // would give a way to specify otherwise.
-        compareCommitId = latestToOldestRevisions[1].id;
+        compareCommitId = latestToOldestRevisions[0].id;
       }
       return {
         revisions: revisions,
@@ -261,7 +290,8 @@ var RepositoryStack = (function () {
       var _this3 = this;
 
       this._revisionsFileHistoryPromise = this._fetchRevisionsFileHistory(revisionsState).then(function (revisionsFileHistory) {
-        return _this3._lastRevisionsFileHistory = revisionsFileHistory;
+        _this3._lastRevisionsFileHistory = revisionsFileHistory;
+        return revisionsFileHistory;
       }, function (error) {
         _this3._revisionsFileHistoryPromise = null;
         _this3._lastRevisionsFileHistory = null;
@@ -280,7 +310,7 @@ var RepositoryStack = (function () {
     }
   }, {
     key: '_fetchRevisionsState',
-    decorators: [(0, _nuclideAnalytics.trackTiming)('diff-view.fetch-revisions-state')],
+    decorators: [(0, (_nuclideAnalytics2 || _nuclideAnalytics()).trackTiming)('diff-view.fetch-revisions-state')],
     value: _asyncToGenerator(function* () {
       var _this4 = this;
 
@@ -291,7 +321,7 @@ var RepositoryStack = (function () {
       // may be not applicable, but that's defined once the rebase is done.
       // Hence, we need to retry fetching the revision info (depending on the common ancestor)
       // because the watchman-based Mercurial updates doesn't consider or wait while rebasing.
-      var revisions = yield _nuclideCommons.promises.retryLimit(function () {
+      var revisions = yield (_nuclideCommons2 || _nuclideCommons()).promises.retryLimit(function () {
         return _this4._repository.fetchRevisionInfoBetweenHeadAndBase();
       }, function (result) {
         return result != null;
@@ -308,7 +338,7 @@ var RepositoryStack = (function () {
     })
   }, {
     key: '_fetchRevisionsFileHistory',
-    decorators: [(0, _nuclideAnalytics.trackTiming)('diff-view.fetch-revisions-change-history')],
+    decorators: [(0, (_nuclideAnalytics2 || _nuclideAnalytics()).trackTiming)('diff-view.fetch-revisions-change-history')],
     value: _asyncToGenerator(function* (revisionsState) {
       var _this5 = this;
 
@@ -383,9 +413,9 @@ var RepositoryStack = (function () {
         var modified = revisionFileChanges.modified;
         var deleted = revisionFileChanges.deleted;
 
-        mergeStatusPaths(added, _constants.FileChangeStatus.ADDED);
-        mergeStatusPaths(modified, _constants.FileChangeStatus.MODIFIED);
-        mergeStatusPaths(deleted, _constants.FileChangeStatus.REMOVED);
+        mergeStatusPaths(added, (_constants2 || _constants()).FileChangeStatus.ADDED);
+        mergeStatusPaths(modified, (_constants2 || _constants()).FileChangeStatus.MODIFIED);
+        mergeStatusPaths(deleted, (_constants2 || _constants()).FileChangeStatus.REMOVED);
       }
 
       return mergedStatus;
@@ -416,13 +446,13 @@ var RepositoryStack = (function () {
       // to the filesystem, otherwise it compares that commit to filesystem.
       var compareCommitId = null;
       switch (diffOption) {
-        case _constants.DiffOption.DIRTY:
+        case (_constants2 || _constants()).DiffOption.DIRTY:
           compareCommitId = null;
           break;
-        case _constants.DiffOption.LAST_COMMIT:
+        case (_constants2 || _constants()).DiffOption.LAST_COMMIT:
           compareCommitId = revisions.length <= 1 ? null : revisions[revisions.length - 2].id;
           break;
-        case _constants.DiffOption.COMPARE_COMMIT:
+        case (_constants2 || _constants()).DiffOption.COMPARE_COMMIT:
           compareCommitId = revisionsState.compareCommitId;
           break;
         default:
@@ -446,7 +476,7 @@ var RepositoryStack = (function () {
 
       var revisionInfo = _revisions$filter2[0];
 
-      (0, _assert2['default'])(revisionInfo, 'Diff Viw Fetcher: revision with id ' + fetchedRevisionId + ' not found');
+      (0, (_assert2 || _assert()).default)(revisionInfo, 'Diff Viw Fetcher: revision with id ' + fetchedRevisionId + ' not found');
       return {
         committedContents: committedContents,
         revisionInfo: revisionInfo
@@ -463,7 +493,7 @@ var RepositoryStack = (function () {
       var revisionsState = yield this.getCachedRevisionsStatePromise();
       var revisions = revisionsState.revisions;
 
-      (0, _assert2['default'])(revisions && revisions.find(function (check) {
+      (0, (_assert2 || _assert()).default)(revisions && revisions.find(function (check) {
         return check.id === revision.id;
       }), 'Diff Viw Timeline: non-applicable selected revision');
 
@@ -508,5 +538,5 @@ var RepositoryStack = (function () {
   return RepositoryStack;
 })();
 
-exports['default'] = RepositoryStack;
-module.exports = exports['default'];
+exports.default = RepositoryStack;
+module.exports = exports.default;

@@ -12,9 +12,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
  * the root directory of this source tree.
  */
 
-var _assert = require('assert');
+var _assert2;
 
-var _assert2 = _interopRequireDefault(_assert);
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
 module.exports = Object.defineProperties({}, {
   USER: {
@@ -22,7 +24,7 @@ module.exports = Object.defineProperties({}, {
 
     get: function get() {
       var user = process.env['USER'] || process.env['USERNAME'];
-      (0, _assert2['default'])(user != null);
+      (0, (_assert2 || _assert()).default)(user != null);
       return user;
     },
     configurable: true,

@@ -14,14 +14,14 @@ var _Object$freeze, _Object$freeze2;
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-var _nuclideHgRepositoryBase = require('../../nuclide-hg-repository-base');
+var _nuclideHgRepositoryBase2;
 
-var HgStatusCodeNumber = _nuclideHgRepositoryBase.hgConstants.StatusCodeNumber;
-var GK_DIFF_VIEW_PUBLISH = 'nuclide_diff_view_publish';
-exports.GK_DIFF_VIEW_PUBLISH = GK_DIFF_VIEW_PUBLISH;
-var TOOLBAR_VISIBLE_SETTING = 'nuclide-diff-view.toolbarVisible';
+function _nuclideHgRepositoryBase() {
+  return _nuclideHgRepositoryBase2 = require('../../nuclide-hg-repository-base');
+}
 
-exports.TOOLBAR_VISIBLE_SETTING = TOOLBAR_VISIBLE_SETTING;
+var HgStatusCodeNumber = (_nuclideHgRepositoryBase2 || _nuclideHgRepositoryBase()).hgConstants.StatusCodeNumber;
+
 var FileChangeStatus = Object.freeze({
   ADDED: 1,
   MODIFIED: 2,

@@ -1,7 +1,7 @@
 Object.defineProperty(exports, '__esModule', {
   value: true
 });
-exports['default'] = normalizeEventString;
+exports.default = normalizeEventString;
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -15,4 +15,4 @@ function normalizeEventString(str) {
   return str.replace(/\s+/g, '-').toLowerCase();
 }
 
-module.exports = exports['default'];
+module.exports = exports.default;

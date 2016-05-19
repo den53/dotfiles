@@ -1,8 +1,4 @@
-var _nuclideUiLibButton = require('../../nuclide-ui/lib/Button');
-
-/**
- * Wrapper for Chrome Devtools frontend view.
- */
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -12,50 +8,80 @@ var _nuclideUiLibButton = require('../../nuclide-ui/lib/Button');
  * the root directory of this source tree.
  */
 
-var BreakpointStore = require('./BreakpointStore');
-var Bridge = require('./Bridge');
-var DebuggerActions = require('./DebuggerActions');
+var _BreakpointStore2;
 
-var _require = require('react-for-atom');
+function _BreakpointStore() {
+  return _BreakpointStore2 = _interopRequireDefault(require('./BreakpointStore'));
+}
 
-var React = _require.React;
-var ReactDOM = _require.ReactDOM;
-var PropTypes = React.PropTypes;
+var _Bridge2;
 
-var path = require('path');
+function _Bridge() {
+  return _Bridge2 = _interopRequireDefault(require('./Bridge'));
+}
 
-var _require2 = require('../../nuclide-ui/lib/PanelComponent');
+var _DebuggerActions2;
 
-var PanelComponent = _require2.PanelComponent;
-var DebuggerInspector = React.createClass({
+function _DebuggerActions() {
+  return _DebuggerActions2 = _interopRequireDefault(require('./DebuggerActions'));
+}
+
+var _reactForAtom2;
+
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
+
+var _path2;
+
+function _path() {
+  return _path2 = _interopRequireDefault(require('path'));
+}
+
+var _nuclideUiLibPanelComponent2;
+
+function _nuclideUiLibPanelComponent() {
+  return _nuclideUiLibPanelComponent2 = require('../../nuclide-ui/lib/PanelComponent');
+}
+
+var _nuclideUiLibButton2;
+
+function _nuclideUiLibButton() {
+  return _nuclideUiLibButton2 = require('../../nuclide-ui/lib/Button');
+}
+
+/**
+ * Wrapper for Chrome Devtools frontend view.
+ */
+var DebuggerInspector = (_reactForAtom2 || _reactForAtom()).React.createClass({
   _webviewNode: null,
 
   displayName: 'DebuggerInspector',
 
   propTypes: {
-    actions: PropTypes.instanceOf(DebuggerActions).isRequired,
-    breakpointStore: PropTypes.instanceOf(BreakpointStore).isRequired,
-    socket: PropTypes.string.isRequired,
-    bridge: PropTypes.instanceOf(Bridge).isRequired
+    actions: (_reactForAtom2 || _reactForAtom()).React.PropTypes.instanceOf((_DebuggerActions2 || _DebuggerActions()).default).isRequired,
+    breakpointStore: (_reactForAtom2 || _reactForAtom()).React.PropTypes.instanceOf((_BreakpointStore2 || _BreakpointStore()).default).isRequired,
+    socket: (_reactForAtom2 || _reactForAtom()).React.PropTypes.string.isRequired,
+    bridge: (_reactForAtom2 || _reactForAtom()).React.PropTypes.instanceOf((_Bridge2 || _Bridge()).default).isRequired
   },
 
   render: function render() {
-    return React.createElement(
-      PanelComponent,
+    return (_reactForAtom2 || _reactForAtom()).React.createElement(
+      (_nuclideUiLibPanelComponent2 || _nuclideUiLibPanelComponent()).PanelComponent,
       { initialLength: 500, dock: 'right' },
-      React.createElement(
+      (_reactForAtom2 || _reactForAtom()).React.createElement(
         'div',
         { className: 'inspector' },
-        React.createElement(
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
           'div',
           { className: 'control-bar', ref: 'controlBar' },
-          React.createElement(_nuclideUiLibButton.Button, {
+          (_reactForAtom2 || _reactForAtom()).React.createElement((_nuclideUiLibButton2 || _nuclideUiLibButton()).Button, {
             title: 'Detach from the current process.',
             icon: 'x',
-            buttonType: _nuclideUiLibButton.ButtonTypes.ERROR,
+            buttonType: (_nuclideUiLibButton2 || _nuclideUiLibButton()).ButtonTypes.ERROR,
             onClick: this._handleClickClose
           }),
-          React.createElement(_nuclideUiLibButton.Button, {
+          (_reactForAtom2 || _reactForAtom()).React.createElement((_nuclideUiLibButton2 || _nuclideUiLibButton()).Button, {
             title: '(Debug) Open Web Inspector for the debugger frame.',
             icon: 'gear',
             onClick: this._handleClickDevTools
@@ -75,7 +101,7 @@ var DebuggerInspector = React.createClass({
     webviewNode.classList.add('native-key-bindings'); // required to pass through certain key events
     webviewNode.classList.add('nuclide-debugger-webview');
     this._webviewNode = webviewNode;
-    var controlBarNode = ReactDOM.findDOMNode(this.refs.controlBar);
+    var controlBarNode = (_reactForAtom2 || _reactForAtom()).ReactDOM.findDOMNode(this.refs.controlBar);
     controlBarNode.parentNode.insertBefore(webviewNode, controlBarNode.nextSibling);
     this.props.bridge.setWebviewElement(webviewNode);
   },
@@ -95,7 +121,7 @@ var DebuggerInspector = React.createClass({
   },
 
   _getUrl: function _getUrl() {
-    return path.join(__dirname, '../scripts/inspector.html') + '?' + this.props.socket;
+    return (_path2 || _path()).default.join(__dirname, '../scripts/inspector.html') + '?' + this.props.socket;
   },
 
   _handleClickClose: function _handleClickClose() {

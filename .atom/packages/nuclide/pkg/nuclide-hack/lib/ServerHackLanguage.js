@@ -18,13 +18,29 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _atom = require('atom');
+var _atom2;
 
-var _nuclideLogging = require('../../nuclide-logging');
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var _TypedRegions = require('./TypedRegions');
+var _nuclideLogging2;
 
-var _nuclideHackCommon = require('../../nuclide-hack-common');
+function _nuclideLogging() {
+  return _nuclideLogging2 = require('../../nuclide-logging');
+}
+
+var _TypedRegions2;
+
+function _TypedRegions() {
+  return _TypedRegions2 = require('./TypedRegions');
+}
+
+var _nuclideHackCommon2;
+
+function _nuclideHackCommon() {
+  return _nuclideHackCommon2 = require('../../nuclide-hack-common');
+}
 
 /**
  * Serves language requests from HackService.
@@ -90,11 +106,11 @@ var ServerHackLanguage = (function () {
       try {
         diagnosticResult = yield this._hackService.getDiagnostics(filePath, contents);
       } catch (err) {
-        (0, _nuclideLogging.getLogger)().error(err);
+        (0, (_nuclideLogging2 || _nuclideLogging()).getLogger)().error(err);
         return [];
       }
       if (!diagnosticResult) {
-        (0, _nuclideLogging.getLogger)().error('hh_client could not be reached');
+        (0, (_nuclideLogging2 || _nuclideLogging()).getLogger)().error('hh_client could not be reached');
         return [];
       }
       var hackDiagnostics = diagnosticResult;
@@ -104,7 +120,7 @@ var ServerHackLanguage = (function () {
     key: 'getTypeCoverage',
     value: _asyncToGenerator(function* (filePath) {
       var regions = yield this._hackService.getTypedRegions(filePath);
-      return (0, _TypedRegions.convertTypedRegionsToCoverageRegions)(regions);
+      return (0, (_TypedRegions2 || _TypedRegions()).convertTypedRegionsToCoverageRegions)(regions);
     })
   }, {
     key: 'getOutline',
@@ -183,26 +199,26 @@ var ServerHackLanguage = (function () {
 exports.ServerHackLanguage = ServerHackLanguage;
 
 function hackRangeToAtomRange(position) {
-  return new _atom.Range([position.line - 1, position.char_start - 1], [position.line - 1, position.char_end]);
+  return new (_atom2 || _atom()).Range([position.line - 1, position.char_start - 1], [position.line - 1, position.char_end]);
 }
 
 // The xhp char regex include : and - to match xhp tags like <ui:button-group>.
 var xhpCharRegex = /[\w:-]/;
 
 var stringToSymbolType = {
-  'class': _nuclideHackCommon.SymbolType.CLASS,
-  'function': _nuclideHackCommon.SymbolType.FUNCTION,
-  'method': _nuclideHackCommon.SymbolType.METHOD,
-  'local': _nuclideHackCommon.SymbolType.LOCAL
+  'class': (_nuclideHackCommon2 || _nuclideHackCommon()).SymbolType.CLASS,
+  'function': (_nuclideHackCommon2 || _nuclideHackCommon()).SymbolType.FUNCTION,
+  'method': (_nuclideHackCommon2 || _nuclideHackCommon()).SymbolType.METHOD,
+  'local': (_nuclideHackCommon2 || _nuclideHackCommon()).SymbolType.LOCAL
 };
 
 // Symbol types we can get references for.
-var SYMBOL_TYPES_WITH_REFERENCES = new Set([_nuclideHackCommon.SymbolType.CLASS, _nuclideHackCommon.SymbolType.FUNCTION, _nuclideHackCommon.SymbolType.METHOD]);
+var SYMBOL_TYPES_WITH_REFERENCES = new Set([(_nuclideHackCommon2 || _nuclideHackCommon()).SymbolType.CLASS, (_nuclideHackCommon2 || _nuclideHackCommon()).SymbolType.FUNCTION, (_nuclideHackCommon2 || _nuclideHackCommon()).SymbolType.METHOD]);
 
 function getSymbolType(input) {
   var symbolType = stringToSymbolType[input];
   if (typeof symbolType === 'undefined') {
-    symbolType = _nuclideHackCommon.SymbolType.METHOD;
+    symbolType = (_nuclideHackCommon2 || _nuclideHackCommon()).SymbolType.METHOD;
   }
   return symbolType;
 }

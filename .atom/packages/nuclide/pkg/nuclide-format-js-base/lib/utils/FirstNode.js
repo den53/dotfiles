@@ -1,6 +1,4 @@
-
-
-var NewLine = require('./NewLine');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -10,11 +8,31 @@ var NewLine = require('./NewLine');
  * the root directory of this source tree.
  */
 
-var getRootIdentifierInExpression = require('./getRootIdentifierInExpression');
-var isGlobal = require('./isGlobal');
-var jscs = require('jscodeshift');
+var _NewLine2;
 
-var match = jscs.match;
+function _NewLine() {
+  return _NewLine2 = _interopRequireDefault(require('./NewLine'));
+}
+
+var _getRootIdentifierInExpression2;
+
+function _getRootIdentifierInExpression() {
+  return _getRootIdentifierInExpression2 = _interopRequireDefault(require('./getRootIdentifierInExpression'));
+}
+
+var _isGlobal2;
+
+function _isGlobal() {
+  return _isGlobal2 = _interopRequireDefault(require('./isGlobal'));
+}
+
+var _jscodeshift2;
+
+function _jscodeshift() {
+  return _jscodeshift2 = _interopRequireDefault(require('jscodeshift'));
+}
+
+var match = (_jscodeshift2 || _jscodeshift()).default.match;
 
 var FirstNode = {
   /**
@@ -25,8 +43,8 @@ var FirstNode = {
    */
   get: function get(root) {
     var first = undefined;
-    root.find(jscs.Node).filter(function (path) {
-      return isGlobal(path);
+    root.find((_jscodeshift2 || _jscodeshift()).default.Node).filter(function (path) {
+      return (0, (_isGlobal2 || _isGlobal()).default)(path);
     }).forEach(function (path) {
       if (!first && FirstNode.isValidFirstNode(path)) {
         first = path;
@@ -40,14 +58,14 @@ var FirstNode = {
    */
   isValidFirstNode: function isValidFirstNode(path) {
     // A new line literal is okay.
-    if (match(path, { expression: { value: NewLine.literal } })) {
+    if (match(path, { expression: { value: (_NewLine2 || _NewLine()).default.literal } })) {
       return true;
     }
     // Any other literal is not.
     if (match(path, { expression: { type: 'Literal' } })) {
       return false;
     }
-    var firstObject = getRootIdentifierInExpression(path.node);
+    var firstObject = (0, (_getRootIdentifierInExpression2 || _getRootIdentifierInExpression()).default)(path.node);
     if (firstObject && match(firstObject, { name: 'jest' })) {
       return false;
     }

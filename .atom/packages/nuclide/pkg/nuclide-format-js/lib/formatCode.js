@@ -5,7 +5,7 @@ var formatCode = _asyncToGenerator(function* (options, editor) {
     return;
   }
 
-  track('format-js-formatCode');
+  (0, (_nuclideAnalytics2 || _nuclideAnalytics()).track)('format-js-formatCode');
 
   // Save things
   var buffer = editor.getBuffer();
@@ -13,10 +13,10 @@ var formatCode = _asyncToGenerator(function* (options, editor) {
   var source = oldSource;
 
   // Reprint transform.
-  if (featureConfig.get('nuclide-format-js.reprint')) {
-    var _require3 = require('../../nuclide-reprint-js');
+  if ((_nuclideFeatureConfig2 || _nuclideFeatureConfig()).default.get('nuclide-format-js.reprint')) {
+    var _require = require('../../nuclide-reprint-js');
 
-    var reprint = _require3.reprint;
+    var reprint = _require.reprint;
 
     // $FlowFixMe(kad) -- this seems to conflate an class instance with an ordinary object.
     var reprintResult = reprint(source, {
@@ -30,9 +30,9 @@ var formatCode = _asyncToGenerator(function* (options, editor) {
   // Auto-require transform.
   // TODO: Add a limit so the transform is not run on files over a certain size.
 
-  var _require4 = require('../../nuclide-format-js-base');
+  var _require2 = require('../../nuclide-format-js-base');
 
-  var transform = _require4.transform;
+  var transform = _require2.transform;
 
   source = transform(source, options);
 
@@ -46,15 +46,15 @@ var formatCode = _asyncToGenerator(function* (options, editor) {
   var position = editor.getCursorBufferPosition();
   editor.setTextInBufferRange(range, source);
 
-  var _updateCursor = updateCursor(oldSource, position, source);
+  var _ref = (0, (_nuclideUpdateCursor2 || _nuclideUpdateCursor()).updateCursor)(oldSource, position, source);
 
-  var row = _updateCursor.row;
-  var column = _updateCursor.column;
+  var row = _ref.row;
+  var column = _ref.column;
 
   editor.setCursorBufferPosition([row, column]);
 
   // Save the file if that option is specified.
-  if (featureConfig.get('nuclide-format-js.saveAfterRun')) {
+  if ((_nuclideFeatureConfig2 || _nuclideFeatureConfig()).default.get('nuclide-format-js.saveAfterRun')) {
     editor.save();
   }
 });
@@ -69,15 +69,26 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
  * the root directory of this source tree.
  */
 
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
 var logger = require('../../nuclide-logging').getLogger();
-var featureConfig = require('../../nuclide-feature-config');
 
-var _require = require('../../nuclide-analytics');
+var _nuclideFeatureConfig2;
 
-var track = _require.track;
+function _nuclideFeatureConfig() {
+  return _nuclideFeatureConfig2 = _interopRequireDefault(require('../../nuclide-feature-config'));
+}
 
-var _require2 = require('../../nuclide-update-cursor');
+var _nuclideAnalytics2;
 
-var updateCursor = _require2.updateCursor;
+function _nuclideAnalytics() {
+  return _nuclideAnalytics2 = require('../../nuclide-analytics');
+}
+
+var _nuclideUpdateCursor2;
+
+function _nuclideUpdateCursor() {
+  return _nuclideUpdateCursor2 = require('../../nuclide-update-cursor');
+}
 
 module.exports = formatCode;

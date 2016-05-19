@@ -18,11 +18,23 @@ function _inherits(subClass, superClass) { if (typeof superClass !== 'function' 
  * the root directory of this source tree.
  */
 
-var _nuclideUiLibLazyTreeNode = require('../../nuclide-ui/lib/LazyTreeNode');
+var _nuclideUiLibLazyTreeNode2;
 
-var _nuclideRemoteUri = require('../../nuclide-remote-uri');
+function _nuclideUiLibLazyTreeNode() {
+  return _nuclideUiLibLazyTreeNode2 = require('../../nuclide-ui/lib/LazyTreeNode');
+}
 
-var _constants = require('./constants');
+var _nuclideRemoteUri2;
+
+function _nuclideRemoteUri() {
+  return _nuclideRemoteUri2 = require('../../nuclide-remote-uri');
+}
+
+var _constants2;
+
+function _constants() {
+  return _constants2 = require('./constants');
+}
 
 var DiffViewTreeNode = (function (_LazyTreeNode) {
   _inherits(DiffViewTreeNode, _LazyTreeNode);
@@ -37,8 +49,8 @@ var DiffViewTreeNode = (function (_LazyTreeNode) {
     key: 'getLabel',
     value: function getLabel() {
       var item = this.getItem();
-      var fileName = (0, _nuclideRemoteUri.basename)(item.filePath);
-      return this.isContainer() || !item.statusCode ? fileName : (_constants.FileChangeStatusToPrefix[item.statusCode] || '') + fileName;
+      var fileName = (0, (_nuclideRemoteUri2 || _nuclideRemoteUri()).basename)(item.filePath);
+      return this.isContainer() || !item.statusCode ? fileName : ((_constants2 || _constants()).FileChangeStatusToPrefix[item.statusCode] || '') + fileName;
     }
   }, {
     key: 'getKey',
@@ -48,7 +60,7 @@ var DiffViewTreeNode = (function (_LazyTreeNode) {
   }]);
 
   return DiffViewTreeNode;
-})(_nuclideUiLibLazyTreeNode.LazyTreeNode);
+})((_nuclideUiLibLazyTreeNode2 || _nuclideUiLibLazyTreeNode()).LazyTreeNode);
 
-exports['default'] = DiffViewTreeNode;
-module.exports = exports['default'];
+exports.default = DiffViewTreeNode;
+module.exports = exports.default;

@@ -21,7 +21,7 @@ var outlineFromEditor = _asyncToGenerator(function* (editor) {
   if (filePath == null) {
     return null;
   }
-  var hackLanguage = yield (0, _HackLanguage.getHackLanguageForUri)(filePath);
+  var hackLanguage = yield (0, (_HackLanguage2 || _HackLanguage()).getHackLanguageForUri)(filePath);
   if (hackLanguage == null) {
     return null;
   }
@@ -31,21 +31,35 @@ var outlineFromEditor = _asyncToGenerator(function* (editor) {
   return yield hackLanguage.getOutline(filePath, contents);
 });
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _nuclideTokenizedText = require('../../nuclide-tokenized-text');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _HackLanguage = require('./HackLanguage');
+var _nuclideTokenizedText2;
 
-var _atom = require('atom');
+function _nuclideTokenizedText() {
+  return _nuclideTokenizedText2 = require('../../nuclide-tokenized-text');
+}
 
-var _assert = require('assert');
+var _HackLanguage2;
 
-var _assert2 = _interopRequireDefault(_assert);
+function _HackLanguage() {
+  return _HackLanguage2 = require('./HackLanguage');
+}
+
+var _atom2;
+
+function _atom() {
+  return _atom2 = require('atom');
+}
+
+var _assert2;
+
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
 var OutlineViewProvider = (function () {
   function OutlineViewProvider() {
@@ -106,12 +120,12 @@ function addMethodsToClasses(hackOutline, classes) {
       var classId = _item$name$split2[0];
       var methodName = _item$name$split2[1];
 
-      (0, _assert2['default'])(methodName != null, 'Expected method name to include \'::\', got \'' + item.name + '\'');
+      (0, (_assert2 || _assert()).default)(methodName != null, 'Expected method name to include \'::\', got \'' + item.name + '\'');
 
       var methodOutline = outlineTreeFromHackOutlineItem(item);
 
       var classOutline = classes.get(classId);
-      (0, _assert2['default'])(classOutline != null, 'Missing class ' + classId);
+      (0, (_assert2 || _assert()).default)(classOutline != null, 'Missing class ' + classId);
       classOutline.children.push(methodOutline);
     }
   }
@@ -145,25 +159,25 @@ function outlineTreeFromHackOutlineItem(item) {
           _item$name$split32 = _slicedToArray(_item$name$split3, 2),
           methodName = _item$name$split32[1];
 
-      (0, _assert2['default'])(methodName != null, 'Expected method name to include \'::\', got \'' + item.name + '\'');
+      (0, (_assert2 || _assert()).default)(methodName != null, 'Expected method name to include \'::\', got \'' + item.name + '\'');
 
       if (item.type === 'static method') {
-        text.push((0, _nuclideTokenizedText.keyword)('static'));
-        text.push((0, _nuclideTokenizedText.whitespace)(' '));
+        text.push((0, (_nuclideTokenizedText2 || _nuclideTokenizedText()).keyword)('static'));
+        text.push((0, (_nuclideTokenizedText2 || _nuclideTokenizedText()).whitespace)(' '));
       }
-      text.push((0, _nuclideTokenizedText.keyword)('function'));
-      text.push((0, _nuclideTokenizedText.whitespace)(' '));
-      text.push((0, _nuclideTokenizedText.method)(methodName));
+      text.push((0, (_nuclideTokenizedText2 || _nuclideTokenizedText()).keyword)('function'));
+      text.push((0, (_nuclideTokenizedText2 || _nuclideTokenizedText()).whitespace)(' '));
+      text.push((0, (_nuclideTokenizedText2 || _nuclideTokenizedText()).method)(methodName));
       break;
     case 'function':
-      text.push((0, _nuclideTokenizedText.keyword)('function'));
-      text.push((0, _nuclideTokenizedText.whitespace)(' '));
-      text.push((0, _nuclideTokenizedText.method)(item.name));
+      text.push((0, (_nuclideTokenizedText2 || _nuclideTokenizedText()).keyword)('function'));
+      text.push((0, (_nuclideTokenizedText2 || _nuclideTokenizedText()).whitespace)(' '));
+      text.push((0, (_nuclideTokenizedText2 || _nuclideTokenizedText()).method)(item.name));
       break;
     case 'class':
-      text.push((0, _nuclideTokenizedText.keyword)('class'));
-      text.push((0, _nuclideTokenizedText.whitespace)(' '));
-      text.push((0, _nuclideTokenizedText.className)(item.name));
+      text.push((0, (_nuclideTokenizedText2 || _nuclideTokenizedText()).keyword)('class'));
+      text.push((0, (_nuclideTokenizedText2 || _nuclideTokenizedText()).whitespace)(' '));
+      text.push((0, (_nuclideTokenizedText2 || _nuclideTokenizedText()).className)(item.name));
       break;
     default:
       throw new Error('Unrecognized item type ' + item.type);
@@ -177,5 +191,5 @@ function outlineTreeFromHackOutlineItem(item) {
 }
 
 function pointFromHackOutlineItem(item) {
-  return new _atom.Point(item.line - 1, item.char_start - 1);
+  return new (_atom2 || _atom()).Point(item.line - 1, item.char_start - 1);
 }

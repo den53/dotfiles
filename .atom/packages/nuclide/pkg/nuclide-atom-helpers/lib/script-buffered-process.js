@@ -8,13 +8,8 @@ var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_ag
  */
 
 var createScriptBufferedProcessWithEnv = _asyncToGenerator(function* (options) {
-  var _require3 = require('../../nuclide-commons');
-
-  var createExecEnvironment = _require3.createExecEnvironment;
-  var COMMON_BINARY_PATHS = _require3.COMMON_BINARY_PATHS;
-
   var localOptions = _extends({}, options);
-  localOptions.env = yield createExecEnvironment(localOptions.env || process.env, COMMON_BINARY_PATHS);
+  localOptions.env = yield (0, (_nuclideCommons2 || _nuclideCommons()).createExecEnvironment)(localOptions.env || process.env, (_nuclideCommons2 || _nuclideCommons()).COMMON_BINARY_PATHS);
   // Flow infers Promise<ScriptBufferedProcess> and believes that to be incompatible with
   // Promise<BufferedProcess> so we need to cast.
   return new ScriptBufferedProcess(localOptions);
@@ -34,13 +29,17 @@ function _inherits(subClass, superClass) { if (typeof superClass !== 'function' 
  * the root directory of this source tree.
  */
 
-var _require = require('atom');
+var _atom2;
 
-var BufferedProcess = _require.BufferedProcess;
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var _require2 = require('../../nuclide-commons');
+var _nuclideCommons2;
 
-var createArgsForScriptCommand = _require2.createArgsForScriptCommand;
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
 
 /**
  * Wrapper around BufferedProcess that runs the command using unix `script`
@@ -56,13 +55,13 @@ var ScriptBufferedProcess = (function (_BufferedProcess) {
     _classCallCheck(this, ScriptBufferedProcess);
 
     var localOptions = _extends({}, options);
-    localOptions.args = createArgsForScriptCommand(localOptions.command, localOptions.args);
+    localOptions.args = (0, (_nuclideCommons2 || _nuclideCommons()).createArgsForScriptCommand)(localOptions.command, localOptions.args);
     localOptions.command = 'script';
     _get(Object.getPrototypeOf(ScriptBufferedProcess.prototype), 'constructor', this).call(this, localOptions);
   }
 
   return ScriptBufferedProcess;
-})(BufferedProcess);
+})((_atom2 || _atom()).BufferedProcess);
 
 module.exports = {
   createScriptBufferedProcessWithEnv: createScriptBufferedProcessWithEnv

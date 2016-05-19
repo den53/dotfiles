@@ -14,28 +14,62 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
  * the root directory of this source tree.
  */
 
-var _JumpToRelatedFile = require('./JumpToRelatedFile');
+var _assert2;
 
-var _JumpToRelatedFile2 = _interopRequireDefault(_JumpToRelatedFile);
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
-var _RelatedFileFinder = require('./RelatedFileFinder');
+var _atom2;
 
-var _RelatedFileFinder2 = _interopRequireDefault(_RelatedFileFinder);
+function _atom() {
+  return _atom2 = require('atom');
+}
+
+var _JumpToRelatedFile2;
+
+function _JumpToRelatedFile() {
+  return _JumpToRelatedFile2 = _interopRequireDefault(require('./JumpToRelatedFile'));
+}
+
+var _RelatedFileFinder2;
+
+function _RelatedFileFinder() {
+  return _RelatedFileFinder2 = _interopRequireDefault(require('./RelatedFileFinder'));
+}
 
 var jumpToRelatedFile = null;
+var subscriptions = null;
+
+// Only expose a context menu for C-family files.
+var C_GRAMMARS = new Set(['source.c', 'source.cpp', 'source.objc', 'source.objcpp']);
 
 function activate() {
-  // Make it a const for Flow
-  var local = jumpToRelatedFile = new _JumpToRelatedFile2['default'](new _RelatedFileFinder2['default']());
-
-  atom.workspace.observeTextEditors(function (textEditor) {
-    local.enableInTextEditor(textEditor);
-  });
+  subscriptions = new (_atom2 || _atom()).CompositeDisposable();
+  subscriptions.add(atom.workspace.observeTextEditors(function (textEditor) {
+    if (jumpToRelatedFile == null) {
+      jumpToRelatedFile = new (_JumpToRelatedFile2 || _JumpToRelatedFile()).default(new (_RelatedFileFinder2 || _RelatedFileFinder()).default());
+      (0, (_assert2 || _assert()).default)(subscriptions);
+      subscriptions.add(jumpToRelatedFile);
+    }
+    jumpToRelatedFile.enableInTextEditor(textEditor);
+  }));
+  subscriptions.add(atom.contextMenu.add({
+    'atom-text-editor': [{
+      label: 'Switch Between Header/Source',
+      command: 'nuclide-related-files:jump-to-next-related-file',
+      shouldDisplay: function shouldDisplay() {
+        var editor = atom.workspace.getActiveTextEditor();
+        return editor != null && C_GRAMMARS.has(editor.getGrammar().scopeName);
+      }
+    }, { type: 'separator' }]
+  }));
 }
 
 function deactivate() {
-  if (jumpToRelatedFile) {
-    jumpToRelatedFile.dispose();
-    jumpToRelatedFile = null;
+  if (subscriptions != null) {
+    subscriptions.dispose();
+    subscriptions = null;
   }
+  jumpToRelatedFile = null;
 }

@@ -12,12 +12,14 @@ Object.defineProperty(exports, '__esModule', {
 
 exports.hgRepositoryForEditor = hgRepositoryForEditor;
 
-var _require = require('../../nuclide-hg-git-bridge');
+var _nuclideHgGitBridge2;
 
-var repositoryForPath = _require.repositoryForPath;
+function _nuclideHgGitBridge() {
+  return _nuclideHgGitBridge2 = require('../../nuclide-hg-git-bridge');
+}
 
 function hgRepositoryForEditor(editor) {
-  var repo = repositoryForPath(editor.getPath() || '');
+  var repo = (0, (_nuclideHgGitBridge2 || _nuclideHgGitBridge()).repositoryForPath)(editor.getPath() || '');
   if (!repo || repo.getType() !== 'hg') {
     return null;
   }

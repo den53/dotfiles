@@ -12,24 +12,34 @@ Object.defineProperty(exports, '__esModule', {
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _rxjs = require('rxjs');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _atom = require('atom');
+var _rxjs2;
 
-var _assert = require('assert');
+function _rxjs() {
+  return _rxjs2 = require('rxjs');
+}
 
-var _assert2 = _interopRequireDefault(_assert);
+var _atom2;
+
+function _atom() {
+  return _atom2 = require('atom');
+}
+
+var _assert2;
+
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
 var MessageStore = (function () {
   function MessageStore() {
     _classCallCheck(this, MessageStore);
 
     this._currentMessages = new Map();
-    this._messageStream = new _rxjs.BehaviorSubject([]);
+    this._messageStream = new (_rxjs2 || _rxjs()).BehaviorSubject([]);
   }
 
   _createClass(MessageStore, [{
@@ -40,9 +50,9 @@ var MessageStore = (function () {
       var subscription = provider.messages.subscribe(function (message) {
         return _this._processUpdate(provider, message);
       });
-      return new _atom.Disposable(function () {
+      return new (_atom2 || _atom()).Disposable(function () {
         subscription.unsubscribe();
-        _this._currentMessages['delete'](provider);
+        _this._currentMessages.delete(provider);
         _this._publishMessages();
       });
     }
@@ -62,8 +72,8 @@ var MessageStore = (function () {
       if (message.status === 'busy') {
         idMap.set(message.id, message);
       } else {
-        (0, _assert2['default'])(message.status === 'done');
-        idMap['delete'](message.id);
+        (0, (_assert2 || _assert()).default)(message.status === 'done');
+        idMap.delete(message.id);
       }
       this._publishMessages();
     }

@@ -19,6 +19,7 @@
 
 /*eslint-disable no-console*/
 
+const assert = require('assert');
 const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
@@ -40,6 +41,7 @@ const BABEL_OPTIONS = {
   breakConfig: true,
   // sourceMap: 'inline',
   blacklist: [
+    'es3.memberExpressionLiterals',
     'es6.forOf',
     'useStrict',
   ],
@@ -50,6 +52,8 @@ const BABEL_OPTIONS = {
   stage: 1,
   plugins: [
     require.resolve('./remove-use-babel-tr'),
+    // require.resolve('./use-minified-libs-tr'),
+    require.resolve('./inline-imports-tr'),
   ],
   // comments: false,
   // compact: true,
@@ -72,14 +76,17 @@ class NodeTranspiler {
     return PREFIXES.some(prefix => start.startsWith(prefix));
   }
 
-  constructor(babel) {
-    if (babel) {
-      this._babel = babel;
-      this._babelVersion = babel.version;
+  constructor(babelVersion, getBabel) {
+    if (babelVersion) {
+      assert(typeof babelVersion === 'string');
+      assert(typeof getBabel === 'function');
+      this._babelVersion = babelVersion;
+      this._getBabel = getBabel;
     } else {
-      this._babel = null;
       this._babelVersion = require('babel-core/package.json').version;
+      this._getBabel = () => require('babel-core');
     }
+    this._babel = null;
     this._cacheDir = null;
     this._configDigest = null;
   }
@@ -110,7 +117,7 @@ class NodeTranspiler {
 
   transform(src, filename) {
     if (!this._babel) {
-      this._babel = require('babel-core');
+      this._babel = this._getBabel();
     }
     try {
       const input = Buffer.isBuffer(src) ? src.toString() : src;

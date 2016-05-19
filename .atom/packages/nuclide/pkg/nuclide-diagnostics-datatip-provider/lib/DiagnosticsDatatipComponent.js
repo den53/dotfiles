@@ -22,11 +22,23 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var _nuclideAtomHelpers = require('../../nuclide-atom-helpers');
+var _nuclideAtomHelpers2;
 
-var _reactForAtom = require('react-for-atom');
+function _nuclideAtomHelpers() {
+  return _nuclideAtomHelpers2 = require('../../nuclide-atom-helpers');
+}
 
-var _nuclideUiLibDiagnosticsMessage = require('../../nuclide-ui/lib/DiagnosticsMessage');
+var _reactForAtom2;
+
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
+
+var _nuclideUiLibDiagnosticsMessage2;
+
+function _nuclideUiLibDiagnosticsMessage() {
+  return _nuclideUiLibDiagnosticsMessage2 = require('../../nuclide-ui/lib/DiagnosticsMessage');
+}
 
 var NOOP = function NOOP() {};
 
@@ -44,12 +56,12 @@ var DiagnosticsDatatipComponent = (function (_React$Component) {
     value: function render() {
       // Remove the `fix` property to prevent the fix button from showing up (for now).
       var message = _extends({}, this.props.message, { fix: undefined });
-      return _reactForAtom.React.createElement(
+      return (_reactForAtom2 || _reactForAtom()).React.createElement(
         'div',
         { className: 'nuclide-diagnostics-datatip' },
-        _reactForAtom.React.createElement(_nuclideUiLibDiagnosticsMessage.DiagnosticsMessage, {
+        (_reactForAtom2 || _reactForAtom()).React.createElement((_nuclideUiLibDiagnosticsMessage2 || _nuclideUiLibDiagnosticsMessage()).DiagnosticsMessage, {
           message: message,
-          goToLocation: _nuclideAtomHelpers.goToLocation,
+          goToLocation: (_nuclideAtomHelpers2 || _nuclideAtomHelpers()).goToLocation,
           fixer: NOOP
         })
       );
@@ -57,12 +69,12 @@ var DiagnosticsDatatipComponent = (function (_React$Component) {
   }]);
 
   return DiagnosticsDatatipComponent;
-})(_reactForAtom.React.Component);
+})((_reactForAtom2 || _reactForAtom()).React.Component);
 
 exports.DiagnosticsDatatipComponent = DiagnosticsDatatipComponent;
 
 function makeDiagnosticsDatatipComponent(message) {
   return function () {
-    return _reactForAtom.React.createElement(DiagnosticsDatatipComponent, { message: message });
+    return (_reactForAtom2 || _reactForAtom()).React.createElement(DiagnosticsDatatipComponent, { message: message });
   };
 }

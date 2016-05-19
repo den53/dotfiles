@@ -12,11 +12,15 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
  * the root directory of this source tree.
  */
 
-var _reactForAtom = require('react-for-atom');
+var _reactForAtom2;
+
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
 
 /** A Progressbar for showing deterministic progress. */
 var ProgressBar = function ProgressBar(props) {
-  return _reactForAtom.React.createElement('progress', _extends({ value: props.value, max: props.max }, props));
+  return (_reactForAtom2 || _reactForAtom()).React.createElement('progress', _extends({ value: props.value, max: props.max }, props));
 };
 exports.ProgressBar = ProgressBar;
 

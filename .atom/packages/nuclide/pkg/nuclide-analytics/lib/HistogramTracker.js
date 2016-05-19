@@ -14,7 +14,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * the root directory of this source tree.
  */
 
-var _track = require('./track');
+var _track2;
+
+function _track() {
+  return _track2 = require('./track');
+}
 
 var HISTOGRAM_TRACKER_KEY = 'performance-histogram';
 
@@ -92,8 +96,8 @@ var HistogramTracker = (function () {
     value: function saveAnalytics() {
       for (var i = 0; i < this._buckets.length; i++) {
         var bucket = this._buckets[i];
-        if (bucket.getCount() > 0 && _track.track != null) {
-          (0, _track.track)(HISTOGRAM_TRACKER_KEY, {
+        if (bucket.getCount() > 0 && (_track2 || _track()).track != null) {
+          (0, (_track2 || _track()).track)(HISTOGRAM_TRACKER_KEY, {
             eventName: this._eventName,
             average: bucket.getAverage(),
             samples: bucket.getCount()

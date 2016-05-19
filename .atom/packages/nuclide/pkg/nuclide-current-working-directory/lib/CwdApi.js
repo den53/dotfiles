@@ -4,9 +4,9 @@ Object.defineProperty(exports, '__esModule', {
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -16,23 +16,41 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * the root directory of this source tree.
  */
 
-var _nuclideCommons = require('../../nuclide-commons');
+var _nuclideCommons2;
 
-var _nuclideFileTreeLibFileTreeHelpers = require('../../nuclide-file-tree/lib/FileTreeHelpers');
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
 
-var _nuclideFileTreeLibFileTreeHelpers2 = _interopRequireDefault(_nuclideFileTreeLibFileTreeHelpers);
+var _nuclideFileTreeLibFileTreeHelpers2;
 
-var _nuclideRemoteConnection = require('../../nuclide-remote-connection');
+function _nuclideFileTreeLibFileTreeHelpers() {
+  return _nuclideFileTreeLibFileTreeHelpers2 = _interopRequireDefault(require('../../nuclide-file-tree/lib/FileTreeHelpers'));
+}
 
-var _nuclideRemoteUri = require('../../nuclide-remote-uri');
+var _nuclideRemoteConnection2;
 
-var _nuclideRemoteUri2 = _interopRequireDefault(_nuclideRemoteUri);
+function _nuclideRemoteConnection() {
+  return _nuclideRemoteConnection2 = require('../../nuclide-remote-connection');
+}
 
-var _atom = require('atom');
+var _nuclideRemoteUri2;
 
-var _rxjs = require('rxjs');
+function _nuclideRemoteUri() {
+  return _nuclideRemoteUri2 = _interopRequireDefault(require('../../nuclide-remote-uri'));
+}
 
-var _rxjs2 = _interopRequireDefault(_rxjs);
+var _atom2;
+
+function _atom() {
+  return _atom2 = require('atom');
+}
+
+var _rxjs2;
+
+function _rxjs() {
+  return _rxjs2 = _interopRequireDefault(require('rxjs'));
+}
 
 var CwdApi = (function () {
   function CwdApi(initialCwdPath) {
@@ -40,14 +58,14 @@ var CwdApi = (function () {
 
     _classCallCheck(this, CwdApi);
 
-    this._cwdPath$ = new _rxjs2['default'].BehaviorSubject(initialCwdPath);
+    this._cwdPath$ = new (_rxjs2 || _rxjs()).default.BehaviorSubject(initialCwdPath);
     this._cwd$ = this._cwdPath$.distinctUntilChanged().map(function () {
       return _this.getCwd();
     }).map(function (directory) {
       return isValidDirectory(directory) ? directory : null;
     });
 
-    this._disposables = new _atom.CompositeDisposable(
+    this._disposables = new (_atom2 || _atom()).CompositeDisposable(
     // If the active directory is removed, fall back to the default.
     atom.project.onDidChangePaths(function () {
       var currentPath = _this._cwdPath$.getValue();
@@ -68,7 +86,7 @@ var CwdApi = (function () {
   }, {
     key: 'observeCwd',
     value: function observeCwd(callback) {
-      return new _nuclideCommons.DisposableSubscription(this._cwd$.subscribe(function (directory) {
+      return new (_nuclideCommons2 || _nuclideCommons()).DisposableSubscription(this._cwd$.subscribe(function (directory) {
         callback(directory);
       }));
     }
@@ -99,21 +117,21 @@ function getDirectory(path) {
   if (path == null) {
     return null;
   }
-  if (_nuclideRemoteUri2['default'].isRemote(path)) {
-    var connection = _nuclideRemoteConnection.RemoteConnection.getForUri(path);
+  if ((_nuclideRemoteUri2 || _nuclideRemoteUri()).default.isRemote(path)) {
+    var connection = (_nuclideRemoteConnection2 || _nuclideRemoteConnection()).RemoteConnection.getForUri(path);
     if (connection == null) {
       return null;
     }
-    return new _nuclideRemoteConnection.RemoteDirectory(connection.getConnection(), path);
+    return new (_nuclideRemoteConnection2 || _nuclideRemoteConnection()).RemoteDirectory(connection.getConnection(), path);
   }
-  return new _atom.Directory(path);
+  return new (_atom2 || _atom()).Directory(path);
 }
 
 function isValidDirectory(directory) {
   if (directory == null) {
     return true;
   }
-  return _nuclideFileTreeLibFileTreeHelpers2['default'].isValidDirectory(directory);
+  return (_nuclideFileTreeLibFileTreeHelpers2 || _nuclideFileTreeLibFileTreeHelpers()).default.isValidDirectory(directory);
 }
 
 function isValidCwdPath(path) {

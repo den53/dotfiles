@@ -12,23 +12,37 @@ Object.defineProperty(exports, '__esModule', {
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _assert = require('assert');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _assert2 = _interopRequireDefault(_assert);
+var _assert2;
 
-var _nuclideCommons = require('../../nuclide-commons');
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
-var _track = require('./track');
+var _nuclideCommons2;
 
-var _HistogramTracker = require('./HistogramTracker');
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
+
+var _track2;
+
+function _track() {
+  return _track2 = require('./track');
+}
+
+var _HistogramTracker2;
+
+function _HistogramTracker() {
+  return _HistogramTracker2 = require('./HistogramTracker');
+}
 
 function track(eventName, values) {
-  (0, _assert2['default'])(_track.track);
-  return (0, _track.track)(eventName, values || {});
+  (0, (_assert2 || _assert()).default)((_track2 || _track()).track);
+  return (0, (_track2 || _track()).track)(eventName, values || {});
 }
 
 /**
@@ -36,8 +50,8 @@ function track(eventName, values) {
  * The returned promise will resolve when the request completes (or reject on failure).
  */
 function trackImmediate(eventName, values) {
-  (0, _assert2['default'])(_track.track);
-  return (0, _track.track)(eventName, values || {}, true);
+  (0, (_assert2 || _assert()).default)((_track2 || _track()).track);
+  return (0, (_track2 || _track()).track)(eventName, values || {}, true);
 }
 
 /**
@@ -52,7 +66,7 @@ function trackEvent(event) {
  * Track each event in a stream of TrackingEvents.
  */
 function trackEvents(events) {
-  return new _nuclideCommons.DisposableSubscription(events.subscribe(trackEvent));
+  return new (_nuclideCommons2 || _nuclideCommons()).DisposableSubscription(events.subscribe(trackEvent));
 }
 
 /**
@@ -212,5 +226,5 @@ module.exports = {
   startTracking: startTracking,
   TimingTracker: TimingTracker,
   trackTiming: trackTiming,
-  HistogramTracker: _HistogramTracker.HistogramTracker
+  HistogramTracker: (_HistogramTracker2 || _HistogramTracker()).HistogramTracker
 };

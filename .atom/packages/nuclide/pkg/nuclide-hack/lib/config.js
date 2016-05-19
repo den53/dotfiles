@@ -15,9 +15,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
  * the root directory of this source tree.
  */
 
-var _nuclideFeatureConfig = require('../../nuclide-feature-config');
+var _nuclideFeatureConfig2;
 
-var _nuclideFeatureConfig2 = _interopRequireDefault(_nuclideFeatureConfig);
+function _nuclideFeatureConfig() {
+  return _nuclideFeatureConfig2 = _interopRequireDefault(require('../../nuclide-feature-config'));
+}
 
 var HACK_CONFIG_PATH = 'nuclide-hack';
 exports.HACK_CONFIG_PATH = HACK_CONFIG_PATH;
@@ -26,7 +28,7 @@ var SHOW_TYPE_COVERAGE_CONFIG_PATH = HACK_CONFIG_PATH + '.showTypeCoverage';
 exports.SHOW_TYPE_COVERAGE_CONFIG_PATH = SHOW_TYPE_COVERAGE_CONFIG_PATH;
 
 function getConfig() {
-  return _nuclideFeatureConfig2['default'].get(HACK_CONFIG_PATH);
+  return (_nuclideFeatureConfig2 || _nuclideFeatureConfig()).default.get(HACK_CONFIG_PATH);
 }
 
 function getShowTypeCoverage() {
@@ -34,5 +36,5 @@ function getShowTypeCoverage() {
 }
 
 function setShowTypeCoverage(value) {
-  _nuclideFeatureConfig2['default'].set(SHOW_TYPE_COVERAGE_CONFIG_PATH, value);
+  (_nuclideFeatureConfig2 || _nuclideFeatureConfig()).default.set(SHOW_TYPE_COVERAGE_CONFIG_PATH, value);
 }

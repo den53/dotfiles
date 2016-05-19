@@ -8,13 +8,24 @@
  * the root directory of this source tree.
  */
 
-var flatten = require('../../utils/flatten');
-var markers = require('../../constants/markers');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _utilsFlatten2;
+
+function _utilsFlatten() {
+  return _utilsFlatten2 = _interopRequireDefault(require('../../utils/flatten'));
+}
+
+var _constantsMarkers2;
+
+function _constantsMarkers() {
+  return _constantsMarkers2 = _interopRequireDefault(require('../../constants/markers'));
+}
 
 function printIntersectionTypeAnnotation(print, node) {
-  return flatten([markers.openScope, markers.scopeIndent, node.types.map(function (t, i, arr) {
-    return [i === 0 ? markers.scopeBreak : markers.scopeSpaceBreak, print(t), i < arr.length - 1 ? [markers.space, '&'] : markers.empty];
-  }), markers.scopeDedent, markers.closeScope]);
+  return (0, (_utilsFlatten2 || _utilsFlatten()).default)([(_constantsMarkers2 || _constantsMarkers()).default.openScope, (_constantsMarkers2 || _constantsMarkers()).default.scopeIndent, node.types.map(function (t, i, arr) {
+    return [i === 0 ? (_constantsMarkers2 || _constantsMarkers()).default.scopeBreak : (_constantsMarkers2 || _constantsMarkers()).default.scopeSpaceBreak, print(t), i < arr.length - 1 ? [(_constantsMarkers2 || _constantsMarkers()).default.space, '&'] : (_constantsMarkers2 || _constantsMarkers()).default.empty];
+  }), (_constantsMarkers2 || _constantsMarkers()).default.scopeDedent, (_constantsMarkers2 || _constantsMarkers()).default.closeScope]);
 }
 
 module.exports = printIntersectionTypeAnnotation;

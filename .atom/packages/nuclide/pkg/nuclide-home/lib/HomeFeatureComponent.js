@@ -6,8 +6,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var _nuclideUiLibButton = require('../../nuclide-ui/lib/Button');
-
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
  * All rights reserved.
@@ -16,10 +14,17 @@ var _nuclideUiLibButton = require('../../nuclide-ui/lib/Button');
  * the root directory of this source tree.
  */
 
-var _require = require('react-for-atom');
+var _reactForAtom2;
 
-var React = _require.React;
-var PropTypes = React.PropTypes;
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
+
+var _nuclideUiLibButton2;
+
+function _nuclideUiLibButton() {
+  return _nuclideUiLibButton2 = require('../../nuclide-ui/lib/Button');
+}
 
 var HomeFeatureComponent = (function (_React$Component) {
   _inherits(HomeFeatureComponent, _React$Component);
@@ -37,25 +42,25 @@ var HomeFeatureComponent = (function (_React$Component) {
       var title = _props.title;
       var command = _props.command;
 
-      return React.createElement(
+      return (_reactForAtom2 || _reactForAtom()).React.createElement(
         'details',
         { className: 'nuclide-home-card' },
-        React.createElement(
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
           'summary',
           { className: 'nuclide-home-summary icon icon-' + this.props.icon },
           title,
-          command ? React.createElement(
-            _nuclideUiLibButton.Button,
+          command ? (_reactForAtom2 || _reactForAtom()).React.createElement(
+            (_nuclideUiLibButton2 || _nuclideUiLibButton()).Button,
             {
               className: 'pull-right nuclide-home-tryit',
-              size: _nuclideUiLibButton.ButtonSizes.SMALL,
+              size: (_nuclideUiLibButton2 || _nuclideUiLibButton()).ButtonSizes.SMALL,
               onClick: function () {
                 return atom.commands.dispatch(atom.views.getView(atom.workspace), command);
               } },
             'Try it'
           ) : null
         ),
-        React.createElement(
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
           'div',
           { className: 'nuclide-home-detail' },
           this.props.description
@@ -65,15 +70,15 @@ var HomeFeatureComponent = (function (_React$Component) {
   }], [{
     key: 'propTypes',
     value: {
-      title: PropTypes.string.isRequired,
-      icon: PropTypes.string.isRequired,
-      description: PropTypes.oneOfType([PropTypes.string, PropTypes.element]).isRequired,
-      command: PropTypes.string
+      title: (_reactForAtom2 || _reactForAtom()).React.PropTypes.string.isRequired,
+      icon: (_reactForAtom2 || _reactForAtom()).React.PropTypes.string.isRequired,
+      description: (_reactForAtom2 || _reactForAtom()).React.PropTypes.oneOfType([(_reactForAtom2 || _reactForAtom()).React.PropTypes.string, (_reactForAtom2 || _reactForAtom()).React.PropTypes.element]).isRequired,
+      command: (_reactForAtom2 || _reactForAtom()).React.PropTypes.string
     },
     enumerable: true
   }]);
 
   return HomeFeatureComponent;
-})(React.Component);
+})((_reactForAtom2 || _reactForAtom()).React.Component);
 
 module.exports = HomeFeatureComponent;

@@ -5,12 +5,12 @@ Object.defineProperty(exports, '__esModule', {
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
 var getHackConnection = _asyncToGenerator(function* (filePath) {
-  var command = yield (0, _hackConfig.getHackCommand)();
+  var command = yield (0, (_hackConfig2 || _hackConfig()).getHackCommand)();
   if (command === '') {
     return null;
   }
 
-  var configDir = yield (0, _hackConfig.findHackConfigDir)(filePath);
+  var configDir = yield (0, (_hackConfig2 || _hackConfig()).findHackConfigDir)(filePath);
   if (configDir == null) {
     return null;
   }
@@ -22,7 +22,7 @@ var getHackConnection = _asyncToGenerator(function* (filePath) {
     connection.then(function (result) {
       // If we fail to connect to hack, then retry on next request.
       if (result == null) {
-        connections['delete'](configDir);
+        connections.delete(configDir);
       }
     });
   }
@@ -32,16 +32,16 @@ var getHackConnection = _asyncToGenerator(function* (filePath) {
 var createConnection = _asyncToGenerator(function* (command, configDir) {
   logger.info('Creating new hack connection for ' + configDir + ': ' + command);
   logger.info('Current PATH: ' + process.env.PATH);
-  var startServerResult = yield (0, _nuclideCommons.checkOutput)(command, ['start', configDir]);
+  var startServerResult = yield (0, (_nuclideCommons2 || _nuclideCommons()).checkOutput)(command, ['start', configDir]);
   logger.info('Hack connection start server results:\n' + JSON.stringify(startServerResult, null, 2) + '\n');
   if (startServerResult.exitCode !== 0 && startServerResult.exitCode !== HACK_SERVER_ALREADY_EXISTS_EXIT_CODE) {
     return null;
   }
-  var childProcess = yield (0, _nuclideCommons.safeSpawn)(command, ['ide', configDir]);
-  (0, _nuclideCommons.observeStream)(childProcess.stdout).subscribe(function (text) {
+  var childProcess = yield (0, (_nuclideCommons2 || _nuclideCommons()).safeSpawn)(command, ['ide', configDir]);
+  (0, (_nuclideCommons2 || _nuclideCommons()).observeStream)(childProcess.stdout).subscribe(function (text) {
     logger.info('Hack ide stdout: ' + text);
   });
-  (0, _nuclideCommons.observeStream)(childProcess.stderr).subscribe(function (text) {
+  (0, (_nuclideCommons2 || _nuclideCommons()).observeStream)(childProcess.stderr).subscribe(function (text) {
     logger.info('Hack ide stderr: ' + text);
   });
   return new HackConnection(configDir, childProcess);
@@ -83,11 +83,23 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * the root directory of this source tree.
  */
 
-var _nuclideCommons = require('../../nuclide-commons');
+var _nuclideCommons2;
 
-var _hackConfig = require('./hack-config');
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
 
-var _HackRpc = require('./HackRpc');
+var _hackConfig2;
+
+function _hackConfig() {
+  return _hackConfig2 = require('./hack-config');
+}
+
+var _HackRpc2;
+
+function _HackRpc() {
+  return _HackRpc2 = require('./HackRpc');
+}
 
 // From https://reviews.facebook.net/diffusion/HHVM/browse/master/hphp/hack/src/utils/exit_status.ml
 var HACK_SERVER_ALREADY_EXISTS_EXIT_CODE = 77;
@@ -102,7 +114,7 @@ var HackConnection = (function () {
 
     this._hhconfigPath = hhconfigPath;
     this._process = process;
-    this._rpc = new _HackRpc.HackRpc(new _HackRpc.StreamTransport(process.stdin, process.stdout));
+    this._rpc = new (_HackRpc2 || _HackRpc()).HackRpc(new (_HackRpc2 || _HackRpc()).StreamTransport(process.stdin, process.stdout));
 
     process.on('exit', function (code, signal) {
       logger.info('Hack ide process exited with ' + code + ', ' + signal);
@@ -132,7 +144,7 @@ var HackConnection = (function () {
       logger.info('Disposing hack connection ' + this._hhconfigPath);
       if (this._rpc != null) {
         this._rpc.dispose();
-        connections['delete'](this._hhconfigPath);
+        connections.delete(this._hhconfigPath);
         if (this._process != null) {
           this._process.kill();
           this._process = null;

@@ -6,9 +6,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var _nuclideUiLibButton = require('../../nuclide-ui/lib/Button');
-
-var _nuclideAnalytics = require('../../nuclide-analytics');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -18,36 +16,65 @@ var _nuclideAnalytics = require('../../nuclide-analytics');
  * the root directory of this source tree.
  */
 
-var DiagnosticsPane = require('./DiagnosticsPane');
+var _DiagnosticsPane2;
 
-var _require = require('../../nuclide-ui/lib/Checkbox');
+function _DiagnosticsPane() {
+  return _DiagnosticsPane2 = _interopRequireDefault(require('./DiagnosticsPane'));
+}
 
-var Checkbox = _require.Checkbox;
+var _nuclideUiLibCheckbox2;
 
-var _require2 = require('../../nuclide-ui/lib/PanelComponent');
+function _nuclideUiLibCheckbox() {
+  return _nuclideUiLibCheckbox2 = require('../../nuclide-ui/lib/Checkbox');
+}
 
-var PanelComponent = _require2.PanelComponent;
+var _nuclideUiLibPanelComponent2;
 
-var _require3 = require('../../nuclide-ui/lib/Toolbar');
+function _nuclideUiLibPanelComponent() {
+  return _nuclideUiLibPanelComponent2 = require('../../nuclide-ui/lib/PanelComponent');
+}
 
-var Toolbar = _require3.Toolbar;
+var _nuclideUiLibToolbar2;
 
-var _require4 = require('../../nuclide-ui/lib/ToolbarCenter');
+function _nuclideUiLibToolbar() {
+  return _nuclideUiLibToolbar2 = require('../../nuclide-ui/lib/Toolbar');
+}
 
-var ToolbarCenter = _require4.ToolbarCenter;
+var _nuclideUiLibToolbarCenter2;
 
-var _require5 = require('../../nuclide-ui/lib/ToolbarLeft');
+function _nuclideUiLibToolbarCenter() {
+  return _nuclideUiLibToolbarCenter2 = require('../../nuclide-ui/lib/ToolbarCenter');
+}
 
-var ToolbarLeft = _require5.ToolbarLeft;
+var _nuclideUiLibToolbarLeft2;
 
-var _require6 = require('../../nuclide-ui/lib/ToolbarRight');
+function _nuclideUiLibToolbarLeft() {
+  return _nuclideUiLibToolbarLeft2 = require('../../nuclide-ui/lib/ToolbarLeft');
+}
 
-var ToolbarRight = _require6.ToolbarRight;
+var _nuclideUiLibToolbarRight2;
 
-var _require7 = require('react-for-atom');
+function _nuclideUiLibToolbarRight() {
+  return _nuclideUiLibToolbarRight2 = require('../../nuclide-ui/lib/ToolbarRight');
+}
 
-var React = _require7.React;
-var PropTypes = React.PropTypes;
+var _reactForAtom2;
+
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
+
+var _nuclideUiLibButton2;
+
+function _nuclideUiLibButton() {
+  return _nuclideUiLibButton2 = require('../../nuclide-ui/lib/Button');
+}
+
+var _nuclideAnalytics2;
+
+function _nuclideAnalytics() {
+  return _nuclideAnalytics2 = require('../../nuclide-analytics');
+}
 
 var keyboardShortcut = null;
 function getKeyboardShortcut() {
@@ -59,9 +86,9 @@ function getKeyboardShortcut() {
     command: 'nuclide-diagnostics-ui:toggle-table'
   });
   if (matchingKeyBindings.length && matchingKeyBindings[0].keystrokes) {
-    var _require8 = require('../../nuclide-keystroke-label');
+    var _require = require('../../nuclide-keystroke-label');
 
-    var humanizeKeystroke = _require8.humanizeKeystroke;
+    var humanizeKeystroke = _require.humanizeKeystroke;
 
     keyboardShortcut = humanizeKeystroke(matchingKeyBindings[0].keystrokes);
   } else {
@@ -80,16 +107,16 @@ var DiagnosticsPanel = (function (_React$Component) {
   _createClass(DiagnosticsPanel, null, [{
     key: 'propTypes',
     value: {
-      diagnostics: PropTypes.array.isRequired,
-      height: PropTypes.number.isRequired,
-      onDismiss: PropTypes.func.isRequired,
-      onResize: PropTypes.func.isRequired,
-      width: PropTypes.number.isRequired,
-      pathToActiveTextEditor: PropTypes.string,
-      filterByActiveTextEditor: PropTypes.bool.isRequired,
-      onFilterByActiveTextEditorChange: PropTypes.func.isRequired,
-      warnAboutLinter: PropTypes.bool.isRequired,
-      disableLinter: PropTypes.func.isRequired
+      diagnostics: (_reactForAtom2 || _reactForAtom()).React.PropTypes.array.isRequired,
+      height: (_reactForAtom2 || _reactForAtom()).React.PropTypes.number.isRequired,
+      onDismiss: (_reactForAtom2 || _reactForAtom()).React.PropTypes.func.isRequired,
+      onResize: (_reactForAtom2 || _reactForAtom()).React.PropTypes.func.isRequired,
+      width: (_reactForAtom2 || _reactForAtom()).React.PropTypes.number.isRequired,
+      pathToActiveTextEditor: (_reactForAtom2 || _reactForAtom()).React.PropTypes.string,
+      filterByActiveTextEditor: (_reactForAtom2 || _reactForAtom()).React.PropTypes.bool.isRequired,
+      onFilterByActiveTextEditorChange: (_reactForAtom2 || _reactForAtom()).React.PropTypes.func.isRequired,
+      warnAboutLinter: (_reactForAtom2 || _reactForAtom()).React.PropTypes.bool.isRequired,
+      disableLinter: (_reactForAtom2 || _reactForAtom()).React.PropTypes.func.isRequired
     },
     enumerable: true
   }]);
@@ -134,11 +161,11 @@ var DiagnosticsPanel = (function (_React$Component) {
       var shortcut = getKeyboardShortcut();
       var shortcutSpan = null;
       if (shortcut !== '') {
-        shortcutSpan = React.createElement(
+        shortcutSpan = (_reactForAtom2 || _reactForAtom()).React.createElement(
           'span',
           { className: 'text-subtle inline-block' },
           'Use ',
-          React.createElement(
+          (_reactForAtom2 || _reactForAtom()).React.createElement(
             'kbd',
             { className: 'key-binding key-binding-sm text-highlight' },
             shortcut
@@ -149,23 +176,23 @@ var DiagnosticsPanel = (function (_React$Component) {
 
       var linterWarning = null;
       if (this.props.warnAboutLinter) {
-        linterWarning = React.createElement(
-          Toolbar,
+        linterWarning = (_reactForAtom2 || _reactForAtom()).React.createElement(
+          (_nuclideUiLibToolbar2 || _nuclideUiLibToolbar()).Toolbar,
           null,
-          React.createElement(
-            ToolbarCenter,
+          (_reactForAtom2 || _reactForAtom()).React.createElement(
+            (_nuclideUiLibToolbarCenter2 || _nuclideUiLibToolbarCenter()).ToolbarCenter,
             null,
-            React.createElement(
+            (_reactForAtom2 || _reactForAtom()).React.createElement(
               'span',
               { className: 'inline-block highlight-info' },
               'nuclide-diagnostics is not compatible with the linter package. We recommend that you ',
-              React.createElement(
+              (_reactForAtom2 || _reactForAtom()).React.createElement(
                 'a',
                 { onClick: this.props.disableLinter },
                 'disable the linter package'
               ),
               '. ',
-              React.createElement(
+              (_reactForAtom2 || _reactForAtom()).React.createElement(
                 'a',
                 { href: 'http://nuclide.io/docs/advanced-topics/linter-package-compatibility/' },
                 'Learn More'
@@ -181,8 +208,8 @@ var DiagnosticsPanel = (function (_React$Component) {
 
       // We hide the horizontal overflow in the PanelComponent because the presence of the scrollbar
       // throws off our height calculations.
-      return React.createElement(
-        PanelComponent,
+      return (_reactForAtom2 || _reactForAtom()).React.createElement(
+        (_nuclideUiLibPanelComponent2 || _nuclideUiLibPanelComponent()).PanelComponent,
         {
           ref: 'panel',
           dock: 'bottom',
@@ -190,52 +217,52 @@ var DiagnosticsPanel = (function (_React$Component) {
           noScroll: true,
           onResize: this.props.onResize,
           overflowX: 'hidden' },
-        React.createElement(
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
           'div',
           { style: { display: 'flex', flex: 1, flexDirection: 'column' } },
           linterWarning,
-          React.createElement(
-            Toolbar,
+          (_reactForAtom2 || _reactForAtom()).React.createElement(
+            (_nuclideUiLibToolbar2 || _nuclideUiLibToolbar()).Toolbar,
             { location: 'top' },
-            React.createElement(
-              ToolbarLeft,
+            (_reactForAtom2 || _reactForAtom()).React.createElement(
+              (_nuclideUiLibToolbarLeft2 || _nuclideUiLibToolbarLeft()).ToolbarLeft,
               null,
-              React.createElement(
+              (_reactForAtom2 || _reactForAtom()).React.createElement(
                 'span',
                 { className: errorSpanClassName },
                 'Errors: ',
                 errorCount
               ),
-              React.createElement(
+              (_reactForAtom2 || _reactForAtom()).React.createElement(
                 'span',
                 { className: warningSpanClassName },
                 'Warnings: ',
                 warningCount
               ),
-              React.createElement(
+              (_reactForAtom2 || _reactForAtom()).React.createElement(
                 'span',
                 { className: 'inline-block' },
-                React.createElement(Checkbox, {
+                (_reactForAtom2 || _reactForAtom()).React.createElement((_nuclideUiLibCheckbox2 || _nuclideUiLibCheckbox()).Checkbox, {
                   checked: this.props.filterByActiveTextEditor,
                   label: 'Show only diagnostics for current file',
                   onChange: this._onFilterByActiveTextEditorChange
                 })
               )
             ),
-            React.createElement(
-              ToolbarRight,
+            (_reactForAtom2 || _reactForAtom()).React.createElement(
+              (_nuclideUiLibToolbarRight2 || _nuclideUiLibToolbarRight()).ToolbarRight,
               null,
               shortcutSpan,
-              React.createElement(_nuclideUiLibButton.Button, {
+              (_reactForAtom2 || _reactForAtom()).React.createElement((_nuclideUiLibButton2 || _nuclideUiLibButton()).Button, {
                 onClick: this.props.onDismiss,
                 icon: 'x',
-                size: _nuclideUiLibButton.ButtonSizes.SMALL,
+                size: (_nuclideUiLibButton2 || _nuclideUiLibButton()).ButtonSizes.SMALL,
                 className: 'inline-block',
                 title: 'Close Panel'
               })
             )
           ),
-          React.createElement(DiagnosticsPane, {
+          (_reactForAtom2 || _reactForAtom()).React.createElement((_DiagnosticsPane2 || _DiagnosticsPane()).default, {
             showFileName: !this.props.filterByActiveTextEditor,
             diagnostics: diagnostics,
             width: this.props.width
@@ -246,12 +273,12 @@ var DiagnosticsPanel = (function (_React$Component) {
   }, {
     key: '_onFilterByActiveTextEditorChange',
     value: function _onFilterByActiveTextEditorChange(isChecked) {
-      (0, _nuclideAnalytics.track)('diagnostics-panel-toggle-current-file', { isChecked: isChecked.toString() });
+      (0, (_nuclideAnalytics2 || _nuclideAnalytics()).track)('diagnostics-panel-toggle-current-file', { isChecked: isChecked.toString() });
       this.props.onFilterByActiveTextEditorChange.call(null, isChecked);
     }
   }]);
 
   return DiagnosticsPanel;
-})(React.Component);
+})((_reactForAtom2 || _reactForAtom()).React.Component);
 
 module.exports = DiagnosticsPanel;

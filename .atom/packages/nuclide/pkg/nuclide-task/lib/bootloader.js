@@ -6,9 +6,9 @@ var _createClass = (function () { function defineProperties(target, props) { for
 
 exports.createTask = createTask;
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -18,15 +18,23 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * the root directory of this source tree.
  */
 
-var _child_process = require('child_process');
+var _child_process2;
 
-var _child_process2 = _interopRequireDefault(_child_process);
+function _child_process() {
+  return _child_process2 = _interopRequireDefault(require('child_process'));
+}
 
-var _path = require('path');
+var _path2;
 
-var _path2 = _interopRequireDefault(_path);
+function _path() {
+  return _path2 = _interopRequireDefault(require('path'));
+}
 
-var _events = require('events');
+var _events2;
+
+function _events() {
+  return _events2 = require('events');
+}
 
 /**
  * Task creates and manages communication with another Node process. In addition
@@ -42,9 +50,9 @@ var _Task = (function () {
     _classCallCheck(this, _Task);
 
     this._id = 0;
-    this._emitter = new _events.EventEmitter();
+    this._emitter = new (_events2 || _events()).EventEmitter();
     var options = { silent: true }; // Needed so stdout/stderr are available.
-    var child = this._child = _child_process2['default'].fork(_path2['default'].join(__dirname, '/bootstrap.js'), options);
+    var child = this._child = (_child_process2 || _child_process()).default.fork((_path2 || _path()).default.join(__dirname, '/bootstrap.js'), options);
     /*eslint-disable no-console*/
     var log = function log(buffer) {
       return console.log('TASK(' + child.pid + '): ' + buffer);

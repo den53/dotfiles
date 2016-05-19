@@ -14,20 +14,33 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var _require = require('react-for-atom');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var React = _require.React;
+var _reactForAtom2;
 
-var _require2 = require('../../../nuclide-ui/lib/PanelComponentScroller');
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
 
-var PanelComponentScroller = _require2.PanelComponentScroller;
+var _nuclideUiLibPanelComponentScroller2;
 
-var TestClassTreeNode = require('./TestClassTreeNode');
+function _nuclideUiLibPanelComponentScroller() {
+  return _nuclideUiLibPanelComponentScroller2 = require('../../../nuclide-ui/lib/PanelComponentScroller');
+}
 
-var _require3 = require('../../../nuclide-ui/lib/TreeRootComponent');
+var _TestClassTreeNode2;
 
-var TreeRootComponent = _require3.TreeRootComponent;
-var PropTypes = React.PropTypes;
+function _TestClassTreeNode() {
+  return _TestClassTreeNode2 = _interopRequireDefault(require('./TestClassTreeNode'));
+}
+
+var _nuclideUiLibTreeRootComponent2;
+
+function _nuclideUiLibTreeRootComponent() {
+  return _nuclideUiLibTreeRootComponent2 = require('../../../nuclide-ui/lib/TreeRootComponent');
+}
+
+var PropTypes = (_reactForAtom2 || _reactForAtom()).React.PropTypes;
 
 function labelClassNameForNode() {
   return 'icon icon-code';
@@ -49,7 +62,7 @@ var TestClassTree = (function (_React$Component) {
         var roots = [];
         if (this.props.testSuiteModel) {
           for (var testClass of this.props.testSuiteModel.testClasses.values()) {
-            roots.push(new TestClassTreeNode(testClass));
+            roots.push(new (_TestClassTreeNode2 || _TestClassTreeNode()).default(testClass));
           }
         }
         this.refs['tree'].setRoots(roots);
@@ -60,28 +73,28 @@ var TestClassTree = (function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
-      var emptyRenderMessage = React.createElement(
+      var emptyRenderMessage = (_reactForAtom2 || _reactForAtom()).React.createElement(
         'div',
         null,
-        React.createElement(
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
           'h5',
           null,
           'Running tests'
         ),
-        React.createElement(
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
           'ol',
           null,
-          React.createElement(
+          (_reactForAtom2 || _reactForAtom()).React.createElement(
             'li',
             null,
             'Open the file you want to test'
           ),
-          React.createElement(
+          (_reactForAtom2 || _reactForAtom()).React.createElement(
             'li',
             null,
             'Choose the appropriate runner from the dropdown'
           ),
-          React.createElement(
+          (_reactForAtom2 || _reactForAtom()).React.createElement(
             'li',
             null,
             'Click "Test" to run tests for that file\'s directory'
@@ -89,13 +102,13 @@ var TestClassTree = (function (_React$Component) {
         )
       );
 
-      return React.createElement(
-        PanelComponentScroller,
+      return (_reactForAtom2 || _reactForAtom()).React.createElement(
+        (_nuclideUiLibPanelComponentScroller2 || _nuclideUiLibPanelComponentScroller()).PanelComponentScroller,
         null,
-        React.createElement(
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
           'div',
           { className: 'padded' },
-          React.createElement(TreeRootComponent, {
+          (_reactForAtom2 || _reactForAtom()).React.createElement((_nuclideUiLibTreeRootComponent2 || _nuclideUiLibTreeRootComponent()).TreeRootComponent, {
             elementToRenderWhenEmpty: emptyRenderMessage,
             eventHandlerSelector: '.nuclide-test-runner-tree',
             initialRoots: [],
@@ -141,6 +154,6 @@ var TestClassTree = (function (_React$Component) {
   }]);
 
   return TestClassTree;
-})(React.Component);
+})((_reactForAtom2 || _reactForAtom()).React.Component);
 
 module.exports = TestClassTree;

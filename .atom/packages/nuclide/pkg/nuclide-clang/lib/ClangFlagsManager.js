@@ -12,37 +12,73 @@ Object.defineProperty(exports, '__esModule', {
 
 var _createDecoratedClass = (function () { function defineProperties(target, descriptors, initializers) { for (var i = 0; i < descriptors.length; i++) { var descriptor = descriptors[i]; var decorators = descriptor.decorators; var key = descriptor.key; delete descriptor.key; delete descriptor.decorators; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor || descriptor.initializer) descriptor.writable = true; if (decorators) { for (var f = 0; f < decorators.length; f++) { var decorator = decorators[f]; if (typeof decorator === 'function') { descriptor = decorator(target, key, descriptor) || descriptor; } else { throw new TypeError('The decorator for method ' + descriptor.key + ' is of the invalid type ' + typeof decorator); } } if (descriptor.initializer !== undefined) { initializers[key] = descriptor; continue; } } Object.defineProperty(target, key, descriptor); } } return function (Constructor, protoProps, staticProps, protoInitializers, staticInitializers) { if (protoProps) defineProperties(Constructor.prototype, protoProps, protoInitializers); if (staticProps) defineProperties(Constructor, staticProps, staticInitializers); return Constructor; }; })();
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _assert = require('assert');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _assert2 = _interopRequireDefault(_assert);
+var _assert2;
 
-var _fs = require('fs');
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
-var _fs2 = _interopRequireDefault(_fs);
+var _fs2;
 
-var _path = require('path');
+function _fs() {
+  return _fs2 = _interopRequireDefault(require('fs'));
+}
 
-var _path2 = _interopRequireDefault(_path);
+var _path2;
 
-var _rxjs = require('rxjs');
+function _path() {
+  return _path2 = _interopRequireDefault(require('path'));
+}
 
-var _shellQuote = require('shell-quote');
+var _rxjs2;
 
-var _nuclideAnalytics = require('../../nuclide-analytics');
+function _rxjs() {
+  return _rxjs2 = require('rxjs');
+}
 
-var _nuclideCommons = require('../../nuclide-commons');
+var _shellQuote2;
 
-var _nuclideLogging = require('../../nuclide-logging');
+function _shellQuote() {
+  return _shellQuote2 = require('shell-quote');
+}
 
-var _nuclideBuckBaseLibBuckProject = require('../../nuclide-buck-base/lib/BuckProject');
+var _nuclideAnalytics2;
 
-var logger = (0, _nuclideLogging.getLogger)();
+function _nuclideAnalytics() {
+  return _nuclideAnalytics2 = require('../../nuclide-analytics');
+}
+
+var _nuclideCommons2;
+
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
+
+var _nuclideLogging2;
+
+function _nuclideLogging() {
+  return _nuclideLogging2 = require('../../nuclide-logging');
+}
+
+var _nuclideBuckBaseLibBuckProject2;
+
+function _nuclideBuckBaseLibBuckProject() {
+  return _nuclideBuckBaseLibBuckProject2 = require('../../nuclide-buck-base/lib/BuckProject');
+}
+
+var _utils2;
+
+function _utils() {
+  return _utils2 = require('./utils');
+}
+
+var logger = (0, (_nuclideLogging2 || _nuclideLogging()).getLogger)();
 
 var COMPILATION_DATABASE_FILE = 'compile_commands.json';
 /**
@@ -50,22 +86,12 @@ var COMPILATION_DATABASE_FILE = 'compile_commands.json';
  * This target will never produce compilation flags, so make sure to ignore it.
  */
 var DEFAULT_HEADERS_TARGET = '__default_headers__';
-var HEADER_EXTENSIONS = new Set(['.h', '.hh', '.hpp', '.hxx', '.h++']);
-var SOURCE_EXTENSIONS = new Set(['.c', '.cc', '.cpp', '.cxx', '.c++', 'm', 'mm']);
 
 var CLANG_FLAGS_THAT_TAKE_PATHS = new Set(['-F', '-I', '-include', '-iquote', '-isysroot', '-isystem']);
 
 var SINGLE_LETTER_CLANG_FLAGS_THAT_TAKE_PATHS = new Set(Array.from(CLANG_FLAGS_THAT_TAKE_PATHS).filter(function (item) {
   return item.length === 2;
 }));
-
-function isHeaderFile(filename) {
-  return HEADER_EXTENSIONS.has(_path2['default'].extname(filename));
-}
-
-function isSourceFile(filename) {
-  return SOURCE_EXTENSIONS.has(_path2['default'].extname(filename));
-}
 
 var ClangFlagsManager = (function () {
   function ClangFlagsManager(buckUtils) {
@@ -106,7 +132,7 @@ var ClangFlagsManager = (function () {
         return this._cachedBuckProjects.get(buckProjectRoot);
       }
 
-      var buckProject = new _nuclideBuckBaseLibBuckProject.BuckProject({ rootPath: buckProjectRoot });
+      var buckProject = new (_nuclideBuckBaseLibBuckProject2 || _nuclideBuckBaseLibBuckProject()).BuckProject({ rootPath: buckProjectRoot });
       this._cachedBuckProjects.set(buckProjectRoot, buckProject);
       return buckProject;
     })
@@ -129,12 +155,12 @@ var ClangFlagsManager = (function () {
     })
   }, {
     key: '_getFlagsForSrcImpl',
-    decorators: [(0, _nuclideAnalytics.trackTiming)('nuclide-clang.get-flags')],
+    decorators: [(0, (_nuclideAnalytics2 || _nuclideAnalytics()).trackTiming)('nuclide-clang.get-flags')],
     value: _asyncToGenerator(function* (src) {
       // Look for a manually provided compilation database.
-      var dbDir = yield _nuclideCommons.fsPromise.findNearestFile(COMPILATION_DATABASE_FILE, _path2['default'].dirname(src));
+      var dbDir = yield (_nuclideCommons2 || _nuclideCommons()).fsPromise.findNearestFile(COMPILATION_DATABASE_FILE, (_path2 || _path()).default.dirname(src));
       if (dbDir != null) {
-        var dbFile = _path2['default'].join(dbDir, COMPILATION_DATABASE_FILE);
+        var dbFile = (_path2 || _path()).default.join(dbDir, COMPILATION_DATABASE_FILE);
         yield this._loadFlagsFromCompilationDatabase(dbFile);
         var _flags = this.pathToFlags.get(src);
         if (_flags != null) {
@@ -143,7 +169,7 @@ var ClangFlagsManager = (function () {
       }
 
       var buckFlags = yield this._loadFlagsFromBuck(src);
-      if (isHeaderFile(src)) {
+      if ((0, (_utils2 || _utils()).isHeaderFile)(src)) {
         // Accept flags from any source file in the target.
         if (buckFlags.size > 0) {
           return buckFlags.values().next().value;
@@ -182,19 +208,19 @@ var ClangFlagsManager = (function () {
 
       try {
         yield* (function* () {
-          var contents = yield _nuclideCommons.fsPromise.readFile(dbFile);
+          var contents = yield (_nuclideCommons2 || _nuclideCommons()).fsPromise.readFile(dbFile);
           var data = JSON.parse(contents);
-          (0, _assert2['default'])(data instanceof Array);
+          (0, (_assert2 || _assert()).default)(data instanceof Array);
           var changes = _this._watchFlagFile(dbFile);
           yield Promise.all(data.map(_asyncToGenerator(function* (entry) {
             var command = entry.command;
             var file = entry.file;
 
-            var directory = yield _nuclideCommons.fsPromise.realpath(entry.directory, _this._realpathCache);
+            var directory = yield (_nuclideCommons2 || _nuclideCommons()).fsPromise.realpath(entry.directory, _this._realpathCache);
             var args = ClangFlagsManager.parseArgumentsFromCommand(command);
-            var filename = _path2['default'].resolve(directory, file);
-            if (yield _nuclideCommons.fsPromise.exists(filename)) {
-              var realpath = yield _nuclideCommons.fsPromise.realpath(filename, _this._realpathCache);
+            var filename = (_path2 || _path()).default.resolve(directory, file);
+            if (yield (_nuclideCommons2 || _nuclideCommons()).fsPromise.exists(filename)) {
+              var realpath = yield (_nuclideCommons2 || _nuclideCommons()).fsPromise.realpath(filename, _this._realpathCache);
               _this.pathToFlags.set(realpath, {
                 flags: ClangFlagsManager.sanitizeCommand(file, args, directory),
                 changes: changes
@@ -251,14 +277,14 @@ var ClangFlagsManager = (function () {
       }
       var buckProjectRoot = yield buckProject.getPath();
       var pathToCompilationDatabase = buildReport['results'][buildTarget]['output'];
-      pathToCompilationDatabase = _path2['default'].join(buckProjectRoot, pathToCompilationDatabase);
+      pathToCompilationDatabase = (_path2 || _path()).default.join(buckProjectRoot, pathToCompilationDatabase);
 
-      var compilationDatabaseJsonBuffer = yield _nuclideCommons.fsPromise.readFile(pathToCompilationDatabase);
+      var compilationDatabaseJsonBuffer = yield (_nuclideCommons2 || _nuclideCommons()).fsPromise.readFile(pathToCompilationDatabase);
       var compilationDatabaseJson = compilationDatabaseJsonBuffer.toString('utf8');
       var compilationDatabase = JSON.parse(compilationDatabaseJson);
 
       var buildFile = yield buckProject.getBuildFile(target);
-      var changes = buildFile == null ? _rxjs.Observable.empty() : this._watchFlagFile(buildFile);
+      var changes = buildFile == null ? (_rxjs2 || _rxjs()).Observable.empty() : this._watchFlagFile(buildFile);
       compilationDatabase.forEach(function (item) {
         var file = item.file;
 
@@ -278,10 +304,10 @@ var ClangFlagsManager = (function () {
       if (existing != null) {
         return existing;
       }
-      var flagFileDir = _path2['default'].dirname(flagFile);
-      var flagFileBase = _path2['default'].basename(flagFile);
-      var observable = _rxjs.Observable.create(function (obs) {
-        var watcher = _fs2['default'].watch(flagFileDir, {}, function (event, filename) {
+      var flagFileDir = (_path2 || _path()).default.dirname(flagFile);
+      var flagFileBase = (_path2 || _path()).default.basename(flagFile);
+      var observable = (_rxjs2 || _rxjs()).Observable.create(function (obs) {
+        var watcher = (_fs2 || _fs()).default.watch(flagFileDir, {}, function (event, filename) {
           if (filename === flagFileBase) {
             obs.next(event);
           }
@@ -304,12 +330,12 @@ var ClangFlagsManager = (function () {
   }], [{
     key: '_guessBuildFile',
     value: _asyncToGenerator(function* (file) {
-      var dir = _path2['default'].dirname(file);
+      var dir = (_path2 || _path()).default.dirname(file);
       var bestMatch = null;
       yield Promise.all(['BUCK', 'TARGETS', 'compile_commands.json'].map(_asyncToGenerator(function* (name) {
-        var nearestDir = yield _nuclideCommons.fsPromise.findNearestFile(name, dir);
+        var nearestDir = yield (_nuclideCommons2 || _nuclideCommons()).fsPromise.findNearestFile(name, dir);
         if (nearestDir != null) {
-          var match = _path2['default'].join(nearestDir, name);
+          var match = (_path2 || _path()).default.join(nearestDir, name);
           // Return the closest (most specific) match.
           if (bestMatch == null || match.length > bestMatch.length) {
             bestMatch = match;
@@ -324,7 +350,7 @@ var ClangFlagsManager = (function () {
       var result = [];
       // shell-quote returns objects for things like pipes.
       // This should never happen with proper flags, but ignore them to be safe.
-      for (var arg of (0, _shellQuote.parse)(command)) {
+      for (var arg of (0, (_shellQuote2 || _shellQuote()).parse)(command)) {
         if (typeof arg !== 'string') {
           break;
         }
@@ -338,9 +364,9 @@ var ClangFlagsManager = (function () {
       // For safety, create a new copy of the array. We exclude the path to the file to compile from
       // compilation database generated by Buck. It must be removed from the list of command-line
       // arguments passed to libclang.
-      var normalizedSourceFile = _path2['default'].normalize(sourceFile);
+      var normalizedSourceFile = (_path2 || _path()).default.normalize(sourceFile);
       args = args.filter(function (arg) {
-        return normalizedSourceFile !== arg && normalizedSourceFile !== _path2['default'].resolve(basePath, arg);
+        return normalizedSourceFile !== arg && normalizedSourceFile !== (_path2 || _path()).default.resolve(basePath, arg);
       });
 
       // Resolve relative path arguments against the Buck project root.
@@ -348,14 +374,14 @@ var ClangFlagsManager = (function () {
         if (CLANG_FLAGS_THAT_TAKE_PATHS.has(arg)) {
           var nextIndex = argIndex + 1;
           var filePath = args[nextIndex];
-          if (!_path2['default'].isAbsolute(filePath)) {
-            filePath = _path2['default'].join(basePath, filePath);
+          if (!(_path2 || _path()).default.isAbsolute(filePath)) {
+            filePath = (_path2 || _path()).default.join(basePath, filePath);
             args[nextIndex] = filePath;
           }
         } else if (SINGLE_LETTER_CLANG_FLAGS_THAT_TAKE_PATHS.has(arg.substring(0, 2))) {
           var filePath = arg.substring(2);
-          if (!_path2['default'].isAbsolute(filePath)) {
-            filePath = _path2['default'].join(basePath, filePath);
+          if (!(_path2 || _path()).default.isAbsolute(filePath)) {
+            filePath = (_path2 || _path()).default.join(basePath, filePath);
             args[argIndex] = arg.substring(0, 2) + filePath;
           }
         }
@@ -376,12 +402,12 @@ var ClangFlagsManager = (function () {
       // with matching file names.
       // TODO(#10028531): Scan through source files to find those that include
       // the header file.
-      var dir = _path2['default'].dirname(header);
-      var files = yield _nuclideCommons.fsPromise.readdir(dir);
+      var dir = (_path2 || _path()).default.dirname(header);
+      var files = yield (_nuclideCommons2 || _nuclideCommons()).fsPromise.readdir(dir);
       var basename = ClangFlagsManager._getFileBasename(header);
       for (var file of files) {
-        if (isSourceFile(file) && ClangFlagsManager._getFileBasename(file) === basename) {
-          return _path2['default'].join(dir, file);
+        if ((0, (_utils2 || _utils()).isSourceFile)(file) && ClangFlagsManager._getFileBasename(file) === basename) {
+          return (_path2 || _path()).default.join(dir, file);
         }
       }
       return null;
@@ -391,7 +417,7 @@ var ClangFlagsManager = (function () {
   }, {
     key: '_getFileBasename',
     value: function _getFileBasename(file) {
-      var basename = _path2['default'].basename(file);
+      var basename = (_path2 || _path()).default.basename(file);
       var ext = basename.lastIndexOf('.');
       if (ext !== -1) {
         basename = basename.substr(0, ext);

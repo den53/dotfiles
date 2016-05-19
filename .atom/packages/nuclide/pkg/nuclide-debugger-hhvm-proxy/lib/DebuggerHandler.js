@@ -6,13 +6,13 @@ var _createClass = (function () { function defineProperties(target, props) { for
 
 var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -22,30 +22,54 @@ function _inherits(subClass, superClass) { if (typeof superClass !== 'function' 
  * the root directory of this source tree.
  */
 
-var _utils = require('./utils');
+var _utils2;
 
-var _utils2 = _interopRequireDefault(_utils);
+function _utils() {
+  return _utils2 = require('./utils');
+}
 
-var _helpers = require('./helpers');
+var _utils4;
 
-var _Handler2 = require('./Handler');
+function _utils3() {
+  return _utils4 = _interopRequireDefault(require('./utils'));
+}
 
-var _Handler3 = _interopRequireDefault(_Handler2);
+var _helpers2;
 
-var _DbgpSocket = require('./DbgpSocket');
+function _helpers() {
+  return _helpers2 = require('./helpers');
+}
 
-var _FileCache = require('./FileCache');
+var _Handler2;
 
-var _FileCache2 = _interopRequireDefault(_FileCache);
+function _Handler() {
+  return _Handler2 = _interopRequireDefault(require('./Handler'));
+}
 
-var _events = require('events');
+var _DbgpSocket2;
+
+function _DbgpSocket() {
+  return _DbgpSocket2 = require('./DbgpSocket');
+}
+
+var _FileCache2;
+
+function _FileCache() {
+  return _FileCache2 = _interopRequireDefault(require('./FileCache'));
+}
+
+var _events2;
+
+function _events() {
+  return _events2 = require('events');
+}
 
 var SESSION_END_EVENT = 'session-end-event';
 
 // Handles all 'Debug.*' Chrome dev tools messages
 
-var DebuggerHandler = (function (_Handler) {
-  _inherits(DebuggerHandler, _Handler);
+var DebuggerHandler = (function (_default) {
+  _inherits(DebuggerHandler, _default);
 
   function DebuggerHandler(clientCallback, connectionMultiplexer) {
     _classCallCheck(this, DebuggerHandler);
@@ -54,15 +78,15 @@ var DebuggerHandler = (function (_Handler) {
 
     this._hadFirstContinuationCommand = false;
     this._connectionMultiplexer = connectionMultiplexer;
-    this._files = new _FileCache2['default'](clientCallback);
-    this._emitter = new _events.EventEmitter();
+    this._files = new (_FileCache2 || _FileCache()).default(clientCallback);
+    this._emitter = new (_events2 || _events()).EventEmitter();
     this._statusSubscription = this._connectionMultiplexer.onStatus(this._onStatusChanged.bind(this));
   }
 
   _createClass(DebuggerHandler, [{
     key: 'onSessionEnd',
     value: function onSessionEnd(callback) {
-      _utils2['default'].log('onSessionEnd');
+      (_utils4 || _utils3()).default.log('onSessionEnd');
       this._emitter.on(SESSION_END_EVENT, callback);
     }
   }, {
@@ -81,19 +105,19 @@ var DebuggerHandler = (function (_Handler) {
           break;
 
         case 'stepInto':
-          this._sendContinuationCommand(_DbgpSocket.COMMAND_STEP_INTO);
+          this._sendContinuationCommand((_DbgpSocket2 || _DbgpSocket()).COMMAND_STEP_INTO);
           break;
 
         case 'stepOut':
-          this._sendContinuationCommand(_DbgpSocket.COMMAND_STEP_OUT);
+          this._sendContinuationCommand((_DbgpSocket2 || _DbgpSocket()).COMMAND_STEP_OUT);
           break;
 
         case 'stepOver':
-          this._sendContinuationCommand(_DbgpSocket.COMMAND_STEP_OVER);
+          this._sendContinuationCommand((_DbgpSocket2 || _DbgpSocket()).COMMAND_STEP_OVER);
           break;
 
         case 'resume':
-          this._sendContinuationCommand(_DbgpSocket.COMMAND_RUN);
+          this._sendContinuationCommand((_DbgpSocket2 || _DbgpSocket()).COMMAND_RUN);
           break;
 
         case 'setPauseOnExceptions':
@@ -120,7 +144,7 @@ var DebuggerHandler = (function (_Handler) {
           break;
 
         case 'evaluateOnCallFrame':
-          var compatParams = (0, _utils.makeExpressionHphpdCompatible)(params);
+          var compatParams = (0, (_utils2 || _utils()).makeExpressionHphpdCompatible)(params);
           var result = yield this._connectionMultiplexer.evaluateOnCallFrame(Number(compatParams.callFrameId), compatParams.expression);
           this.replyToCommand(id, result);
           break;
@@ -152,7 +176,7 @@ var DebuggerHandler = (function (_Handler) {
       }
       this._files.registerFile(url);
 
-      var path = (0, _helpers.uriToPath)(url);
+      var path = (0, (_helpers2 || _helpers()).uriToPath)(url);
       var breakpointId = this._connectionMultiplexer.setBreakpoint(path, lineNumber + 1);
       this.replyToCommand(id, {
         breakpointId: breakpointId,
@@ -188,7 +212,7 @@ var DebuggerHandler = (function (_Handler) {
   }, {
     key: '_convertFrame',
     value: _asyncToGenerator(function* (frame, frameIndex) {
-      _utils2['default'].log('Converting frame: ' + JSON.stringify(frame));
+      (_utils4 || _utils3()).default.log('Converting frame: ' + JSON.stringify(frame));
 
       var _require = require('./frame');
 
@@ -214,7 +238,7 @@ var DebuggerHandler = (function (_Handler) {
         this._connectionMultiplexer.listen();
         return;
       }
-      _utils2['default'].log('Sending continuation command: ' + command);
+      (_utils4 || _utils3()).default.log('Sending continuation command: ' + command);
       this._connectionMultiplexer.sendContinuationCommand(command);
     }
   }, {
@@ -228,25 +252,25 @@ var DebuggerHandler = (function (_Handler) {
   }, {
     key: '_onStatusChanged',
     value: _asyncToGenerator(function* (status) {
-      _utils2['default'].log('Sending status: ' + status);
+      (_utils4 || _utils3()).default.log('Sending status: ' + status);
       switch (status) {
-        case _DbgpSocket.STATUS_BREAK:
+        case (_DbgpSocket2 || _DbgpSocket()).STATUS_BREAK:
           yield this._sendPausedMessage();
           break;
-        case _DbgpSocket.STATUS_RUNNING:
+        case (_DbgpSocket2 || _DbgpSocket()).STATUS_RUNNING:
           this.sendMethod('Debugger.resumed');
           break;
-        case _DbgpSocket.STATUS_STOPPED:
-        case _DbgpSocket.STATUS_ERROR:
-        case _DbgpSocket.STATUS_END:
+        case (_DbgpSocket2 || _DbgpSocket()).STATUS_STOPPED:
+        case (_DbgpSocket2 || _DbgpSocket()).STATUS_ERROR:
+        case (_DbgpSocket2 || _DbgpSocket()).STATUS_END:
           this._endSession();
           break;
-        case _DbgpSocket.STATUS_STARTING:
-        case _DbgpSocket.STATUS_STOPPING:
+        case (_DbgpSocket2 || _DbgpSocket()).STATUS_STARTING:
+        case (_DbgpSocket2 || _DbgpSocket()).STATUS_STOPPING:
           // These two should be hidden by the ConnectionMultiplexer
           break;
         default:
-          _utils2['default'].logErrorAndThrow('Unexpected status: ' + status);
+          (_utils4 || _utils3()).default.logErrorAndThrow('Unexpected status: ' + status);
       }
     })
 
@@ -272,7 +296,7 @@ var DebuggerHandler = (function (_Handler) {
   }, {
     key: '_endSession',
     value: function _endSession() {
-      _utils2['default'].log('DebuggerHandler: Ending session');
+      (_utils4 || _utils3()).default.log('DebuggerHandler: Ending session');
       if (this._statusSubscription) {
         this._statusSubscription.dispose();
         this._statusSubscription = null;
@@ -282,6 +306,6 @@ var DebuggerHandler = (function (_Handler) {
   }]);
 
   return DebuggerHandler;
-})(_Handler3['default']);
+})((_Handler2 || _Handler()).default);
 
 exports.DebuggerHandler = DebuggerHandler;

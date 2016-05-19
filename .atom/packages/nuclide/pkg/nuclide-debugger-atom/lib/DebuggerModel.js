@@ -2,6 +2,12 @@ var _createClass = (function () { function defineProperties(target, props) { for
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
+/**
+ * Atom ViewProvider compatible model object.
+ */
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
  * All rights reserved.
@@ -10,48 +16,81 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * the root directory of this source tree.
  */
 
-var _DebuggerProviderStore = require('./DebuggerProviderStore');
+var _DebuggerProviderStore2;
 
-/**
- * Atom ViewProvider compatible model object.
- */
+function _DebuggerProviderStore() {
+  return _DebuggerProviderStore2 = require('./DebuggerProviderStore');
+}
 
-var BreakpointManager = require('./BreakpointManager');
-var BreakpointStore = require('./BreakpointStore');
-var DebuggerActions = require('./DebuggerActions');
+var _BreakpointManager2;
 
-var _require = require('./DebuggerStore');
+function _BreakpointManager() {
+  return _BreakpointManager2 = _interopRequireDefault(require('./BreakpointManager'));
+}
 
-var DebuggerStore = _require.DebuggerStore;
+var _BreakpointStore2;
 
-var _require2 = require('./WatchExpressionStore');
+function _BreakpointStore() {
+  return _BreakpointStore2 = _interopRequireDefault(require('./BreakpointStore'));
+}
 
-var WatchExpressionStore = _require2.WatchExpressionStore;
+var _DebuggerActions2;
 
-var Bridge = require('./Bridge');
+function _DebuggerActions() {
+  return _DebuggerActions2 = _interopRequireDefault(require('./DebuggerActions'));
+}
 
-var _require3 = require('atom');
+var _DebuggerStore2;
 
-var CompositeDisposable = _require3.CompositeDisposable;
+function _DebuggerStore() {
+  return _DebuggerStore2 = require('./DebuggerStore');
+}
 
-var _require4 = require('flux');
+var _WatchExpressionStore2;
 
-var Dispatcher = _require4.Dispatcher;
+function _WatchExpressionStore() {
+  return _WatchExpressionStore2 = require('./WatchExpressionStore');
+}
+
+var _WatchExpressionListStore2;
+
+function _WatchExpressionListStore() {
+  return _WatchExpressionListStore2 = require('./WatchExpressionListStore');
+}
+
+var _Bridge2;
+
+function _Bridge() {
+  return _Bridge2 = _interopRequireDefault(require('./Bridge'));
+}
+
+var _atom2;
+
+function _atom() {
+  return _atom2 = require('atom');
+}
+
+var _flux2;
+
+function _flux() {
+  return _flux2 = require('flux');
+}
 
 var DebuggerModel = (function () {
   function DebuggerModel(state) {
     _classCallCheck(this, DebuggerModel);
 
-    this._dispatcher = new Dispatcher();
-    this._store = new DebuggerStore(this._dispatcher);
-    this._actions = new DebuggerActions(this._dispatcher, this._store);
-    this._breakpointStore = new BreakpointStore(state ? state.breakpoints : null);
-    this._breakpointManager = new BreakpointManager(this._breakpointStore);
-    this._bridge = new Bridge(this);
-    this._debuggerProviderStore = new _DebuggerProviderStore.DebuggerProviderStore(this._dispatcher, this._actions);
-    this._watchExpressionStore = new WatchExpressionStore(this._bridge);
+    this._dispatcher = new (_flux2 || _flux()).Dispatcher();
+    this._store = new (_DebuggerStore2 || _DebuggerStore()).DebuggerStore(this._dispatcher);
+    this._actions = new (_DebuggerActions2 || _DebuggerActions()).default(this._dispatcher, this._store);
+    this._breakpointStore = new (_BreakpointStore2 || _BreakpointStore()).default(state ? state.breakpoints : null);
+    this._breakpointManager = new (_BreakpointManager2 || _BreakpointManager()).default(this._breakpointStore);
+    this._bridge = new (_Bridge2 || _Bridge()).default(this);
+    this._debuggerProviderStore = new (_DebuggerProviderStore2 || _DebuggerProviderStore()).DebuggerProviderStore(this._dispatcher, this._actions);
+    this._watchExpressionStore = new (_WatchExpressionStore2 || _WatchExpressionStore()).WatchExpressionStore(this._bridge);
+    this._watchExpressionListStore = new (_WatchExpressionListStore2 || _WatchExpressionListStore()).WatchExpressionListStore(this._watchExpressionStore, this._dispatcher);
 
-    this._disposables = new CompositeDisposable(this._store, this._actions, this._breakpointStore, this._breakpointManager, this._bridge, this._debuggerProviderStore, this._watchExpressionStore);
+    this._disposables = new (_atom2 || _atom()).CompositeDisposable(this._store, this._actions, this._breakpointStore, this._breakpointManager, this._bridge, this._debuggerProviderStore, this._watchExpressionStore);
   }
 
   _createClass(DebuggerModel, [{
@@ -73,6 +112,11 @@ var DebuggerModel = (function () {
     key: 'getWatchExpressionStore',
     value: function getWatchExpressionStore() {
       return this._watchExpressionStore;
+    }
+  }, {
+    key: 'getWatchExpressionListStore',
+    value: function getWatchExpressionListStore() {
+      return this._watchExpressionListStore;
     }
   }, {
     key: 'getDebuggerProviderStore',

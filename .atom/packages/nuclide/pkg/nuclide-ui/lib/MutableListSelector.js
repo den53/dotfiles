@@ -18,11 +18,23 @@ function _inherits(subClass, superClass) { if (typeof superClass !== 'function' 
  * the root directory of this source tree.
  */
 
-var _reactForAtom = require('react-for-atom');
+var _reactForAtom2;
 
-var _Button = require('./Button');
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
 
-var _ButtonGroup = require('./ButtonGroup');
+var _Button2;
+
+function _Button() {
+  return _Button2 = require('./Button');
+}
+
+var _ButtonGroup2;
+
+function _ButtonGroup() {
+  return _ButtonGroup2 = require('./ButtonGroup');
+}
 
 var DELETE_BUTTON_TITLE_DEFAULT = 'Delete selected item';
 var DELETE_BUTTON_TITLE_NONE = 'No item selected to delete';
@@ -76,7 +88,7 @@ var MutableListSelector = (function (_React$Component) {
           classes += ' selected';
           selectedItem = item;
         }
-        return _reactForAtom.React.createElement(
+        return (_reactForAtom2 || _reactForAtom()).React.createElement(
           'li',
           {
             key: item.id,
@@ -97,34 +109,34 @@ var MutableListSelector = (function (_React$Component) {
         deleteButtonTitle = DELETE_BUTTON_TITLE_DEFAULT;
       }
 
-      return _reactForAtom.React.createElement(
+      return (_reactForAtom2 || _reactForAtom()).React.createElement(
         'div',
         null,
-        _reactForAtom.React.createElement(
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
           'div',
           { className: 'block select-list' },
-          _reactForAtom.React.createElement(
+          (_reactForAtom2 || _reactForAtom()).React.createElement(
             'ol',
             { className: 'list-group' },
             listItems
           )
         ),
-        _reactForAtom.React.createElement(
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
           'div',
           { className: 'text-right' },
-          _reactForAtom.React.createElement(
-            _ButtonGroup.ButtonGroup,
+          (_reactForAtom2 || _reactForAtom()).React.createElement(
+            (_ButtonGroup2 || _ButtonGroup()).ButtonGroup,
             null,
-            _reactForAtom.React.createElement(
-              _Button.Button,
+            (_reactForAtom2 || _reactForAtom()).React.createElement(
+              (_Button2 || _Button()).Button,
               {
                 disabled: selectedItem == null || selectedItem.deletable === false,
                 onClick: this._boundOnDeleteButtonClicked,
                 title: deleteButtonTitle },
               '-'
             ),
-            _reactForAtom.React.createElement(
-              _Button.Button,
+            (_reactForAtom2 || _reactForAtom()).React.createElement(
+              (_Button2 || _Button()).Button,
               {
                 onClick: this.props.onAddButtonClicked,
                 title: 'Create new item' },
@@ -137,7 +149,7 @@ var MutableListSelector = (function (_React$Component) {
   }]);
 
   return MutableListSelector;
-})(_reactForAtom.React.Component);
+})((_reactForAtom2 || _reactForAtom()).React.Component);
 
 exports.MutableListSelector = MutableListSelector;
 

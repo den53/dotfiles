@@ -16,13 +16,25 @@ exports.createOutlines = createOutlines;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _rxjs = require('rxjs');
+var _rxjs2;
 
-var _assert = require('assert');
+function _rxjs() {
+  return _rxjs2 = require('rxjs');
+}
 
-var _assert2 = _interopRequireDefault(_assert);
+var _assert2;
 
-var _nuclideAtomHelpers = require('../../nuclide-atom-helpers');
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
+
+var _nuclideAtomHelpers2;
+
+function _nuclideAtomHelpers() {
+  return _nuclideAtomHelpers2 = require('../../nuclide-atom-helpers');
+}
+
+var LOADING_DELAY_MS = 500;
 
 function createOutlines(editorService) {
   return outlinesForProviderResults(editorService.getResultsStream());
@@ -35,28 +47,28 @@ function outlinesForProviderResults(providerResults) {
 function uiOutlinesForResult(result) {
   switch (result.kind) {
     case 'not-text-editor':
-      return _rxjs.Observable.of({ kind: 'not-text-editor' });
+      return (_rxjs2 || _rxjs()).Observable.of({ kind: 'not-text-editor' });
     case 'no-provider':
-      return _rxjs.Observable.of({
+      return (_rxjs2 || _rxjs()).Observable.of({
         kind: 'no-provider',
         grammar: result.grammar.name
       });
     case 'pane-change':
-      // Render a blank outline when we change panes
-      return _rxjs.Observable.of({ kind: 'empty' });
+      // Render a blank outline when we change panes.
+      // If we haven't received anything after LOADING_DELAY_MS, display a loading indicator.
+      return (_rxjs2 || _rxjs()).Observable.concat((_rxjs2 || _rxjs()).Observable.of({ kind: 'empty' }), (_rxjs2 || _rxjs()).Observable.of({ kind: 'loading' }).delay(LOADING_DELAY_MS));
     case 'result':
       var outline = result.result;
       if (outline == null) {
-        return _rxjs.Observable.of({ kind: 'provider-no-outline' });
+        return (_rxjs2 || _rxjs()).Observable.of({ kind: 'provider-no-outline' });
       }
       return highlightedOutlines(outline, result.editor);
     case 'provider-error':
-      return _rxjs.Observable.of({ kind: 'provider-no-outline' });
+      return (_rxjs2 || _rxjs()).Observable.of({ kind: 'provider-no-outline' });
     default:
-      // The remaining kind is 'edit', but we don't want to render a blank outline whenever an edit
-      // happens. Better just to display slightly out of date results while we wait for the new
-      // results to come in than to flicker
-      return _rxjs.Observable.empty();
+      // Don't change the UI after 'edit' or 'save' events.
+      // It's better to just leave the existing outline visible until the new results come in.
+      return (_rxjs2 || _rxjs()).Observable.empty();
   }
 }
 
@@ -67,7 +79,7 @@ function highlightedOutlines(outline, editor) {
     editor: editor
   };
 
-  return (0, _nuclideAtomHelpers.getCursorPositions)(editor).map(function (cursorLocation) {
+  return (0, (_nuclideAtomHelpers2 || _nuclideAtomHelpers()).getCursorPositions)(editor).map(function (cursorLocation) {
     return highlightCurrentNode(outlineForUi, cursorLocation);
   });
 }
@@ -86,7 +98,7 @@ function treeToUiTree(outlineTree) {
 // Return an outline object with the node under the cursor highlighted. Does not mutate the
 // original.
 function highlightCurrentNode(outline, cursorLocation) {
-  (0, _assert2['default'])(outline.kind === 'outline');
+  (0, (_assert2 || _assert()).default)(outline.kind === 'outline');
   return _extends({}, outline, {
     outlineTrees: highlightCurrentNodeInTrees(outline.outlineTrees, cursorLocation)
   });

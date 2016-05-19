@@ -10,23 +10,35 @@ Object.defineProperty(exports, '__esModule', {
  * the root directory of this source tree.
  */
 
-exports['default'] = search;
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+exports.default = search;
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
-var _rxjs = require('rxjs');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _nuclideCommons = require('../../nuclide-commons');
+var _rxjs2;
 
-var _path = require('path');
+function _rxjs() {
+  return _rxjs2 = require('rxjs');
+}
 
-var _path2 = _interopRequireDefault(_path);
+var _nuclideCommons2;
 
-var _split = require('split');
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
 
-var _split2 = _interopRequireDefault(_split);
+var _path2;
+
+function _path() {
+  return _path2 = _interopRequireDefault(require('path'));
+}
+
+var _split2;
+
+function _split() {
+  return _split2 = _interopRequireDefault(require('split'));
+}
 
 // This pattern is used for parsing the output of grep.
 var GREP_PARSE_PATTERN = /(.*?):(\d*):(.*)/;
@@ -49,16 +61,16 @@ function search(directory, regex, subdirs) {
     return searchInSubdir(matchesByFile, directory, '.', regex);
   } else {
     // Run the search on each subdirectory that exists.
-    return _rxjs.Observable.from(subdirs).concatMap(_asyncToGenerator(function* (subdir) {
+    return (_rxjs2 || _rxjs()).Observable.from(subdirs).concatMap(_asyncToGenerator(function* (subdir) {
       try {
-        var stat = yield _nuclideCommons.fsPromise.lstat(_path2['default'].join(directory, subdir));
+        var stat = yield (_nuclideCommons2 || _nuclideCommons()).fsPromise.lstat((_path2 || _path()).default.join(directory, subdir));
         if (stat.isDirectory()) {
           return searchInSubdir(matchesByFile, directory, subdir, regex);
         } else {
-          return _rxjs.Observable.empty();
+          return (_rxjs2 || _rxjs()).Observable.empty();
         }
       } catch (e) {
-        return _rxjs.Observable.empty();
+        return (_rxjs2 || _rxjs()).Observable.empty();
       }
     })).mergeAll();
   }
@@ -71,13 +83,13 @@ function searchInSubdir(matchesByFile, directory, subdir, regex) {
   // Try running search commands, falling through to the next if there is an error.
   var vcsargs = (regex.ignoreCase ? ['-i'] : []).concat(['-n', regex.source]);
   var grepargs = (regex.ignoreCase ? ['-i'] : []).concat(['-rHn', '-e', regex.source, '.']);
-  var cmdDir = _path2['default'].join(directory, subdir);
-  var linesSource = getLinesFromCommand('hg', ['wgrep'].concat(vcsargs), cmdDir)['catch'](function () {
+  var cmdDir = (_path2 || _path()).default.join(directory, subdir);
+  var linesSource = getLinesFromCommand('hg', ['wgrep'].concat(vcsargs), cmdDir).catch(function () {
     return getLinesFromCommand('git', ['grep'].concat(vcsargs), cmdDir);
-  })['catch'](function () {
+  }).catch(function () {
     return getLinesFromCommand('grep', grepargs, cmdDir);
-  })['catch'](function () {
-    return _rxjs.Observable['throw'](new Error('Failed to execute a grep search.'));
+  }).catch(function () {
+    return (_rxjs2 || _rxjs()).Observable.throw(new Error('Failed to execute a grep search.'));
   });
 
   // Transform lines into file matches.
@@ -91,7 +103,7 @@ function searchInSubdir(matchesByFile, directory, subdir, regex) {
     // Extract the filename, line number, and line text from grep output.
     var lineText = grepMatchResult[3];
     var lineNo = parseInt(grepMatchResult[2], 10) - 1;
-    var filePath = _path2['default'].join(subdir, grepMatchResult[1]);
+    var filePath = (_path2 || _path()).default.join(subdir, grepMatchResult[1]);
 
     // Try to extract the actual "matched" text.
     var matchTextResult = regex.exec(lineText);
@@ -126,19 +138,19 @@ function searchInSubdir(matchesByFile, directory, subdir, regex) {
 // Helper function that runs a command in a given directory, invoking a callback
 // as each line is written to stdout.
 function getLinesFromCommand(command, args, localDirectoryPath) {
-  return _rxjs.Observable.create(function (observer) {
+  return (_rxjs2 || _rxjs()).Observable.create(function (observer) {
     var proc = null;
     var exited = false;
 
     // Spawn the search command in the given directory.
-    (0, _nuclideCommons.safeSpawn)(command, args, { cwd: localDirectoryPath }).then(function (child) {
+    (0, (_nuclideCommons2 || _nuclideCommons()).safeSpawn)(command, args, { cwd: localDirectoryPath }).then(function (child) {
       proc = child;
 
       // Reject on error.
       proc.on('error', observer.error.bind(observer));
 
       // Call the callback on each line.
-      proc.stdout.pipe((0, _split2['default'])()).on('data', observer.next.bind(observer));
+      proc.stdout.pipe((0, (_split2 || _split()).default)()).on('data', observer.next.bind(observer));
 
       // Keep a running string of stderr, in case we need to throw an error.
       var stderr = '';
@@ -157,7 +169,7 @@ function getLinesFromCommand(command, args, localDirectoryPath) {
           observer.error(new Error(stderr));
         }
       });
-    })['catch'](function (error) {
+    }).catch(function (error) {
       observer.error(error);
     });
 
@@ -169,4 +181,4 @@ function getLinesFromCommand(command, args, localDirectoryPath) {
     };
   });
 }
-module.exports = exports['default'];
+module.exports = exports.default;

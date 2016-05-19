@@ -1,7 +1,7 @@
 Object.defineProperty(exports, '__esModule', {
   value: true
 });
-exports['default'] = getInitialState;
+exports.default = getInitialState;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
@@ -13,9 +13,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
  * the root directory of this source tree.
  */
 
-var _immutable = require('immutable');
+var _immutable2;
 
-var _immutable2 = _interopRequireDefault(_immutable);
+function _immutable() {
+  return _immutable2 = _interopRequireDefault(require('immutable'));
+}
 
 /**
  * Get the initial state of the gadgets app.
@@ -23,11 +25,11 @@ var _immutable2 = _interopRequireDefault(_immutable);
  */
 
 function getInitialState() {
-  return _immutable2['default'].Map({
-    gadgets: _immutable2['default'].Map(),
-    components: _immutable2['default'].Map(),
-    props: _immutable2['default'].Map()
+  return (_immutable2 || _immutable()).default.Map({
+    gadgets: (_immutable2 || _immutable()).default.Map(),
+    components: (_immutable2 || _immutable()).default.Map(),
+    props: (_immutable2 || _immutable()).default.Map()
   });
 }
 
-module.exports = exports['default'];
+module.exports = exports.default;

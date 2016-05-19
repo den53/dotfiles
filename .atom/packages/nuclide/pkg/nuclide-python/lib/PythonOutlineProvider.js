@@ -16,9 +16,17 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _outline = require('./outline');
+var _outline2;
 
-var _config = require('./config');
+function _outline() {
+  return _outline2 = require('./outline');
+}
+
+var _config2;
+
+function _config() {
+  return _config2 = require('./config');
+}
 
 var PythonOutlineProvider = (function () {
   function PythonOutlineProvider() {
@@ -28,7 +36,7 @@ var PythonOutlineProvider = (function () {
   _createClass(PythonOutlineProvider, [{
     key: 'getOutline',
     value: _asyncToGenerator(function* (editor) {
-      return (0, _outline.pythonTextToOutline)((0, _config.getShowGlobalVariables)(), editor.getText());
+      return (0, (_outline2 || _outline()).pythonTextToOutline)((0, (_config2 || _config()).getShowGlobalVariables)(), editor.getText());
     })
   }]);
 

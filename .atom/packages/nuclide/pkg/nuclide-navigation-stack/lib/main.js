@@ -17,23 +17,49 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * the root directory of this source tree.
  */
 
-var _atom = require('atom');
+var _atom2;
 
-var _nuclideAtomHelpers = require('../../nuclide-atom-helpers');
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var _NavigationStackController = require('./NavigationStackController');
+var _nuclideAtomHelpers2;
 
-var _nuclideAnalytics = require('../../nuclide-analytics');
+function _nuclideAtomHelpers() {
+  return _nuclideAtomHelpers2 = require('../../nuclide-atom-helpers');
+}
 
-var _nuclideCommons = require('../../nuclide-commons');
+var _NavigationStackController2;
 
-var controller = new _NavigationStackController.NavigationStackController();
+function _NavigationStackController() {
+  return _NavigationStackController2 = require('./NavigationStackController');
+}
+
+var _nuclideAnalytics2;
+
+function _nuclideAnalytics() {
+  return _nuclideAnalytics2 = require('../../nuclide-analytics');
+}
+
+var _nuclideCommons2;
+
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
+
+var _nuclideAtomHelpers4;
+
+function _nuclideAtomHelpers3() {
+  return _nuclideAtomHelpers4 = require('../../nuclide-atom-helpers');
+}
+
+var controller = new (_NavigationStackController2 || _NavigationStackController()).NavigationStackController();
 
 var Activation = (function () {
   function Activation(state) {
     _classCallCheck(this, Activation);
 
-    this._disposables = new _atom.CompositeDisposable();
+    this._disposables = new (_atom2 || _atom()).CompositeDisposable();
   }
 
   _createClass(Activation, [{
@@ -45,7 +71,7 @@ var Activation = (function () {
         var cursorSubscription = editor.onDidChangeCursorPosition(function (event) {
           controller.updatePosition(editor, event.newBufferPosition);
         });
-        var scrollSubscription = (0, _nuclideAtomHelpers.getViewOfEditor)(editor).onDidChangeScrollTop(function (scrollTop) {
+        var scrollSubscription = (0, (_nuclideAtomHelpers2 || _nuclideAtomHelpers()).getViewOfEditor)(editor).onDidChangeScrollTop(function (scrollTop) {
           controller.updateScroll(editor, scrollTop);
         });
         _this._disposables.add(cursorSubscription);
@@ -82,22 +108,22 @@ var Activation = (function () {
           controller.onActiveStopChanging(item);
         }
       }));
-      this._disposables.add(_nuclideAtomHelpers.projects.onDidRemoveProjectPath(function (path) {
+      this._disposables.add((_nuclideAtomHelpers2 || _nuclideAtomHelpers()).projects.onDidRemoveProjectPath(function (path) {
         controller.removePath(path, atom.project.getDirectories().map(function (directory) {
           return directory.getPath();
         }));
       }));
-      this._disposables.add(new _nuclideCommons.DisposableSubscription((0, _nuclideAtomHelpers.observeNavigatingEditors)().subscribe(function (editor) {
+      this._disposables.add(new (_nuclideCommons2 || _nuclideCommons()).DisposableSubscription((0, (_nuclideAtomHelpers4 || _nuclideAtomHelpers3()).observeNavigatingEditors)().subscribe(function (editor) {
         controller.onOptInNavigation(editor);
       })));
 
       this._disposables.add(atom.commands.add('atom-workspace', 'nuclide-navigation-stack:navigate-forwards', function () {
-        (0, _nuclideAnalytics.trackOperationTiming)('nuclide-navigation-stack:forwards', function () {
+        (0, (_nuclideAnalytics2 || _nuclideAnalytics()).trackOperationTiming)('nuclide-navigation-stack:forwards', function () {
           return controller.navigateForwards();
         });
       }));
       this._disposables.add(atom.commands.add('atom-workspace', 'nuclide-navigation-stack:navigate-backwards', function () {
-        (0, _nuclideAnalytics.trackOperationTiming)('nuclide-navigation-stack:backwards', function () {
+        (0, (_nuclideAnalytics2 || _nuclideAnalytics()).trackOperationTiming)('nuclide-navigation-stack:backwards', function () {
           return controller.navigateBackwards();
         });
       }));

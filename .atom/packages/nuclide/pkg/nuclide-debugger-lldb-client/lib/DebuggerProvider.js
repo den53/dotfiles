@@ -8,10 +8,14 @@
  * the root directory of this source tree.
  */
 
-var _LLDBLaunchAttachProvider = require('./LLDBLaunchAttachProvider');
+var _LLDBLaunchAttachProvider2;
+
+function _LLDBLaunchAttachProvider() {
+  return _LLDBLaunchAttachProvider2 = require('./LLDBLaunchAttachProvider');
+}
 
 function getLaunchAttachProvider(connection) {
-  return new _LLDBLaunchAttachProvider.LLDBLaunchAttachProvider('Native', connection);
+  return new (_LLDBLaunchAttachProvider2 || _LLDBLaunchAttachProvider()).LLDBLaunchAttachProvider('C++', connection);
 }
 
 module.exports = {

@@ -23,7 +23,7 @@ var getCommandInfo = _asyncToGenerator(function* () {
   var localDirectories = atom.project.getDirectories().map(function (dir) {
     return dir.getPath();
   }).filter(function (uri) {
-    return !RemoteUri.isRemote(uri);
+    return !(_nuclideRemoteUri2 || _nuclideRemoteUri()).isRemote(uri);
   });
 
   for (var dir of localDirectories) {
@@ -54,12 +54,12 @@ var getCommandFromNodePackage = _asyncToGenerator(function* (dir) {
 );
 
 var getCommandFromNodeModules = _asyncToGenerator(function* (dir) {
-  var nodeModulesParent = yield _nuclideCommons.fsPromise.findNearestFile('node_modules', dir);
+  var nodeModulesParent = yield (_nuclideCommons2 || _nuclideCommons()).fsPromise.findNearestFile('node_modules', dir);
   if (nodeModulesParent == null) {
     return null;
   }
 
-  var command = yield getCommandForCli(_path2['default'].join(nodeModulesParent, 'node_modules', 'react-native'));
+  var command = yield getCommandForCli((_path2 || _path()).default.join(nodeModulesParent, 'node_modules', 'react-native'));
 
   return command == null ? null : _extends({}, command, {
     cwd: nodeModulesParent
@@ -73,12 +73,12 @@ var getCommandFromNodeModules = _asyncToGenerator(function* (dir) {
 );
 
 var getCommandFromReactNative = _asyncToGenerator(function* (dir) {
-  var projectRoot = yield _nuclideCommons.fsPromise.findNearestFile('package.json', dir);
+  var projectRoot = yield (_nuclideCommons2 || _nuclideCommons()).fsPromise.findNearestFile('package.json', dir);
   if (projectRoot == null) {
     return null;
   }
-  var filePath = _path2['default'].join(projectRoot, 'package.json');
-  var content = yield _nuclideCommons.fsPromise.readFile(filePath);
+  var filePath = (_path2 || _path()).default.join(projectRoot, 'package.json');
+  var content = yield (_nuclideCommons2 || _nuclideCommons()).fsPromise.readFile(filePath);
   var parsed = JSON.parse(content);
   var isReactNative = parsed.name === 'react-native';
 
@@ -94,16 +94,16 @@ var getCommandFromReactNative = _asyncToGenerator(function* (dir) {
 });
 
 var getCommandFromBuck = _asyncToGenerator(function* (dir) {
-  var buckUtils = new _nuclideBuckBaseLibBuckUtils.BuckUtils();
+  var buckUtils = new (_nuclideBuckBaseLibBuckUtils2 || _nuclideBuckBaseLibBuckUtils()).BuckUtils();
   var projectRoot = yield buckUtils.getBuckProjectRoot(dir);
   if (projectRoot == null) {
     return null;
   }
 
   // TODO(matthewwithanm): Move this to BuckUtils?
-  var filePath = _path2['default'].join(projectRoot, '.buckConfig');
-  var content = yield _nuclideCommons.fsPromise.readFile(filePath);
-  var parsed = _ini2['default'].parse('scope = global\n' + content);
+  var filePath = (_path2 || _path()).default.join(projectRoot, '.buckConfig');
+  var content = yield (_nuclideCommons2 || _nuclideCommons()).fsPromise.readFile(filePath);
+  var parsed = (_ini2 || _ini()).default.parse('scope = global\n' + content);
   var section = parsed['react-native'];
   if (section == null || section.server == null) {
     return null;
@@ -115,39 +115,55 @@ var getCommandFromBuck = _asyncToGenerator(function* (dir) {
 });
 
 var getCommandForCli = _asyncToGenerator(function* (pathToReactNative) {
-  var cliPath = _path2['default'].join(pathToReactNative, 'local-cli', 'cli.js');
-  var cliExists = yield _nuclideCommons.fsPromise.exists(cliPath);
+  var cliPath = (_path2 || _path()).default.join(pathToReactNative, 'local-cli', 'cli.js');
+  var cliExists = yield (_nuclideCommons2 || _nuclideCommons()).fsPromise.exists(cliPath);
   if (!cliExists) {
     return null;
   }
   return {
-    command: _nuclideFeatureConfig2['default'].get('nuclide-react-native.pathToNode'),
+    command: (_nuclideFeatureConfig2 || _nuclideFeatureConfig()).default.get('nuclide-react-native.pathToNode'),
     args: [cliPath, 'start']
   };
 });
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
+var _nuclideCommons2;
 
-var _nuclideCommons = require('../../../nuclide-commons');
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../../nuclide-commons');
+}
 
-var _nuclideFeatureConfig = require('../../../nuclide-feature-config');
+var _nuclideFeatureConfig2;
 
-var _nuclideFeatureConfig2 = _interopRequireDefault(_nuclideFeatureConfig);
+function _nuclideFeatureConfig() {
+  return _nuclideFeatureConfig2 = _interopRequireDefault(require('../../../nuclide-feature-config'));
+}
 
-var _nuclideRemoteUri = require('../../../nuclide-remote-uri');
+var _nuclideRemoteUri2;
 
-var RemoteUri = _interopRequireWildcard(_nuclideRemoteUri);
+function _nuclideRemoteUri() {
+  return _nuclideRemoteUri2 = _interopRequireWildcard(require('../../../nuclide-remote-uri'));
+}
 
-var _ini = require('ini');
+var _ini2;
 
-var _ini2 = _interopRequireDefault(_ini);
+function _ini() {
+  return _ini2 = _interopRequireDefault(require('ini'));
+}
 
-var _path = require('path');
+var _path2;
 
-var _path2 = _interopRequireDefault(_path);
+function _path() {
+  return _path2 = _interopRequireDefault(require('path'));
+}
 
-var _nuclideBuckBaseLibBuckUtils = require('../../../nuclide-buck-base/lib/BuckUtils');
+var _nuclideBuckBaseLibBuckUtils2;
+
+function _nuclideBuckBaseLibBuckUtils() {
+  return _nuclideBuckBaseLibBuckUtils2 = require('../../../nuclide-buck-base/lib/BuckUtils');
+}

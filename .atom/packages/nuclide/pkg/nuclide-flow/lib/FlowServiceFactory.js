@@ -17,17 +17,27 @@ exports.getCurrentServiceInstances = getCurrentServiceInstances;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _assert = require('assert');
+var _assert2;
 
-var _assert2 = _interopRequireDefault(_assert);
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
-var _rxjs = require('rxjs');
+var _rxjs2;
 
-var _nuclideClient = require('../../nuclide-client');
+function _rxjs() {
+  return _rxjs2 = require('rxjs');
+}
+
+var _nuclideClient2;
+
+function _nuclideClient() {
+  return _nuclideClient2 = require('../../nuclide-client');
+}
 
 var FLOW_SERVICE = 'FlowService';
 
-var serverStatusUpdates = new _rxjs.Subject();
+var serverStatusUpdates = new (_rxjs2 || _rxjs()).Subject();
 
 var serviceInstances = new Set();
 
@@ -41,8 +51,8 @@ function getLocalFlowService() {
 
 /** Returns the FlowService for the given URI, or the local FlowService if the given URI is null. */
 function getFlowServiceByNullableUri(file) {
-  var flowService = (0, _nuclideClient.getServiceByNuclideUri)(FLOW_SERVICE, file);
-  (0, _assert2['default'])(flowService != null);
+  var flowService = (0, (_nuclideClient2 || _nuclideClient()).getServiceByNuclideUri)(FLOW_SERVICE, file);
+  (0, (_assert2 || _assert()).default)(flowService != null);
   if (!serviceInstances.has(flowService)) {
     serviceInstances.add(flowService);
     var statusUpdates = flowService.getServerStatusUpdates();

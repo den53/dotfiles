@@ -21,13 +21,23 @@ exports.getDistractionFreeModeProvider = getDistractionFreeModeProvider;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _assert = require('assert');
+var _assert2;
 
-var _assert2 = _interopRequireDefault(_assert);
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
-var _atom = require('atom');
+var _atom2;
 
-var _nuclideAnalytics = require('../../nuclide-analytics');
+function _atom() {
+  return _atom2 = require('atom');
+}
+
+var _nuclideAnalytics2;
+
+function _nuclideAnalytics() {
+  return _nuclideAnalytics2 = require('../../nuclide-analytics');
+}
 
 var DEFAULT_HIDE_DIAGNOSTICS_PANEL = true;
 var DEFAULT_TABLE_HEIGHT = 200;
@@ -44,7 +54,7 @@ var activationState = null;
 var diagnosticUpdaterForTable = null;
 
 function createPanel(diagnosticUpdater, disposables) {
-  (0, _assert2['default'])(activationState);
+  (0, (_assert2 || _assert()).default)(activationState);
 
   var _require$createDiagnosticsPanel = require('./createPanel').createDiagnosticsPanel(diagnosticUpdater, activationState.diagnosticsPanelHeight, activationState.filterByActiveTextEditor, disableLinter);
 
@@ -59,7 +69,7 @@ function createPanel(diagnosticUpdater, disposables) {
   activationState.hideDiagnosticsPanel = false;
 
   var onDidChangeVisibleSubscription = panel.onDidChangeVisible(function (visible) {
-    (0, _assert2['default'])(activationState);
+    (0, (_assert2 || _assert()).default)(activationState);
     activationState.hideDiagnosticsPanel = !visible;
   });
   disposables.add(onDidChangeVisibleSubscription);
@@ -95,11 +105,11 @@ function getStatusBarTile() {
 }
 
 function tryRecordActivationState() {
-  (0, _assert2['default'])(activationState);
+  (0, (_assert2 || _assert()).default)(activationState);
   if (bottomPanel && bottomPanel.isVisible()) {
     activationState.diagnosticsPanelHeight = bottomPanel.getItem().clientHeight;
 
-    (0, _assert2['default'])(getDiagnosticsPanel);
+    (0, (_assert2 || _assert()).default)(getDiagnosticsPanel);
     var diagnosticsPanel = getDiagnosticsPanel();
     if (diagnosticsPanel) {
       activationState.filterByActiveTextEditor = diagnosticsPanel.props.filterByActiveTextEditor;
@@ -113,7 +123,7 @@ function activate(state) {
   if (subscriptions) {
     return;
   }
-  subscriptions = new _atom.CompositeDisposable();
+  subscriptions = new (_atom2 || _atom()).CompositeDisposable();
 
   // Ensure the integrity of the ActivationState created from state.
   if (!state) {
@@ -140,7 +150,7 @@ function consumeDiagnosticUpdates(diagnosticUpdater) {
 
   var fixer = diagnosticUpdater.applyFix.bind(diagnosticUpdater);
 
-  (0, _assert2['default'])(subscriptions);
+  (0, (_assert2 || _assert()).default)(subscriptions);
   subscriptions.add(atom.workspace.observeTextEditors(function (editor) {
     var filePath = editor.getPath();
     if (!filePath) {
@@ -195,7 +205,7 @@ function consumeDiagnosticUpdates(diagnosticUpdater) {
     if (path == null) {
       return;
     }
-    (0, _nuclideAnalytics.track)('diagnostics-autofix-all-in-file');
+    (0, (_nuclideAnalytics2 || _nuclideAnalytics()).track)('diagnostics-autofix-all-in-file');
     diagnosticUpdater.applyFixesForFile(path);
   };
 
@@ -205,7 +215,7 @@ function consumeDiagnosticUpdates(diagnosticUpdater) {
 
   subscriptions.add(atom.commands.add(atom.views.getView(atom.workspace), 'nuclide-diagnostics-ui:fix-all-in-current-file', fixAllInCurrentFile));
 
-  (0, _assert2['default'])(activationState);
+  (0, (_assert2 || _assert()).default)(activationState);
   if (!activationState.hideDiagnosticsPanel) {
     lazilyCreateTable();
   }
@@ -250,7 +260,7 @@ function deactivate() {
 
 function serialize() {
   tryRecordActivationState();
-  (0, _assert2['default'])(activationState);
+  (0, (_assert2 || _assert()).default)(activationState);
   return activationState;
 }
 
@@ -279,5 +289,5 @@ function getDistractionFreeModeProvider() {
 }
 
 function logPanelIsDisplayed() {
-  (0, _nuclideAnalytics.track)('diagnostics-show-table');
+  (0, (_nuclideAnalytics2 || _nuclideAnalytics()).track)('diagnostics-show-table');
 }

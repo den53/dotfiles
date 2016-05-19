@@ -12,7 +12,13 @@ Object.defineProperty(exports, '__esModule', {
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var invariant = require('assert');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _assert2;
+
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
 var providerInstance = undefined;
 function getProviderInstance() {
@@ -26,7 +32,7 @@ function getProviderInstance() {
   return providerInstance;
 }
 
-exports['default'] = {
+exports.default = {
 
   registerProvider: function registerProvider() {
     return getProviderInstance();
@@ -34,9 +40,9 @@ exports['default'] = {
 
   consumeRecentFilesService: function consumeRecentFilesService(service) {
     var instance = getProviderInstance();
-    invariant(instance.setRecentFilesService != null);
+    (0, (_assert2 || _assert()).default)(instance.setRecentFilesService != null);
     instance.setRecentFilesService(service);
   }
 
 };
-module.exports = exports['default'];
+module.exports = exports.default;

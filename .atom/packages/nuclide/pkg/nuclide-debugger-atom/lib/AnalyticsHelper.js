@@ -13,12 +13,16 @@ exports.endTimerTracking = endTimerTracking;
  * the root directory of this source tree.
  */
 
-var _nuclideAnalytics = require('../../nuclide-analytics');
+var _nuclideAnalytics2;
+
+function _nuclideAnalytics() {
+  return _nuclideAnalytics2 = require('../../nuclide-analytics');
+}
 
 var timer = null;
 
 function beginTimerTracking(eventName) {
-  timer = (0, _nuclideAnalytics.startTracking)(eventName);
+  timer = (0, (_nuclideAnalytics2 || _nuclideAnalytics()).startTracking)(eventName);
 }
 
 function failTimerTracking(err) {

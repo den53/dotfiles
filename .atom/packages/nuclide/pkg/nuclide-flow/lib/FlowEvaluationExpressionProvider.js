@@ -16,9 +16,17 @@ var _createClass = (function () { function defineProperties(target, props) { for
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _nuclideAtomHelpers = require('../../nuclide-atom-helpers');
+var _nuclideAtomHelpers2;
 
-var _constants = require('./constants');
+function _nuclideAtomHelpers() {
+  return _nuclideAtomHelpers2 = require('../../nuclide-atom-helpers');
+}
+
+var _constants2;
+
+function _constants() {
+  return _constants2 = require('./constants');
+}
 
 var FlowEvaluationExpressionProvider = (function () {
   function FlowEvaluationExpressionProvider() {
@@ -29,7 +37,7 @@ var FlowEvaluationExpressionProvider = (function () {
     key: 'getEvaluationExpression',
     value: function getEvaluationExpression(editor, position) {
       // TODO: Replace RegExp with AST-based, more accurate approach.
-      var extractedIdentifier = (0, _nuclideAtomHelpers.extractWordAtPosition)(editor, position, _constants.JAVASCRIPT_IDENTIFIER_REGEX);
+      var extractedIdentifier = (0, (_nuclideAtomHelpers2 || _nuclideAtomHelpers()).extractWordAtPosition)(editor, position, (_constants2 || _constants()).JAVASCRIPT_IDENTIFIER_REGEX);
       if (extractedIdentifier == null) {
         return Promise.resolve(null);
       }

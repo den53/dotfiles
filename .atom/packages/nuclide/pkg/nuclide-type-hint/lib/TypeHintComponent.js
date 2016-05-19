@@ -20,15 +20,27 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var _atom = require('atom');
+var _atom2;
 
-var _reactForAtom = require('react-for-atom');
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var _nuclideUiLibAtomTextEditor = require('../../nuclide-ui/lib/AtomTextEditor');
+var _reactForAtom2;
+
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
+
+var _nuclideUiLibAtomTextEditor2;
+
+function _nuclideUiLibAtomTextEditor() {
+  return _nuclideUiLibAtomTextEditor2 = require('../../nuclide-ui/lib/AtomTextEditor');
+}
 
 function makeTypeHintComponent(content, grammar) {
   return function () {
-    return _reactForAtom.React.createElement(TypeHintComponent, { content: content, grammar: grammar });
+    return (_reactForAtom2 || _reactForAtom()).React.createElement(TypeHintComponent, { content: content, grammar: grammar });
   };
 }
 
@@ -47,13 +59,13 @@ var TypeHintComponent = (function (_React$Component) {
   _createClass(TypeHintComponent, [{
     key: 'renderPrimitive',
     value: function renderPrimitive(value) {
-      var buffer = new _atom.TextBuffer(value);
+      var buffer = new (_atom2 || _atom()).TextBuffer(value);
       var grammar = this.props.grammar;
 
-      return _reactForAtom.React.createElement(
+      return (_reactForAtom2 || _reactForAtom()).React.createElement(
         'div',
         { className: 'nuclide-type-hint-text-editor-container' },
-        _reactForAtom.React.createElement(_nuclideUiLibAtomTextEditor.AtomTextEditor, {
+        (_reactForAtom2 || _reactForAtom()).React.createElement((_nuclideUiLibAtomTextEditor2 || _nuclideUiLibAtomTextEditor()).AtomTextEditor, {
           className: 'nuclide-type-hint-text-editor',
           gutterHidden: true,
           readOnly: true,
@@ -70,7 +82,7 @@ var TypeHintComponent = (function (_React$Component) {
       var expandedNodes = this.state.expandedNodes;
 
       if (expandedNodes.has(tree)) {
-        expandedNodes['delete'](tree);
+        expandedNodes.delete(tree);
       } else {
         expandedNodes.add(tree);
       }
@@ -89,22 +101,22 @@ var TypeHintComponent = (function (_React$Component) {
         return _this.renderHierarchical(child);
       });
       var isExpanded = this.state.expandedNodes.has(tree);
-      var childrenList = isExpanded ? _reactForAtom.React.createElement(
+      var childrenList = isExpanded ? (_reactForAtom2 || _reactForAtom()).React.createElement(
         'ul',
         { className: 'list-tree' },
         children
       ) : null;
       var className = 'icon nuclide-type-hint-expandable-chevron ' + ('icon-chevron-' + (isExpanded ? 'down' : 'right'));
-      return _reactForAtom.React.createElement(
+      return (_reactForAtom2 || _reactForAtom()).React.createElement(
         'li',
         { className: 'list-nested-item' },
-        _reactForAtom.React.createElement(
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
           'div',
           { className: 'list-item' },
-          _reactForAtom.React.createElement(
+          (_reactForAtom2 || _reactForAtom()).React.createElement(
             'span',
             null,
-            _reactForAtom.React.createElement('span', {
+            (_reactForAtom2 || _reactForAtom()).React.createElement('span', {
               className: className,
               onClick: this.handleChevronClick.bind(this, tree)
             }),
@@ -122,7 +134,7 @@ var TypeHintComponent = (function (_React$Component) {
       if (typeof content === 'string') {
         return this.renderPrimitive(content);
       }
-      return _reactForAtom.React.createElement(
+      return (_reactForAtom2 || _reactForAtom()).React.createElement(
         'ul',
         { className: 'list-tree' },
         this.renderHierarchical(content)
@@ -131,4 +143,4 @@ var TypeHintComponent = (function (_React$Component) {
   }]);
 
   return TypeHintComponent;
-})(_reactForAtom.React.Component);
+})((_reactForAtom2 || _reactForAtom()).React.Component);

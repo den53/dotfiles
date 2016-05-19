@@ -1,6 +1,4 @@
-
-
-var getNamesFromID = require('./getNamesFromID');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -10,9 +8,19 @@ var getNamesFromID = require('./getNamesFromID');
  * the root directory of this source tree.
  */
 
-var jscs = require('jscodeshift');
+var _getNamesFromID2;
 
-var REACT_NODE = jscs.identifier('React');
+function _getNamesFromID() {
+  return _getNamesFromID2 = _interopRequireDefault(require('./getNamesFromID'));
+}
+
+var _jscodeshift2;
+
+function _jscodeshift() {
+  return _jscodeshift2 = _interopRequireDefault(require('jscodeshift'));
+}
+
+var REACT_NODE = (_jscodeshift2 || _jscodeshift()).default.identifier('React');
 
 /**
  * These are the ways in which one might access an undeclared identifier. This
@@ -21,7 +29,7 @@ var REACT_NODE = jscs.identifier('React');
 var CONFIG = [
 // foo;
 {
-  searchTerms: [jscs.ExpressionStatement],
+  searchTerms: [(_jscodeshift2 || _jscodeshift()).default.ExpressionStatement],
   getNodes: function getNodes(path) {
     return [path.node.expression];
   }
@@ -29,7 +37,7 @@ var CONFIG = [
 
 // foo(bar);
 {
-  searchTerms: [jscs.CallExpression],
+  searchTerms: [(_jscodeshift2 || _jscodeshift()).default.CallExpression],
   getNodes: function getNodes(path) {
     return [path.node.callee].concat(path.node.arguments);
   }
@@ -37,7 +45,7 @@ var CONFIG = [
 
 // foo.declared;
 {
-  searchTerms: [jscs.MemberExpression],
+  searchTerms: [(_jscodeshift2 || _jscodeshift()).default.MemberExpression],
   getNodes: function getNodes(path) {
     return [path.node.object];
   }
@@ -45,7 +53,7 @@ var CONFIG = [
 
 // foo = bar;
 {
-  searchTerms: [jscs.AssignmentExpression],
+  searchTerms: [(_jscodeshift2 || _jscodeshift()).default.AssignmentExpression],
   getNodes: function getNodes(path) {
     return [path.node.left, path.node.right];
   }
@@ -53,7 +61,7 @@ var CONFIG = [
 
 // class declared extends foo {}
 {
-  searchTerms: [jscs.ClassDeclaration],
+  searchTerms: [(_jscodeshift2 || _jscodeshift()).default.ClassDeclaration],
   getNodes: function getNodes(path) {
     return [path.node.superClass];
   }
@@ -61,7 +69,7 @@ var CONFIG = [
 
 // var declared = foo;
 {
-  searchTerms: [jscs.VariableDeclarator],
+  searchTerms: [(_jscodeshift2 || _jscodeshift()).default.VariableDeclarator],
   getNodes: function getNodes(path) {
     return [path.node.init];
   }
@@ -69,7 +77,7 @@ var CONFIG = [
 
 // switch (declared) { case foo: break; }
 {
-  searchTerms: [jscs.SwitchCase],
+  searchTerms: [(_jscodeshift2 || _jscodeshift()).default.SwitchCase],
   getNodes: function getNodes(path) {
     return [path.node.test];
   }
@@ -77,7 +85,7 @@ var CONFIG = [
 
 // {declared: foo}
 {
-  searchTerms: [jscs.ObjectExpression],
+  searchTerms: [(_jscodeshift2 || _jscodeshift()).default.ObjectExpression],
   // Generally props have a value, if it is a spread property it doesn't.
   getNodes: function getNodes(path) {
     return path.node.properties.map(function (prop) {
@@ -88,7 +96,7 @@ var CONFIG = [
 
 // return foo;
 {
-  searchTerms: [jscs.ReturnStatement],
+  searchTerms: [(_jscodeshift2 || _jscodeshift()).default.ReturnStatement],
   getNodes: function getNodes(path) {
     return [path.node.argument];
   }
@@ -96,7 +104,7 @@ var CONFIG = [
 
 // if (foo) {}
 {
-  searchTerms: [jscs.IfStatement],
+  searchTerms: [(_jscodeshift2 || _jscodeshift()).default.IfStatement],
   getNodes: function getNodes(path) {
     return [path.node.test];
   }
@@ -104,7 +112,7 @@ var CONFIG = [
 
 // switch (foo) {}
 {
-  searchTerms: [jscs.SwitchStatement],
+  searchTerms: [(_jscodeshift2 || _jscodeshift()).default.SwitchStatement],
   getNodes: function getNodes(path) {
     return [path.node.discriminant];
   }
@@ -112,7 +120,7 @@ var CONFIG = [
 
 // !foo;
 {
-  searchTerms: [jscs.UnaryExpression],
+  searchTerms: [(_jscodeshift2 || _jscodeshift()).default.UnaryExpression],
   getNodes: function getNodes(path) {
     return [path.node.argument];
   }
@@ -120,7 +128,7 @@ var CONFIG = [
 
 // foo || bar;
 {
-  searchTerms: [jscs.BinaryExpression],
+  searchTerms: [(_jscodeshift2 || _jscodeshift()).default.BinaryExpression],
   getNodes: function getNodes(path) {
     return [path.node.left, path.node.right];
   }
@@ -128,7 +136,7 @@ var CONFIG = [
 
 // foo < bar;
 {
-  searchTerms: [jscs.LogicalExpression],
+  searchTerms: [(_jscodeshift2 || _jscodeshift()).default.LogicalExpression],
   getNodes: function getNodes(path) {
     return [path.node.left, path.node.right];
   }
@@ -136,7 +144,7 @@ var CONFIG = [
 
 // foo ? bar : baz;
 {
-  searchTerms: [jscs.ConditionalExpression],
+  searchTerms: [(_jscodeshift2 || _jscodeshift()).default.ConditionalExpression],
   getNodes: function getNodes(path) {
     return [path.node.test, path.node.alternate, path.node.consequent];
   }
@@ -144,7 +152,7 @@ var CONFIG = [
 
 // new Foo()
 {
-  searchTerms: [jscs.NewExpression],
+  searchTerms: [(_jscodeshift2 || _jscodeshift()).default.NewExpression],
   getNodes: function getNodes(path) {
     return [path.node.callee].concat(path.node.arguments);
   }
@@ -152,7 +160,7 @@ var CONFIG = [
 
 // foo++;
 {
-  searchTerms: [jscs.UpdateExpression],
+  searchTerms: [(_jscodeshift2 || _jscodeshift()).default.UpdateExpression],
   getNodes: function getNodes(path) {
     return [path.node.argument];
   }
@@ -160,7 +168,7 @@ var CONFIG = [
 
 // <Element attribute={foo} />
 {
-  searchTerms: [jscs.JSXExpressionContainer],
+  searchTerms: [(_jscodeshift2 || _jscodeshift()).default.JSXExpressionContainer],
   getNodes: function getNodes(path) {
     return [path.node.expression];
   }
@@ -168,7 +176,7 @@ var CONFIG = [
 
 // for (foo in bar) {}
 {
-  searchTerms: [jscs.ForInStatement],
+  searchTerms: [(_jscodeshift2 || _jscodeshift()).default.ForInStatement],
   getNodes: function getNodes(path) {
     return [path.node.left, path.node.right];
   }
@@ -176,7 +184,7 @@ var CONFIG = [
 
 // for (foo of bar) {}
 {
-  searchTerms: [jscs.ForOfStatement],
+  searchTerms: [(_jscodeshift2 || _jscodeshift()).default.ForOfStatement],
   getNodes: function getNodes(path) {
     return [path.node.left, path.node.right];
   }
@@ -184,7 +192,7 @@ var CONFIG = [
 
 // for (foo; bar; baz) {}
 {
-  searchTerms: [jscs.ForStatement],
+  searchTerms: [(_jscodeshift2 || _jscodeshift()).default.ForStatement],
   getNodes: function getNodes(path) {
     return [path.node.init, path.node.test, path.node.update];
   }
@@ -192,7 +200,7 @@ var CONFIG = [
 
 // while (foo) {}
 {
-  searchTerms: [jscs.WhileStatement],
+  searchTerms: [(_jscodeshift2 || _jscodeshift()).default.WhileStatement],
   getNodes: function getNodes(path) {
     return [path.node.test];
   }
@@ -200,7 +208,7 @@ var CONFIG = [
 
 // do {} while (foo)
 {
-  searchTerms: [jscs.DoWhileStatement],
+  searchTerms: [(_jscodeshift2 || _jscodeshift()).default.DoWhileStatement],
   getNodes: function getNodes(path) {
     return [path.node.test];
   }
@@ -208,7 +216,7 @@ var CONFIG = [
 
 // [foo]
 {
-  searchTerms: [jscs.ArrayExpression],
+  searchTerms: [(_jscodeshift2 || _jscodeshift()).default.ArrayExpression],
   getNodes: function getNodes(path) {
     return path.node.elements;
   }
@@ -216,7 +224,7 @@ var CONFIG = [
 
 // Special case. Any JSX elements will get transpiled to use React.
 {
-  searchTerms: [jscs.JSXOpeningElement],
+  searchTerms: [(_jscodeshift2 || _jscodeshift()).default.JSXOpeningElement],
   getNodes: function getNodes(path) {
     return [REACT_NODE];
   }
@@ -224,7 +232,7 @@ var CONFIG = [
 
 // foo`something`
 {
-  searchTerms: [jscs.TaggedTemplateExpression],
+  searchTerms: [(_jscodeshift2 || _jscodeshift()).default.TaggedTemplateExpression],
   getNodes: function getNodes(path) {
     return [path.node.tag];
   }
@@ -232,7 +240,7 @@ var CONFIG = [
 
 // `${bar}`
 {
-  searchTerms: [jscs.TemplateLiteral],
+  searchTerms: [(_jscodeshift2 || _jscodeshift()).default.TemplateLiteral],
   getNodes: function getNodes(path) {
     return path.node.expressions;
   }
@@ -240,7 +248,7 @@ var CONFIG = [
 
 // function foo(a = b) {}
 {
-  searchTerms: [jscs.AssignmentPattern],
+  searchTerms: [(_jscodeshift2 || _jscodeshift()).default.AssignmentPattern],
   getNodes: function getNodes(path) {
     return [path.node.right];
   }
@@ -258,7 +266,7 @@ function getNonDeclarationIdentifiers(root) {
     root.find(config.searchTerms[0], config.searchTerms[1]).forEach(function (path) {
       var nodes = config.getNodes(path);
       nodes.forEach(function (node) {
-        var names = getNamesFromID(node);
+        var names = (0, (_getNamesFromID2 || _getNamesFromID()).default)(node);
         for (var _name of names) {
           ids.add(_name);
         }

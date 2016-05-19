@@ -14,23 +14,41 @@ var _createClass = (function () { function defineProperties(target, props) { for
 
 var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var _classnames = require('classnames');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _classnames2 = _interopRequireDefault(_classnames);
+var _classnames2;
 
-var _atom = require('atom');
+function _classnames() {
+  return _classnames2 = _interopRequireDefault(require('classnames'));
+}
 
-var _reactForAtom = require('react-for-atom');
+var _atom2;
 
-var _nuclideUiLibButton = require('../../nuclide-ui/lib/Button');
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var _nuclideUiLibButtonGroup = require('../../nuclide-ui/lib/ButtonGroup');
+var _reactForAtom2;
+
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
+
+var _nuclideUiLibButton2;
+
+function _nuclideUiLibButton() {
+  return _nuclideUiLibButton2 = require('../../nuclide-ui/lib/Button');
+}
+
+var _nuclideUiLibButtonGroup2;
+
+function _nuclideUiLibButtonGroup() {
+  return _nuclideUiLibButtonGroup2 = require('../../nuclide-ui/lib/ButtonGroup');
+}
 
 var WorkingSetSelectionComponent = (function (_React$Component) {
   _inherits(WorkingSetSelectionComponent, _React$Component);
@@ -50,7 +68,7 @@ var WorkingSetSelectionComponent = (function (_React$Component) {
       notApplicableDefinitions: workingSetsStore.getNotApplicableDefinitions()
     };
 
-    this._disposables = new _atom.CompositeDisposable();
+    this._disposables = new (_atom2 || _atom()).CompositeDisposable();
 
     this._disposables.add(workingSetsStore.subscribeToDefinitions(function (definitions) {
       _this.setState({
@@ -73,7 +91,7 @@ var WorkingSetSelectionComponent = (function (_React$Component) {
     value: function componentDidMount() {
       var _this2 = this;
 
-      var node = _reactForAtom.ReactDOM.findDOMNode(this);
+      var node = (_reactForAtom2 || _reactForAtom()).ReactDOM.findDOMNode(this);
       node.focus();
       this._disposables.add(atom.commands.add(node, {
         'core:move-up': function coreMoveUp() {
@@ -110,7 +128,7 @@ var WorkingSetSelectionComponent = (function (_React$Component) {
   }, {
     key: 'componentDidUpdate',
     value: function componentDidUpdate() {
-      var node = _reactForAtom.ReactDOM.findDOMNode(this);
+      var node = (_reactForAtom2 || _reactForAtom()).ReactDOM.findDOMNode(this);
       node.focus();
     }
   }, {
@@ -119,7 +137,7 @@ var WorkingSetSelectionComponent = (function (_React$Component) {
       var _this3 = this;
 
       var applicableDefinitions = this.state.applicableDefinitions.map(function (def, index) {
-        return _reactForAtom.React.createElement(ApplicableDefinitionLine, {
+        return (_reactForAtom2 || _reactForAtom()).React.createElement(ApplicableDefinitionLine, {
           key: def.name,
           def: def,
           index: index,
@@ -134,23 +152,23 @@ var WorkingSetSelectionComponent = (function (_React$Component) {
       var notApplicableSection = undefined;
       if (this.state.notApplicableDefinitions.length > 0) {
         var _notApplicableDefinitions = this.state.notApplicableDefinitions.map(function (def) {
-          return _reactForAtom.React.createElement(NonApplicableDefinitionLine, {
+          return (_reactForAtom2 || _reactForAtom()).React.createElement(NonApplicableDefinitionLine, {
             key: def.name,
             def: def,
             onDeleteWorkingSet: _this3._deleteWorkingSet
           });
         });
 
-        notApplicableSection = _reactForAtom.React.createElement(
+        notApplicableSection = (_reactForAtom2 || _reactForAtom()).React.createElement(
           'div',
           null,
-          _reactForAtom.React.createElement('hr', { className: 'nuclide-file-tree-working-set-separator' }),
-          _reactForAtom.React.createElement(
+          (_reactForAtom2 || _reactForAtom()).React.createElement('hr', { className: 'nuclide-file-tree-working-set-separator' }),
+          (_reactForAtom2 || _reactForAtom()).React.createElement(
             'span',
             null,
             'The working sets below are not applicable to your current project folders'
           ),
-          _reactForAtom.React.createElement(
+          (_reactForAtom2 || _reactForAtom()).React.createElement(
             'ol',
             { className: 'list-group' },
             _notApplicableDefinitions
@@ -158,13 +176,13 @@ var WorkingSetSelectionComponent = (function (_React$Component) {
         );
       }
 
-      return _reactForAtom.React.createElement(
+      return (_reactForAtom2 || _reactForAtom()).React.createElement(
         'div',
         {
           className: 'select-list',
           tabIndex: '0',
           onBlur: this._checkFocus },
-        _reactForAtom.React.createElement(
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
           'ol',
           { className: 'list-group mark-active' },
           applicableDefinitions
@@ -185,7 +203,7 @@ var WorkingSetSelectionComponent = (function (_React$Component) {
   }, {
     key: '_checkFocus',
     value: function _checkFocus(event) {
-      var node = _reactForAtom.ReactDOM.findDOMNode(this);
+      var node = (_reactForAtom2 || _reactForAtom()).ReactDOM.findDOMNode(this);
       // If the next active element (`event.relatedTarget`) is not a descendant of this modal, close
       // the modal.
       if (!node.contains(event.relatedTarget)) {
@@ -209,7 +227,7 @@ var WorkingSetSelectionComponent = (function (_React$Component) {
   }]);
 
   return WorkingSetSelectionComponent;
-})(_reactForAtom.React.Component);
+})((_reactForAtom2 || _reactForAtom()).React.Component);
 
 exports.WorkingSetSelectionComponent = WorkingSetSelectionComponent;
 
@@ -237,31 +255,31 @@ var ApplicableDefinitionLine = (function (_React$Component2) {
         clearfix: true
       };
 
-      return _reactForAtom.React.createElement(
+      return (_reactForAtom2 || _reactForAtom()).React.createElement(
         'li',
         {
-          className: (0, _classnames2['default'])(classes),
+          className: (0, (_classnames2 || _classnames()).default)(classes),
           onMouseOver: function () {
             return _this4.props.onSelect(_this4.props.index);
           },
           onClick: this._lineOnClick },
-        _reactForAtom.React.createElement(
-          _nuclideUiLibButtonGroup.ButtonGroup,
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
+          (_nuclideUiLibButtonGroup2 || _nuclideUiLibButtonGroup()).ButtonGroup,
           { className: 'pull-right' },
-          _reactForAtom.React.createElement(_nuclideUiLibButton.Button, {
+          (_reactForAtom2 || _reactForAtom()).React.createElement((_nuclideUiLibButton2 || _nuclideUiLibButton()).Button, {
             icon: 'trashcan',
             onClick: this._deleteButtonOnClick,
             tabIndex: '-1',
             title: 'Delete this working set'
           }),
-          _reactForAtom.React.createElement(_nuclideUiLibButton.Button, {
+          (_reactForAtom2 || _reactForAtom()).React.createElement((_nuclideUiLibButton2 || _nuclideUiLibButton()).Button, {
             icon: 'pencil',
             onClick: this._editButtonOnClick,
             tabIndex: '-1',
             title: 'Edit this working set'
           })
         ),
-        _reactForAtom.React.createElement(
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
           'span',
           null,
           this.props.def.name
@@ -288,7 +306,7 @@ var ApplicableDefinitionLine = (function (_React$Component2) {
   }]);
 
   return ApplicableDefinitionLine;
-})(_reactForAtom.React.Component);
+})((_reactForAtom2 || _reactForAtom()).React.Component);
 
 var NonApplicableDefinitionLine = (function (_React$Component3) {
   _inherits(NonApplicableDefinitionLine, _React$Component3);
@@ -304,17 +322,17 @@ var NonApplicableDefinitionLine = (function (_React$Component3) {
   _createClass(NonApplicableDefinitionLine, [{
     key: 'render',
     value: function render() {
-      return _reactForAtom.React.createElement(
+      return (_reactForAtom2 || _reactForAtom()).React.createElement(
         'li',
         { className: 'clearfix' },
-        _reactForAtom.React.createElement(_nuclideUiLibButton.Button, {
+        (_reactForAtom2 || _reactForAtom()).React.createElement((_nuclideUiLibButton2 || _nuclideUiLibButton()).Button, {
           className: 'pull-right',
           icon: 'trashcan',
           onClick: this._deleteButtonOnClick,
           tabIndex: '-1',
           title: 'Delete this working set'
         }),
-        _reactForAtom.React.createElement(
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
           'span',
           { className: 'text-subtle' },
           this.props.def.name
@@ -330,4 +348,4 @@ var NonApplicableDefinitionLine = (function (_React$Component3) {
   }]);
 
   return NonApplicableDefinitionLine;
-})(_reactForAtom.React.Component);
+})((_reactForAtom2 || _reactForAtom()).React.Component);

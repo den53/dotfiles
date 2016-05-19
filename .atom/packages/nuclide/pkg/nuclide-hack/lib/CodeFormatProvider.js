@@ -3,7 +3,7 @@ var _createDecoratedClass = (function () { function defineProperties(target, des
 var formatSourceFromEditor = _asyncToGenerator(function* (editor, range) {
   var buffer = editor.getBuffer();
   var filePath = editor.getPath();
-  var hackLanguage = yield (0, _HackLanguage.getHackLanguageForUri)(filePath);
+  var hackLanguage = yield (0, (_HackLanguage2 || _HackLanguage()).getHackLanguageForUri)(filePath);
   if (!hackLanguage || !filePath) {
     return buffer.getTextInRange(range);
   }
@@ -25,9 +25,17 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * the root directory of this source tree.
  */
 
-var _nuclideAnalytics = require('../../nuclide-analytics');
+var _nuclideAnalytics2;
 
-var _HackLanguage = require('./HackLanguage');
+function _nuclideAnalytics() {
+  return _nuclideAnalytics2 = require('../../nuclide-analytics');
+}
+
+var _HackLanguage2;
+
+function _HackLanguage() {
+  return _HackLanguage2 = require('./HackLanguage');
+}
 
 var CodeFormatProvider = (function () {
   function CodeFormatProvider() {
@@ -36,7 +44,7 @@ var CodeFormatProvider = (function () {
 
   _createDecoratedClass(CodeFormatProvider, [{
     key: 'formatCode',
-    decorators: [(0, _nuclideAnalytics.trackTiming)('hack.formatCode')],
+    decorators: [(0, (_nuclideAnalytics2 || _nuclideAnalytics()).trackTiming)('hack.formatCode')],
     value: function formatCode(editor, range) {
       return formatSourceFromEditor(editor, range);
     }

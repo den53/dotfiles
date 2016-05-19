@@ -11,15 +11,35 @@ exports.jasmineIntegrationTestSetup = jasmineIntegrationTestSetup;
  * the root directory of this source tree.
  */
 
-var _event = require('./event');
+var _event2;
 
-var _fixtures = require('./fixtures');
+function _event() {
+  return _event2 = require('./event');
+}
 
-var _packageUtils = require('./package-utils');
+var _fixtures2;
 
-var _remoteUtils = require('./remote-utils');
+function _fixtures() {
+  return _fixtures2 = require('./fixtures');
+}
 
-var _waitsForFile = require('./waitsForFile');
+var _packageUtils2;
+
+function _packageUtils() {
+  return _packageUtils2 = require('./package-utils');
+}
+
+var _remoteUtils2;
+
+function _remoteUtils() {
+  return _remoteUtils2 = require('./remote-utils');
+}
+
+var _waitsForFile2;
+
+function _waitsForFile() {
+  return _waitsForFile2 = require('./waitsForFile');
+}
 
 // Smallish, yet realistic testing window dimensions.
 var TEST_WINDOW_HEIGHT = 600;
@@ -40,14 +60,14 @@ function jasmineIntegrationTestSetup() {
   jasmine.useRealClock();
 }
 
-exports.activateAllPackages = _packageUtils.activateAllPackages;
-exports.addRemoteProject = _remoteUtils.addRemoteProject;
-exports.copyFixture = _fixtures.copyFixture;
-exports.copyMercurialFixture = _fixtures.copyMercurialFixture;
-exports.deactivateAllPackages = _packageUtils.deactivateAllPackages;
-exports.dispatchKeyboardEvent = _event.dispatchKeyboardEvent;
-exports.setLocalProject = _fixtures.setLocalProject;
-exports.startNuclideServer = _remoteUtils.startNuclideServer;
-exports.stopNuclideServer = _remoteUtils.stopNuclideServer;
-exports.waitsForFile = _waitsForFile.waitsForFile;
-exports.waitsForFilePosition = _waitsForFile.waitsForFilePosition;
+exports.activateAllPackages = (_packageUtils2 || _packageUtils()).activateAllPackages;
+exports.addRemoteProject = (_remoteUtils2 || _remoteUtils()).addRemoteProject;
+exports.copyFixture = (_fixtures2 || _fixtures()).copyFixture;
+exports.copyMercurialFixture = (_fixtures2 || _fixtures()).copyMercurialFixture;
+exports.deactivateAllPackages = (_packageUtils2 || _packageUtils()).deactivateAllPackages;
+exports.dispatchKeyboardEvent = (_event2 || _event()).dispatchKeyboardEvent;
+exports.setLocalProject = (_fixtures2 || _fixtures()).setLocalProject;
+exports.startNuclideServer = (_remoteUtils2 || _remoteUtils()).startNuclideServer;
+exports.stopNuclideServer = (_remoteUtils2 || _remoteUtils()).stopNuclideServer;
+exports.waitsForFile = (_waitsForFile2 || _waitsForFile()).waitsForFile;
+exports.waitsForFilePosition = (_waitsForFile2 || _waitsForFile()).waitsForFilePosition;

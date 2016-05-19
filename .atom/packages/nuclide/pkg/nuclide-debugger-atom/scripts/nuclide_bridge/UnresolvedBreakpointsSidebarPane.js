@@ -2,15 +2,11 @@ var _createClass = (function () { function defineProperties(target, props) { for
 
 var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var _assert = require('assert');
-
-var _assert2 = _interopRequireDefault(_assert);
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -20,21 +16,49 @@ var _assert2 = _interopRequireDefault(_assert);
  * the root directory of this source tree.
  */
 
-var NuclideBridge = require('./NuclideBridge');
-var React = require('react');
-var ReactDOM = require('react-dom');
-var path = require('path');
-var url = require('url');
+var _NuclideBridge2;
+
+function _NuclideBridge() {
+  return _NuclideBridge2 = _interopRequireDefault(require('./NuclideBridge'));
+}
+
+var _react2;
+
+function _react() {
+  return _react2 = _interopRequireDefault(require('react'));
+}
+
+var _reactDom2;
+
+function _reactDom() {
+  return _reactDom2 = _interopRequireDefault(require('react-dom'));
+}
+
+var _path2;
+
+function _path() {
+  return _path2 = _interopRequireDefault(require('path'));
+}
+
+var _url2;
+
+function _url() {
+  return _url2 = _interopRequireDefault(require('url'));
+}
+
+var _assert2;
+
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
 var WebInspector = window.WebInspector;
 
-var UnresolvedBreakpointsComponent = React.createClass({
-  displayName: 'UnresolvedBreakpointsComponent',
-
+var UnresolvedBreakpointsComponent = (_react2 || _react()).default.createClass({
   _changeHandler: { dispose: function dispose() {} },
 
   componentWillMount: function componentWillMount() {
-    this._changeHandler = NuclideBridge.onUnresolvedBreakpointsChanged(this._updateState);
+    this._changeHandler = (_NuclideBridge2 || _NuclideBridge()).default.onUnresolvedBreakpointsChanged(this._updateState);
   },
 
   componentWillUnmount: function componentWillUnmount() {
@@ -45,14 +69,14 @@ var UnresolvedBreakpointsComponent = React.createClass({
     var _this = this;
 
     var children = this.state.breakpoints.map(function (breakpoint) {
-      var _url$parse = url.parse(breakpoint.url);
+      var _default$parse = (_url2 || _url()).default.parse(breakpoint.url);
 
-      var pathname = _url$parse.pathname;
+      var pathname = _default$parse.pathname;
 
-      (0, _assert2['default'])(pathname);
+      (0, (_assert2 || _assert()).default)(pathname);
       var longRep = pathname + ':' + (breakpoint.line + 1);
-      var shortRep = path.basename(pathname) + ':' + (breakpoint.line + 1);
-      return React.createElement(
+      var shortRep = (_path2 || _path()).default.basename(pathname) + ':' + (breakpoint.line + 1);
+      return (_react2 || _react()).default.createElement(
         'li',
         {
           key: longRep,
@@ -62,10 +86,10 @@ var UnresolvedBreakpointsComponent = React.createClass({
         shortRep
       );
     });
-    return React.createElement(
+    return (_react2 || _react()).default.createElement(
       'ol',
       { className: 'breakpoint-list' },
-      this.state.breakpoints.length > 0 ? children : React.createElement(
+      this.state.breakpoints.length > 0 ? children : (_react2 || _react()).default.createElement(
         'div',
         { className: 'info' },
         'None'
@@ -74,7 +98,7 @@ var UnresolvedBreakpointsComponent = React.createClass({
   },
 
   _onBreakpointClick: function _onBreakpointClick(breakpoint) {
-    NuclideBridge.sendOpenSourceLocation(breakpoint.url, breakpoint.line);
+    (_NuclideBridge2 || _NuclideBridge()).default.sendOpenSourceLocation(breakpoint.url, breakpoint.line);
   },
 
   getInitialState: function getInitialState() {
@@ -87,7 +111,7 @@ var UnresolvedBreakpointsComponent = React.createClass({
 
   _getState: function _getState() {
     return {
-      breakpoints: NuclideBridge.getUnresolvedBreakpointsList()
+      breakpoints: (_NuclideBridge2 || _NuclideBridge()).default.getUnresolvedBreakpointsList()
     };
   }
 });
@@ -105,7 +129,7 @@ var UnresolvedBreakpointsSidebarPane = (function (_WebInspector$SidebarPane) {
 
     this.registerRequiredCSS('components/breakpointsList.css');
 
-    ReactDOM.render(React.createElement(UnresolvedBreakpointsComponent, null), this.bodyElement);
+    (_reactDom2 || _reactDom()).default.render((_react2 || _react()).default.createElement(UnresolvedBreakpointsComponent, null), this.bodyElement);
 
     this.expand();
   }

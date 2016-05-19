@@ -12,10 +12,22 @@ Object.defineProperty(exports, '__esModule', {
 
 exports.getOutline = getOutline;
 
-var _parsing = require('./parsing');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _assert2;
+
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
+
+var _parsing2;
+
+function _parsing() {
+  return _parsing2 = require('./parsing');
+}
 
 function getOutline(text) {
-  var expression = (0, _parsing.parseJSON)(text);
+  var expression = (0, (_parsing2 || _parsing()).parseJSON)(text);
   if (expression == null) {
     return null;
   }
@@ -25,12 +37,14 @@ function getOutline(text) {
     // aren't valid JSON but nothing actually enforces that we are getting valid JSON and we are
     // using a full JS parser so we have to handle cases like this.
     .filter(function (prop) {
-      return prop.key.type === 'Literal' && typeof prop.key.value === 'string';
+      return prop.type === 'Property' && prop.key.type === 'Literal' && typeof prop.key.value === 'string';
     }).map(function (prop) {
+      (0, (_assert2 || _assert()).default)(prop.type === 'Property');
+      (0, (_assert2 || _assert()).default)(prop.key.type === 'Literal');
       return {
-        plainText: prop.key.value,
-        startPosition: (0, _parsing.babelPosToPoint)(prop.loc.start),
-        endPosition: (0, _parsing.babelPosToPoint)(prop.loc.end),
+        plainText: String(prop.key.value),
+        startPosition: (0, (_parsing2 || _parsing()).babelPosToPoint)(prop.loc.start),
+        endPosition: (0, (_parsing2 || _parsing()).babelPosToPoint)(prop.loc.end),
         children: []
       };
     });

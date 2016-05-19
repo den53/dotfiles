@@ -10,15 +10,21 @@ Object.defineProperty(exports, '__esModule', {
  * the root directory of this source tree.
  */
 
-/* eslint-env browser */
-
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _reactForAtom = require('react-for-atom');
+var _reactForAtom2;
 
-var _StatusBarTileComponent = require('./StatusBarTileComponent');
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
+
+var _StatusBarTileComponent2;
+
+function _StatusBarTileComponent() {
+  return _StatusBarTileComponent2 = require('./StatusBarTileComponent');
+}
 
 // We want to be the furthest left on the right side of the status bar so as not to leave a
 // conspicuous gap (or cause jitter) when nothing is busy.
@@ -87,7 +93,7 @@ var StatusBarTile = (function () {
 
       var item = this._item;
       if (item) {
-        _reactForAtom.ReactDOM.render(_reactForAtom.React.createElement(_StatusBarTileComponent.StatusBarTileComponent, props), item);
+        (_reactForAtom2 || _reactForAtom()).ReactDOM.render((_reactForAtom2 || _reactForAtom()).React.createElement((_StatusBarTileComponent2 || _StatusBarTileComponent()).StatusBarTileComponent, props), item);
         if (this._tooltip) {
           this._tooltip.dispose();
         }
@@ -99,7 +105,7 @@ var StatusBarTile = (function () {
           if (this._isMouseOver) {
             // If the mouse is currently over the element, we want to trigger the new popup to appear.
             ['mouseover', 'mouseenter'].map(function (name) {
-              return new MouseEvent(name);
+              return new window.MouseEvent(name);
             }).forEach(function (event) {
               return item.dispatchEvent(event);
             });

@@ -16,9 +16,11 @@ function _inherits(subClass, superClass) { if (typeof superClass !== 'function' 
  * the root directory of this source tree.
  */
 
-var _require = require('events');
+var _events2;
 
-var EventEmitter = _require.EventEmitter;
+function _events() {
+  return _events2 = require('events');
+}
 
 /**
  * @param pathFromSubscriptionRootToSubscriptionPath The relative path from
@@ -44,7 +46,7 @@ var WatchmanSubscription = (function (_EventEmitter) {
   }
 
   return WatchmanSubscription;
-})(EventEmitter);
+})((_events2 || _events()).EventEmitter);
 
 module.exports = WatchmanSubscription;
 // e.g. ['match', '*.js'],

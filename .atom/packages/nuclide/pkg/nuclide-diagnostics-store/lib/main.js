@@ -19,15 +19,25 @@ exports.deactivate = deactivate;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _atom = require('atom');
+var _atom2;
 
-var _nuclideFeatureConfig = require('../../nuclide-feature-config');
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var _nuclideFeatureConfig2 = _interopRequireDefault(_nuclideFeatureConfig);
+var _nuclideFeatureConfig2;
 
-var _nuclideCommons = require('../../nuclide-commons');
+function _nuclideFeatureConfig() {
+  return _nuclideFeatureConfig2 = _interopRequireDefault(require('../../nuclide-feature-config'));
+}
 
-var observableFromSubscribeFunction = _nuclideCommons.event.observableFromSubscribeFunction;
+var _nuclideCommons2;
+
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
+
+var observableFromSubscribeFunction = (_nuclideCommons2 || _nuclideCommons()).event.observableFromSubscribeFunction;
 
 var legacyLinterSetting = 'nuclide-diagnostics-store.consumeLegacyLinters';
 
@@ -76,12 +86,12 @@ var allLinterAdapters = new Set();
 
 function activate(state) {
   if (!disposables) {
-    disposables = new _atom.CompositeDisposable();
+    disposables = new (_atom2 || _atom()).CompositeDisposable();
   }
 
   // Returns mixed so a cast is necessary.
-  consumeLegacyLinters = _nuclideFeatureConfig2['default'].get(legacyLinterSetting);
-  _nuclideFeatureConfig2['default'].observe(legacyLinterSetting, function (newValue) {
+  consumeLegacyLinters = (_nuclideFeatureConfig2 || _nuclideFeatureConfig()).default.get(legacyLinterSetting);
+  (_nuclideFeatureConfig2 || _nuclideFeatureConfig()).default.observe(legacyLinterSetting, function (newValue) {
     // To make this really solid, we should also probably trigger the linter
     // for the active text editor. Possibly more trouble than it's worth,
     // though, since this may be a temporary option.
@@ -91,8 +101,8 @@ function activate(state) {
     });
   });
 
-  lintOnTheFly = _nuclideFeatureConfig2['default'].get(legacyLintOnTheFlySetting);
-  _nuclideFeatureConfig2['default'].observe(legacyLintOnTheFlySetting, function (newValue) {
+  lintOnTheFly = (_nuclideFeatureConfig2 || _nuclideFeatureConfig()).default.get(legacyLintOnTheFlySetting);
+  (_nuclideFeatureConfig2 || _nuclideFeatureConfig()).default.observe(legacyLintOnTheFlySetting, function (newValue) {
     lintOnTheFly = newValue;
     allLinterAdapters.forEach(function (adapter) {
       return adapter.setLintOnFly(newValue);
@@ -108,17 +118,17 @@ function consumeLinterProvider(provider) {
   var createAdapters = _require.createAdapters;
 
   var newAdapters = createAdapters(provider);
-  var adapterDisposables = new _atom.CompositeDisposable();
+  var adapterDisposables = new (_atom2 || _atom()).CompositeDisposable();
 
   var _loop = function (adapter) {
     adapter.setEnabled(consumeLegacyLinters);
     adapter.setLintOnFly(lintOnTheFly);
     allLinterAdapters.add(adapter);
     var diagnosticDisposable = _this.consumeDiagnosticsProviderV1(adapter);
-    var adapterDisposable = new _atom.Disposable(function () {
+    var adapterDisposable = new (_atom2 || _atom()).Disposable(function () {
       diagnosticDisposable.dispose();
       adapter.dispose();
-      allLinterAdapters['delete'](adapter);
+      allLinterAdapters.delete(adapter);
     });
     adapterDisposables.add(adapterDisposable);
     addDisposable(adapter);
@@ -142,16 +152,16 @@ function consumeDiagnosticsProviderV1(provider) {
 }
 
 function consumeDiagnosticsProviderV2(provider) {
-  var compositeDisposable = new _atom.CompositeDisposable();
+  var compositeDisposable = new (_atom2 || _atom()).CompositeDisposable();
   var store = getDiagnosticStore();
 
-  compositeDisposable.add(new _nuclideCommons.DisposableSubscription(provider.updates.subscribe(function (update) {
+  compositeDisposable.add(new (_nuclideCommons2 || _nuclideCommons()).DisposableSubscription(provider.updates.subscribe(function (update) {
     return store.updateMessages(provider, update);
   })));
-  compositeDisposable.add(new _nuclideCommons.DisposableSubscription(provider.invalidations.subscribe(function (invalidation) {
+  compositeDisposable.add(new (_nuclideCommons2 || _nuclideCommons()).DisposableSubscription(provider.invalidations.subscribe(function (invalidation) {
     return store.invalidateMessages(provider, invalidation);
   })));
-  compositeDisposable.add(new _atom.Disposable(function () {
+  compositeDisposable.add(new (_atom2 || _atom()).Disposable(function () {
     store.invalidateMessages(provider, { scope: 'all' });
   }));
 

@@ -10,7 +10,7 @@ Object.defineProperty(exports, '__esModule', {
  * the root directory of this source tree.
  */
 
-exports['default'] = findOrCreatePaneItemLocation;
+exports.default = findOrCreatePaneItemLocation;
 
 /**
  * Find the pane specified by the given string to which we can add an item. This is similar to
@@ -119,4 +119,4 @@ function getSide(location) {
       return 'after';
   }
 }
-module.exports = exports['default'];
+module.exports = exports.default;

@@ -14,32 +14,57 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _nuclideAnalytics = require('../../nuclide-analytics');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _FlowServiceFactory = require('./FlowServiceFactory');
+var _nuclideAnalytics2;
 
-var _nuclideLogging = require('../../nuclide-logging');
+function _nuclideAnalytics() {
+  return _nuclideAnalytics2 = require('../../nuclide-analytics');
+}
 
-var _require = require('../../nuclide-commons');
+var _FlowServiceFactory2;
 
-var promises = _require.promises;
-var RequestSerializer = promises.RequestSerializer;
+function _FlowServiceFactory() {
+  return _FlowServiceFactory2 = require('./FlowServiceFactory');
+}
 
-var _require2 = require('../../nuclide-diagnostics-provider-base');
+var _nuclideCommons2;
 
-var DiagnosticsProviderBase = _require2.DiagnosticsProviderBase;
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
 
-var logger = (0, _nuclideLogging.getLogger)();
+var _nuclideDiagnosticsProviderBase2;
 
-var _require3 = require('atom');
+function _nuclideDiagnosticsProviderBase() {
+  return _nuclideDiagnosticsProviderBase2 = require('../../nuclide-diagnostics-provider-base');
+}
 
-var Range = _require3.Range;
+var _atom2;
 
-var invariant = require('assert');
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var _require4 = require('./constants');
+var _assert2;
 
-var JS_GRAMMARS = _require4.JS_GRAMMARS;
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
+
+var _constants2;
+
+function _constants() {
+  return _constants2 = require('./constants');
+}
+
+var _nuclideLogging2;
+
+function _nuclideLogging() {
+  return _nuclideLogging2 = require('../../nuclide-logging');
+}
+
+var logger = (0, (_nuclideLogging2 || _nuclideLogging()).getLogger)();
 
 /**
  * Currently, a diagnostic from Flow is an object with a "message" property.
@@ -68,7 +93,7 @@ function extractRange(message) {
   if (range == null) {
     return undefined;
   } else {
-    return new Range([range.start.line - 1, range.start.column - 1], [range.end.line - 1, range.end.column]);
+    return new (_atom2 || _atom()).Range([range.start.line - 1, range.start.column - 1], [range.end.line - 1, range.end.column]);
   }
 }
 
@@ -92,7 +117,7 @@ function flowMessageToDiagnosticMessage(diagnostic) {
   // The Flow type does not capture this, but the first message always has a path, and the
   // diagnostics package requires a FileDiagnosticMessage to have a path.
   var path = extractPath(flowMessage);
-  invariant(path != null, 'Expected path to not be null or undefined');
+  (0, (_assert2 || _assert()).default)(path != null, 'Expected path to not be null or undefined');
 
   var diagnosticMessage = {
     scope: 'file',
@@ -116,13 +141,13 @@ var FlowDiagnosticsProvider = (function () {
   function FlowDiagnosticsProvider(shouldRunOnTheFly, busySignalProvider) {
     var _this = this;
 
-    var ProviderBase = arguments.length <= 2 || arguments[2] === undefined ? DiagnosticsProviderBase : arguments[2];
+    var ProviderBase = arguments.length <= 2 || arguments[2] === undefined ? (_nuclideDiagnosticsProviderBase2 || _nuclideDiagnosticsProviderBase()).DiagnosticsProviderBase : arguments[2];
 
     _classCallCheck(this, FlowDiagnosticsProvider);
 
     this._busySignalProvider = busySignalProvider;
     var utilsOptions = {
-      grammarScopes: new Set(JS_GRAMMARS),
+      grammarScopes: new Set((_constants2 || _constants()).JS_GRAMMARS),
       shouldRunOnTheFly: shouldRunOnTheFly,
       onTextEditorEvent: function onTextEditorEvent(editor) {
         return _this._runDiagnostics(editor);
@@ -132,7 +157,7 @@ var FlowDiagnosticsProvider = (function () {
       }
     };
     this._providerBase = new ProviderBase(utilsOptions);
-    this._requestSerializer = new RequestSerializer();
+    this._requestSerializer = new (_nuclideCommons2 || _nuclideCommons()).promises.RequestSerializer();
     this._flowRootToFilePaths = new Map();
   }
 
@@ -143,21 +168,21 @@ var FlowDiagnosticsProvider = (function () {
 
       this._busySignalProvider.reportBusy('Flow: Waiting for diagnostics', function () {
         return _this2._runDiagnosticsImpl(textEditor);
-      })['catch'](function (e) {
+      }).catch(function (e) {
         return logger.error(e);
       });
     }
   }, {
     key: '_runDiagnosticsImpl',
-    decorators: [(0, _nuclideAnalytics.trackTiming)('flow.run-diagnostics')],
+    decorators: [(0, (_nuclideAnalytics2 || _nuclideAnalytics()).trackTiming)('flow.run-diagnostics')],
     value: _asyncToGenerator(function* (textEditor) {
       var file = textEditor.getPath();
       if (!file) {
         return;
       }
 
-      var flowService = (0, _FlowServiceFactory.getFlowServiceByNuclideUri)(file);
-      invariant(flowService);
+      var flowService = (0, (_FlowServiceFactory2 || _FlowServiceFactory()).getFlowServiceByNuclideUri)(file);
+      (0, (_assert2 || _assert()).default)(flowService);
       var result = yield this._requestSerializer.run(flowService.flowFindDiagnostics(file, /* currentContents */null));
       if (result.status === 'outdated') {
         return;
@@ -211,7 +236,7 @@ var FlowDiagnosticsProvider = (function () {
       // probably remove the activeTextEditor parameter.
       var activeTextEditor = atom.workspace.getActiveTextEditor();
       if (activeTextEditor) {
-        var matchesGrammar = JS_GRAMMARS.indexOf(activeTextEditor.getGrammar().scopeName) !== -1;
+        var matchesGrammar = (_constants2 || _constants()).JS_GRAMMARS.indexOf(activeTextEditor.getGrammar().scopeName) !== -1;
         if (matchesGrammar) {
           this._runDiagnostics(activeTextEditor);
         }
@@ -284,7 +309,7 @@ var FlowDiagnosticsProvider = (function () {
         for (var filePath of filePaths) {
           pathsToInvalidate.add(filePath);
         }
-        this._flowRootToFilePaths['delete'](flowRoot);
+        this._flowRootToFilePaths.delete(flowRoot);
       }
       this._providerBase.publishMessageInvalidation({
         scope: 'file',

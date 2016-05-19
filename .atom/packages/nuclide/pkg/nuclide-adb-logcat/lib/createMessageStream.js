@@ -10,28 +10,38 @@ Object.defineProperty(exports, '__esModule', {
  * the root directory of this source tree.
  */
 
-exports['default'] = createMessageStream;
+exports.default = createMessageStream;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _nuclideCommons = require('../../nuclide-commons');
+var _nuclideCommons2;
 
-var _createMessage = require('./createMessage');
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
 
-var _createMessage2 = _interopRequireDefault(_createMessage);
+var _createMessage2;
 
-var _parseLogcatMetadata = require('./parseLogcatMetadata');
+function _createMessage() {
+  return _createMessage2 = _interopRequireDefault(require('./createMessage'));
+}
 
-var _parseLogcatMetadata2 = _interopRequireDefault(_parseLogcatMetadata);
+var _parseLogcatMetadata2;
 
-var _rxjs = require('rxjs');
+function _parseLogcatMetadata() {
+  return _parseLogcatMetadata2 = _interopRequireDefault(require('./parseLogcatMetadata'));
+}
 
-var _rxjs2 = _interopRequireDefault(_rxjs);
+var _rxjs2;
+
+function _rxjs() {
+  return _rxjs2 = _interopRequireDefault(require('rxjs'));
+}
 
 function createMessageStream(line$) {
 
   // Separate the lines into groups, beginning with metadata lines.
-  return _rxjs2['default'].Observable.create(function (observer) {
+  return (_rxjs2 || _rxjs()).default.Observable.create(function (observer) {
     var buffer = [];
     var prevMetadata = null;
     var prevLineIsBlank = function prevLineIsBlank() {
@@ -58,7 +68,7 @@ function createMessageStream(line$) {
 
     var sharedLine$ = line$.share();
 
-    return new _nuclideCommons.CompositeSubscription(
+    return new (_nuclideCommons2 || _nuclideCommons()).CompositeSubscription(
     // Buffer incoming lines.
     sharedLine$.subscribe(
     // onNext
@@ -67,7 +77,7 @@ function createMessageStream(line$) {
       var hasPreviousLines = buffer.length > 0;
 
       if (!hasPreviousLines || prevLineIsBlank()) {
-        metadata = (0, _parseLogcatMetadata2['default'])(line);
+        metadata = (0, (_parseLogcatMetadata2 || _parseLogcatMetadata()).default)(line);
       }
 
       if (metadata) {
@@ -95,7 +105,7 @@ function createMessageStream(line$) {
     // one. But what if the next one takes a long time to happen? After a certain point, we need
     // to just assume we have the complete entry and move on.
     sharedLine$.debounceTime(200).subscribe(flush));
-  }).map(_createMessage2['default']).share();
+  }).map((_createMessage2 || _createMessage()).default).share();
 }
 
-module.exports = exports['default'];
+module.exports = exports.default;

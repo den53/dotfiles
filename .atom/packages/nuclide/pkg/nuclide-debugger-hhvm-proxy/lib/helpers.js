@@ -11,9 +11,9 @@ exports.launchScriptForDummyConnection = launchScriptForDummyConnection;
 exports.launchScriptToDebug = launchScriptToDebug;
 exports.launchPhpScriptWithXDebugEnabled = launchPhpScriptWithXDebugEnabled;
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -23,21 +23,35 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
  * the root directory of this source tree.
  */
 
-var _child_process = require('child_process');
+var _child_process2;
 
-var _child_process2 = _interopRequireDefault(_child_process);
+function _child_process() {
+  return _child_process2 = _interopRequireDefault(require('child_process'));
+}
 
-var _url = require('url');
+var _url2;
 
-var _url2 = _interopRequireDefault(_url);
+function _url() {
+  return _url2 = _interopRequireDefault(require('url'));
+}
 
-var _utils = require('./utils');
+var _utils2;
 
-var _utils2 = _interopRequireDefault(_utils);
+function _utils() {
+  return _utils2 = _interopRequireDefault(require('./utils'));
+}
 
-var _config = require('./config');
+var _config2;
 
-var _shellQuote = require('shell-quote');
+function _config() {
+  return _config2 = require('./config');
+}
+
+var _shellQuote2;
+
+function _shellQuote() {
+  return _shellQuote2 = require('shell-quote');
+}
 
 var DUMMY_FRAME_ID = 'Frame.0';
 
@@ -70,10 +84,10 @@ function pathToUri(path) {
 }
 
 function uriToPath(uri) {
-  var components = _url2['default'].parse(uri);
+  var components = (_url2 || _url()).default.parse(uri);
   // Some filename returned from hhvm does not have protocol.
   if (components.protocol !== 'file:' && components.protocol !== null) {
-    _utils2['default'].logErrorAndThrow('unexpected file protocol. Got: ' + components.protocol);
+    (_utils2 || _utils()).default.logErrorAndThrow('unexpected file protocol. Got: ' + components.protocol);
   }
   return components.pathname || '';
 }
@@ -101,7 +115,7 @@ function launchScriptToDebug(scriptPath, sendToOutputWindow) {
 }
 
 function launchPhpScriptWithXDebugEnabled(scriptPath, sendToOutputWindowAndResolve) {
-  var args = (0, _shellQuote.parse)(scriptPath);
+  var args = (0, (_shellQuote2 || _shellQuote()).parse)(scriptPath);
 
   var _require = require('fs-plus');
 
@@ -112,24 +126,24 @@ function launchPhpScriptWithXDebugEnabled(scriptPath, sendToOutputWindowAndResol
   if (existsSync('fb/cli.hdf')) {
     modifiedArgs = ['-c', 'fb/cli.hdf'].concat(_toConsumableArray(args));
   }
-  var proc = _child_process2['default'].spawn((0, _config.getConfig)().phpRuntimePath, modifiedArgs);
-  _utils2['default'].log('child_process(' + proc.pid + ') spawned with xdebug enabled for: ' + scriptPath);
+  var proc = (_child_process2 || _child_process()).default.spawn((0, (_config2 || _config()).getConfig)().phpRuntimePath, modifiedArgs);
+  (_utils2 || _utils()).default.log('child_process(' + proc.pid + ') spawned with xdebug enabled for: ' + scriptPath);
 
   proc.stdout.on('data', function (chunk) {
     // stdout should hopefully be set to line-buffering, in which case the
 
     var block = chunk.toString();
     var output = 'child_process(' + proc.pid + ') stdout: ' + block;
-    _utils2['default'].log(output);
+    (_utils2 || _utils()).default.log(output);
   });
   proc.on('error', function (err) {
-    _utils2['default'].log('child_process(' + proc.pid + ') error: ' + err);
+    (_utils2 || _utils()).default.log('child_process(' + proc.pid + ') error: ' + err);
     if (sendToOutputWindowAndResolve != null) {
       sendToOutputWindowAndResolve('The process running script: ' + scriptPath + ' encountered an error: ' + err);
     }
   });
   proc.on('exit', function (code) {
-    _utils2['default'].log('child_process(' + proc.pid + ') exit: ' + code);
+    (_utils2 || _utils()).default.log('child_process(' + proc.pid + ') exit: ' + code);
     if (code != null && sendToOutputWindowAndResolve != null) {
       sendToOutputWindowAndResolve('Script: ' + scriptPath + ' exited with code: ' + code);
     }

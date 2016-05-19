@@ -1,6 +1,6 @@
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -10,13 +10,25 @@ var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_ag
  * the root directory of this source tree.
  */
 
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var _atom = require('atom');
+var _atom2;
 
-var _nuclideRemoteUri = require('../../nuclide-remote-uri');
+function _atom() {
+  return _atom2 = require('atom');
+}
+
+var _nuclideRemoteUri2;
+
+function _nuclideRemoteUri() {
+  return _nuclideRemoteUri2 = require('../../nuclide-remote-uri');
+}
 
 var DID_DESTROY_EVENT_NAME = 'did-destroy';
 var CHANGE_TITLE_EVENT_NAME = 'did-change-title';
@@ -37,8 +49,8 @@ var DiffViewElement = (function (_HTMLElement) {
 
       this._diffModel = diffModel;
       this._uri = uri;
-      this._emitter = new _atom.Emitter();
-      this._subscriptions = new _atom.CompositeDisposable();
+      this._emitter = new (_atom2 || _atom()).Emitter();
+      this._subscriptions = new (_atom2 || _atom()).CompositeDisposable();
 
       var fileName = this._getActiveFileName();
       this._subscriptions.add(this._diffModel.onActiveFileUpdates(function () {
@@ -61,7 +73,7 @@ var DiffViewElement = (function (_HTMLElement) {
       if (filePath == null || filePath.length === 0) {
         return null;
       }
-      return (0, _nuclideRemoteUri.basename)(filePath);
+      return (0, (_nuclideRemoteUri2 || _nuclideRemoteUri()).basename)(filePath);
     }
   }, {
     key: 'getIconName',
@@ -142,6 +154,7 @@ var DiffViewElement = (function (_HTMLElement) {
   return DiffViewElement;
 })(HTMLElement);
 
-module.exports = DiffViewElement = document.registerElement('nuclide-diff-view', {
+exports.default = document.registerElement('nuclide-diff-view', {
   prototype: DiffViewElement.prototype
 });
+module.exports = exports.default;

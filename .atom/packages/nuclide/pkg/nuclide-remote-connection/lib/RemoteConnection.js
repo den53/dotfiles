@@ -14,42 +14,62 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _assert = require('assert');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _assert2 = _interopRequireDefault(_assert);
+var _assert2;
 
-var _nuclideCommons = require('../../nuclide-commons');
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
-var _ServerConnection = require('./ServerConnection');
+var _nuclideCommons2;
 
-var _require = require('atom');
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
 
-var CompositeDisposable = _require.CompositeDisposable;
-var Disposable = _require.Disposable;
+var _ServerConnection2;
 
-var remoteUri = require('../../nuclide-remote-uri');
+function _ServerConnection() {
+  return _ServerConnection2 = require('./ServerConnection');
+}
+
+var _atom2;
+
+function _atom() {
+  return _atom2 = require('atom');
+}
+
+var _nuclideRemoteUri2;
+
+function _nuclideRemoteUri() {
+  return _nuclideRemoteUri2 = _interopRequireDefault(require('../../nuclide-remote-uri'));
+}
+
+var _events2;
+
+function _events() {
+  return _events2 = require('events');
+}
+
+var _RemoteConnectionConfigurationManager2;
+
+function _RemoteConnectionConfigurationManager() {
+  return _RemoteConnectionConfigurationManager2 = require('./RemoteConnectionConfigurationManager');
+}
+
 var logger = require('../../nuclide-logging').getLogger();
-
-var _require2 = require('events');
-
-var EventEmitter = _require2.EventEmitter;
-
-var _require3 = require('./RemoteConnectionConfigurationManager');
-
-var getConnectionConfig = _require3.getConnectionConfig;
 
 var FILE_WATCHER_SERVICE = 'FileWatcherService';
 var FILE_SYSTEM_SERVICE = 'FileSystemService';
 
 // key for https connection.
 
-var _emitter = new EventEmitter();
+var _emitter = new (_events2 || _events()).EventEmitter();
 
 // A RemoteConnection represents a directory which has been opened in Nuclide on a remote machine.
 // This corresponds to what atom calls a 'root path' in a project.
@@ -62,7 +82,7 @@ var RemoteConnection = (function () {
   _createClass(RemoteConnection, null, [{
     key: 'findOrCreate',
     value: _asyncToGenerator(function* (config) {
-      var serverConnection = yield _ServerConnection.ServerConnection.getOrCreate(config);
+      var serverConnection = yield (_ServerConnection2 || _ServerConnection()).ServerConnection.getOrCreate(config);
       var connection = new RemoteConnection(serverConnection, config.cwd, config.displayTitle);
       return yield connection._initialize();
     })
@@ -74,7 +94,7 @@ var RemoteConnection = (function () {
     _classCallCheck(this, RemoteConnection);
 
     this._cwd = cwd;
-    this._subscriptions = new CompositeDisposable();
+    this._subscriptions = new (_atom2 || _atom()).CompositeDisposable();
     this._hgRepositoryDescription = null;
     this._connection = connection;
     this._displayTitle = displayTitle;
@@ -108,7 +128,7 @@ var RemoteConnection = (function () {
   }, {
     key: 'getPathOfUri',
     value: function getPathOfUri(uri) {
-      return remoteUri.parse(uri).path;
+      return (_nuclideRemoteUri2 || _nuclideRemoteUri()).default.parse(uri).path;
     }
   }, {
     key: 'createDirectory',
@@ -151,7 +171,7 @@ var RemoteConnection = (function () {
         // If so, we should just stop immediately.
         if (resolvedPath !== this._cwd) {
           var existingConnection = RemoteConnection.getByHostnameAndPath(this.getRemoteHostname(), resolvedPath);
-          (0, _assert2['default'])(this !== existingConnection);
+          (0, (_assert2 || _assert()).default)(this !== existingConnection);
           if (existingConnection != null) {
             this.close(attemptShutdown);
             return existingConnection;
@@ -179,7 +199,7 @@ var RemoteConnection = (function () {
       var rootDirectoryUri = this.getUriForInitialWorkingDirectory();
       var rootDirectotyPath = this.getPathForInitialWorkingDirectory();
       var FileWatcherService = this.getService(FILE_WATCHER_SERVICE);
-      (0, _assert2['default'])(FileWatcherService);
+      (0, (_assert2 || _assert()).default)(FileWatcherService);
       var watchDirectoryRecursive = FileWatcherService.watchDirectoryRecursive;
 
       // Start watching the project for changes and initialize the root watcher
@@ -199,7 +219,7 @@ var RemoteConnection = (function () {
         if (yield FileSystemService.isNfs(rootDirectotyPath)) {
           warningMessageToUser += 'This project directory: `' + rootDirectotyPath + '` is on <b>`NFS`</b> filesystem. ' + 'Nuclide works best with local (non-NFS) root directory.' + 'e.g. `/data/users/$USER`';
         } else {
-          warningMessageToUser += '<b><a href=\'https://facebook.github.io/watchman/\'>Watchman</a> Error:</b>' + loggedErrorMessage;
+          warningMessageToUser += '<b><a href="https://facebook.github.io/watchman/">Watchman</a> Error:</b>' + loggedErrorMessage;
         }
         // Add a persistent warning message to make sure the user sees it before dismissing.
         atom.notifications.addWarning(warningMessageToUser, { dismissable: true });
@@ -207,7 +227,7 @@ var RemoteConnection = (function () {
         // Nothing needs to be done if the root directory watch has ended.
         logger.info('Watcher Features Ended for project: ' + rootDirectoryUri);
       });
-      this._subscriptions.add(new _nuclideCommons.DisposableSubscription(subscription));
+      this._subscriptions.add(new (_nuclideCommons2 || _nuclideCommons()).DisposableSubscription(subscription));
     }
   }, {
     key: 'close',
@@ -285,7 +305,7 @@ var RemoteConnection = (function () {
   }, {
     key: 'createConnectionBySavedConfig',
     value: _asyncToGenerator(function* (host, cwd, displayTitle) {
-      var connectionConfig = getConnectionConfig(host);
+      var connectionConfig = (0, (_RemoteConnectionConfigurationManager2 || _RemoteConnectionConfigurationManager()).getConnectionConfig)(host);
       if (!connectionConfig) {
         return null;
       }
@@ -301,7 +321,7 @@ var RemoteConnection = (function () {
     key: 'onDidAddRemoteConnection',
     value: function onDidAddRemoteConnection(handler) {
       _emitter.on('did-add', handler);
-      return new Disposable(function () {
+      return new (_atom2 || _atom()).Disposable(function () {
         _emitter.removeListener('did-add', handler);
       });
     }
@@ -309,17 +329,17 @@ var RemoteConnection = (function () {
     key: 'onDidCloseRemoteConnection',
     value: function onDidCloseRemoteConnection(handler) {
       _emitter.on('did-close', handler);
-      return new Disposable(function () {
+      return new (_atom2 || _atom()).Disposable(function () {
         _emitter.removeListener('did-close', handler);
       });
     }
   }, {
     key: 'getForUri',
     value: function getForUri(uri) {
-      var _remoteUri$parse = remoteUri.parse(uri);
+      var _default$parse = (_nuclideRemoteUri2 || _nuclideRemoteUri()).default.parse(uri);
 
-      var hostname = _remoteUri$parse.hostname;
-      var path = _remoteUri$parse.path;
+      var hostname = _default$parse.hostname;
+      var path = _default$parse.path;
 
       if (hostname == null) {
         return null;
@@ -344,7 +364,7 @@ var RemoteConnection = (function () {
   }, {
     key: 'getByHostname',
     value: function getByHostname(hostname) {
-      var server = _ServerConnection.ServerConnection.getByHostname(hostname);
+      var server = (_ServerConnection2 || _ServerConnection()).ServerConnection.getByHostname(hostname);
       return server == null ? [] : server.getConnections();
     }
   }]);

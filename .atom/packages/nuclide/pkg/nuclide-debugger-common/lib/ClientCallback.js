@@ -14,7 +14,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * the root directory of this source tree.
  */
 
-var _rxjs = require('rxjs');
+var _rxjs2;
+
+function _rxjs() {
+  return _rxjs2 = require('rxjs');
+}
 
 var ClientCallback = (function () {
   // For user visible output messages.
@@ -22,8 +26,8 @@ var ClientCallback = (function () {
   function ClientCallback() {
     _classCallCheck(this, ClientCallback);
 
-    this._serverMessageObservable = new _rxjs.Subject();
-    this._userOutputObservable = new _rxjs.Subject();
+    this._serverMessageObservable = new (_rxjs2 || _rxjs()).Subject();
+    this._userOutputObservable = new (_rxjs2 || _rxjs()).Subject();
   }
 
   _createClass(ClientCallback, [{

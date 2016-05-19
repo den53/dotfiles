@@ -14,63 +14,111 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _FileTreeDispatcher = require('./FileTreeDispatcher');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _FileTreeDispatcher2 = _interopRequireDefault(_FileTreeDispatcher);
+var _FileTreeDispatcher2;
 
-var _FileTreeHelpers = require('./FileTreeHelpers');
+function _FileTreeDispatcher() {
+  return _FileTreeDispatcher2 = _interopRequireDefault(require('./FileTreeDispatcher'));
+}
 
-var _FileTreeHelpers2 = _interopRequireDefault(_FileTreeHelpers);
+var _FileTreeHelpers2;
 
-var _FileTreeNode = require('./FileTreeNode');
+function _FileTreeHelpers() {
+  return _FileTreeHelpers2 = _interopRequireDefault(require('./FileTreeHelpers'));
+}
 
-var _immutable = require('immutable');
+var _FileTreeNode2;
 
-var _immutable2 = _interopRequireDefault(_immutable);
+function _FileTreeNode() {
+  return _FileTreeNode2 = require('./FileTreeNode');
+}
 
-var _FileTreeConstants = require('./FileTreeConstants');
+var _immutable2;
 
-var _atom = require('atom');
+function _immutable() {
+  return _immutable2 = _interopRequireDefault(require('immutable'));
+}
 
-var _FileTreeFilterHelper = require('./FileTreeFilterHelper');
+var _FileTreeConstants2;
 
-var _minimatch = require('minimatch');
+function _FileTreeConstants() {
+  return _FileTreeConstants2 = require('./FileTreeConstants');
+}
 
-var _nuclideHgGitBridge = require('../../nuclide-hg-git-bridge');
+var _atom2;
 
-var _nuclideHgRepositoryBaseLibHgConstants = require('../../nuclide-hg-repository-base/lib/hg-constants');
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var _nuclideLogging = require('../../nuclide-logging');
+var _FileTreeFilterHelper2;
 
-var _shell = require('shell');
+function _FileTreeFilterHelper() {
+  return _FileTreeFilterHelper2 = require('./FileTreeFilterHelper');
+}
 
-var _shell2 = _interopRequireDefault(_shell);
+var _minimatch2;
 
-var _nuclideWorkingSets = require('../../nuclide-working-sets');
+function _minimatch() {
+  return _minimatch2 = require('minimatch');
+}
 
-var _nuclideAnalytics = require('../../nuclide-analytics');
+var _nuclideHgGitBridge2;
+
+function _nuclideHgGitBridge() {
+  return _nuclideHgGitBridge2 = require('../../nuclide-hg-git-bridge');
+}
+
+var _nuclideHgRepositoryBaseLibHgConstants2;
+
+function _nuclideHgRepositoryBaseLibHgConstants() {
+  return _nuclideHgRepositoryBaseLibHgConstants2 = require('../../nuclide-hg-repository-base/lib/hg-constants');
+}
+
+var _nuclideLogging2;
+
+function _nuclideLogging() {
+  return _nuclideLogging2 = require('../../nuclide-logging');
+}
+
+var _shell2;
+
+function _shell() {
+  return _shell2 = _interopRequireDefault(require('shell'));
+}
+
+var _nuclideWorkingSets2;
+
+function _nuclideWorkingSets() {
+  return _nuclideWorkingSets2 = require('../../nuclide-working-sets');
+}
+
+var _nuclideAnalytics2;
+
+function _nuclideAnalytics() {
+  return _nuclideAnalytics2 = require('../../nuclide-analytics');
+}
 
 // Used to ensure the version we serialized is the same version we are deserializing.
 var VERSION = 1;
 
 var DEFAULT_CONF = {
   vcsStatuses: {},
-  workingSet: new _nuclideWorkingSets.WorkingSet(),
-  editedWorkingSet: new _nuclideWorkingSets.WorkingSet(),
+  workingSet: new (_nuclideWorkingSets2 || _nuclideWorkingSets()).WorkingSet(),
+  editedWorkingSet: new (_nuclideWorkingSets2 || _nuclideWorkingSets()).WorkingSet(),
   hideIgnoredNames: true,
   excludeVcsIgnoredPaths: true,
-  ignoredPatterns: new _immutable2['default'].Set(),
+  ignoredPatterns: new (_immutable2 || _immutable()).default.Set(),
   usePreviewTabs: false,
   isEditingWorkingSet: false,
-  openFilesWorkingSet: new _nuclideWorkingSets.WorkingSet(),
+  openFilesWorkingSet: new (_nuclideWorkingSets2 || _nuclideWorkingSets()).WorkingSet(),
   reposByRoot: {}
 };
 
@@ -107,17 +155,17 @@ var FileTreeStore = (function () {
 
     _classCallCheck(this, FileTreeStore);
 
-    this.roots = new _immutable2['default'].OrderedMap();
-    this._dispatcher = _FileTreeDispatcher2['default'].getInstance();
-    this._emitter = new _atom.Emitter();
+    this.roots = new (_immutable2 || _immutable()).default.OrderedMap();
+    this._dispatcher = (_FileTreeDispatcher2 || _FileTreeDispatcher()).default.getInstance();
+    this._emitter = new (_atom2 || _atom()).Emitter();
     this._dispatcher.register(function (payload) {
       return _this._onDispatch(payload);
     });
-    this._logger = (0, _nuclideLogging.getLogger)();
+    this._logger = (0, (_nuclideLogging2 || _nuclideLogging()).getLogger)();
 
     this._usePrefixNav = false;
-    this._isLoadingMap = new _immutable2['default'].Map();
-    this._repositories = new _immutable2['default'].Set();
+    this._isLoadingMap = new (_immutable2 || _immutable()).default.Map();
+    this._repositories = new (_immutable2 || _immutable()).default.Set();
 
     this._conf = DEFAULT_CONF;
     global.FTConf = this._conf;
@@ -207,19 +255,19 @@ var FileTreeStore = (function () {
         var rootExpandedKeys = data.expandedKeysByRoot[rootUri] || [];
         var rootSelectedKeys = data.selectedKeysByRoot[rootUri] || [];
         var childrenUris = data.childKeyMap[uri] || [];
-        var children = _FileTreeNode.FileTreeNode.childrenFromArray(childrenUris.map(function (childUri) {
+        var children = (_FileTreeNode2 || _FileTreeNode()).FileTreeNode.childrenFromArray(childrenUris.map(function (childUri) {
           return buildNode(rootUri, childUri);
         }));
 
         var isExpanded = rootExpandedKeys.indexOf(uri) >= 0;
         var isLoading = false;
 
-        if (isExpanded && _FileTreeHelpers2['default'].isDirKey(uri)) {
+        if (isExpanded && (_FileTreeHelpers2 || _FileTreeHelpers()).default.isDirKey(uri)) {
           _this2._fetchChildKeys(uri);
           isLoading = true;
         }
 
-        return new _FileTreeNode.FileTreeNode({
+        return new (_FileTreeNode2 || _FileTreeNode()).FileTreeNode({
           uri: uri,
           rootUri: rootUri,
           isExpanded: isExpanded,
@@ -228,11 +276,11 @@ var FileTreeStore = (function () {
           isTracked: false,
           children: children,
           isCwd: false,
-          connectionTitle: _FileTreeHelpers2['default'].getDisplayTitle(rootUri) || ''
+          connectionTitle: (_FileTreeHelpers2 || _FileTreeHelpers()).default.getDisplayTitle(rootUri) || ''
         }, _this2._conf);
       };
 
-      this._setRoots(new _immutable2['default'].OrderedMap(data.rootKeys.map(function (rootUri) {
+      this._setRoots(new (_immutable2 || _immutable()).default.OrderedMap(data.rootKeys.map(function (rootUri) {
         return [rootUri, buildNode(rootUri, rootUri)];
       })));
     }
@@ -240,14 +288,14 @@ var FileTreeStore = (function () {
     key: '_setExcludeVcsIgnoredPaths',
     value: function _setExcludeVcsIgnoredPaths(excludeVcsIgnoredPaths) {
       this._updateConf(function (conf) {
-        return conf.excludeVcsIgnoredPaths = excludeVcsIgnoredPaths;
+        conf.excludeVcsIgnoredPaths = excludeVcsIgnoredPaths;
       });
     }
   }, {
     key: '_setHideIgnoredNames',
     value: function _setHideIgnoredNames(hideIgnoredNames) {
       this._updateConf(function (conf) {
-        return conf.hideIgnoredNames = hideIgnoredNames;
+        conf.hideIgnoredNames = hideIgnoredNames;
       });
     }
 
@@ -258,12 +306,12 @@ var FileTreeStore = (function () {
   }, {
     key: '_setIgnoredNames',
     value: function _setIgnoredNames(ignoredNames) {
-      var ignoredPatterns = _immutable2['default'].Set(ignoredNames).map(function (ignoredName) {
+      var ignoredPatterns = (_immutable2 || _immutable()).default.Set(ignoredNames).map(function (ignoredName) {
         if (ignoredName === '') {
           return null;
         }
         try {
-          return new _minimatch.Minimatch(ignoredName, { matchBase: true, dot: true });
+          return new (_minimatch2 || _minimatch()).Minimatch(ignoredName, { matchBase: true, dot: true });
         } catch (error) {
           atom.notifications.addWarning('Error parsing pattern \'' + ignoredName + '\' from "Settings" > "Ignored Names"', { detail: error.message });
           return null;
@@ -272,104 +320,104 @@ var FileTreeStore = (function () {
         return pattern != null;
       });
       this._updateConf(function (conf) {
-        return conf.ignoredPatterns = ignoredPatterns;
+        conf.ignoredPatterns = ignoredPatterns;
       });
     }
   }, {
     key: '_onDispatch',
     value: function _onDispatch(payload) {
       switch (payload.actionType) {
-        case _FileTreeConstants.ActionType.DELETE_SELECTED_NODES:
-          this._deleteSelectedNodes()['catch'](function (error) {
+        case (_FileTreeConstants2 || _FileTreeConstants()).ActionType.DELETE_SELECTED_NODES:
+          this._deleteSelectedNodes().catch(function (error) {
             atom.notifications.addError('Deleting nodes failed with an error: ' + error.toString());
           });
           break;
-        case _FileTreeConstants.ActionType.SET_CWD:
+        case (_FileTreeConstants2 || _FileTreeConstants()).ActionType.SET_CWD:
           this._setCwdKey(payload.rootKey);
           break;
-        case _FileTreeConstants.ActionType.SET_TRACKED_NODE:
+        case (_FileTreeConstants2 || _FileTreeConstants()).ActionType.SET_TRACKED_NODE:
           this._setTrackedNode(payload.rootKey, payload.nodeKey);
           break;
-        case _FileTreeConstants.ActionType.SET_ROOT_KEYS:
+        case (_FileTreeConstants2 || _FileTreeConstants()).ActionType.SET_ROOT_KEYS:
           this._setRootKeys(payload.rootKeys);
           break;
-        case _FileTreeConstants.ActionType.EXPAND_NODE:
+        case (_FileTreeConstants2 || _FileTreeConstants()).ActionType.EXPAND_NODE:
           this._expandNode(payload.rootKey, payload.nodeKey);
           break;
-        case _FileTreeConstants.ActionType.EXPAND_NODE_DEEP:
+        case (_FileTreeConstants2 || _FileTreeConstants()).ActionType.EXPAND_NODE_DEEP:
           this._expandNodeDeep(payload.rootKey, payload.nodeKey);
           break;
-        case _FileTreeConstants.ActionType.COLLAPSE_NODE:
+        case (_FileTreeConstants2 || _FileTreeConstants()).ActionType.COLLAPSE_NODE:
           this._collapseNode(payload.rootKey, payload.nodeKey);
           break;
-        case _FileTreeConstants.ActionType.SET_EXCLUDE_VCS_IGNORED_PATHS:
+        case (_FileTreeConstants2 || _FileTreeConstants()).ActionType.SET_EXCLUDE_VCS_IGNORED_PATHS:
           this._setExcludeVcsIgnoredPaths(payload.excludeVcsIgnoredPaths);
           break;
-        case _FileTreeConstants.ActionType.SET_USE_PREVIEW_TABS:
+        case (_FileTreeConstants2 || _FileTreeConstants()).ActionType.SET_USE_PREVIEW_TABS:
           this._setUsePreviewTabs(payload.usePreviewTabs);
           break;
-        case _FileTreeConstants.ActionType.SET_USE_PREFIX_NAV:
+        case (_FileTreeConstants2 || _FileTreeConstants()).ActionType.SET_USE_PREFIX_NAV:
           this._setUsePrefixNav(payload.usePrefixNav);
           break;
-        case _FileTreeConstants.ActionType.COLLAPSE_NODE_DEEP:
+        case (_FileTreeConstants2 || _FileTreeConstants()).ActionType.COLLAPSE_NODE_DEEP:
           this._collapseNodeDeep(payload.rootKey, payload.nodeKey);
           break;
-        case _FileTreeConstants.ActionType.SET_HIDE_IGNORED_NAMES:
+        case (_FileTreeConstants2 || _FileTreeConstants()).ActionType.SET_HIDE_IGNORED_NAMES:
           this._setHideIgnoredNames(payload.hideIgnoredNames);
           break;
-        case _FileTreeConstants.ActionType.SET_IGNORED_NAMES:
+        case (_FileTreeConstants2 || _FileTreeConstants()).ActionType.SET_IGNORED_NAMES:
           this._setIgnoredNames(payload.ignoredNames);
           break;
-        case _FileTreeConstants.ActionType.SET_VCS_STATUSES:
+        case (_FileTreeConstants2 || _FileTreeConstants()).ActionType.SET_VCS_STATUSES:
           this._setVcsStatuses(payload.rootKey, payload.vcsStatuses);
           break;
-        case _FileTreeConstants.ActionType.SET_REPOSITORIES:
+        case (_FileTreeConstants2 || _FileTreeConstants()).ActionType.SET_REPOSITORIES:
           this._setRepositories(payload.repositories);
           break;
-        case _FileTreeConstants.ActionType.SET_WORKING_SET:
+        case (_FileTreeConstants2 || _FileTreeConstants()).ActionType.SET_WORKING_SET:
           this._setWorkingSet(payload.workingSet);
           break;
-        case _FileTreeConstants.ActionType.SET_OPEN_FILES_WORKING_SET:
+        case (_FileTreeConstants2 || _FileTreeConstants()).ActionType.SET_OPEN_FILES_WORKING_SET:
           this._setOpenFilesWorkingSet(payload.openFilesWorkingSet);
           break;
-        case _FileTreeConstants.ActionType.SET_WORKING_SETS_STORE:
+        case (_FileTreeConstants2 || _FileTreeConstants()).ActionType.SET_WORKING_SETS_STORE:
           this._setWorkingSetsStore(payload.workingSetsStore);
           break;
-        case _FileTreeConstants.ActionType.START_EDITING_WORKING_SET:
+        case (_FileTreeConstants2 || _FileTreeConstants()).ActionType.START_EDITING_WORKING_SET:
           this._startEditingWorkingSet(payload.editedWorkingSet);
           break;
-        case _FileTreeConstants.ActionType.FINISH_EDITING_WORKING_SET:
+        case (_FileTreeConstants2 || _FileTreeConstants()).ActionType.FINISH_EDITING_WORKING_SET:
           this._finishEditingWorkingSet();
           break;
-        case _FileTreeConstants.ActionType.CHECK_NODE:
+        case (_FileTreeConstants2 || _FileTreeConstants()).ActionType.CHECK_NODE:
           this._checkNode(payload.rootKey, payload.nodeKey);
           break;
-        case _FileTreeConstants.ActionType.UNCHECK_NODE:
+        case (_FileTreeConstants2 || _FileTreeConstants()).ActionType.UNCHECK_NODE:
           this._uncheckNode(payload.rootKey, payload.nodeKey);
           break;
 
-        case _FileTreeConstants.ActionType.SET_SELECTED_NODE:
+        case (_FileTreeConstants2 || _FileTreeConstants()).ActionType.SET_SELECTED_NODE:
           this._setSelectedNode(payload.rootKey, payload.nodeKey);
           break;
-        case _FileTreeConstants.ActionType.ADD_SELECTED_NODE:
+        case (_FileTreeConstants2 || _FileTreeConstants()).ActionType.ADD_SELECTED_NODE:
           this._addSelectedNode(payload.rootKey, payload.nodeKey);
           break;
-        case _FileTreeConstants.ActionType.UNSELECT_NODE:
+        case (_FileTreeConstants2 || _FileTreeConstants()).ActionType.UNSELECT_NODE:
           this._unselectNode(payload.rootKey, payload.nodeKey);
           break;
-        case _FileTreeConstants.ActionType.MOVE_SELECTION_UP:
+        case (_FileTreeConstants2 || _FileTreeConstants()).ActionType.MOVE_SELECTION_UP:
           this._moveSelectionUp();
           break;
-        case _FileTreeConstants.ActionType.MOVE_SELECTION_DOWN:
+        case (_FileTreeConstants2 || _FileTreeConstants()).ActionType.MOVE_SELECTION_DOWN:
           this._moveSelectionDown();
           break;
-        case _FileTreeConstants.ActionType.MOVE_SELECTION_TO_TOP:
+        case (_FileTreeConstants2 || _FileTreeConstants()).ActionType.MOVE_SELECTION_TO_TOP:
           this._moveSelectionToTop();
           break;
-        case _FileTreeConstants.ActionType.MOVE_SELECTION_TO_BOTTOM:
+        case (_FileTreeConstants2 || _FileTreeConstants()).ActionType.MOVE_SELECTION_TO_BOTTOM:
           this._moveSelectionToBottom();
           break;
-        case _FileTreeConstants.ActionType.ENSURE_CHILD_NODE:
+        case (_FileTreeConstants2 || _FileTreeConstants()).ActionType.ENSURE_CHILD_NODE:
           this._ensureChildNode(payload.nodeKey);
           break;
       }
@@ -459,7 +507,7 @@ var FileTreeStore = (function () {
     value: function _setRoots(roots) {
       var _this4 = this;
 
-      var changed = !_immutable2['default'].is(roots, this.roots);
+      var changed = !(_immutable2 || _immutable()).default.is(roots, this.roots);
       if (changed) {
         (function () {
           _this4.roots = roots;
@@ -508,7 +556,7 @@ var FileTreeStore = (function () {
         _this5._animationFrameRequestId = null;
 
         var duration = (performance.now() - renderStart).toString();
-        (0, _nuclideAnalytics.track)('filetree-root-node-component-render', {
+        (0, (_nuclideAnalytics2 || _nuclideAnalytics()).track)('filetree-root-node-component-render', {
           'filetree-root-node-component-render-duration': duration,
           'filetree-root-node-component-rendered-child-count': childrenCount
         });
@@ -541,28 +589,6 @@ var FileTreeStore = (function () {
           });
         });
       });
-    }
-  }, {
-    key: '_setRootKeys',
-    value: function _setRootKeys(rootKeys) {
-      var _this6 = this;
-
-      var rootNodes = rootKeys.map(function (rootUri) {
-        var root = _this6.roots.get(rootUri);
-        if (root != null) {
-          return root;
-        }
-
-        return new _FileTreeNode.FileTreeNode({
-          uri: rootUri,
-          rootUri: rootUri,
-          connectionTitle: _FileTreeHelpers2['default'].getDisplayTitle(rootUri) || ''
-        }, _this6._conf);
-      });
-      this._setRoots(new _immutable2['default'].OrderedMap(rootNodes.map(function (root) {
-        return [root.uri, root];
-      })));
-      this._setCwdKey(this._cwdKey);
     }
   }, {
     key: 'getTrackedNode',
@@ -622,7 +648,7 @@ var FileTreeStore = (function () {
   }, {
     key: '_setVcsStatuses',
     value: function _setVcsStatuses(rootKey, vcsStatuses) {
-      var _this7 = this;
+      var _this6 = this;
 
       // We can't build on the child-derived properties to maintain vcs statuses in the entire
       // tree, since the reported VCS status may be for a node that is not yet present in the
@@ -637,31 +663,31 @@ var FileTreeStore = (function () {
 
         var current = uri;
         while (current !== rootKey) {
-          current = _FileTreeHelpers2['default'].getParentKey(current);
+          current = (_FileTreeHelpers2 || _FileTreeHelpers()).default.getParentKey(current);
 
           if (enrichedVcsStatuses[current] != null) {
             return;
           }
 
-          enrichedVcsStatuses[current] = _nuclideHgRepositoryBaseLibHgConstants.StatusCodeNumber.MODIFIED;
+          enrichedVcsStatuses[current] = (_nuclideHgRepositoryBaseLibHgConstants2 || _nuclideHgRepositoryBaseLibHgConstants()).StatusCodeNumber.MODIFIED;
         }
       };
 
       Object.keys(vcsStatuses).forEach(function (uri) {
         var status = vcsStatuses[uri];
-        if (status === _nuclideHgRepositoryBaseLibHgConstants.StatusCodeNumber.MODIFIED || status === _nuclideHgRepositoryBaseLibHgConstants.StatusCodeNumber.ADDED || status === _nuclideHgRepositoryBaseLibHgConstants.StatusCodeNumber.REMOVED) {
+        if (status === (_nuclideHgRepositoryBaseLibHgConstants2 || _nuclideHgRepositoryBaseLibHgConstants()).StatusCodeNumber.MODIFIED || status === (_nuclideHgRepositoryBaseLibHgConstants2 || _nuclideHgRepositoryBaseLibHgConstants()).StatusCodeNumber.ADDED || status === (_nuclideHgRepositoryBaseLibHgConstants2 || _nuclideHgRepositoryBaseLibHgConstants()).StatusCodeNumber.REMOVED) {
           try {
             // An invalid URI might cause an exception to be thrown
             ensurePresentParents(uri);
           } catch (e) {
-            _this7._logger.error('Error enriching the VCS statuses for ' + uri, e);
+            _this6._logger.error('Error enriching the VCS statuses for ' + uri, e);
           }
         }
       });
 
       if (this._vcsStatusesAreDifferent(rootKey, enrichedVcsStatuses)) {
         this._updateConf(function (conf) {
-          return conf.vcsStatuses[rootKey] = enrichedVcsStatuses;
+          conf.vcsStatuses[rootKey] = enrichedVcsStatuses;
         });
       }
     }
@@ -689,7 +715,7 @@ var FileTreeStore = (function () {
     key: '_setUsePreviewTabs',
     value: function _setUsePreviewTabs(usePreviewTabs) {
       this._updateConf(function (conf) {
-        return conf.usePreviewTabs = usePreviewTabs;
+        conf.usePreviewTabs = usePreviewTabs;
       });
     }
   }, {
@@ -749,7 +775,7 @@ var FileTreeStore = (function () {
           return node.containsSelection;
         });
       });
-      return new _immutable2['default'].List(selectedNodes);
+      return new (_immutable2 || _immutable()).default.List(selectedNodes);
     }
 
     /**
@@ -809,30 +835,30 @@ var FileTreeStore = (function () {
   }, {
     key: '_fetchChildKeys',
     value: function _fetchChildKeys(nodeKey) {
-      var _this8 = this;
+      var _this7 = this;
 
       var existingPromise = this._getLoading(nodeKey);
       if (existingPromise != null) {
         return existingPromise;
       }
 
-      var promise = _FileTreeHelpers2['default'].fetchChildren(nodeKey)['catch'](function (error) {
-        _this8._logger.error('Unable to fetch children for "' + nodeKey + '".');
-        _this8._logger.error('Original error: ', error);
+      var promise = (_FileTreeHelpers2 || _FileTreeHelpers()).default.fetchChildren(nodeKey).catch(function (error) {
+        _this7._logger.error('Unable to fetch children for "' + nodeKey + '".');
+        _this7._logger.error('Original error: ', error);
 
         // Collapse the node and clear its loading state on error so the
         // user can retry expanding it.
-        _this8._updateNodeAtAllRoots(nodeKey, function (node) {
-          return node.set({ isExpanded: false, isLoading: false, children: new _immutable2['default'].OrderedMap() });
+        _this7._updateNodeAtAllRoots(nodeKey, function (node) {
+          return node.set({ isExpanded: false, isLoading: false, children: new (_immutable2 || _immutable()).default.OrderedMap() });
         });
 
-        _this8._clearLoading(nodeKey);
+        _this7._clearLoading(nodeKey);
       }).then(function (childKeys) {
         var childrenKeys = childKeys || [];
-        var directory = _FileTreeHelpers2['default'].getDirectoryByKey(nodeKey);
+        var directory = (_FileTreeHelpers2 || _FileTreeHelpers()).default.getDirectoryByKey(nodeKey);
 
         // The node with URI === nodeKey might be present at several roots - update them all
-        _this8._updateNodeAtAllRoots(nodeKey, function (node) {
+        _this7._updateNodeAtAllRoots(nodeKey, function (node) {
           // Maintain the order fetched from the FS
           var childrenNodes = childrenKeys.map(function (uri) {
             var prevNode = node.find(uri);
@@ -841,19 +867,11 @@ var FileTreeStore = (function () {
               return prevNode;
             }
 
-            return node.createChild({
-              uri: uri,
-              isExpanded: false,
-              isSelected: false,
-              isLoading: false,
-              isCwd: false,
-              isTracked: false,
-              children: new _immutable2['default'].OrderedMap()
-            });
+            return new (_FileTreeNode2 || _FileTreeNode()).FileTreeNode({ uri: uri, rootUri: node.rootUri }, _this7._conf);
           });
 
-          var children = _FileTreeNode.FileTreeNode.childrenFromArray(childrenNodes);
-          var subscription = node.subscription || _this8._makeSubscription(nodeKey, directory);
+          var children = (_FileTreeNode2 || _FileTreeNode()).FileTreeNode.childrenFromArray(childrenNodes);
+          var subscription = node.subscription || _this7._makeSubscription(nodeKey, directory);
 
           // If the fetch indicated that some children were removed - dispose of all
           // their subscriptions
@@ -873,7 +891,7 @@ var FileTreeStore = (function () {
           return node.set({ isLoading: false, children: children, subscription: subscription });
         });
 
-        _this8._clearLoading(nodeKey);
+        _this7._clearLoading(nodeKey);
       });
 
       this._setLoading(nodeKey, promise);
@@ -882,7 +900,7 @@ var FileTreeStore = (function () {
   }, {
     key: '_makeSubscription',
     value: function _makeSubscription(nodeKey, directory) {
-      var _this9 = this;
+      var _this8 = this;
 
       if (directory == null) {
         return null;
@@ -899,21 +917,19 @@ var FileTreeStore = (function () {
           // subscription is notifying us that something has changed and if a fetch is already in
           // progress then it is racing with the change. Therefore, if we detect that there was a change
           // during the fetch we schedule another right after the first has finished.
-          var checkMissed = undefined;
+          var checkMissed = function checkMissed() {
+            fetchingPromise = null;
+            if (couldMissUpdate) {
+              fetchKeys();
+            }
+          };
 
           var fetchKeys = function fetchKeys() {
             if (fetchingPromise == null) {
               couldMissUpdate = false;
-              fetchingPromise = _this9._fetchChildKeys(nodeKey).then(checkMissed);
+              fetchingPromise = _this8._fetchChildKeys(nodeKey).then(checkMissed);
             } else {
               couldMissUpdate = true;
-            }
-          };
-
-          checkMissed = function () {
-            fetchingPromise = null;
-            if (couldMissUpdate) {
-              fetchKeys();
             }
           };
 
@@ -966,15 +982,15 @@ var FileTreeStore = (function () {
   }, {
     key: 'addFilterLetter',
     value: function addFilterLetter(letter) {
-      var _this10 = this;
+      var _this9 = this;
 
       this._filter = this._filter + letter;
       this._updateRoots(function (root) {
         return root.setRecursive(function (node) {
           return node.containsFilterMatches ? null : node;
         }, function (node) {
-          return (0, _FileTreeFilterHelper.matchesFilter)(node.name, _this10._filter) ? node.set({
-            highlightedText: _this10._filter,
+          return (0, (_FileTreeFilterHelper2 || _FileTreeFilterHelper()).matchesFilter)(node.name, _this9._filter) ? node.set({
+            highlightedText: _this9._filter,
             matchesFilter: true
           }) : node.set({ highlightedText: '', matchesFilter: false });
         });
@@ -997,7 +1013,7 @@ var FileTreeStore = (function () {
   }, {
     key: 'removeFilterLetter',
     value: function removeFilterLetter() {
-      var _this11 = this;
+      var _this10 = this;
 
       this._filter = this._filter.substr(0, this._filter.length - 1);
       if (this._filter.length) {
@@ -1005,8 +1021,8 @@ var FileTreeStore = (function () {
           return root.setRecursive(function (node) {
             return null;
           }, function (node) {
-            return (0, _FileTreeFilterHelper.matchesFilter)(node.name, _this11._filter) ? node.set({
-              highlightedText: _this11._filter,
+            return (0, (_FileTreeFilterHelper2 || _FileTreeFilterHelper()).matchesFilter)(node.name, _this10._filter) ? node.set({
+              highlightedText: _this10._filter,
               matchesFilter: true
             }) : node.set({ highlightedText: '', matchesFilter: false });
           });
@@ -1046,14 +1062,14 @@ var FileTreeStore = (function () {
   }, {
     key: '_clearLoading',
     value: function _clearLoading(nodeKey) {
-      this._isLoadingMap = this._isLoadingMap['delete'](nodeKey);
+      this._isLoadingMap = this._isLoadingMap.delete(nodeKey);
     }
   }, {
     key: '_deleteSelectedNodes',
     value: _asyncToGenerator(function* () {
       var selectedNodes = this.getSelectedNodes();
       yield Promise.all(selectedNodes.map(_asyncToGenerator(function* (node) {
-        var entry = _FileTreeHelpers2['default'].getEntryByKey(node.uri);
+        var entry = (_FileTreeHelpers2 || _FileTreeHelpers()).default.getEntryByKey(node.uri);
 
         if (entry == null) {
           return;
@@ -1067,33 +1083,33 @@ var FileTreeStore = (function () {
           } catch (e) {
             var statuses = yield hgRepository.getStatuses([path]);
             var pathStatus = statuses.get(path);
-            var goodStatuses = [_nuclideHgRepositoryBaseLibHgConstants.StatusCodeNumber.ADDED, _nuclideHgRepositoryBaseLibHgConstants.StatusCodeNumber.CLEAN, _nuclideHgRepositoryBaseLibHgConstants.StatusCodeNumber.MODIFIED];
+            var goodStatuses = [(_nuclideHgRepositoryBaseLibHgConstants2 || _nuclideHgRepositoryBaseLibHgConstants()).StatusCodeNumber.ADDED, (_nuclideHgRepositoryBaseLibHgConstants2 || _nuclideHgRepositoryBaseLibHgConstants()).StatusCodeNumber.CLEAN, (_nuclideHgRepositoryBaseLibHgConstants2 || _nuclideHgRepositoryBaseLibHgConstants()).StatusCodeNumber.MODIFIED];
             if (goodStatuses.indexOf(pathStatus) !== -1) {
               atom.notifications.addError('Failed to remove ' + path + ' from version control.  The file will ' + 'still get deleted but you will have to remove it from your VCS yourself.  Error: ' + e.toString());
             }
           }
         }
-        if (_FileTreeHelpers2['default'].isLocalEntry(entry)) {
+        if ((_FileTreeHelpers2 || _FileTreeHelpers()).default.isLocalEntry(entry)) {
           // TODO: This special-case can be eliminated once `delete()` is added to `Directory`
           // and `File`.
-          _shell2['default'].moveItemToTrash(_FileTreeHelpers2['default'].keyToPath(node.uri));
+          (_shell2 || _shell()).default.moveItemToTrash((_FileTreeHelpers2 || _FileTreeHelpers()).default.keyToPath(node.uri));
         } else {
           var remoteFile = entry;
-          yield remoteFile['delete']();
+          yield remoteFile.delete();
         }
       })));
     })
   }, {
     key: '_expandNode',
     value: function _expandNode(rootKey, nodeKey) {
-      var _this12 = this;
+      var _this11 = this;
 
       this._updateNodeAtRoot(rootKey, nodeKey, function (node) {
         return node.setIsExpanded(true).setRecursive(function (n) {
           return !n.isContainer || !n.isExpanded ? n : null;
         }, function (n) {
           if (n.isContainer && n.isExpanded) {
-            _this12._fetchChildKeys(n.uri);
+            _this11._fetchChildKeys(n.uri);
             return n.setIsLoading(true);
           }
 
@@ -1109,7 +1125,7 @@ var FileTreeStore = (function () {
   }, {
     key: '_expandNodeDeep',
     value: function _expandNodeDeep(rootKey, nodeKey) {
-      var _this13 = this;
+      var _this12 = this;
 
       // Stop the traversal after 100 nodes were added to the tree
       var itNodes = new FileTreeStoreBfsIterator(this, rootKey, nodeKey, /* limit*/100);
@@ -1117,7 +1133,7 @@ var FileTreeStore = (function () {
         var expand = function expand() {
           var traversedNodeKey = itNodes.traversedNode();
           if (traversedNodeKey) {
-            _this13._expandNode(rootKey, traversedNodeKey);
+            _this12._expandNode(rootKey, traversedNodeKey);
 
             var nextPromise = itNodes.next();
             if (nextPromise) {
@@ -1318,22 +1334,22 @@ var FileTreeStore = (function () {
   }, {
     key: '_setRootKeys',
     value: function _setRootKeys(rootKeys) {
-      var _this14 = this;
+      var _this13 = this;
 
       var rootNodes = rootKeys.map(function (rootUri) {
-        var root = _this14.roots.get(rootUri);
+        var root = _this13.roots.get(rootUri);
         if (root != null) {
           return root;
         }
 
-        return new _FileTreeNode.FileTreeNode({
+        return new (_FileTreeNode2 || _FileTreeNode()).FileTreeNode({
           uri: rootUri,
           rootUri: rootUri,
-          connectionTitle: _FileTreeHelpers2['default'].getDisplayTitle(rootUri) || ''
-        }, _this14._conf);
+          connectionTitle: (_FileTreeHelpers2 || _FileTreeHelpers()).default.getDisplayTitle(rootUri) || ''
+        }, _this13._conf);
       });
 
-      var roots = new _immutable2['default'].OrderedMap(rootNodes.map(function (root) {
+      var roots = new (_immutable2 || _immutable()).default.OrderedMap(rootNodes.map(function (root) {
         return [root.uri, root];
       }));
       var removedRoots = this.roots.filter(function (root) {
@@ -1362,7 +1378,7 @@ var FileTreeStore = (function () {
   }, {
     key: '_ensureChildNode',
     value: function _ensureChildNode(nodeKey) {
-      var _this15 = this;
+      var _this14 = this;
 
       var firstRootUri = undefined;
 
@@ -1375,8 +1391,8 @@ var FileTreeStore = (function () {
           node.subscription.dispose();
         }
 
-        var directory = _FileTreeHelpers2['default'].getDirectoryByKey(node.uri);
-        var subscription = _this15._makeSubscription(node.uri, directory);
+        var directory = (_FileTreeHelpers2 || _FileTreeHelpers()).default.getDirectoryByKey(node.uri);
+        var subscription = _this14._makeSubscription(node.uri, directory);
         return node.set({ subscription: subscription, isExpanded: true });
       };
 
@@ -1395,32 +1411,34 @@ var FileTreeStore = (function () {
         }
 
         if (deepest.uri === nodeKey) {
-          return _this15._bubbleUp(deepest, deepest, expandNode);
+          return _this14._bubbleUp(deepest, deepest, expandNode);
         }
 
         var parents = [];
-        var currentParentUri = _FileTreeHelpers2['default'].getParentKey(nodeKey);
+        var currentParentUri = (_FileTreeHelpers2 || _FileTreeHelpers()).default.getParentKey(nodeKey);
+        var rootUri = root.uri;
         while (currentParentUri !== deepest.uri) {
           parents.push(currentParentUri);
-          currentParentUri = _FileTreeHelpers2['default'].getParentKey(currentParentUri);
+          currentParentUri = (_FileTreeHelpers2 || _FileTreeHelpers()).default.getParentKey(currentParentUri);
         }
 
-        var currentChild = deepest.createChild({ uri: nodeKey });
+        var currentChild = new (_FileTreeNode2 || _FileTreeNode()).FileTreeNode({ uri: nodeKey, rootUri: rootUri }, _this14._conf);
 
         parents.forEach(function (currentUri) {
-          _this15._fetchChildKeys(currentUri);
-          var parent = deepest.createChild({
+          _this14._fetchChildKeys(currentUri);
+          var parent = new (_FileTreeNode2 || _FileTreeNode()).FileTreeNode({
             uri: currentUri,
+            rootUri: rootUri,
             isLoading: true,
             isExpanded: true,
-            children: _FileTreeNode.FileTreeNode.childrenFromArray([currentChild])
-          });
+            children: (_FileTreeNode2 || _FileTreeNode()).FileTreeNode.childrenFromArray([currentChild])
+          }, _this14._conf);
 
           currentChild = parent;
         });
 
-        _this15._fetchChildKeys(deepest.uri);
-        return _this15._bubbleUp(deepest, deepest.set({
+        _this14._fetchChildKeys(deepest.uri);
+        return _this14._bubbleUp(deepest, deepest.set({
           isLoading: true,
           isExpanded: true,
           children: deepest.children.set(currentChild.name, currentChild)
@@ -1457,13 +1475,13 @@ var FileTreeStore = (function () {
   }, {
     key: '_setRepositories',
     value: function _setRepositories(repositories) {
-      var _this16 = this;
+      var _this15 = this;
 
       this._repositories = repositories;
       this._updateConf(function (conf) {
         var reposByRoot = {};
-        _this16.roots.forEach(function (root) {
-          reposByRoot[root.uri] = (0, _nuclideHgGitBridge.repositoryForPath)(root.uri);
+        _this15.roots.forEach(function (root) {
+          reposByRoot[root.uri] = (0, (_nuclideHgGitBridge2 || _nuclideHgGitBridge()).repositoryForPath)(root.uri);
         });
         conf.reposByRoot = reposByRoot;
       });
@@ -1472,14 +1490,14 @@ var FileTreeStore = (function () {
     key: '_setWorkingSet',
     value: function _setWorkingSet(workingSet) {
       this._updateConf(function (conf) {
-        return conf.workingSet = workingSet;
+        conf.workingSet = workingSet;
       });
     }
   }, {
     key: '_setOpenFilesWorkingSet',
     value: function _setOpenFilesWorkingSet(openFilesWorkingSet) {
       this._updateConf(function (conf) {
-        return conf.openFilesWorkingSet = openFilesWorkingSet;
+        conf.openFilesWorkingSet = openFilesWorkingSet;
       });
     }
   }, {
@@ -1500,7 +1518,7 @@ var FileTreeStore = (function () {
     value: function _finishEditingWorkingSet() {
       this._updateConf(function (conf) {
         conf.isEditingWorkingSet = false;
-        conf.editedWorkingSet = new _nuclideWorkingSets.WorkingSet();
+        conf.editedWorkingSet = new (_nuclideWorkingSets2 || _nuclideWorkingSets()).WorkingSet();
       });
     }
   }, {
@@ -1583,7 +1601,7 @@ var FileTreeStore = (function () {
 
       // Reset data store.
       this._conf = DEFAULT_CONF;
-      this._setRoots(new _immutable2['default'].OrderedMap());
+      this._setRoots(new (_immutable2 || _immutable()).default.OrderedMap());
     }
   }, {
     key: 'subscribe',
@@ -1617,7 +1635,7 @@ var FileTreeStoreBfsIterator = (function () {
       this._numNodesTraversed += childrenKeys.length;
       if (this._numNodesTraversed < this._limit) {
         var nextLevelNodes = childrenKeys.filter(function (childKey) {
-          return _FileTreeHelpers2['default'].isDirKey(childKey);
+          return (_FileTreeHelpers2 || _FileTreeHelpers()).default.isDirKey(childKey);
         });
         this._nodesToTraverse = this._nodesToTraverse.concat(nextLevelNodes);
 

@@ -14,11 +14,23 @@ var _createClass = (function () { function defineProperties(target, props) { for
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _atom = require('atom');
+var _atom2;
 
-var _events = require('events');
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var _Constants = require('./Constants');
+var _events2;
+
+function _events() {
+  return _events2 = require('events');
+}
+
+var _Constants2;
+
+function _Constants() {
+  return _Constants2 = require('./Constants');
+}
 
 var ATTACH_TARGET_LIST_CHANGE_EVENT = 'ATTACH_TARGET_LIST_CHANGE_EVENT';
 
@@ -28,7 +40,7 @@ var LaunchAttachStore = (function () {
 
     this._dispatcher = dispatcher;
     this._dispatcherToken = this._dispatcher.register(this._handleActions.bind(this));
-    this._eventEmitter = new _events.EventEmitter();
+    this._eventEmitter = new (_events2 || _events()).EventEmitter();
     this._attachTargetInfos = [];
   }
 
@@ -43,7 +55,7 @@ var LaunchAttachStore = (function () {
       var _this = this;
 
       this._eventEmitter.on(ATTACH_TARGET_LIST_CHANGE_EVENT, callback);
-      return new _atom.Disposable(function () {
+      return new (_atom2 || _atom()).Disposable(function () {
         return _this._eventEmitter.removeListener(ATTACH_TARGET_LIST_CHANGE_EVENT, callback);
       });
     }
@@ -51,7 +63,7 @@ var LaunchAttachStore = (function () {
     key: '_handleActions',
     value: function _handleActions(args) {
       switch (args.actionType) {
-        case _Constants.LaunchAttachActionCode.UPDATE_ATTACH_TARGET_LIST:
+        case (_Constants2 || _Constants()).LaunchAttachActionCode.UPDATE_ATTACH_TARGET_LIST:
           this._attachTargetInfos = args.data;
           this._eventEmitter.emit(ATTACH_TARGET_LIST_CHANGE_EVENT);
           break;

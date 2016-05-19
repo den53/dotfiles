@@ -43,31 +43,55 @@ exports.setScrollTop = setScrollTop;
 exports.setPositionAndScroll = setPositionAndScroll;
 exports.getCursorPositions = getCursorPositions;
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
-var _assert = require('assert');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _assert2 = _interopRequireDefault(_assert);
+var _assert2;
 
-var _atom = require('atom');
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
-var _rxjs = require('rxjs');
+var _atom2;
+
+function _atom() {
+  return _atom2 = require('atom');
+}
+
+var _rxjs2;
+
+function _rxjs() {
+  return _rxjs2 = require('rxjs');
+}
 
 // TODO(most): move to remote-connection/lib/RemoteTextBuffer.js
 
-var _nuclideRemoteProjectsLibNuclideTextBuffer = require('../../nuclide-remote-projects/lib/NuclideTextBuffer');
+var _nuclideRemoteProjectsLibNuclideTextBuffer2;
 
-var _nuclideRemoteProjectsLibNuclideTextBuffer2 = _interopRequireDefault(_nuclideRemoteProjectsLibNuclideTextBuffer);
+function _nuclideRemoteProjectsLibNuclideTextBuffer() {
+  return _nuclideRemoteProjectsLibNuclideTextBuffer2 = _interopRequireDefault(require('../../nuclide-remote-projects/lib/NuclideTextBuffer'));
+}
 
-var _nuclideRemoteUri = require('../../nuclide-remote-uri');
+var _nuclideRemoteUri2;
 
-var _nuclideRemoteConnection = require('../../nuclide-remote-connection');
+function _nuclideRemoteUri() {
+  return _nuclideRemoteUri2 = require('../../nuclide-remote-uri');
+}
 
-var _nuclideCommons = require('../../nuclide-commons');
+var _nuclideRemoteConnection2;
 
-var observableFromSubscribeFunction = _nuclideCommons.event.observableFromSubscribeFunction;
+function _nuclideRemoteConnection() {
+  return _nuclideRemoteConnection2 = require('../../nuclide-remote-connection');
+}
+
+var _nuclideCommons2;
+
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
+
+var observableFromSubscribeFunction = (_nuclideCommons2 || _nuclideCommons()).event.observableFromSubscribeFunction;
 
 /**
  * Returns a text editor that has the given path open, or null if none exists. If there are multiple
@@ -96,17 +120,17 @@ function bufferForUri(uri) {
 
 function createBufferForUri(uri) {
   var buffer = undefined;
-  if ((0, _nuclideRemoteUri.isLocal)(uri)) {
-    buffer = new _atom.TextBuffer({ filePath: uri });
+  if ((0, (_nuclideRemoteUri2 || _nuclideRemoteUri()).isLocal)(uri)) {
+    buffer = new (_atom2 || _atom()).TextBuffer({ filePath: uri });
   } else {
-    var connection = _nuclideRemoteConnection.ServerConnection.getForUri(uri);
+    var connection = (_nuclideRemoteConnection2 || _nuclideRemoteConnection()).ServerConnection.getForUri(uri);
     if (connection == null) {
       throw new Error('ServerConnection cannot be found for uri: ' + uri);
     }
-    buffer = new _nuclideRemoteProjectsLibNuclideTextBuffer2['default'](connection, { filePath: uri });
+    buffer = new (_nuclideRemoteProjectsLibNuclideTextBuffer2 || _nuclideRemoteProjectsLibNuclideTextBuffer()).default(connection, { filePath: uri });
   }
   atom.project.addBuffer(buffer);
-  (0, _assert2['default'])(buffer);
+  (0, (_assert2 || _assert()).default)(buffer);
   return buffer;
 }
 
@@ -147,8 +171,8 @@ function getCursorPositions(editor) {
   // This will behave strangely in the face of multiple cursors. Consider supporting multiple
   // cursors in the future.
   var cursor = editor.getCursors()[0];
-  (0, _assert2['default'])(cursor != null);
-  return _rxjs.Observable.merge(_rxjs.Observable.of(cursor.getBufferPosition()), observableFromSubscribeFunction(cursor.onDidChangePosition.bind(cursor)).map(function (event) {
+  (0, (_assert2 || _assert()).default)(cursor != null);
+  return (_rxjs2 || _rxjs()).Observable.merge((_rxjs2 || _rxjs()).Observable.of(cursor.getBufferPosition()), observableFromSubscribeFunction(cursor.onDidChangePosition.bind(cursor)).map(function (event) {
     return event.newBufferPosition;
   }));
 }

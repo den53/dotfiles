@@ -18,19 +18,23 @@ function _inherits(subClass, superClass) { if (typeof superClass !== 'function' 
  * the root directory of this source tree.
  */
 
-var _require = require('atom');
+var _atom2;
 
-var CompositeDisposable = _require.CompositeDisposable;
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var _require2 = require('./PanelComponentScroller');
+var _PanelComponentScroller2;
 
-var PanelComponentScroller = _require2.PanelComponentScroller;
+function _PanelComponentScroller() {
+  return _PanelComponentScroller2 = require('./PanelComponentScroller');
+}
 
-var _require3 = require('react-for-atom');
+var _reactForAtom2;
 
-var React = _require3.React;
-var ReactDOM = _require3.ReactDOM;
-var PropTypes = React.PropTypes;
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
 
 var MINIMUM_LENGTH = 100;
 
@@ -45,17 +49,17 @@ var PanelComponent = (function (_React$Component) {
   _createClass(PanelComponent, null, [{
     key: 'propTypes',
     value: {
-      children: PropTypes.element.isRequired,
-      dock: PropTypes.oneOf(['left', 'bottom', 'right']).isRequired,
-      hidden: PropTypes.bool.isRequired,
-      initialLength: PropTypes.number.isRequired,
+      children: (_reactForAtom2 || _reactForAtom()).React.PropTypes.element.isRequired,
+      dock: (_reactForAtom2 || _reactForAtom()).React.PropTypes.oneOf(['left', 'bottom', 'right']).isRequired,
+      hidden: (_reactForAtom2 || _reactForAtom()).React.PropTypes.bool.isRequired,
+      initialLength: (_reactForAtom2 || _reactForAtom()).React.PropTypes.number.isRequired,
       /*
        * When `true`, this component does not wrap its children in a scrolling container and instead
        * provides a simple container with visible (the default in CSS) overflow. Default: false.
        */
-      noScroll: PropTypes.bool.isRequired,
-      onResize: PropTypes.func.isRequired,
-      overflowX: PropTypes.string
+      noScroll: (_reactForAtom2 || _reactForAtom()).React.PropTypes.bool.isRequired,
+      onResize: (_reactForAtom2 || _reactForAtom()).React.PropTypes.func.isRequired,
+      overflowX: (_reactForAtom2 || _reactForAtom()).React.PropTypes.string
     },
     enumerable: true
   }, {
@@ -116,7 +120,7 @@ var PanelComponent = (function (_React$Component) {
         return;
       }
 
-      var element = ReactDOM.findDOMNode(this);
+      var element = (_reactForAtom2 || _reactForAtom()).ReactDOM.findDOMNode(this);
       var isVisible = window.getComputedStyle(element, null).getPropertyValue('visibility');
 
       if (isVisible) {
@@ -133,7 +137,7 @@ var PanelComponent = (function (_React$Component) {
       // is resizing the panel, even if their mouse leaves the handle.
       var resizeCursorOverlay = null;
       if (this.state.isResizing) {
-        resizeCursorOverlay = React.createElement('div', { className: 'nuclide-ui-panel-component-resize-cursor-overlay ' + this.props.dock });
+        resizeCursorOverlay = (_reactForAtom2 || _reactForAtom()).React.createElement('div', { className: 'nuclide-ui-panel-component-resize-cursor-overlay ' + this.props.dock });
       }
 
       var containerStyle = undefined;
@@ -149,14 +153,14 @@ var PanelComponent = (function (_React$Component) {
         };
       }
 
-      var content = React.cloneElement(React.Children.only(this.props.children), { ref: 'child' });
+      var content = (_reactForAtom2 || _reactForAtom()).React.cloneElement((_reactForAtom2 || _reactForAtom()).React.Children.only(this.props.children), { ref: 'child' });
 
       var wrappedContent = undefined;
       if (this.props.noScroll) {
         wrappedContent = content;
       } else {
-        wrappedContent = React.createElement(
-          PanelComponentScroller,
+        wrappedContent = (_reactForAtom2 || _reactForAtom()).React.createElement(
+          (_PanelComponentScroller2 || _PanelComponentScroller()).PanelComponentScroller,
           { overflowX: this.props.overflowX },
           content
         );
@@ -169,14 +173,14 @@ var PanelComponent = (function (_React$Component) {
       //
       // [1] https://github.com/atom/tree-view/blob/v0.201.5/lib/tree-view.coffee#L28
       // [2] https://github.com/cannikin/spacegray-dark-ui/blob/v0.12.0/styles/tree-view.less#L21
-      return React.createElement(
+      return (_reactForAtom2 || _reactForAtom()).React.createElement(
         'div',
         {
           className: 'nuclide-ui-panel-component tree-view-resizer ' + this.props.dock,
           hidden: this.props.hidden,
           ref: 'container',
           style: containerStyle },
-        React.createElement('div', { className: 'nuclide-ui-panel-component-resize-handle ' + this.props.dock,
+        (_reactForAtom2 || _reactForAtom()).React.createElement('div', { className: 'nuclide-ui-panel-component-resize-handle ' + this.props.dock,
           ref: 'handle',
           onMouseDown: this._handleMouseDown,
           onDoubleClick: this._handleDoubleClick
@@ -200,7 +204,7 @@ var PanelComponent = (function (_React$Component) {
   }, {
     key: 'focus',
     value: function focus() {
-      ReactDOM.findDOMNode(this.refs['child']).focus();
+      this.refs['child'].focus();
     }
   }, {
     key: 'getChildComponent',
@@ -212,7 +216,7 @@ var PanelComponent = (function (_React$Component) {
     value: function _handleMouseDown(event) {
       var _this = this;
 
-      this._resizeSubscriptions = new CompositeDisposable();
+      this._resizeSubscriptions = new (_atom2 || _atom()).CompositeDisposable();
 
       window.addEventListener('mousemove', this._handleMouseMove);
       this._resizeSubscriptions.add({
@@ -233,7 +237,7 @@ var PanelComponent = (function (_React$Component) {
   }, {
     key: '_handleMouseMove',
     value: function _handleMouseMove(event) {
-      var containerEl = ReactDOM.findDOMNode(this.refs['container']);
+      var containerEl = (_reactForAtom2 || _reactForAtom()).ReactDOM.findDOMNode(this.refs['container']);
       var length = 0;
       if (this.props.dock === 'left') {
         length = event.pageX - containerEl.getBoundingClientRect().left;
@@ -266,8 +270,8 @@ var PanelComponent = (function (_React$Component) {
       this.setState({ length: 0 });
       this.forceUpdate(function () {
         var length = 0;
-        var childNode = ReactDOM.findDOMNode(_this2.refs['child']);
-        var handle = ReactDOM.findDOMNode(_this2.refs['handle']);
+        var childNode = (_reactForAtom2 || _reactForAtom()).ReactDOM.findDOMNode(_this2.refs['child']);
+        var handle = (_reactForAtom2 || _reactForAtom()).ReactDOM.findDOMNode(_this2.refs['handle']);
         if (_this2.props.dock === 'left' || _this2.props.dock === 'right') {
           length = childNode.offsetWidth + handle.offsetWidth;
         } else if (_this2.props.dock === 'bottom') {
@@ -289,6 +293,6 @@ var PanelComponent = (function (_React$Component) {
   }]);
 
   return PanelComponent;
-})(React.Component);
+})((_reactForAtom2 || _reactForAtom()).React.Component);
 
 exports.PanelComponent = PanelComponent;

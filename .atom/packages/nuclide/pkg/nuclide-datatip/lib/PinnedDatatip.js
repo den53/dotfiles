@@ -12,30 +12,46 @@ Object.defineProperty(exports, '__esModule', {
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _atom = require('atom');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _reactForAtom = require('react-for-atom');
+var _atom2;
 
-var _rxjs = require('rxjs');
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var _rxjs2 = _interopRequireDefault(_rxjs);
+var _reactForAtom2;
 
-var _assert = require('assert');
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
 
-var _assert2 = _interopRequireDefault(_assert);
+var _rxjs2;
 
-var _DatatipComponent = require('./DatatipComponent');
+function _rxjs() {
+  return _rxjs2 = _interopRequireDefault(require('rxjs'));
+}
+
+var _assert2;
+
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
+
+var _DatatipComponent2;
+
+function _DatatipComponent() {
+  return _DatatipComponent2 = require('./DatatipComponent');
+}
 
 var LINE_END_MARGIN = 20;
 
 var _mouseMove$ = undefined;
 function documentMouseMove$() {
   if (_mouseMove$ == null) {
-    _mouseMove$ = _rxjs2['default'].Observable.fromEvent(document, 'mousemove');
+    _mouseMove$ = (_rxjs2 || _rxjs()).default.Observable.fromEvent(document, 'mousemove');
   }
   return _mouseMove$;
 }
@@ -43,7 +59,7 @@ function documentMouseMove$() {
 var _mouseUp$ = undefined;
 function documentMouseUp$() {
   if (_mouseUp$ == null) {
-    _mouseUp$ = _rxjs2['default'].Observable.fromEvent(document, 'mouseup');
+    _mouseUp$ = (_rxjs2 || _rxjs()).default.Observable.fromEvent(document, 'mouseup');
   }
   return _mouseUp$;
 }
@@ -57,8 +73,8 @@ var PinnedDatatip = (function () {
     var component = datatip.component;
     var range = datatip.range;
 
-    this._subscriptions = new _atom.CompositeDisposable();
-    this._subscriptions.add(new _atom.Disposable(function () {
+    this._subscriptions = new (_atom2 || _atom()).CompositeDisposable();
+    this._subscriptions.add(new (_atom2 || _atom()).Disposable(function () {
       return onDispose(_this);
     }));
     this._range = range;
@@ -75,7 +91,7 @@ var PinnedDatatip = (function () {
     this._boundHandleCapturedClick = this.handleCapturedClick.bind(this);
     this._hostElement.addEventListener('mouseenter', this._boundHandleMouseEnter);
     this._hostElement.addEventListener('mouseleave', this._boundHandleMouseLeave);
-    this._subscriptions.add(new _atom.Disposable(function () {
+    this._subscriptions.add(new (_atom2 || _atom()).Disposable(function () {
       _this._hostElement.removeEventListener('mouseenter', _this._boundHandleMouseEnter);
       _this._hostElement.removeEventListener('mouseleave', _this._boundHandleMouseLeave);
     }));
@@ -105,7 +121,7 @@ var PinnedDatatip = (function () {
       var evt = event;
       var _dragOrigin = this._dragOrigin;
 
-      (0, _assert2['default'])(_dragOrigin);
+      (0, (_assert2 || _assert()).default)(_dragOrigin);
       this._isDragging = true;
       this._offset = {
         x: evt.clientX - _dragOrigin.x,
@@ -187,16 +203,16 @@ var PinnedDatatip = (function () {
       var _isHovering = this._isHovering;
 
       this._updateHostElementPosition();
-      _reactForAtom.ReactDOM.render(_reactForAtom.React.createElement(
-        _DatatipComponent.DatatipComponent,
+      (_reactForAtom2 || _reactForAtom()).ReactDOM.render((_reactForAtom2 || _reactForAtom()).React.createElement(
+        (_DatatipComponent2 || _DatatipComponent()).DatatipComponent,
         {
-          action: _DatatipComponent.DATATIP_ACTIONS.CLOSE,
+          action: (_DatatipComponent2 || _DatatipComponent()).DATATIP_ACTIONS.CLOSE,
           actionTitle: 'Close this datatip',
           className: _isDragging ? 'nuclide-datatip-dragging' : '',
           onActionClick: this._boundDispose,
           onMouseDown: this._boundHandleMouseDown,
           onClickCapture: this._boundHandleCapturedClick },
-        _reactForAtom.React.createElement(ProvidedComponent, null)
+        (_reactForAtom2 || _reactForAtom()).React.createElement(ProvidedComponent, null)
       ), _hostElement);
 
       var rangeClassname = 'nuclide-datatip-highlight-region';
@@ -218,7 +234,7 @@ var PinnedDatatip = (function () {
         });
       } else {
         // `this._rangeDecoration` is guaranteed to exist iff `this._marker` exists.
-        (0, _assert2['default'])(this._rangeDecoration);
+        (0, (_assert2 || _assert()).default)(this._rangeDecoration);
         this._rangeDecoration.setProperties({
           type: 'highlight',
           'class': rangeClassname
@@ -237,7 +253,7 @@ var PinnedDatatip = (function () {
       if (this._mouseSubscription != null) {
         this._mouseSubscription.unsubscribe();
       }
-      _reactForAtom.ReactDOM.unmountComponentAtNode(this._hostElement);
+      (_reactForAtom2 || _reactForAtom()).ReactDOM.unmountComponentAtNode(this._hostElement);
       this._hostElement.remove();
       this._subscriptions.dispose();
     }

@@ -14,13 +14,17 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
  * the root directory of this source tree.
  */
 
-var _path = require('path');
+var _path2;
 
-var _path2 = _interopRequireDefault(_path);
+function _path() {
+  return _path2 = _interopRequireDefault(require('path'));
+}
 
-var _assert = require('assert');
+var _assert2;
 
-var _assert2 = _interopRequireDefault(_assert);
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
 /**
  * @return The path to the JSON file on disk where the workspace state is stored.
@@ -37,12 +41,12 @@ function getPathToWorkspaceState() {
   // As you can imagine, the way that we are getting this path is not documented and is therefore
   // unstable.
   // TODO(t8750960): Work with the Atom core team to get a stable API for this.
-  return _path2['default'].join(atom.getConfigDirPath(), 'storage', getStateKey(atom.project.getPaths(), 'editor'));
+  return (_path2 || _path()).default.join(atom.getConfigDirPath(), 'storage', getStateKey(atom.project.getPaths(), 'editor'));
 }
 
 function activatePaneItem(paneItem) {
   var pane = atom.workspace.paneForItem(paneItem);
-  (0, _assert2['default'])(pane != null);
+  (0, (_assert2 || _assert()).default)(pane != null);
   pane.activate();
   pane.activateItem(paneItem);
 }

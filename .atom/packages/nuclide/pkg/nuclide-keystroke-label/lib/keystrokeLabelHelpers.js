@@ -114,9 +114,9 @@ function humanizeKeystroke(keystroke, platform) {
   }
   platform = platform || process.platform;
   var separator = platform === 'darwin' ? '' : '+';
-  var key = undefined,
-      keys = undefined,
-      splitKeystroke = undefined;
+  var key = undefined;
+  var keys = undefined;
+  var splitKeystroke = undefined;
   var keystrokes = keystroke.split(' ');
   var humanizedKeystrokes = [];
   for (var i = 0; i < keystrokes.length; i++) {

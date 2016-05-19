@@ -14,7 +14,11 @@ var _createClass = (function () { function defineProperties(target, props) { for
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _FlowServiceFactory = require('./FlowServiceFactory');
+var _FlowServiceFactory2;
+
+function _FlowServiceFactory() {
+  return _FlowServiceFactory2 = require('./FlowServiceFactory');
+}
 
 var FlowServiceWatcher = (function () {
   function FlowServiceWatcher() {
@@ -22,7 +26,7 @@ var FlowServiceWatcher = (function () {
 
     _classCallCheck(this, FlowServiceWatcher);
 
-    this._subscription = (0, _FlowServiceFactory.getServerStatusUpdates)().filter(function (_ref) {
+    this._subscription = (0, (_FlowServiceFactory2 || _FlowServiceFactory()).getServerStatusUpdates)().filter(function (_ref) {
       var status = _ref.status;
       return status === 'failed';
     }).subscribe(function (_ref2) {

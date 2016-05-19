@@ -10,10 +10,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * the root directory of this source tree.
  */
 
-var _require = require('atom');
+var _atom2;
 
-var CompositeDisposable = _require.CompositeDisposable;
-var Emitter = _require.Emitter;
+function _atom() {
+  return _atom2 = require('atom');
+}
 
 var GRAMMAR_CHANGE_EVENT = 'grammar-change';
 
@@ -27,8 +28,8 @@ var GrammarForTextEditorsListener = (function () {
 
     _classCallCheck(this, GrammarForTextEditorsListener);
 
-    this._emitter = new Emitter();
-    this._subscriptions = new CompositeDisposable();
+    this._emitter = new (_atom2 || _atom()).Emitter();
+    this._subscriptions = new (_atom2 || _atom()).CompositeDisposable();
     this._subscriptions.add(this._emitter, atom.workspace.observeTextEditors(function (textEditor) {
       var grammarSubscription = textEditor.observeGrammar(function (grammar) {
         _this._emitter.emit(GRAMMAR_CHANGE_EVENT, textEditor);

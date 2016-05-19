@@ -6,6 +6,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
  * All rights reserved.
@@ -14,16 +16,23 @@ function _inherits(subClass, superClass) { if (typeof superClass !== 'function' 
  * the root directory of this source tree.
  */
 
-var _require = require('react-for-atom');
+var _reactForAtom2;
 
-var React = _require.React;
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
 
-var _require2 = require('atom');
+var _atom2;
 
-var Disposable = _require2.Disposable;
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var ProjectStore = require('./ProjectStore');
-var PropTypes = React.PropTypes;
+var _ProjectStore2;
+
+function _ProjectStore() {
+  return _ProjectStore2 = _interopRequireDefault(require('./ProjectStore'));
+}
 
 var NuclideToolbar = (function (_React$Component) {
   _inherits(NuclideToolbar, _React$Component);
@@ -31,7 +40,7 @@ var NuclideToolbar = (function (_React$Component) {
   _createClass(NuclideToolbar, null, [{
     key: 'propTypes',
     value: {
-      projectStore: PropTypes.instanceOf(ProjectStore).isRequired
+      projectStore: (_reactForAtom2 || _reactForAtom()).React.PropTypes.instanceOf((_ProjectStore2 || _ProjectStore()).default).isRequired
     },
     enumerable: true
   }]);
@@ -74,9 +83,10 @@ var NuclideToolbar = (function (_React$Component) {
     value: function render() {
       if (this.state.projectType === 'Hhvm') {
         var HhvmToolbar = require('./HhvmToolbar');
-        return React.createElement(HhvmToolbar, {
+        return (_reactForAtom2 || _reactForAtom()).React.createElement(HhvmToolbar, {
           ref: 'hhvmToolbar',
-          targetFilePath: this.state.currentFilePath
+          targetFilePath: this.state.currentFilePath,
+          projectStore: this.props.projectStore
         });
       } else {
         // Hide toolbar.
@@ -86,6 +96,6 @@ var NuclideToolbar = (function (_React$Component) {
   }]);
 
   return NuclideToolbar;
-})(React.Component);
+})((_reactForAtom2 || _reactForAtom()).React.Component);
 
 module.exports = NuclideToolbar;

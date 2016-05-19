@@ -1,6 +1,4 @@
-
-
-var flatten = require('../../utils/flatten');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -10,10 +8,20 @@ var flatten = require('../../utils/flatten');
  * the root directory of this source tree.
  */
 
-var markers = require('../../constants/markers');
+var _utilsFlatten2;
+
+function _utilsFlatten() {
+  return _utilsFlatten2 = _interopRequireDefault(require('../../utils/flatten'));
+}
+
+var _constantsMarkers2;
+
+function _constantsMarkers() {
+  return _constantsMarkers2 = _interopRequireDefault(require('../../constants/markers'));
+}
 
 function printArrayOfStatements(print, nodes) {
-  return flatten(nodes.map(function (node, i, arr) {
+  return (0, (_utilsFlatten2 || _utilsFlatten()).default)(nodes.map(function (node, i, arr) {
     var parts = [];
     /**
      * Basic description of algorithm:
@@ -25,14 +33,14 @@ function printArrayOfStatements(print, nodes) {
      */
     if (i > 0) {
       if (hasAttachedLeadingComments(node) || shouldSurroundWithBreaks(node) || shouldSurroundWithBreaks(arr[i - 1])) {
-        parts = parts.concat([markers.noBreak, '', markers.multiHardBreak, markers.multiHardBreak]);
+        parts = parts.concat([(_constantsMarkers2 || _constantsMarkers()).default.noBreak, '', (_constantsMarkers2 || _constantsMarkers()).default.multiHardBreak, (_constantsMarkers2 || _constantsMarkers()).default.multiHardBreak]);
       }
     }
 
     parts = parts.concat(print(node));
 
     if (i < arr.length) {
-      parts = parts.concat([markers.hardBreak]);
+      parts = parts.concat([(_constantsMarkers2 || _constantsMarkers()).default.hardBreak]);
     }
 
     return parts;

@@ -18,9 +18,17 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _atom = require('atom');
+var _atom2;
 
-var _nuclideCommons = require('../../nuclide-commons');
+function _atom() {
+  return _atom2 = require('atom');
+}
+
+var _nuclideCommons2;
+
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
 
 var HIGHLIGHT_DELAY_MS = 250;
 
@@ -30,8 +38,8 @@ var CodeHighlightManager = (function () {
 
     this._providers = [];
     this._markers = [];
-    var subscriptions = this._subscriptions = new _atom.CompositeDisposable();
-    var debouncedCallback = (0, _nuclideCommons.debounce)(this._highlightInEditor.bind(this), HIGHLIGHT_DELAY_MS, false);
+    var subscriptions = this._subscriptions = new (_atom2 || _atom()).CompositeDisposable();
+    var debouncedCallback = (0, (_nuclideCommons2 || _nuclideCommons()).debounce)(this._highlightInEditor.bind(this), HIGHLIGHT_DELAY_MS, false);
     atom.workspace.observeTextEditors(function (editor) {
       subscriptions.add(editor.onDidChangeCursorPosition(function (event) {
         debouncedCallback(editor, event.newBufferPosition);
@@ -129,5 +137,5 @@ var CodeHighlightManager = (function () {
   return CodeHighlightManager;
 })();
 
-exports['default'] = CodeHighlightManager;
-module.exports = exports['default'];
+exports.default = CodeHighlightManager;
+module.exports = exports.default;

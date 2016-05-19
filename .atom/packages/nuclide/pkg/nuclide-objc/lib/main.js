@@ -15,13 +15,15 @@ var _createClass = (function () { function defineProperties(target, props) { for
 exports.activate = activate;
 exports.deactivate = deactivate;
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _nuclideFeatureConfig = require('../../nuclide-feature-config');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _nuclideFeatureConfig2 = _interopRequireDefault(_nuclideFeatureConfig);
+var _nuclideFeatureConfig2;
+
+function _nuclideFeatureConfig() {
+  return _nuclideFeatureConfig2 = _interopRequireDefault(require('../../nuclide-feature-config'));
+}
 
 var Activation = (function () {
   function Activation() {
@@ -35,7 +37,7 @@ var Activation = (function () {
 
     var ObjectiveCBracketBalancerCtr = require('./ObjectiveCBracketBalancer');
     this._bracketFeature = new ObjectiveCBracketBalancerCtr();
-    this._configSubscription = _nuclideFeatureConfig2['default'].observe('nuclide-objc.enableAutomaticSquareBracketInsertion', function (enabled) {
+    this._configSubscription = (_nuclideFeatureConfig2 || _nuclideFeatureConfig()).default.observe('nuclide-objc.enableAutomaticSquareBracketInsertion', function (enabled) {
       return enabled ? _this._bracketFeature.enable() : _this._bracketFeature.disable();
     });
   }

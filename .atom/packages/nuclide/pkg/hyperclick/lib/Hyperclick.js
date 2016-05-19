@@ -33,27 +33,41 @@ var findTruthyReturnValue = _asyncToGenerator(function* (fns) {
  */
 );
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
-var _HyperclickForTextEditor = require('./HyperclickForTextEditor');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _HyperclickForTextEditor2 = _interopRequireDefault(_HyperclickForTextEditor);
+var _HyperclickForTextEditor2;
 
-var _SuggestionList = require('./SuggestionList');
+function _HyperclickForTextEditor() {
+  return _HyperclickForTextEditor2 = _interopRequireDefault(require('./HyperclickForTextEditor'));
+}
 
-var _SuggestionList2 = _interopRequireDefault(_SuggestionList);
+var _SuggestionList2;
 
-var _SuggestionListElement = require('./SuggestionListElement');
+function _SuggestionList() {
+  return _SuggestionList2 = _interopRequireDefault(require('./SuggestionList'));
+}
 
-var _SuggestionListElement2 = _interopRequireDefault(_SuggestionListElement);
+var _SuggestionListElement2;
 
-var _hyperclickUtils = require('./hyperclick-utils');
+function _SuggestionListElement() {
+  return _SuggestionListElement2 = _interopRequireDefault(require('./SuggestionListElement'));
+}
 
-var _nuclideAnalytics = require('../../nuclide-analytics');
+var _hyperclickUtils2;
+
+function _hyperclickUtils() {
+  return _hyperclickUtils2 = require('./hyperclick-utils');
+}
+
+var _nuclideAnalytics2;
+
+function _nuclideAnalytics() {
+  return _nuclideAnalytics2 = require('../../nuclide-analytics');
+}
 
 var Hyperclick = (function () {
   function Hyperclick() {
@@ -61,9 +75,9 @@ var Hyperclick = (function () {
 
     this._consumedProviders = [];
 
-    this._suggestionList = new _SuggestionList2['default']();
-    this._suggestionListViewSubscription = atom.views.addViewProvider(_SuggestionList2['default'], function (model) {
-      return new _SuggestionListElement2['default']().initialize(model);
+    this._suggestionList = new (_SuggestionList2 || _SuggestionList()).default();
+    this._suggestionListViewSubscription = atom.views.addViewProvider((_SuggestionList2 || _SuggestionList()).default, function (model) {
+      return new (_SuggestionListElement2 || _SuggestionListElement()).default().initialize(model);
     });
 
     this._hyperclickForTextEditors = new Set();
@@ -77,11 +91,11 @@ var Hyperclick = (function () {
     value: function observeTextEditor(textEditor) {
       var _this = this;
 
-      var hyperclickForTextEditor = new _HyperclickForTextEditor2['default'](textEditor, this);
+      var hyperclickForTextEditor = new (_HyperclickForTextEditor2 || _HyperclickForTextEditor()).default(textEditor, this);
       this._hyperclickForTextEditors.add(hyperclickForTextEditor);
       textEditor.onDidDestroy(function () {
         hyperclickForTextEditor.dispose();
-        _this._hyperclickForTextEditors['delete'](hyperclickForTextEditor);
+        _this._hyperclickForTextEditors.delete(hyperclickForTextEditor);
       });
     }
   }, {
@@ -164,7 +178,7 @@ var Hyperclick = (function () {
     key: 'getSuggestion',
     value: function getSuggestion(textEditor, position) {
       // Get the default word RegExp for this editor.
-      var defaultWordRegExp = (0, _hyperclickUtils.defaultWordRegExpForEditor)(textEditor);
+      var defaultWordRegExp = (0, (_hyperclickUtils2 || _hyperclickUtils()).defaultWordRegExpForEditor)(textEditor);
 
       return findTruthyReturnValue(this._consumedProviders.map(function (provider) {
         if (provider.getSuggestion) {
@@ -172,7 +186,7 @@ var Hyperclick = (function () {
             var getSuggestion = provider.getSuggestion.bind(provider);
             return {
               v: function () {
-                return (0, _nuclideAnalytics.trackOperationTiming)(getProviderName(provider) + '.getSuggestion', function () {
+                return (0, (_nuclideAnalytics2 || _nuclideAnalytics()).trackOperationTiming)(getProviderName(provider) + '.getSuggestion', function () {
                   return getSuggestion(textEditor, position);
                 });
               }
@@ -187,12 +201,12 @@ var Hyperclick = (function () {
               v: function () {
                 var wordRegExp = provider.wordRegExp || defaultWordRegExp;
 
-                var _getWordTextAndRange = (0, _hyperclickUtils.getWordTextAndRange)(textEditor, position, wordRegExp);
+                var _ref = (0, (_hyperclickUtils2 || _hyperclickUtils()).getWordTextAndRange)(textEditor, position, wordRegExp);
 
-                var text = _getWordTextAndRange.text;
-                var range = _getWordTextAndRange.range;
+                var text = _ref.text;
+                var range = _ref.range;
 
-                return (0, _nuclideAnalytics.trackOperationTiming)(getProviderName(provider) + '.getSuggestionForWord', function () {
+                return (0, (_nuclideAnalytics2 || _nuclideAnalytics()).trackOperationTiming)(getProviderName(provider) + '.getSuggestionForWord', function () {
                   return getSuggestionForWord(textEditor, text, range);
                 });
               }
@@ -215,7 +229,7 @@ var Hyperclick = (function () {
   return Hyperclick;
 })();
 
-exports['default'] = Hyperclick;
+exports.default = Hyperclick;
 function getProviderName(provider) {
   if (provider.providerName != null) {
     return provider.providerName;
@@ -223,4 +237,4 @@ function getProviderName(provider) {
     return 'unnamed-hyperclick-provider';
   }
 }
-module.exports = exports['default'];
+module.exports = exports.default;

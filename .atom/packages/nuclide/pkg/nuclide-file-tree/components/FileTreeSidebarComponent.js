@@ -2,11 +2,11 @@ var _createClass = (function () { function defineProperties(target, props) { for
 
 var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -16,21 +16,47 @@ function _inherits(subClass, superClass) { if (typeof superClass !== 'function' 
  * the root directory of this source tree.
  */
 
-var _reactForAtom = require('react-for-atom');
+var _reactForAtom2;
 
-var _FileTree = require('./FileTree');
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
 
-var _FileTreeSideBarFilterComponent = require('./FileTreeSideBarFilterComponent');
+var _FileTree2;
 
-var _FileTreeSideBarFilterComponent2 = _interopRequireDefault(_FileTreeSideBarFilterComponent);
+function _FileTree() {
+  return _FileTree2 = require('./FileTree');
+}
 
-var _FileTreeToolbarComponent = require('./FileTreeToolbarComponent');
+var _FileTreeSideBarFilterComponent2;
 
-var _libFileTreeStore = require('../lib/FileTreeStore');
+function _FileTreeSideBarFilterComponent() {
+  return _FileTreeSideBarFilterComponent2 = _interopRequireDefault(require('./FileTreeSideBarFilterComponent'));
+}
 
-var _atom = require('atom');
+var _FileTreeToolbarComponent2;
 
-var _nuclideUiLibPanelComponentScroller = require('../../nuclide-ui/lib/PanelComponentScroller');
+function _FileTreeToolbarComponent() {
+  return _FileTreeToolbarComponent2 = require('./FileTreeToolbarComponent');
+}
+
+var _libFileTreeStore2;
+
+function _libFileTreeStore() {
+  return _libFileTreeStore2 = require('../lib/FileTreeStore');
+}
+
+var _atom2;
+
+function _atom() {
+  return _atom2 = require('atom');
+}
+
+var _nuclideUiLibPanelComponentScroller2;
+
+function _nuclideUiLibPanelComponentScroller() {
+  return _nuclideUiLibPanelComponentScroller2 = require('../../nuclide-ui/lib/PanelComponentScroller');
+}
 
 var FileTreeSidebarComponent = (function (_React$Component) {
   _inherits(FileTreeSidebarComponent, _React$Component);
@@ -40,13 +66,13 @@ var FileTreeSidebarComponent = (function (_React$Component) {
 
     _get(Object.getPrototypeOf(FileTreeSidebarComponent.prototype), 'constructor', this).call(this, props);
 
-    this._store = _libFileTreeStore.FileTreeStore.getInstance();
+    this._store = (_libFileTreeStore2 || _libFileTreeStore()).FileTreeStore.getInstance();
     this.state = {
       shouldRenderToolbar: false,
       scrollerHeight: 0,
       scrollerScrollTop: 0
     };
-    this._disposables = new _atom.CompositeDisposable();
+    this._disposables = new (_atom2 || _atom()).CompositeDisposable();
     this._afRequestId = null;
     this._handleFocus = this._handleFocus.bind(this);
     this._onViewChange = this._onViewChange.bind(this);
@@ -67,7 +93,7 @@ var FileTreeSidebarComponent = (function (_React$Component) {
         _this._afRequestId = null;
       });
 
-      this._disposables.add(this._store.subscribe(this._processExternalUpdate), atom.project.onDidChangePaths(this._processExternalUpdate), new _atom.Disposable(function () {
+      this._disposables.add(this._store.subscribe(this._processExternalUpdate), atom.project.onDidChangePaths(this._processExternalUpdate), new (_atom2 || _atom()).Disposable(function () {
         window.removeEventListener('resize', _this._onViewChange);
         if (_this._afRequestId != null) {
           window.cancelAnimationFrame(_this._afRequestId);
@@ -91,8 +117,8 @@ var FileTreeSidebarComponent = (function (_React$Component) {
     value: function _handleFocus(event) {
       // Delegate focus to the FileTree component if this component gains focus because the FileTree
       // matches the selectors targeted by themes to show the containing panel has focus.
-      if (event.target === _reactForAtom.ReactDOM.findDOMNode(this)) {
-        _reactForAtom.ReactDOM.findDOMNode(this.refs['fileTree']).focus();
+      if (event.target === (_reactForAtom2 || _reactForAtom()).ReactDOM.findDOMNode(this)) {
+        (_reactForAtom2 || _reactForAtom()).ReactDOM.findDOMNode(this.refs['fileTree']).focus();
       }
     }
   }, {
@@ -101,30 +127,30 @@ var FileTreeSidebarComponent = (function (_React$Component) {
       var workingSetsStore = this._store.getWorkingSetsStore();
       var toolbar = undefined;
       if (this.state.shouldRenderToolbar && workingSetsStore != null) {
-        toolbar = [_reactForAtom.React.createElement(_FileTreeSideBarFilterComponent2['default'], {
+        toolbar = [(_reactForAtom2 || _reactForAtom()).React.createElement((_FileTreeSideBarFilterComponent2 || _FileTreeSideBarFilterComponent()).default, {
           key: 'filter',
           filter: this._store.getFilter(),
           found: this._store.getFilterFound()
-        }), _reactForAtom.React.createElement(_FileTreeToolbarComponent.FileTreeToolbarComponent, {
+        }), (_reactForAtom2 || _reactForAtom()).React.createElement((_FileTreeToolbarComponent2 || _FileTreeToolbarComponent()).FileTreeToolbarComponent, {
           key: 'toolbar',
           workingSetsStore: workingSetsStore
         })];
       }
 
       // Include `tabIndex` so this component can be focused by calling its native `focus` method.
-      return _reactForAtom.React.createElement(
+      return (_reactForAtom2 || _reactForAtom()).React.createElement(
         'div',
         {
           className: 'nuclide-file-tree-toolbar-container',
           onFocus: this._handleFocus,
           tabIndex: 0 },
         toolbar,
-        _reactForAtom.React.createElement(
-          _nuclideUiLibPanelComponentScroller.PanelComponentScroller,
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
+          (_nuclideUiLibPanelComponentScroller2 || _nuclideUiLibPanelComponentScroller()).PanelComponentScroller,
           {
             ref: 'scroller',
             onScroll: this._onViewChange },
-          _reactForAtom.React.createElement(_FileTree.FileTree, {
+          (_reactForAtom2 || _reactForAtom()).React.createElement((_FileTree2 || _FileTree()).FileTree, {
             ref: 'fileTree',
             containerHeight: this.state.scrollerHeight,
             containerScrollTop: this.state.scrollerScrollTop,
@@ -148,7 +174,7 @@ var FileTreeSidebarComponent = (function (_React$Component) {
   }, {
     key: '_onViewChange',
     value: function _onViewChange() {
-      var node = _reactForAtom.ReactDOM.findDOMNode(this.refs['scroller']);
+      var node = (_reactForAtom2 || _reactForAtom()).ReactDOM.findDOMNode(this.refs['scroller']);
       var clientHeight = node.clientHeight;
       var scrollTop = node.scrollTop;
 
@@ -167,7 +193,7 @@ var FileTreeSidebarComponent = (function (_React$Component) {
         return; // Already in the view
       }
 
-      var node = _reactForAtom.ReactDOM.findDOMNode(this.refs['scroller']);
+      var node = (_reactForAtom2 || _reactForAtom()).ReactDOM.findDOMNode(this.refs['scroller']);
       if (node == null) {
         return;
       }
@@ -183,6 +209,6 @@ var FileTreeSidebarComponent = (function (_React$Component) {
   }]);
 
   return FileTreeSidebarComponent;
-})(_reactForAtom.React.Component);
+})((_reactForAtom2 || _reactForAtom()).React.Component);
 
 module.exports = FileTreeSidebarComponent;

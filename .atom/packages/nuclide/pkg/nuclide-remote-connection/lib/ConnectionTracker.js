@@ -14,9 +14,17 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * the root directory of this source tree.
  */
 
-var _nuclideCommons = require('../../nuclide-commons');
+var _nuclideCommons2;
 
-var _nuclideAnalytics = require('../../nuclide-analytics');
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
+
+var _nuclideAnalytics2;
+
+function _nuclideAnalytics() {
+  return _nuclideAnalytics2 = require('../../nuclide-analytics');
+}
 
 var CONNECTION_EVENT = 'nuclide-remote-connection';
 
@@ -62,10 +70,10 @@ var ConnectionTracker = (function () {
       var postYubikeyDuration = this._finishYubikeyTime > 0 ? Date.now() - this._finishYubikeyTime : 0;
       var realDuration = preYubikeyDuration > 0 && postYubikeyDuration > 0 ? preYubikeyDuration + postYubikeyDuration : 0;
 
-      (0, _nuclideAnalytics.track)(CONNECTION_EVENT, {
+      (0, (_nuclideAnalytics2 || _nuclideAnalytics()).track)(CONNECTION_EVENT, {
         error: succeed ? '0' : '1',
         errorType: errorType || '',
-        exception: e ? _nuclideCommons.error.stringifyError(e) : '',
+        exception: e ? (_nuclideCommons2 || _nuclideCommons()).error.stringifyError(e) : '',
         duration: (Date.now() - this._connectionStartTime).toString(),
         preYubikeyDuration: preYubikeyDuration.toString(),
         postYubikeyDuration: postYubikeyDuration.toString(),
@@ -85,5 +93,5 @@ var ConnectionTracker = (function () {
   return ConnectionTracker;
 })();
 
-exports['default'] = ConnectionTracker;
-module.exports = exports['default'];
+exports.default = ConnectionTracker;
+module.exports = exports.default;

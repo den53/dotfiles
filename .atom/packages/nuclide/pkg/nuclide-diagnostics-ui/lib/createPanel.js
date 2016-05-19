@@ -1,6 +1,4 @@
-
-
-var invariant = require('assert');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -10,20 +8,35 @@ var invariant = require('assert');
  * the root directory of this source tree.
  */
 
-var _require = require('../../nuclide-commons');
+var _assert2;
 
-var debounce = _require.debounce;
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
-var _require2 = require('./paneUtils');
+var _nuclideCommons2;
 
-var compareMessagesByFile = _require2.compareMessagesByFile;
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
 
-var _require3 = require('react-for-atom');
+var _paneUtils2;
 
-var React = _require3.React;
-var ReactDOM = _require3.ReactDOM;
+function _paneUtils() {
+  return _paneUtils2 = require('./paneUtils');
+}
 
-var DiagnosticsPanel = require('./DiagnosticsPanel');
+var _reactForAtom2;
+
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
+
+var _DiagnosticsPanel2;
+
+function _DiagnosticsPanel() {
+  return _DiagnosticsPanel2 = _interopRequireDefault(require('./DiagnosticsPanel'));
+}
 
 var DEFAULT_TABLE_WIDTH = 600;
 
@@ -37,15 +50,15 @@ function createDiagnosticsPanel(diagnosticUpdater, initialHeight, initialfilterB
     diagnostics: [],
     width: DEFAULT_TABLE_WIDTH,
     height: initialHeight,
-    onResize: debounce(function () {
-      invariant(diagnosticsPanel);
+    onResize: (0, (_nuclideCommons2 || _nuclideCommons()).debounce)(function () {
+      (0, (_assert2 || _assert()).default)(diagnosticsPanel);
       props.height = diagnosticsPanel.getHeight();
       render();
     },
     /* debounceIntervalMs */50,
     /* immediate */false),
     onDismiss: function onDismiss() {
-      invariant(bottomPanel);
+      (0, (_assert2 || _assert()).default)(bottomPanel);
       bottomPanel.hide();
     },
     pathToActiveTextEditor: pathToActiveTextEditor,
@@ -67,12 +80,12 @@ function createDiagnosticsPanel(diagnosticUpdater, initialHeight, initialfilterB
     // Do not bother to sort the diagnostics until a render is happening. This avoids doing
     // potentially large sorts while the diagnostics pane is hidden.
     if (diagnosticsNeedSorting) {
-      props.diagnostics = props.diagnostics.slice().sort(compareMessagesByFile);
+      props.diagnostics = props.diagnostics.slice().sort((_paneUtils2 || _paneUtils()).compareMessagesByFile);
       diagnosticsNeedSorting = false;
     }
 
-    var component = ReactDOM.render(React.createElement(DiagnosticsPanel, props), item);
-    invariant(component instanceof DiagnosticsPanel);
+    var component = (_reactForAtom2 || _reactForAtom()).ReactDOM.render((_reactForAtom2 || _reactForAtom()).React.createElement((_DiagnosticsPanel2 || _DiagnosticsPanel()).default, props), item);
+    (0, (_assert2 || _assert()).default)(component instanceof (_DiagnosticsPanel2 || _DiagnosticsPanel()).default);
     diagnosticsPanel = component;
   }
 
@@ -121,7 +134,7 @@ function createDiagnosticsPanel(diagnosticUpdater, initialHeight, initialfilterB
 
   // Now that the iframe is in the DOM, subscribe to its resize events.
   var win = iframe.contentWindow;
-  var resizeListener = debounce(function () {
+  var resizeListener = (0, (_nuclideCommons2 || _nuclideCommons()).debounce)(function () {
     props.width = win.innerWidth;
     render();
   },
@@ -135,7 +148,7 @@ function createDiagnosticsPanel(diagnosticUpdater, initialHeight, initialfilterB
     activePaneItemSubscription.dispose();
     messagesDidUpdateSubscription.dispose();
     win.removeEventListener('resize', resizeListener);
-    ReactDOM.unmountComponentAtNode(item);
+    (_reactForAtom2 || _reactForAtom()).ReactDOM.unmountComponentAtNode(item);
   });
 
   return {

@@ -4,11 +4,11 @@ Object.defineProperty(exports, '__esModule', {
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -18,17 +18,31 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * the root directory of this source tree.
  */
 
-var _nuclideCommons = require('../../nuclide-commons');
+var _nuclideCommons2;
 
-var _uri = require('./uri');
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
 
-var _assert = require('assert');
+var _uri2;
 
-var _assert2 = _interopRequireDefault(_assert);
+function _uri() {
+  return _uri2 = require('./uri');
+}
 
-var _nuclideLogging = require('../../nuclide-logging');
+var _assert2;
 
-var logger = (0, _nuclideLogging.getLogger)();
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
+
+var _nuclideLogging2;
+
+function _nuclideLogging() {
+  return _nuclideLogging2 = require('../../nuclide-logging');
+}
+
+var logger = (0, (_nuclideLogging2 || _nuclideLogging()).getLogger)();
 
 /**
 * WorkingSet is an implementation of a filter for files and directories.
@@ -72,7 +86,7 @@ var WorkingSet = (function () {
     _classCallCheck(this, WorkingSet);
 
     try {
-      this._uris = (0, _uri.dedupeNormalizedUris)(uris.map(_uri.normalizePathUri));
+      this._uris = (0, (_uri2 || _uri()).dedupeNormalizedUris)(uris.map((_uri2 || _uri()).normalizePathUri));
       this._root = this._buildDirTree(this._uris);
     } catch (e) {
       logger.error('Failed to initialize a WorkingSet with URIs ' + uris.join(',') + '. ' + e.message);
@@ -89,7 +103,7 @@ var WorkingSet = (function () {
       }
 
       try {
-        var tokens = (0, _uri.splitUri)((0, _uri.normalizePathUri)(uri));
+        var tokens = (0, (_uri2 || _uri()).splitUri)((0, (_uri2 || _uri()).normalizePathUri)(uri));
         return this._containsPathFor(tokens, /* mustHaveLeaf */true);
       } catch (e) {
         logger.error(e);
@@ -104,7 +118,7 @@ var WorkingSet = (function () {
       }
 
       try {
-        var tokens = (0, _uri.splitUri)((0, _uri.normalizePathUri)(uri));
+        var tokens = (0, (_uri2 || _uri()).splitUri)((0, (_uri2 || _uri()).normalizePathUri)(uri));
         return this._containsPathFor(tokens, /* mustHaveLeaf */false);
       } catch (e) {
         logger.error(e);
@@ -137,9 +151,9 @@ var WorkingSet = (function () {
 
       try {
         var _ret = (function () {
-          var normalizedRoot = (0, _uri.normalizePathUri)(rootUri);
+          var normalizedRoot = (0, (_uri2 || _uri()).normalizePathUri)(rootUri);
           var uris = _this._uris.filter(function (uri) {
-            return !(0, _uri.isUriBelow)(normalizedRoot, uri);
+            return !(0, (_uri2 || _uri()).isUriBelow)(normalizedRoot, uri);
           });
           return {
             v: new WorkingSet(uris)
@@ -155,7 +169,7 @@ var WorkingSet = (function () {
   }, {
     key: 'equals',
     value: function equals(other) {
-      return _nuclideCommons.array.equal(this._uris, other._uris);
+      return (_nuclideCommons2 || _nuclideCommons()).array.equal(this._uris, other._uris);
     }
   }, {
     key: '_buildDirTree',
@@ -167,7 +181,7 @@ var WorkingSet = (function () {
       var root = newInnerNode();
 
       for (var uri of uris) {
-        var tokens = (0, _uri.splitUri)(uri);
+        var tokens = (0, (_uri2 || _uri()).splitUri)(uri);
         if (tokens.length === 0) {
           continue;
         }
@@ -182,7 +196,7 @@ var WorkingSet = (function () {
             currentNode.children.set(token, tokenNode);
             currentNode = tokenNode;
           } else {
-            (0, _assert2['default'])(tokenNode.kind === 'inner');
+            (0, (_assert2 || _assert()).default)(tokenNode.kind === 'inner');
             currentNode = tokenNode;
           }
         }

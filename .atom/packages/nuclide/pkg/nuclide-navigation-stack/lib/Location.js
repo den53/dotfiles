@@ -19,10 +19,10 @@ var editorOfLocation = _asyncToGenerator(function* (location) {
       searchAllPanes: true
     });
   } else {
-    (0, _assert2['default'])(location.type === 'editor');
+    (0, (_assert2 || _assert()).default)(location.type === 'editor');
     var _editor = location.editor;
     var pane = atom.workspace.paneForItem(_editor);
-    (0, _assert2['default'])(pane != null);
+    (0, (_assert2 || _assert()).default)(pane != null);
     pane.activateItem(_editor);
     pane.activate();
     return _editor;
@@ -31,15 +31,21 @@ var editorOfLocation = _asyncToGenerator(function* (location) {
 
 exports.editorOfLocation = editorOfLocation;
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
-var _assert = require('assert');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _assert2 = _interopRequireDefault(_assert);
+var _assert2;
 
-var _nuclideAtomHelpers = require('../../nuclide-atom-helpers');
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
+
+var _nuclideAtomHelpers2;
+
+function _nuclideAtomHelpers() {
+  return _nuclideAtomHelpers2 = require('../../nuclide-atom-helpers');
+}
 
 // A location which can be navigated to. Includes the file (as uri for closed files and as
 // atom$TextEditor for open files) as well as the cursor position and scroll.
@@ -53,6 +59,6 @@ function getLocationOfEditor(editor) {
     type: 'editor',
     editor: editor,
     bufferPosition: editor.getCursorBufferPosition(),
-    scrollTop: (0, _nuclideAtomHelpers.getScrollTop)(editor)
+    scrollTop: (0, (_nuclideAtomHelpers2 || _nuclideAtomHelpers()).getScrollTop)(editor)
   };
 }

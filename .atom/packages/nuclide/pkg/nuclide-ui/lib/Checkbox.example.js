@@ -10,42 +10,54 @@ Object.defineProperty(exports, '__esModule', {
  * the root directory of this source tree.
  */
 
-var _reactForAtom = require('react-for-atom');
+var _reactForAtom2;
 
-var _Block = require('./Block');
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
 
-var _Checkbox = require('./Checkbox');
+var _Block2;
+
+function _Block() {
+  return _Block2 = require('./Block');
+}
+
+var _Checkbox2;
+
+function _Checkbox() {
+  return _Checkbox2 = require('./Checkbox');
+}
 
 var NOOP = function NOOP() {};
 
 var CheckboxExample = function CheckboxExample() {
-  return _reactForAtom.React.createElement(
+  return (_reactForAtom2 || _reactForAtom()).React.createElement(
     'div',
     null,
-    _reactForAtom.React.createElement(
-      _Block.Block,
+    (_reactForAtom2 || _reactForAtom()).React.createElement(
+      (_Block2 || _Block()).Block,
       null,
-      _reactForAtom.React.createElement(_Checkbox.Checkbox, {
+      (_reactForAtom2 || _reactForAtom()).React.createElement((_Checkbox2 || _Checkbox()).Checkbox, {
         checked: false,
         onClick: NOOP,
         onChange: NOOP,
         label: 'A Checkbox.'
       })
     ),
-    _reactForAtom.React.createElement(
-      _Block.Block,
+    (_reactForAtom2 || _reactForAtom()).React.createElement(
+      (_Block2 || _Block()).Block,
       null,
-      _reactForAtom.React.createElement(_Checkbox.Checkbox, {
+      (_reactForAtom2 || _reactForAtom()).React.createElement((_Checkbox2 || _Checkbox()).Checkbox, {
         onClick: NOOP,
         onChange: NOOP,
         checked: true,
         label: 'A checked Checkbox.'
       })
     ),
-    _reactForAtom.React.createElement(
-      _Block.Block,
+    (_reactForAtom2 || _reactForAtom()).React.createElement(
+      (_Block2 || _Block()).Block,
       null,
-      _reactForAtom.React.createElement(_Checkbox.Checkbox, {
+      (_reactForAtom2 || _reactForAtom()).React.createElement((_Checkbox2 || _Checkbox()).Checkbox, {
         onClick: NOOP,
         onChange: NOOP,
         disabled: true,
@@ -53,10 +65,10 @@ var CheckboxExample = function CheckboxExample() {
         label: 'A disabled Checkbox.'
       })
     ),
-    _reactForAtom.React.createElement(
-      _Block.Block,
+    (_reactForAtom2 || _reactForAtom()).React.createElement(
+      (_Block2 || _Block()).Block,
       null,
-      _reactForAtom.React.createElement(_Checkbox.Checkbox, {
+      (_reactForAtom2 || _reactForAtom()).React.createElement((_Checkbox2 || _Checkbox()).Checkbox, {
         onClick: NOOP,
         onChange: NOOP,
         checked: true,
@@ -64,10 +76,10 @@ var CheckboxExample = function CheckboxExample() {
         label: 'A disabled, checked Checkbox.'
       })
     ),
-    _reactForAtom.React.createElement(
-      _Block.Block,
+    (_reactForAtom2 || _reactForAtom()).React.createElement(
+      (_Block2 || _Block()).Block,
       null,
-      _reactForAtom.React.createElement(_Checkbox.Checkbox, {
+      (_reactForAtom2 || _reactForAtom()).React.createElement((_Checkbox2 || _Checkbox()).Checkbox, {
         onClick: NOOP,
         onChange: NOOP,
         indeterminate: true,

@@ -2,9 +2,9 @@ Object.defineProperty(exports, '__esModule', {
   value: true
 });
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -14,11 +14,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
  * the root directory of this source tree.
  */
 
-var _classnames2 = require('classnames');
+var _classnames2;
 
-var _classnames3 = _interopRequireDefault(_classnames2);
+function _classnames() {
+  return _classnames2 = _interopRequireDefault(require('classnames'));
+}
 
-var _reactForAtom = require('react-for-atom');
+var _reactForAtom2;
+
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
 
 var ButtonGroupSizes = Object.freeze({
   EXTRA_SMALL: 'EXTRA_SMALL',
@@ -42,8 +48,8 @@ var ButtonGroup = function ButtonGroup(props) {
   var className = props.className;
 
   var sizeClassName = size == null ? '' : ButtonGroupSizeClassnames[size] || '';
-  var newClassName = (0, _classnames3['default'])(className, 'btn-group', _defineProperty({}, sizeClassName, size != null));
-  return _reactForAtom.React.createElement(
+  var newClassName = (0, (_classnames2 || _classnames()).default)(className, 'btn-group', _defineProperty({}, sizeClassName, size != null));
+  return (_reactForAtom2 || _reactForAtom()).React.createElement(
     'div',
     { className: newClassName },
     children

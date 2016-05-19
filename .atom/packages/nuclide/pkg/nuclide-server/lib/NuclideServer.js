@@ -1,25 +1,5 @@
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-var _config = require('./config');
-
-var _assert = require('assert');
-
-var _assert2 = _interopRequireDefault(_assert);
-
-var _serviceframeworkIndex = require('./serviceframework/index');
-
-var _serviceframeworkIndex2 = _interopRequireDefault(_serviceframeworkIndex);
-
-var _SocketClient = require('./SocketClient');
-
-var _nuclideLogging = require('../../nuclide-logging');
-
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
  * All rights reserved.
@@ -28,31 +8,89 @@ var _nuclideLogging = require('../../nuclide-logging');
  * the root directory of this source tree.
  */
 
-var blocked = require('./blocked');
-var connect = require('connect');
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _blocked2;
+
+function _blocked() {
+  return _blocked2 = _interopRequireDefault(require('./blocked'));
+}
+
+var _config2;
+
+function _config() {
+  return _config2 = require('./config');
+}
+
+var _utils2;
+
+function _utils() {
+  return _utils2 = require('./utils');
+}
+
+var _nuclideVersion2;
+
+function _nuclideVersion() {
+  return _nuclideVersion2 = require('../../nuclide-version');
+}
+
+var _assert2;
+
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
+
+var _nuclideLogging2;
+
+function _nuclideLogging() {
+  return _nuclideLogging2 = require('../../nuclide-logging');
+}
+
+var _ws2;
+
+function _ws() {
+  return _ws2 = _interopRequireDefault(require('ws'));
+}
+
+var _nuclideRpc2;
+
+function _nuclideRpc() {
+  return _nuclideRpc2 = require('../../nuclide-rpc');
+}
+
+var _QueuedTransport2;
+
+function _QueuedTransport() {
+  return _QueuedTransport2 = require('./QueuedTransport');
+}
+
+var _WebSocketTransport2;
+
+function _WebSocketTransport() {
+  return _WebSocketTransport2 = require('./WebSocketTransport');
+}
+
+var _nuclideCommons2;
+
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
+
+var connect = require('connect');
 var http = require('http');
 var https = require('https');
 
-var WebSocketServer = require('ws').Server;
-
-var _require = require('./utils');
-
-var deserializeArgs = _require.deserializeArgs;
-var sendJsonResponse = _require.sendJsonResponse;
-var sendTextResponse = _require.sendTextResponse;
-
-var _require2 = require('../../nuclide-version');
-
-var getVersion = _require2.getVersion;
-
-var logger = (0, _nuclideLogging.getLogger)();
+var logger = (0, (_nuclideLogging2 || _nuclideLogging()).getLogger)();
 
 var NuclideServer = (function () {
   function NuclideServer(options, services) {
     _classCallCheck(this, NuclideServer);
 
-    (0, _assert2['default'])(NuclideServer._theServer == null);
+    (0, (_assert2 || _assert()).default)(NuclideServer._theServer == null);
     NuclideServer._theServer = this;
 
     var serverKey = options.serverKey;
@@ -61,7 +99,7 @@ var NuclideServer = (function () {
     var certificateAuthorityCertificate = options.certificateAuthorityCertificate;
     var trackEventLoop = options.trackEventLoop;
 
-    this._version = getVersion().toString();
+    this._version = (0, (_nuclideVersion2 || _nuclideVersion()).getVersion)().toString();
     this._app = connect();
     this._attachUtilHandlers();
     if (serverKey && serverCertificate && certificateAuthorityCertificate) {
@@ -85,12 +123,12 @@ var NuclideServer = (function () {
     this._setupServices(); // Setup 1.0 and 2.0 services.
 
     if (trackEventLoop) {
-      blocked(function (ms) {
+      (0, (_blocked2 || _blocked()).default)(function (ms) {
         logger.info('NuclideServer event loop blocked for ' + ms + 'ms');
       });
     }
 
-    this._serverComponent = new _serviceframeworkIndex2['default'].ServerComponent(services);
+    this._serverComponent = new (_nuclideRpc2 || _nuclideRpc()).ServerComponent(services);
   }
 
   _createClass(NuclideServer, [{
@@ -118,7 +156,7 @@ var NuclideServer = (function () {
     value: function _createWebSocketServer() {
       var _this2 = this;
 
-      var webSocketServer = new WebSocketServer({ server: this._webServer });
+      var webSocketServer = new (_ws2 || _ws()).default.Server({ server: this._webServer });
       webSocketServer.on('connection', function (socket) {
         return _this2._onConnection(socket);
       });
@@ -138,7 +176,7 @@ var NuclideServer = (function () {
       // Setup error handler.
       this._app.use(function (error, request, response, next) {
         if (error != null) {
-          sendJsonResponse(response, { code: error.code, message: error.message }, 500);
+          (0, (_utils2 || _utils()).sendJsonResponse)(response, { code: error.code, message: error.message }, 500);
         } else {
           next();
         }
@@ -149,15 +187,15 @@ var NuclideServer = (function () {
     value: function _setupHeartbeatHandler() {
       var _this3 = this;
 
-      this._registerService('/' + _config.HEARTBEAT_CHANNEL, _asyncToGenerator(function* () {
+      this._registerService('/' + (_config2 || _config()).HEARTBEAT_CHANNEL, _asyncToGenerator(function* () {
         return _this3._version;
       }), 'post', true);
     }
   }, {
     key: '_closeConnection',
     value: function _closeConnection(client) {
-      if (this._clients.get(client.id) === client) {
-        this._clients['delete'](client.id);
+      if (this._clients.get(client.getTransport().id) === client) {
+        this._clients.delete(client.getTransport().id);
         client.dispose();
       }
     }
@@ -214,11 +252,11 @@ var NuclideServer = (function () {
       // $FlowFixMe - Use map instead of computed property.
       this._app[loweredCaseMethod](serviceName, _asyncToGenerator(function* (request, response, next) {
         try {
-          var result = yield _this5.callService(serviceName, deserializeArgs(request.url));
+          var result = yield _this5.callService(serviceName, (0, (_utils2 || _utils()).deserializeArgs)(request.url));
           if (isTextResponse) {
-            sendTextResponse(response, result || '');
+            (0, (_utils2 || _utils()).sendTextResponse)(response, result || '');
           } else {
-            sendJsonResponse(response, result);
+            (0, (_utils2 || _utils()).sendJsonResponse)(response, result);
           }
         } catch (e) {
           // Delegate to the registered connect error handler.
@@ -235,25 +273,27 @@ var NuclideServer = (function () {
 
       var client = null;
 
-      socket.on('error', function (e) {
-        return logger.error('Client #%s error: %s', client ? client.id : 'unkown', e.message);
+      var errorSubscription = (_nuclideCommons2 || _nuclideCommons()).event.attachEvent(socket, 'error', function (e) {
+        return logger.error('WebSocket error before first message', e);
       });
 
       socket.once('message', function (clientId) {
+        errorSubscription.dispose();
         client = _this6._clients.get(clientId);
+        var transport = new (_WebSocketTransport2 || _WebSocketTransport()).WebSocketTransport(clientId, socket);
         if (client == null) {
-          client = new _SocketClient.SocketClient(clientId, _this6._serverComponent, socket);
+          client = new (_nuclideRpc2 || _nuclideRpc()).ClientConnection(_this6._serverComponent, new (_QueuedTransport2 || _QueuedTransport()).QueuedTransport(clientId, transport));
           _this6._clients.set(clientId, client);
         } else {
-          (0, _assert2['default'])(clientId === client.id);
-          client.reconnect(socket);
+          (0, (_assert2 || _assert()).default)(clientId === client.getTransport().id);
+          client.getTransport().reconnect(transport);
         }
       });
     }
   }, {
     key: 'close',
     value: function close() {
-      (0, _assert2['default'])(NuclideServer._theServer === this);
+      (0, (_assert2 || _assert()).default)(NuclideServer._theServer === this);
       NuclideServer._theServer = null;
 
       this._webSocketServer.close();
@@ -270,13 +310,13 @@ var NuclideServer = (function () {
       } catch (e) {
         logger.error('Error while shutting down, but proceeding anyway:', e);
       } finally {
-        (0, _nuclideLogging.flushLogsAndExit)(0);
+        (0, (_nuclideLogging2 || _nuclideLogging()).flushLogsAndExit)(0);
       }
     }
   }, {
     key: 'closeConnection',
     value: function closeConnection(client) {
-      logger.info('Closing client: #' + client.id);
+      logger.info('Closing client: #' + client.getTransport().id);
       if (NuclideServer._theServer != null) {
         NuclideServer._theServer._closeConnection(client);
       }

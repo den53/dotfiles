@@ -18,9 +18,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
  * the root directory of this source tree.
  */
 
-var _utils = require('./utils');
+var _utils2;
 
-var _utils2 = _interopRequireDefault(_utils);
+function _utils() {
+  return _utils2 = _interopRequireDefault(require('./utils'));
+}
 
 var defaultConfig = {
   xdebugAttachPort: 9000,
@@ -39,7 +41,7 @@ function getConfig() {
 
 function setConfig(newConfig) {
   config = _extends({}, newConfig);
-  _utils2['default'].log('Config was set to ' + JSON.stringify(config));
+  (_utils2 || _utils()).default.log('Config was set to ' + JSON.stringify(config));
 }
 
 function clearConfig() {

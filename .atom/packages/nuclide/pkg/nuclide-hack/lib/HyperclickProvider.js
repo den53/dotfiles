@@ -16,13 +16,29 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _nuclideAtomHelpers = require('../../nuclide-atom-helpers');
+var _nuclideAtomHelpers2;
 
-var _nuclideAnalytics = require('../../nuclide-analytics');
+function _nuclideAtomHelpers() {
+  return _nuclideAtomHelpers2 = require('../../nuclide-atom-helpers');
+}
 
-var _HackLanguage = require('./HackLanguage');
+var _nuclideAnalytics2;
 
-var _nuclideHackCommon = require('../../nuclide-hack-common');
+function _nuclideAnalytics() {
+  return _nuclideAnalytics2 = require('../../nuclide-analytics');
+}
+
+var _HackLanguage2;
+
+function _HackLanguage() {
+  return _HackLanguage2 = require('./HackLanguage');
+}
+
+var _nuclideHackCommon2;
+
+function _nuclideHackCommon() {
+  return _nuclideHackCommon2 = require('../../nuclide-hack-common');
+}
 
 var HyperclickProvider = (function () {
   function HyperclickProvider() {
@@ -31,16 +47,16 @@ var HyperclickProvider = (function () {
 
   _createDecoratedClass(HyperclickProvider, [{
     key: 'getSuggestion',
-    decorators: [(0, _nuclideAnalytics.trackTiming)('hack.get-definition')],
+    decorators: [(0, (_nuclideAnalytics2 || _nuclideAnalytics()).trackTiming)('hack.get-definition')],
     value: _asyncToGenerator(function* (editor, position) {
-      if (!_nuclideHackCommon.HACK_GRAMMARS_SET.has(editor.getGrammar().scopeName)) {
+      if (!(_nuclideHackCommon2 || _nuclideHackCommon()).HACK_GRAMMARS_SET.has(editor.getGrammar().scopeName)) {
         return null;
       }
       var filePath = editor.getPath();
       if (filePath == null) {
         return null;
       }
-      var hackLanguage = yield (0, _HackLanguage.getHackLanguageForUri)(filePath);
+      var hackLanguage = yield (0, (_HackLanguage2 || _HackLanguage()).getHackLanguageForUri)(filePath);
       if (hackLanguage == null) {
         return null;
       }
@@ -53,7 +69,7 @@ var HyperclickProvider = (function () {
       return definition == null ? null : {
         range: definition.queryRange,
         callback: function callback() {
-          (0, _nuclideAtomHelpers.goToLocation)(definition.path, definition.line - 1, definition.column - 1);
+          (0, (_nuclideAtomHelpers2 || _nuclideAtomHelpers()).goToLocation)(definition.path, definition.line - 1, definition.column - 1);
         }
       };
     })

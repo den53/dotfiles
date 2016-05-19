@@ -10,24 +10,39 @@ var _createClass = (function () { function defineProperties(target, props) { for
  * the root directory of this source tree.
  */
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _nuclideTextedit = require('../../nuclide-textedit');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _nuclideCommons = require('../../nuclide-commons');
+var _nuclideTextedit2;
 
-var _MarkerTracker = require('./MarkerTracker');
+function _nuclideTextedit() {
+  return _nuclideTextedit2 = require('../../nuclide-textedit');
+}
 
-var _assert = require('assert');
+var _nuclideCommons2;
 
-var _assert2 = _interopRequireDefault(_assert);
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
 
-var _require = require('atom');
+var _MarkerTracker2;
 
-var Disposable = _require.Disposable;
-var Emitter = _require.Emitter;
+function _MarkerTracker() {
+  return _MarkerTracker2 = require('./MarkerTracker');
+}
+
+var _assert2;
+
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
+
+var _atom2;
+
+function _atom() {
+  return _atom2 = require('atom');
+}
 
 var PROJECT_MESSAGE_CHANGE_EVENT = 'messages-changed-for-project';
 var ALL_CHANGE_EVENT = 'messages-changed';
@@ -40,13 +55,13 @@ var DiagnosticStore = (function () {
     this._fileToProviders = new Map();
     this._providerToProjectDiagnostics = new Map();
 
-    this._fileChangeEmitter = new Emitter();
-    this._nonFileChangeEmitter = new Emitter();
+    this._fileChangeEmitter = new (_atom2 || _atom()).Emitter();
+    this._nonFileChangeEmitter = new (_atom2 || _atom()).Emitter();
     this._fileToListenersCount = new Map();
     this._projectListenersCount = 0;
     this._allMessagesListenersCount = 0;
 
-    this._markerTracker = new _MarkerTracker.MarkerTracker();
+    this._markerTracker = new (_MarkerTracker2 || _MarkerTracker()).MarkerTracker();
   }
 
   _createClass(DiagnosticStore, [{
@@ -99,7 +114,7 @@ var DiagnosticStore = (function () {
       newFilePathsToMessages.forEach(function (newMessagesForPath, filePath) {
         // Flow naively thinks that since we are in a closure, fileToMessages could have been
         // reassigned to something null by the time this executes.
-        (0, _assert2['default'])(fileToMessages != null);
+        (0, (_assert2 || _assert()).default)(fileToMessages != null);
 
         var messagesToRemove = fileToMessages.get(filePath);
         if (messagesToRemove != null) {
@@ -160,12 +175,12 @@ var DiagnosticStore = (function () {
           if (diagnosticsToRemove != null) {
             this._markerTracker.removeFileMessages(diagnosticsToRemove);
           }
-          fileToDiagnostics['delete'](filePath);
+          fileToDiagnostics.delete(filePath);
         }
         // Update _fileToProviders.
         var providers = this._fileToProviders.get(filePath);
         if (providers) {
-          providers['delete'](diagnosticProvider);
+          providers.delete(diagnosticProvider);
         }
         this._emitFileMessages(filePath);
       }
@@ -173,7 +188,7 @@ var DiagnosticStore = (function () {
   }, {
     key: '_invalidateProjectMessagesForProvider',
     value: function _invalidateProjectMessagesForProvider(diagnosticProvider) {
-      this._providerToProjectDiagnostics['delete'](diagnosticProvider);
+      this._providerToProjectDiagnostics.delete(diagnosticProvider);
       this._emitProjectMessages();
     }
   }, {
@@ -197,7 +212,7 @@ var DiagnosticStore = (function () {
       for (var fileToMessages of this._providerToFileToMessages.values()) {
         var fileMessages = fileToMessages.get(message.filePath);
         if (fileMessages != null) {
-          _nuclideCommons.array.remove(fileMessages, message);
+          (_nuclideCommons2 || _nuclideCommons()).array.remove(fileMessages, message);
         }
       }
       // Looks like emitAllMessages does not actually emit all messages. We need to do both for both
@@ -231,7 +246,7 @@ var DiagnosticStore = (function () {
       if (fileMessages.length) {
         callback({ filePath: filePath, messages: fileMessages });
       }
-      return new Disposable(function () {
+      return new (_atom2 || _atom()).Disposable(function () {
         emitterDisposable.dispose();
         _this2._decrementFileListenerCount(filePath);
       });
@@ -271,7 +286,7 @@ var DiagnosticStore = (function () {
       if (projectMessages.length) {
         callback(projectMessages);
       }
-      return new Disposable(function () {
+      return new (_atom2 || _atom()).Disposable(function () {
         emitterDisposable.dispose();
         _this3._projectListenersCount -= 1;
       });
@@ -296,7 +311,7 @@ var DiagnosticStore = (function () {
       if (allMessages.length) {
         callback(allMessages);
       }
-      return new Disposable(function () {
+      return new (_atom2 || _atom()).Disposable(function () {
         emitterDisposable.dispose();
         _this4._allMessagesListenersCount -= 1;
       });
@@ -314,9 +329,9 @@ var DiagnosticStore = (function () {
       if (relevantProviders) {
         for (var provider of relevantProviders) {
           var fileToMessages = this._providerToFileToMessages.get(provider);
-          (0, _assert2['default'])(fileToMessages != null);
+          (0, (_assert2 || _assert()).default)(fileToMessages != null);
           var _messages = fileToMessages.get(filePath);
-          (0, _assert2['default'])(_messages != null);
+          (0, (_assert2 || _assert()).default)(_messages != null);
           allFileMessages = allFileMessages.concat(_messages);
         }
       }
@@ -389,7 +404,7 @@ var DiagnosticStore = (function () {
     key: '_applySingleFix',
     value: function _applySingleFix(message) {
       var fix = message.fix;
-      (0, _assert2['default'])(fix != null);
+      (0, (_assert2 || _assert()).default)(fix != null);
 
       var actualRange = this._markerTracker.getCurrentRange(message);
 
@@ -400,7 +415,7 @@ var DiagnosticStore = (function () {
       var fixWithActualRange = _extends({}, fix, {
         oldRange: actualRange
       });
-      var succeeded = (0, _nuclideTextedit.applyTextEdit)(message.filePath, fixWithActualRange);
+      var succeeded = (0, (_nuclideTextedit2 || _nuclideTextedit()).applyTextEdit)(message.filePath, fixWithActualRange);
       if (succeeded) {
         this._invalidateSingleMessage(message);
         return true;

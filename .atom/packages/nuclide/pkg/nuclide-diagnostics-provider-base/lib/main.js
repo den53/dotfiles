@@ -10,6 +10,10 @@ Object.defineProperty(exports, '__esModule', {
  * the root directory of this source tree.
  */
 
-var _DiagnosticsProviderBase = require('./DiagnosticsProviderBase');
+var _DiagnosticsProviderBase2;
 
-exports.DiagnosticsProviderBase = _DiagnosticsProviderBase.DiagnosticsProviderBase;
+function _DiagnosticsProviderBase() {
+  return _DiagnosticsProviderBase2 = require('./DiagnosticsProviderBase');
+}
+
+exports.DiagnosticsProviderBase = (_DiagnosticsProviderBase2 || _DiagnosticsProviderBase()).DiagnosticsProviderBase;

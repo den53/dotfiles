@@ -14,42 +14,79 @@ var _createClass = (function () { function defineProperties(target, props) { for
 
 var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var _events = require('events');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _utils = require('./utils');
+var _events2;
 
-var _utils2 = _interopRequireDefault(_utils);
+function _events() {
+  return _events2 = require('events');
+}
 
-var _nuclideDebuggerAtom = require('../../nuclide-debugger-atom');
+var _utils2;
 
-var _atom = require('atom');
+function _utils() {
+  return _utils2 = _interopRequireDefault(require('./utils'));
+}
 
-var _nuclideCommons = require('../../nuclide-commons');
+var _nuclideDebuggerAtom2;
 
-var log = _utils2['default'].log;
-var logInfo = _utils2['default'].logInfo;
-var logError = _utils2['default'].logError;
+function _nuclideDebuggerAtom() {
+  return _nuclideDebuggerAtom2 = require('../../nuclide-debugger-atom');
+}
 
-var _require = require('./ChromeMessageRemoting');
+var _atom2;
 
-var translateMessageFromServer = _require.translateMessageFromServer;
-var translateMessageToServer = _require.translateMessageToServer;
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var remoteUri = require('../../nuclide-remote-uri');
+var _ChromeMessageRemoting2;
 
-var _require2 = require('atom');
+function _ChromeMessageRemoting() {
+  return _ChromeMessageRemoting2 = require('./ChromeMessageRemoting');
+}
 
-var Disposable = _require2.Disposable;
+var _nuclideRemoteUri2;
 
-var WebSocketServer = require('ws').Server;
+function _nuclideRemoteUri() {
+  return _nuclideRemoteUri2 = _interopRequireDefault(require('../../nuclide-remote-uri'));
+}
+
+var _atom4;
+
+function _atom3() {
+  return _atom4 = require('atom');
+}
+
+var _nuclideCommons2;
+
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
+
+var _utils4;
+
+function _utils3() {
+  return _utils4 = require('./utils');
+}
+
+var _ws2;
+
+function _ws() {
+  return _ws2 = _interopRequireDefault(require('ws'));
+}
 
 var stringifyError = require('../../nuclide-commons').error.stringifyError;
+
+var _default = (_utils2 || _utils()).default;
+
+var log = _default.log;
+var logInfo = _default.logInfo;
+var logError = _default.logError;
 
 var SESSION_END_EVENT = 'session-end-event';
 
@@ -65,11 +102,11 @@ var LldbDebuggerInstance = (function (_DebuggerInstance) {
     this._attachPromise = null;
     this._chromeWebSocketServer = null;
     this._chromeWebSocket = null;
-    this._disposables = new _atom.CompositeDisposable();
+    this._disposables = new (_atom2 || _atom()).CompositeDisposable();
     if (outputDisposable != null) {
       this._disposables.add(outputDisposable);
     }
-    this._emitter = new _events.EventEmitter();
+    this._emitter = new (_events2 || _events()).EventEmitter();
     this._registerConnection(connection);
   }
 
@@ -78,7 +115,7 @@ var LldbDebuggerInstance = (function (_DebuggerInstance) {
     value: function _registerConnection(connection) {
       this._debuggerConnection = connection;
       this._disposables.add(connection);
-      this._disposables.add(new _nuclideCommons.DisposableSubscription(connection.getServerMessageObservable().subscribe(this._handleServerMessage.bind(this), this._handleServerError.bind(this), this._handleSessionEnd.bind(this))));
+      this._disposables.add(new (_nuclideCommons2 || _nuclideCommons()).DisposableSubscription(connection.getServerMessageObservable().subscribe(this._handleServerMessage.bind(this), this._handleServerError.bind(this), this._handleSessionEnd.bind(this))));
     }
   }, {
     key: '_handleServerMessage',
@@ -116,7 +153,7 @@ var LldbDebuggerInstance = (function (_DebuggerInstance) {
 
       // setup web socket
       var wsPort = this._getWebSocketPort();
-      var server = new WebSocketServer({ port: wsPort });
+      var server = new (_ws2 || _ws()).default.Server({ port: wsPort });
       this._chromeWebSocketServer = server;
       server.on('error', function (error) {
         var errorMessage = 'Server error: ' + error;
@@ -152,7 +189,7 @@ var LldbDebuggerInstance = (function (_DebuggerInstance) {
     value: function _getWebSocketPort() {
       // Use the port from config setting if set, otherwise
       // generate a random port.
-      var configPort = Number((0, _utils.getConfig)().debugPort);
+      var configPort = Number((0, (_utils4 || _utils3()).getConfig)().debugPort);
       return Number.isInteger(configPort) && configPort > 0 ? configPort : this._generateRandomInteger(2000, 65535);
     }
   }, {
@@ -166,7 +203,7 @@ var LldbDebuggerInstance = (function (_DebuggerInstance) {
       var _this2 = this;
 
       this._emitter.on(SESSION_END_EVENT, callback);
-      return new Disposable(function () {
+      return new (_atom4 || _atom3()).Disposable(function () {
         return _this2._emitter.removeListener(SESSION_END_EVENT, callback);
       });
     }
@@ -174,8 +211,8 @@ var LldbDebuggerInstance = (function (_DebuggerInstance) {
     key: '_translateMessageIfNeeded',
     value: function _translateMessageIfNeeded(message) {
       // TODO: do we really need isRemote() checking?
-      if (remoteUri.isRemote(this.getTargetUri())) {
-        message = translateMessageFromServer(remoteUri.getHostname(this.getTargetUri()), remoteUri.getPort(this.getTargetUri()), message);
+      if ((_nuclideRemoteUri2 || _nuclideRemoteUri()).default.isRemote(this.getTargetUri())) {
+        message = (0, (_ChromeMessageRemoting2 || _ChromeMessageRemoting()).translateMessageFromServer)((_nuclideRemoteUri2 || _nuclideRemoteUri()).default.getHostname(this.getTargetUri()), (_nuclideRemoteUri2 || _nuclideRemoteUri()).default.getPort(this.getTargetUri()), message);
       }
       return message;
     }
@@ -185,7 +222,7 @@ var LldbDebuggerInstance = (function (_DebuggerInstance) {
       log('Recieved Chrome message: ' + message);
       var connection = this._debuggerConnection;
       if (connection) {
-        connection.sendCommand(translateMessageToServer(message));
+        connection.sendCommand((0, (_ChromeMessageRemoting2 || _ChromeMessageRemoting()).translateMessageToServer)(message));
       } else {
         logError('Why isn\'t debuger RPC service available?');
       }
@@ -222,6 +259,6 @@ var LldbDebuggerInstance = (function (_DebuggerInstance) {
   }]);
 
   return LldbDebuggerInstance;
-})(_nuclideDebuggerAtom.DebuggerInstance);
+})((_nuclideDebuggerAtom2 || _nuclideDebuggerAtom()).DebuggerInstance);
 
 exports.LldbDebuggerInstance = LldbDebuggerInstance;

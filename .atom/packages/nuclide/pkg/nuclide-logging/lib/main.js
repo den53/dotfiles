@@ -9,9 +9,11 @@ exports.getLogger = getLogger;
 exports.getCategoryLogger = getCategoryLogger;
 exports.getPathToLogFileForToday = getPathToLogFileForToday;
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
+
+/* Listed in order of severity. */
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -29,15 +31,17 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
  * to `global` object.
  */
 
-var _stacktrace = require('./stacktrace');
+var _stacktrace2;
 
-var _stacktrace2 = _interopRequireDefault(_stacktrace);
+function _stacktrace() {
+  return _stacktrace2 = _interopRequireDefault(require('./stacktrace'));
+}
 
-var _assert = require('assert');
+var _assert2;
 
-var _assert2 = _interopRequireDefault(_assert);
-
-/* Listed in order of severity. */
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
 var DEFAULT_LOGGER_CATEGORY = 'nuclide';
 var INITIAL_UPDATE_CONFIG_KEY = '_initial_update_config_key_';
@@ -83,7 +87,7 @@ function createLazyLogger(category) {
   function createLazyLoggerMethod(level) {
     return function () {
       var logger = getLog4jsLogger(category);
-      (0, _assert2['default'])(logger);
+      (0, (_assert2 || _assert()).default)(logger);
 
       for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
         args[_key] = arguments[_key];
@@ -95,13 +99,13 @@ function createLazyLogger(category) {
 
   function setLoggerLevelHelper(level) {
     var logger = getLog4jsLogger(category);
-    (0, _assert2['default'])(logger);
+    (0, (_assert2 || _assert()).default)(logger);
     logger.setLevel(level);
   }
 
   function isLevelEnabledHelper(level) {
     var logger = getLog4jsLogger(category);
-    (0, _assert2['default'])(logger);
+    (0, (_assert2 || _assert()).default)(logger);
     return logger.isLevelEnabled(level);
   }
 
@@ -132,7 +136,7 @@ function initialUpdateConfig() {
 // Get Logger instance which is singleton per logger category.
 
 function getLogger(category) {
-  (0, _stacktrace2['default'])();
+  (0, (_stacktrace2 || _stacktrace()).default)();
   initialUpdateConfig();
 
   var loggerCategory = getCategory(category);

@@ -1,6 +1,4 @@
-
-
-var flatten = require('../../utils/flatten');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -10,10 +8,20 @@ var flatten = require('../../utils/flatten');
  * the root directory of this source tree.
  */
 
-var markers = require('../../constants/markers');
+var _utilsFlatten2;
+
+function _utilsFlatten() {
+  return _utilsFlatten2 = _interopRequireDefault(require('../../utils/flatten'));
+}
+
+var _constantsMarkers2;
+
+function _constantsMarkers() {
+  return _constantsMarkers2 = _interopRequireDefault(require('../../constants/markers'));
+}
 
 function wrapStatement(print, node, lines) {
-  return flatten([lines, markers.hardBreak]);
+  return (0, (_utilsFlatten2 || _utilsFlatten()).default)([lines, (_constantsMarkers2 || _constantsMarkers()).default.hardBreak]);
 }
 
 module.exports = wrapStatement;

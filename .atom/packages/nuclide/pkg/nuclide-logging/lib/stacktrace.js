@@ -10,7 +10,7 @@ Object.defineProperty(exports, '__esModule', {
  * the root directory of this source tree.
  */
 
-exports['default'] = addPrepareStackTraceHook;
+exports.default = addPrepareStackTraceHook;
 
 var PREPARE_STACK_TRACE_HOOKED_KEY = '_nuclide_error_stack_trace_hooked';
 

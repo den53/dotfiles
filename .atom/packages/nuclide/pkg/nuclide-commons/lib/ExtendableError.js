@@ -37,5 +37,5 @@ var ExtendableError = (function (_Error) {
   return ExtendableError;
 })(Error);
 
-exports['default'] = ExtendableError;
-module.exports = exports['default'];
+exports.default = ExtendableError;
+module.exports = exports.default;

@@ -16,21 +16,31 @@ var _createClass = (function () { function defineProperties(target, props) { for
 
 var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var _reactForAtom = require('react-for-atom');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _diffUtils = require('./diff-utils');
+var _reactForAtom2;
 
-var _classnames2 = require('classnames');
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
 
-var _classnames3 = _interopRequireDefault(_classnames2);
+var _diffUtils2;
+
+function _diffUtils() {
+  return _diffUtils2 = require('./diff-utils');
+}
+
+var _classnames2;
+
+function _classnames() {
+  return _classnames2 = _interopRequireDefault(require('classnames'));
+}
 
 var DiffNavigationBar = (function (_React$Component) {
   _inherits(DiffNavigationBar, _React$Component);
@@ -54,8 +64,8 @@ var DiffNavigationBar = (function (_React$Component) {
       var oldOffsets = _props.oldOffsets;
       var elementHeight = _props.elementHeight;
 
-      var newLinesCount = (0, _diffUtils.getLineCountWithOffsets)(newContents, newOffsets);
-      var oldLinesCount = (0, _diffUtils.getLineCountWithOffsets)(oldContents, oldOffsets);
+      var newLinesCount = (0, (_diffUtils2 || _diffUtils()).getLineCountWithOffsets)(newContents, newOffsets);
+      var oldLinesCount = (0, (_diffUtils2 || _diffUtils()).getLineCountWithOffsets)(oldContents, oldOffsets);
 
       var linesCount = Math.max(newLinesCount, oldLinesCount);
 
@@ -64,10 +74,10 @@ var DiffNavigationBar = (function (_React$Component) {
 
       // Here are the mapping between the offset line numbers to the original line number.
       var addedLinesWithOffsets = new Map(addedLines.map(function (addedLine) {
-        return [(0, _diffUtils.getOffsetLineNumber)(addedLine, newOffsets), addedLine];
+        return [(0, (_diffUtils2 || _diffUtils()).getOffsetLineNumber)(addedLine, newOffsets), addedLine];
       }));
       var removedLinesWithOffsets = new Map(removedLines.map(function (removedLine) {
-        return [(0, _diffUtils.getOffsetLineNumber)(removedLine, oldOffsets), removedLine];
+        return [(0, (_diffUtils2 || _diffUtils()).getOffsetLineNumber)(removedLine, oldOffsets), removedLine];
       }));
       // Interset the added and removed lines maps, taking the values of the added lines.
       var changedLinesWithOffsets = new Map(Array.from(addedLinesWithOffsets.keys()).filter(function (addedLineWithOffset) {
@@ -78,19 +88,19 @@ var DiffNavigationBar = (function (_React$Component) {
 
       // These regions will now be 'modified' regions.
       for (var changedLineWithOffset of changedLinesWithOffsets.keys()) {
-        addedLinesWithOffsets['delete'](changedLineWithOffset);
-        removedLinesWithOffsets['delete'](changedLineWithOffset);
+        addedLinesWithOffsets.delete(changedLineWithOffset);
+        removedLinesWithOffsets.delete(changedLineWithOffset);
       }
 
       var jumpTargets = [];
 
-      for (var _ref3 of addedLinesWithOffsets) {
-        var _ref2 = _slicedToArray(_ref3, 2);
+      for (var _ref23 of addedLinesWithOffsets) {
+        var _ref22 = _slicedToArray(_ref23, 2);
 
-        var addedLineWithOffset = _ref2[0];
-        var addedLine = _ref2[1];
+        var addedLineWithOffset = _ref22[0];
+        var addedLine = _ref22[1];
 
-        jumpTargets.push(_reactForAtom.React.createElement(NavigatonBarJumpTarget, {
+        jumpTargets.push((_reactForAtom2 || _reactForAtom()).React.createElement(NavigatonBarJumpTarget, {
           offsetLineNumber: addedLineWithOffset,
           key: addedLineWithOffset,
           lineNumber: addedLine,
@@ -102,13 +112,13 @@ var DiffNavigationBar = (function (_React$Component) {
         }));
       }
 
-      for (var _ref43 of changedLinesWithOffsets) {
-        var _ref42 = _slicedToArray(_ref43, 2);
+      for (var _ref33 of changedLinesWithOffsets) {
+        var _ref32 = _slicedToArray(_ref33, 2);
 
-        var changedLineWithOffset = _ref42[0];
-        var changedLine = _ref42[1];
+        var changedLineWithOffset = _ref32[0];
+        var changedLine = _ref32[1];
 
-        jumpTargets.push(_reactForAtom.React.createElement(NavigatonBarJumpTarget, {
+        jumpTargets.push((_reactForAtom2 || _reactForAtom()).React.createElement(NavigatonBarJumpTarget, {
           offsetLineNumber: changedLineWithOffset,
           key: changedLineWithOffset,
           lineNumber: changedLine,
@@ -120,13 +130,13 @@ var DiffNavigationBar = (function (_React$Component) {
         }));
       }
 
-      for (var _ref53 of removedLinesWithOffsets) {
-        var _ref52 = _slicedToArray(_ref53, 2);
+      for (var _ref43 of removedLinesWithOffsets) {
+        var _ref42 = _slicedToArray(_ref43, 2);
 
-        var removedLineWithOffset = _ref52[0];
-        var removedLine = _ref52[1];
+        var removedLineWithOffset = _ref42[0];
+        var removedLine = _ref42[1];
 
-        jumpTargets.push(_reactForAtom.React.createElement(NavigatonBarJumpTarget, {
+        jumpTargets.push((_reactForAtom2 || _reactForAtom()).React.createElement(NavigatonBarJumpTarget, {
           offsetLineNumber: removedLineWithOffset,
           key: removedLineWithOffset,
           lineNumber: removedLine,
@@ -138,7 +148,7 @@ var DiffNavigationBar = (function (_React$Component) {
         }));
       }
 
-      return _reactForAtom.React.createElement(
+      return (_reactForAtom2 || _reactForAtom()).React.createElement(
         'div',
         { className: 'nuclide-diff-view-navigation-bar' },
         jumpTargets
@@ -152,9 +162,9 @@ var DiffNavigationBar = (function (_React$Component) {
   }]);
 
   return DiffNavigationBar;
-})(_reactForAtom.React.Component);
+})((_reactForAtom2 || _reactForAtom()).React.Component);
 
-exports['default'] = DiffNavigationBar;
+exports.default = DiffNavigationBar;
 
 var NavigatonBarJumpTarget = (function (_React$Component2) {
   _inherits(NavigatonBarJumpTarget, _React$Component2);
@@ -181,11 +191,11 @@ var NavigatonBarJumpTarget = (function (_React$Component2) {
         top: targertTop + 'px',
         height: targertHeight + 'px'
       };
-      var targetClassName = (0, _classnames3['default'])(_defineProperty({
+      var targetClassName = (0, (_classnames2 || _classnames()).default)(_defineProperty({
         'nuclide-diff-view-navigation-target': true
       }, lineChangeClass, true));
 
-      return _reactForAtom.React.createElement('div', {
+      return (_reactForAtom2 || _reactForAtom()).React.createElement('div', {
         className: targetClassName,
         style: targetStyle,
         onClick: this._handleClick
@@ -199,6 +209,6 @@ var NavigatonBarJumpTarget = (function (_React$Component2) {
   }]);
 
   return NavigatonBarJumpTarget;
-})(_reactForAtom.React.Component);
+})((_reactForAtom2 || _reactForAtom()).React.Component);
 
-module.exports = exports['default'];
+module.exports = exports.default;

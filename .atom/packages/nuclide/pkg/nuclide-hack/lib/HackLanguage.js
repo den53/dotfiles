@@ -27,7 +27,7 @@ exports.getHackLanguageForUri = getHackLanguageForUri;
 
 var createHackLanguageIfNotExisting = _asyncToGenerator(function* (key, fileUri) {
   if (!uriToHackLanguage.has(key)) {
-    var hackEnvironment = yield (0, _utils.getHackEnvironmentDetails)(fileUri);
+    var hackEnvironment = yield (0, (_utils2 || _utils()).getHackEnvironmentDetails)(fileUri);
 
     // If multiple calls were done asynchronously, then return the single-created HackLanguage.
     if (!uriToHackLanguage.has(key)) {
@@ -39,13 +39,29 @@ var createHackLanguageIfNotExisting = _asyncToGenerator(function* (key, fileUri)
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
-var _ServerHackLanguage = require('./ServerHackLanguage');
+var _ServerHackLanguage2;
 
-var _nuclideRemoteConnection = require('../../nuclide-remote-connection');
+function _ServerHackLanguage() {
+  return _ServerHackLanguage2 = require('./ServerHackLanguage');
+}
 
-var _nuclideRemoteUri = require('../../nuclide-remote-uri');
+var _nuclideRemoteConnection2;
 
-var _utils = require('./utils');
+function _nuclideRemoteConnection() {
+  return _nuclideRemoteConnection2 = require('../../nuclide-remote-connection');
+}
+
+var _nuclideRemoteUri2;
+
+function _nuclideRemoteUri() {
+  return _nuclideRemoteUri2 = require('../../nuclide-remote-uri');
+}
+
+var _utils2;
+
+function _utils() {
+  return _utils2 = require('./utils');
+}
 
 /**
  * The HackLanguage is the controller that servers language requests by trying to get worker results
@@ -68,14 +84,14 @@ var uriToHackLanguage = new Map();
 var LOCAL_URI_KEY = 'local-hack-key';
 
 function createHackLanguage(hackService, hhAvailable, basePath) {
-  return new _ServerHackLanguage.ServerHackLanguage(hackService, hhAvailable, basePath);
+  return new (_ServerHackLanguage2 || _ServerHackLanguage()).ServerHackLanguage(hackService, hhAvailable, basePath);
 }
 
 // Returns null if we can't get the key at this time because the RemoteConnection is initializing.
 // This can happen on startup when reloading remote files.
 function getKeyOfUri(uri) {
-  var remoteConnection = _nuclideRemoteConnection.RemoteConnection.getForUri(uri);
-  return remoteConnection == null ? (0, _nuclideRemoteUri.isRemote)(uri) ? null : LOCAL_URI_KEY : remoteConnection.getUriForInitialWorkingDirectory();
+  var remoteConnection = (_nuclideRemoteConnection2 || _nuclideRemoteConnection()).RemoteConnection.getForUri(uri);
+  return remoteConnection == null ? (0, (_nuclideRemoteUri2 || _nuclideRemoteUri()).isRemote)(uri) ? null : LOCAL_URI_KEY : remoteConnection.getUriForInitialWorkingDirectory();
 }
 
 function getCachedHackLanguageForUri(uri) {

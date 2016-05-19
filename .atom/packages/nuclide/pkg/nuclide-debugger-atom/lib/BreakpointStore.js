@@ -6,6 +6,8 @@ var _createClass = (function () { function defineProperties(target, props) { for
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
  * All rights reserved.
@@ -14,11 +16,17 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * the root directory of this source tree.
  */
 
-var _require = require('atom');
+var _atom2;
 
-var Emitter = _require.Emitter;
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var Multimap = require('./Multimap');
+var _Multimap2;
+
+function _Multimap() {
+  return _Multimap2 = _interopRequireDefault(require('./Multimap'));
+}
 
 /**
  * Stores the currently set breakpoints as (path, line) pairs.
@@ -31,8 +39,8 @@ var BreakpointStore = (function () {
   function BreakpointStore(initialBreakpoints) {
     _classCallCheck(this, BreakpointStore);
 
-    this._breakpoints = new Multimap();
-    this._emitter = new Emitter();
+    this._breakpoints = new (_Multimap2 || _Multimap()).default();
+    this._emitter = new (_atom2 || _atom()).Emitter();
     if (initialBreakpoints) {
       this._deserializeBreakpoints(initialBreakpoints);
     }
@@ -52,7 +60,7 @@ var BreakpointStore = (function () {
   }, {
     key: 'deleteBreakpoint',
     value: function deleteBreakpoint(path, line) {
-      if (this._breakpoints['delete'](path, line)) {
+      if (this._breakpoints.delete(path, line)) {
         this._emitter.emit('change', path);
       }
     }

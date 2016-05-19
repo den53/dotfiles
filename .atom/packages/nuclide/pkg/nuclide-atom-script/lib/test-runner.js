@@ -12,10 +12,14 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
  * the root directory of this source tree.
  */
 
-var _console = require('./console');
+var _console2;
+
+function _console() {
+  return _console2 = require('./console');
+}
 
 /* eslint-disable no-console */
-exports['default'] = _asyncToGenerator(function* (params) {
+exports.default = _asyncToGenerator(function* (params) {
   // Verify that a --log-file argument has been specified.
   var logFile = params.logFile;
 
@@ -41,9 +45,14 @@ exports['default'] = _asyncToGenerator(function* (params) {
     document: document
   };
   global.atom = params.buildAtomEnvironment(atomEnvParams);
+  global.atom.atomScriptMode = true;
 
   // Set up the console before running any user code.
-  var notifyWhenStdoutHasBeenFlushed = yield (0, _console.instrumentConsole)(args['stdout']);
+
+  var _ref = yield (0, (_console2 || _console()).instrumentConsole)(args['stdout']);
+
+  var queue = _ref.queue;
+  var shutdown = _ref.shutdown;
 
   var pathArg = args['path'];
   if (typeof pathArg !== 'string') {
@@ -55,18 +64,26 @@ exports['default'] = _asyncToGenerator(function* (params) {
   // $FlowFixMe: entryPoint is determined dynamically rather than a string literal.
   var handler = require(entryPoint);
 
+  var exitCode = undefined;
   try {
-    var exitCode = yield handler(args['args']);
-    yield notifyWhenStdoutHasBeenFlushed();
-    return exitCode;
+    exitCode = yield handler(args['args']);
   } catch (e) {
     console.error(e);
-    return 1;
+    exitCode = 1;
   }
+
+  // Insert a sentinel executor that will not be called until all of the other promises in the
+  // queue have been flushed.
+  yield queue.submit(function (resolve) {
+    return resolve();
+  });
+  shutdown();
+
+  return exitCode;
 });
 
 /* eslint-enable no-console */
-module.exports = exports['default'];
+module.exports = exports.default;
 
 /** Absolute paths to tests to run. Could be paths to files or directories. */
 

@@ -3,6 +3,8 @@ Object.defineProperty(exports, '__esModule', {
 });
 exports.debounce = debounce;
 
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
  * All rights reserved.
@@ -11,7 +13,11 @@ exports.debounce = debounce;
  * the root directory of this source tree.
  */
 
-var invariant = require('assert');
+var _assert2;
+
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
 function debounce(func, wait) {
   var immediate = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
@@ -31,7 +37,7 @@ function debounce(func, wait) {
     } else {
       timeout = null;
       if (!immediate) {
-        invariant(args);
+        (0, (_assert2 || _assert()).default)(args);
         result = func.apply(context, args);
         if (!timeout) {
           context = args = null;

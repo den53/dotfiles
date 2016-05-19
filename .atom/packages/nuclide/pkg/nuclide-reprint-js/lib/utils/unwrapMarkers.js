@@ -1,6 +1,4 @@
-
-
-var flatten = require('./flatten');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -10,7 +8,17 @@ var flatten = require('./flatten');
  * the root directory of this source tree.
  */
 
-var isMarker = require('./isMarker');
+var _flatten2;
+
+function _flatten() {
+  return _flatten2 = _interopRequireDefault(require('./flatten'));
+}
+
+var _isMarker2;
+
+function _isMarker() {
+  return _isMarker2 = _interopRequireDefault(require('./isMarker'));
+}
 
 /**
  * This utility unwraps contiguous leading and trailing markers from lines and
@@ -18,11 +26,11 @@ var isMarker = require('./isMarker');
  */
 function unwrapMarkers(pre, lines, post) {
   var leading = [];
-  for (var i = 0; i < lines.length && isMarker(lines[i]); i++) {
+  for (var i = 0; i < lines.length && (0, (_isMarker2 || _isMarker()).default)(lines[i]); i++) {
     leading.push(lines[i]);
   }
   var trailing = [];
-  for (var i = lines.length - 1; i >= 0 && isMarker(lines[i]); i--) {
+  for (var i = lines.length - 1; i >= 0 && (0, (_isMarker2 || _isMarker()).default)(lines[i]); i--) {
     trailing.unshift(lines[i]);
   }
   var middle = [];
@@ -36,7 +44,7 @@ function unwrapMarkers(pre, lines, post) {
     middle = lines.slice(leading.length, lines.length - trailing.length);
   }
 
-  return flatten([leading, pre, middle, post, trailing]);
+  return (0, (_flatten2 || _flatten()).default)([leading, pre, middle, post, trailing]);
 }
 
 module.exports = unwrapMarkers;

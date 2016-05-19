@@ -1,9 +1,5 @@
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _classnames = require('classnames');
-
-var _classnames2 = _interopRequireDefault(_classnames);
-
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
  * All rights reserved.
@@ -12,9 +8,17 @@ var _classnames2 = _interopRequireDefault(_classnames);
  * the root directory of this source tree.
  */
 
-var _require = require('react-for-atom');
+var _reactForAtom2;
 
-var React = _require.React;
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
+
+var _classnames2;
+
+function _classnames() {
+  return _classnames2 = _interopRequireDefault(require('classnames'));
+}
 
 var SPECIAL_CHARACTERS = './@_';
 
@@ -36,7 +40,7 @@ function matchesFilter(name, filter) {
 function filterName(name, filter, isSelected) {
   if (filter.length) {
     var _ret = (function () {
-      var classes = (0, _classnames2['default'])({
+      var classes = (0, (_classnames2 || _classnames()).default)({
         'nuclide-file-tree-entry-highlight': true,
         'text-highlight': !isSelected
       });
@@ -44,22 +48,22 @@ function filterName(name, filter, isSelected) {
       return {
         v: name.split(new RegExp('(?:(?=' + formatFilter(filter) + '))', 'ig')).map(function (text, i) {
           if (matchesFilter(text, filter)) {
-            return React.createElement(
+            return (_reactForAtom2 || _reactForAtom()).React.createElement(
               'span',
               { key: filter + i },
-              React.createElement(
+              (_reactForAtom2 || _reactForAtom()).React.createElement(
                 'span',
                 { className: classes },
                 text.substr(0, filter.length)
               ),
-              React.createElement(
+              (_reactForAtom2 || _reactForAtom()).React.createElement(
                 'span',
                 null,
                 text.substr(filter.length)
               )
             );
           }
-          return React.createElement(
+          return (_reactForAtom2 || _reactForAtom()).React.createElement(
             'span',
             { key: filter + i },
             text

@@ -14,9 +14,17 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * the root directory of this source tree.
  */
 
-var _DbgpSocket = require('./DbgpSocket');
+var _DbgpSocket2;
 
-var _DataCache = require('./DataCache');
+function _DbgpSocket() {
+  return _DbgpSocket2 = require('./DbgpSocket');
+}
+
+var _DataCache2;
+
+function _DataCache() {
+  return _DataCache2 = require('./DataCache');
+}
 
 var connectionCount = 1;
 
@@ -24,9 +32,9 @@ var Connection = (function () {
   function Connection(socket) {
     _classCallCheck(this, Connection);
 
-    var dbgpSocket = new _DbgpSocket.DbgpSocket(socket);
+    var dbgpSocket = new (_DbgpSocket2 || _DbgpSocket()).DbgpSocket(socket);
     this._socket = dbgpSocket;
-    this._dataCache = new _DataCache.DataCache(dbgpSocket);
+    this._dataCache = new (_DataCache2 || _DataCache()).DataCache(dbgpSocket);
     this._id = connectionCount++;
   }
 

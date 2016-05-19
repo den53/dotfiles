@@ -6,6 +6,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
  * All rights reserved.
@@ -14,7 +16,11 @@ function _inherits(subClass, superClass) { if (typeof superClass !== 'function' 
  * the root directory of this source tree.
  */
 
-var UnresolvedBreakpointsSidebarPane = require('./UnresolvedBreakpointsSidebarPane');
+var _UnresolvedBreakpointsSidebarPane2;
+
+function _UnresolvedBreakpointsSidebarPane() {
+  return _UnresolvedBreakpointsSidebarPane2 = _interopRequireDefault(require('./UnresolvedBreakpointsSidebarPane'));
+}
 
 // Supress ESLint no-undef about using WebInspector without window, which would
 // not have flow types attached.
@@ -51,7 +57,7 @@ var NuclideApp = (function (_WebInspector$App) {
         sourcesPanel.sidebarPanes.domBreakpoints.setVisible(false);
         sourcesPanel.sidebarPanes.xhrBreakpoints.setVisible(false);
         sourcesPanel.sidebarPanes.eventListenerBreakpoints.setVisible(false);
-        sourcesPanel.sidebarPanes.unresolvedBreakpoints = new UnresolvedBreakpointsSidebarPane();
+        sourcesPanel.sidebarPanes.unresolvedBreakpoints = new (_UnresolvedBreakpointsSidebarPane2 || _UnresolvedBreakpointsSidebarPane()).default();
         // Force redraw
         sourcesPanel.sidebarPaneView.detach();
         sourcesPanel.sidebarPaneView = null;
@@ -61,7 +67,7 @@ var NuclideApp = (function (_WebInspector$App) {
         sourcesPanel._splitView.hideMain();
         rootView.attachToDocument(document);
         /*eslint-disable no-console */
-      })['catch'](function (e) {
+      }).catch(function (e) {
         return console.error(e);
       });
       /*eslint-enable no-console */

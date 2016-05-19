@@ -12,27 +12,53 @@ Object.defineProperty(exports, '__esModule', {
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _atom = require('atom');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _reactForAtom = require('react-for-atom');
+var _atom2;
 
-var _nuclideCommons = require('../../nuclide-commons');
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var _nuclideAnalytics = require('../../nuclide-analytics');
+var _reactForAtom2;
 
-var _DatatipComponent = require('./DatatipComponent');
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
 
-var _PinnedDatatip = require('./PinnedDatatip');
+var _nuclideCommons2;
 
-var _nuclideFeatureConfig = require('../../nuclide-feature-config');
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
 
-var _nuclideFeatureConfig2 = _interopRequireDefault(_nuclideFeatureConfig);
+var _nuclideAnalytics2;
+
+function _nuclideAnalytics() {
+  return _nuclideAnalytics2 = require('../../nuclide-analytics');
+}
+
+var _DatatipComponent2;
+
+function _DatatipComponent() {
+  return _DatatipComponent2 = require('./DatatipComponent');
+}
+
+var _PinnedDatatip2;
+
+function _PinnedDatatip() {
+  return _PinnedDatatip2 = require('./PinnedDatatip');
+}
+
+var _nuclideFeatureConfig2;
+
+function _nuclideFeatureConfig() {
+  return _nuclideFeatureConfig2 = _interopRequireDefault(require('../../nuclide-feature-config'));
+}
 
 var DatatipManager = (function () {
   function DatatipManager() {
@@ -41,11 +67,11 @@ var DatatipManager = (function () {
     _classCallCheck(this, DatatipManager);
 
     this._boundHideDatatip = this.hideDatatip.bind(this);
-    this._subscriptions = new _atom.CompositeDisposable();
+    this._subscriptions = new (_atom2 || _atom()).CompositeDisposable();
     this._subscriptions.add(atom.commands.add('atom-text-editor', 'nuclide-datatip:toggle', this.toggleDatatip.bind(this)));
     this._subscriptions.add(atom.commands.add('atom-text-editor', 'core:cancel', this._boundHideDatatip));
     this._debouncedMouseMove = function () {};
-    this._subscriptions.add(_nuclideFeatureConfig2['default'].observe('nuclide-datatip.datatipDebounceDelay', function (debounceDelay) {
+    this._subscriptions.add((_nuclideFeatureConfig2 || _nuclideFeatureConfig()).default.observe('nuclide-datatip.datatipDebounceDelay', function (debounceDelay) {
       return _this.updateDebounceDelay(debounceDelay);
     }));
     // TODO(most): Replace with @jjiaa's mouseListenerForTextEditor introduced in D2005545.
@@ -61,7 +87,7 @@ var DatatipManager = (function () {
         _this.handleMouseMove(event, editor, editorView);
       };
       editorView.addEventListener('mousemove', mouseMoveListener);
-      var mouseListenerSubscription = new _atom.Disposable(function () {
+      var mouseListenerSubscription = new (_atom2 || _atom()).Disposable(function () {
         return editorView.removeEventListener('mousemove', mouseMoveListener);
       });
       var destroySubscription = editor.onDidDestroy(function () {
@@ -98,7 +124,7 @@ var DatatipManager = (function () {
     value: function updateDebounceDelay(debounceDelay) {
       var _this2 = this;
 
-      this._debouncedMouseMove = (0, _nuclideCommons.debounce)(function (event, editor, editorView) {
+      this._debouncedMouseMove = (0, (_nuclideCommons2 || _nuclideCommons()).debounce)(function (event, editor, editorView) {
         _this2._datatipForMouseEvent(event, editor, editorView);
       }, debounceDelay,
       /* immediate */false);
@@ -205,7 +231,7 @@ var DatatipManager = (function () {
           var logger = require('../../nuclide-logging').getLogger();
           logger.error('Datatip provider has no name', provider);
         }
-        var datatip = yield (0, _nuclideAnalytics.trackOperationTiming)(name + '.datatip', function () {
+        var datatip = yield (0, (_nuclideAnalytics2 || _nuclideAnalytics()).trackOperationTiming)(name + '.datatip', function () {
           return provider.datatip(editor, position);
         });
         if (!datatip || _this3._marker) {
@@ -216,7 +242,7 @@ var DatatipManager = (function () {
         var range = datatip.range;
 
         // We track the timing above, but we still want to know the number of popups that are shown.
-        (0, _nuclideAnalytics.track)('datatip-popup', {
+        (0, (_nuclideAnalytics2 || _nuclideAnalytics()).track)('datatip-popup', {
           'scope': scopeName,
           'providerName': name,
           rangeStartRow: String(range.start.row),
@@ -225,11 +251,11 @@ var DatatipManager = (function () {
           rangeEndColumn: String(range.end.column)
         });
         _this3._currentRange = range;
-        var action = undefined,
-            actionTitle = undefined;
+        var action = undefined;
+        var actionTitle = undefined;
         // Datatips are pinnable by default, unless explicitly specified otherwise.
         if (pinnable !== false) {
-          action = _DatatipComponent.DATATIP_ACTIONS.PIN;
+          action = (_DatatipComponent2 || _DatatipComponent()).DATATIP_ACTIONS.PIN;
           actionTitle = 'Pin this Datatip';
         }
 
@@ -254,14 +280,14 @@ var DatatipManager = (function () {
         var action = datatip.action;
         var actionTitle = datatip.actionTitle;
 
-        return _reactForAtom.React.createElement(
-          _DatatipComponent.DatatipComponent,
+        return (_reactForAtom2 || _reactForAtom()).React.createElement(
+          (_DatatipComponent2 || _DatatipComponent()).DatatipComponent,
           {
             action: action,
             actionTitle: actionTitle,
             onActionClick: _this3._handlePinClicked.bind(_this3, editor, datatip),
             key: name },
-          _reactForAtom.React.createElement(ProvidedComponent, null)
+          (_reactForAtom2 || _reactForAtom()).React.createElement(ProvidedComponent, null)
         );
       });
 
@@ -274,7 +300,7 @@ var DatatipManager = (function () {
       var marker = editor.markBufferRange(combinedRange, { invalidate: 'never' });
       this._marker = marker;
 
-      _reactForAtom.ReactDOM.render(_reactForAtom.React.createElement(
+      (_reactForAtom2 || _reactForAtom()).ReactDOM.render((_reactForAtom2 || _reactForAtom()).React.createElement(
         'div',
         null,
         renderedProviders
@@ -304,7 +330,7 @@ var DatatipManager = (function () {
 
       var editor = atom.views.getView(atom.workspace);
       editor.addEventListener('keydown', this._boundHideDatatip);
-      this._globalKeydownSubscription = new _atom.Disposable(function () {
+      this._globalKeydownSubscription = new (_atom2 || _atom()).Disposable(function () {
         editor.removeEventListener('keydown', _this4._boundHideDatatip);
       });
     }
@@ -314,8 +340,8 @@ var DatatipManager = (function () {
       var _this5 = this;
 
       this.hideDatatip();
-      this._pinnedDatatips.add(new _PinnedDatatip.PinnedDatatip(datatip, editor, function (pinnedDatatip) {
-        _this5._pinnedDatatips['delete'](pinnedDatatip);
+      this._pinnedDatatips.add(new (_PinnedDatatip2 || _PinnedDatatip()).PinnedDatatip(datatip, editor, function (pinnedDatatip) {
+        _this5._pinnedDatatips.delete(pinnedDatatip);
       }));
     }
   }, {
@@ -335,13 +361,13 @@ var DatatipManager = (function () {
   }, {
     key: 'removeProvider',
     value: function removeProvider(provider) {
-      _nuclideCommons.array.remove(this._datatipProviders, provider);
+      (_nuclideCommons2 || _nuclideCommons()).array.remove(this._datatipProviders, provider);
     }
   }, {
     key: 'dispose',
     value: function dispose() {
       this.hideDatatip();
-      _reactForAtom.ReactDOM.unmountComponentAtNode(this._ephemeralDatatipElement);
+      (_reactForAtom2 || _reactForAtom()).ReactDOM.unmountComponentAtNode(this._ephemeralDatatipElement);
       this._ephemeralDatatipElement.remove();
       this._pinnedDatatips.forEach(function (pinnedDatatip) {
         return pinnedDatatip.dispose();

@@ -8,7 +8,11 @@
  * the root directory of this source tree.
  */
 
-var _helpers = require('./helpers');
+var _helpers2;
+
+function _helpers() {
+  return _helpers2 = require('./helpers');
+}
 
 /**
  * A dbgp Frame after it is converted from XML to JSON:
@@ -34,7 +38,7 @@ function functionOfFrame(frame) {
 
 // Returns an absolute path
 function fileOfFrame(frame) {
-  return (0, _helpers.uriToPath)(fileUrlOfFrame(frame));
+  return (0, (_helpers2 || _helpers()).uriToPath)(fileUrlOfFrame(frame));
 }
 
 function fileUrlOfFrame(frame) {

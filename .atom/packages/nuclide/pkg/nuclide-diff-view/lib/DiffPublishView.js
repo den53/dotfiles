@@ -10,37 +10,77 @@ var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_ag
  * the root directory of this source tree.
  */
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var _nuclideArcanistClient = require('../../nuclide-arcanist-client');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _nuclideArcanistClient2 = _interopRequireDefault(_nuclideArcanistClient);
+var _nuclideArcanistBaseLibUtils2;
 
-var _nuclideUiLibAtomTextEditor = require('../../nuclide-ui/lib/AtomTextEditor');
+function _nuclideArcanistBaseLibUtils() {
+  return _nuclideArcanistBaseLibUtils2 = require('../../nuclide-arcanist-base/lib/utils');
+}
 
-var _classnames = require('classnames');
+var _nuclideUiLibAtomTextEditor2;
 
-var _classnames2 = _interopRequireDefault(_classnames);
+function _nuclideUiLibAtomTextEditor() {
+  return _nuclideUiLibAtomTextEditor2 = require('../../nuclide-ui/lib/AtomTextEditor');
+}
 
-var _constants = require('./constants');
+var _classnames2;
 
-var _reactForAtom = require('react-for-atom');
+function _classnames() {
+  return _classnames2 = _interopRequireDefault(require('classnames'));
+}
 
-var _nuclideUiLibButton = require('../../nuclide-ui/lib/Button');
+var _constants2;
 
-var _nuclideUiLibToolbar = require('../../nuclide-ui/lib/Toolbar');
+function _constants() {
+  return _constants2 = require('./constants');
+}
 
-var _nuclideUiLibToolbarLeft = require('../../nuclide-ui/lib/ToolbarLeft');
+var _reactForAtom2;
 
-var _nuclideUiLibToolbarRight = require('../../nuclide-ui/lib/ToolbarRight');
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
 
-var _atom = require('atom');
+var _nuclideUiLibButton2;
 
-var _nuclideCommons = require('../../nuclide-commons');
+function _nuclideUiLibButton() {
+  return _nuclideUiLibButton2 = require('../../nuclide-ui/lib/Button');
+}
+
+var _nuclideUiLibToolbar2;
+
+function _nuclideUiLibToolbar() {
+  return _nuclideUiLibToolbar2 = require('../../nuclide-ui/lib/Toolbar');
+}
+
+var _nuclideUiLibToolbarLeft2;
+
+function _nuclideUiLibToolbarLeft() {
+  return _nuclideUiLibToolbarLeft2 = require('../../nuclide-ui/lib/ToolbarLeft');
+}
+
+var _nuclideUiLibToolbarRight2;
+
+function _nuclideUiLibToolbarRight() {
+  return _nuclideUiLibToolbarRight2 = require('../../nuclide-ui/lib/ToolbarRight');
+}
+
+var _atom2;
+
+function _atom() {
+  return _atom2 = require('atom');
+}
+
+var _nuclideCommons2;
+
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
 
 var DiffRevisionView = (function (_React$Component) {
   _inherits(DiffRevisionView, _React$Component);
@@ -60,9 +100,9 @@ var DiffRevisionView = (function (_React$Component) {
       var description = _props$revision.description;
 
       var tooltip = hash + ': ' + title;
-      var revision = _nuclideArcanistClient2['default'].getPhabricatorRevisionFromCommitMessage(description);
+      var revision = (0, (_nuclideArcanistBaseLibUtils2 || _nuclideArcanistBaseLibUtils()).getPhabricatorRevisionFromCommitMessage)(description);
 
-      return revision == null ? _reactForAtom.React.createElement('span', null) : _reactForAtom.React.createElement(
+      return revision == null ? (_reactForAtom2 || _reactForAtom()).React.createElement('span', null) : (_reactForAtom2 || _reactForAtom()).React.createElement(
         'a',
         { href: revision.url, title: tooltip },
         revision.id
@@ -71,25 +111,26 @@ var DiffRevisionView = (function (_React$Component) {
   }]);
 
   return DiffRevisionView;
-})(_reactForAtom.React.Component);
+})((_reactForAtom2 || _reactForAtom()).React.Component);
 
 var DiffPublishView = (function (_React$Component2) {
   _inherits(DiffPublishView, _React$Component2);
 
-  function DiffPublishView() {
+  function DiffPublishView(props) {
     _classCallCheck(this, DiffPublishView);
 
-    _get(Object.getPrototypeOf(DiffPublishView.prototype), 'constructor', this).apply(this, arguments);
+    _get(Object.getPrototypeOf(DiffPublishView.prototype), 'constructor', this).call(this, props);
+    this._onClickBack = this._onClickBack.bind(this);
+    this._onClickPublish = this._onClickPublish.bind(this);
   }
 
   _createClass(DiffPublishView, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
-      this._onClickPublish = this._onClickPublish.bind(this);
-      this._textBuffer = new _atom.TextBuffer();
-      this._subscriptions = new _atom.CompositeDisposable();
+      this._textBuffer = new (_atom2 || _atom()).TextBuffer();
+      this._subscriptions = new (_atom2 || _atom()).CompositeDisposable();
 
-      this._subscriptions.add(new _nuclideCommons.DisposableSubscription(this.props.diffModel.getPublishUpdates().subscribe(this._onPublishUpdate.bind(this))));
+      this._subscriptions.add(new (_nuclideCommons2 || _nuclideCommons()).DisposableSubscription(this.props.diffModel.getPublishUpdates().subscribe(this._onPublishUpdate.bind(this))));
       this._setPublishText();
     }
   }, {
@@ -158,7 +199,7 @@ var DiffPublishView = (function (_React$Component2) {
 
       var revisionView = undefined;
       if (headRevision != null) {
-        revisionView = _reactForAtom.React.createElement(DiffRevisionView, { revision: headRevision });
+        revisionView = (_reactForAtom2 || _reactForAtom()).React.createElement(DiffRevisionView, { revision: headRevision });
       }
 
       var isBusy = undefined;
@@ -166,7 +207,7 @@ var DiffPublishView = (function (_React$Component2) {
       var statusEditor = null;
 
       var getStreamStatusEditor = function getStreamStatusEditor() {
-        return _reactForAtom.React.createElement(_nuclideUiLibAtomTextEditor.AtomTextEditor, {
+        return (_reactForAtom2 || _reactForAtom()).React.createElement((_nuclideUiLibAtomTextEditor2 || _nuclideUiLibAtomTextEditor()).AtomTextEditor, {
           ref: 'publishUpdates',
           textBuffer: _this._textBuffer,
           readOnly: true,
@@ -176,7 +217,7 @@ var DiffPublishView = (function (_React$Component2) {
       };
 
       var getPublishMessageEditor = function getPublishMessageEditor() {
-        return _reactForAtom.React.createElement(_nuclideUiLibAtomTextEditor.AtomTextEditor, {
+        return (_reactForAtom2 || _reactForAtom()).React.createElement((_nuclideUiLibAtomTextEditor2 || _nuclideUiLibAtomTextEditor()).AtomTextEditor, {
           ref: 'message',
           readOnly: isBusy,
           syncTextContents: false,
@@ -185,70 +226,82 @@ var DiffPublishView = (function (_React$Component2) {
       };
 
       switch (publishModeState) {
-        case _constants.PublishModeState.READY:
+        case (_constants2 || _constants()).PublishModeState.READY:
           isBusy = false;
-          if (publishMode === _constants.PublishMode.CREATE) {
+          if (publishMode === (_constants2 || _constants()).PublishMode.CREATE) {
             publishMessage = 'Publish Phabricator Revision';
           } else {
             publishMessage = 'Update Phabricator Revision';
           }
           statusEditor = getPublishMessageEditor();
           break;
-        case _constants.PublishModeState.LOADING_PUBLISH_MESSAGE:
+        case (_constants2 || _constants()).PublishModeState.LOADING_PUBLISH_MESSAGE:
           isBusy = true;
           publishMessage = 'Loading...';
           statusEditor = getPublishMessageEditor();
           break;
-        case _constants.PublishModeState.AWAITING_PUBLISH:
+        case (_constants2 || _constants()).PublishModeState.AWAITING_PUBLISH:
           isBusy = true;
           publishMessage = 'Publishing...';
           statusEditor = getStreamStatusEditor();
           break;
-        case _constants.PublishModeState.PUBLISH_ERROR:
+        case (_constants2 || _constants()).PublishModeState.PUBLISH_ERROR:
           isBusy = false;
           statusEditor = getStreamStatusEditor();
           publishMessage = 'Fixed? - Retry Publishing';
           break;
       }
 
-      var publishButton = _reactForAtom.React.createElement(
-        _nuclideUiLibButton.Button,
+      var publishButton = (_reactForAtom2 || _reactForAtom()).React.createElement(
+        (_nuclideUiLibButton2 || _nuclideUiLibButton()).Button,
         {
-          className: (0, _classnames2['default'])({ 'btn-progress': isBusy }),
-          size: _nuclideUiLibButton.ButtonSizes.SMALL,
-          buttonType: _nuclideUiLibButton.ButtonTypes.SUCCESS,
+          className: (0, (_classnames2 || _classnames()).default)({ 'btn-progress': isBusy }),
+          size: (_nuclideUiLibButton2 || _nuclideUiLibButton()).ButtonSizes.SMALL,
+          buttonType: (_nuclideUiLibButton2 || _nuclideUiLibButton()).ButtonTypes.SUCCESS,
           onClick: this._onClickPublish,
           disabled: isBusy },
         publishMessage
       );
 
-      return _reactForAtom.React.createElement(
+      return (_reactForAtom2 || _reactForAtom()).React.createElement(
         'div',
         { className: 'nuclide-diff-mode' },
-        _reactForAtom.React.createElement(
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
           'div',
           { className: 'message-editor-wrapper' },
           statusEditor
         ),
-        _reactForAtom.React.createElement(
-          _nuclideUiLibToolbar.Toolbar,
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
+          (_nuclideUiLibToolbar2 || _nuclideUiLibToolbar()).Toolbar,
           { location: 'bottom' },
-          _reactForAtom.React.createElement(
-            _nuclideUiLibToolbarLeft.ToolbarLeft,
+          (_reactForAtom2 || _reactForAtom()).React.createElement(
+            (_nuclideUiLibToolbarLeft2 || _nuclideUiLibToolbarLeft()).ToolbarLeft,
             null,
             revisionView
           ),
-          _reactForAtom.React.createElement(
-            _nuclideUiLibToolbarRight.ToolbarRight,
+          (_reactForAtom2 || _reactForAtom()).React.createElement(
+            (_nuclideUiLibToolbarRight2 || _nuclideUiLibToolbarRight()).ToolbarRight,
             null,
+            (_reactForAtom2 || _reactForAtom()).React.createElement(
+              (_nuclideUiLibButton2 || _nuclideUiLibButton()).Button,
+              {
+                size: (_nuclideUiLibButton2 || _nuclideUiLibButton()).ButtonSizes.SMALL,
+                onClick: this._onClickBack },
+              'Back'
+            ),
             publishButton
           )
         )
       );
     }
+  }, {
+    key: '_onClickBack',
+    value: function _onClickBack() {
+      this.props.diffModel.setViewMode((_constants2 || _constants()).DiffMode.BROWSE_MODE);
+    }
   }]);
 
   return DiffPublishView;
-})(_reactForAtom.React.Component);
+})((_reactForAtom2 || _reactForAtom()).React.Component);
 
 module.exports = DiffPublishView;

@@ -14,13 +14,15 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
  * the root directory of this source tree.
  */
 
-var _nuclideFeatureConfig = require('../../nuclide-feature-config');
+var _nuclideFeatureConfig2;
 
-var _nuclideFeatureConfig2 = _interopRequireDefault(_nuclideFeatureConfig);
+function _nuclideFeatureConfig() {
+  return _nuclideFeatureConfig2 = _interopRequireDefault(require('../../nuclide-feature-config'));
+}
 
 // config can be null in tests.
 function getConfig() {
-  return _nuclideFeatureConfig2['default'].get('nuclide-python');
+  return (_nuclideFeatureConfig2 || _nuclideFeatureConfig()).default.get('nuclide-python');
 }
 
 function getPythonPath() {

@@ -14,7 +14,11 @@ function _inherits(subClass, superClass) { if (typeof superClass !== 'function' 
  * the root directory of this source tree.
  */
 
-var _flux = require('flux');
+var _flux2;
+
+function _flux() {
+  return _flux2 = require('flux');
+}
 
 var instance = undefined;
 
@@ -38,6 +42,6 @@ var FileTreeDispatcher = (function (_Dispatcher) {
   }]);
 
   return FileTreeDispatcher;
-})(_flux.Dispatcher);
+})((_flux2 || _flux()).Dispatcher);
 
 module.exports = FileTreeDispatcher;

@@ -18,7 +18,7 @@ var getProcessInfoList = _asyncToGenerator(function* () {
   var getServiceByNuclideUri = _require2.getServiceByNuclideUri;
 
   var localService = getServiceByNuclideUri('LLDBDebuggerRpcService', localDirectory.getPath());
-  (0, _assert2['default'])(localService);
+  (0, (_assert2 || _assert()).default)(localService);
   var targetInfoList = yield localService.getAttachTargetInfoList();
 
   var processes = [];
@@ -27,8 +27,6 @@ var getProcessInfoList = _asyncToGenerator(function* () {
   }
   return processes;
 });
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
@@ -40,9 +38,13 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
  * the root directory of this source tree.
  */
 
-var _assert = require('assert');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _assert2 = _interopRequireDefault(_assert);
+var _assert2;
+
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
 module.exports = {
   name: 'lldb',

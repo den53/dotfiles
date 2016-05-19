@@ -1,4 +1,4 @@
-
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -8,7 +8,11 @@
  * the root directory of this source tree.
  */
 
-var markers = require('../constants/markers');
+var _constantsMarkers2;
+
+function _constantsMarkers() {
+  return _constantsMarkers2 = _interopRequireDefault(require('../constants/markers'));
+}
 
 /**
  * This actualizes the forced markers we already have. It's not guaranteed to
@@ -16,15 +20,15 @@ var markers = require('../constants/markers');
  */
 function resolveForcedMarkers(lines) {
   return lines.map(function (line) {
-    if (line === markers.hardBreak) {
+    if (line === (_constantsMarkers2 || _constantsMarkers()).default.hardBreak) {
       return '\n';
-    } else if (line === markers.multiHardBreak) {
+    } else if (line === (_constantsMarkers2 || _constantsMarkers()).default.multiHardBreak) {
       return '\n';
-    } else if (line === markers.comma) {
+    } else if (line === (_constantsMarkers2 || _constantsMarkers()).default.comma) {
       return ',';
-    } else if (line === markers.space) {
+    } else if (line === (_constantsMarkers2 || _constantsMarkers()).default.space) {
       return ' ';
-    } else if (line === markers.empty) {
+    } else if (line === (_constantsMarkers2 || _constantsMarkers()).default.empty) {
       return '';
     } else {
       return line;

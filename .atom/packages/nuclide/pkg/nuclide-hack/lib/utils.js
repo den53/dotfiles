@@ -16,8 +16,9 @@ exports.getIdentifierAtPosition = getIdentifierAtPosition;
 
 var getHackEnvironmentDetails = _asyncToGenerator(function* (fileUri) {
   var hackService = getHackService(fileUri);
-  var config = (0, _config.getConfig)();
-  var useIdeConnection = config.useIdeConnection || (yield (0, _nuclideCommons.passesGK)('nuclide_hack_use_persistent_connection'));
+  var config = (0, (_config2 || _config()).getConfig)();
+  // TODO: Reenable this once the server connection is revived.
+  var useIdeConnection = false && (config.useIdeConnection || (yield (0, (_nuclideCommons2 || _nuclideCommons()).passesGK)('nuclide_hack_use_persistent_connection')));
   var hackEnvironment = yield hackService.getHackEnvironmentDetails(fileUri, config.hhClientPath, useIdeConnection);
   var isAvailable = hackEnvironment != null;
 
@@ -37,21 +38,39 @@ var getHackEnvironmentDetails = _asyncToGenerator(function* (fileUri) {
 
 exports.getHackEnvironmentDetails = getHackEnvironmentDetails;
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
-var _config = require('./config');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _nuclideRemoteConnection = require('../../nuclide-remote-connection');
+var _config2;
 
-var _assert = require('assert');
+function _config() {
+  return _config2 = require('./config');
+}
 
-var _assert2 = _interopRequireDefault(_assert);
+var _nuclideRemoteConnection2;
 
-var _nuclideAtomHelpers = require('../../nuclide-atom-helpers');
+function _nuclideRemoteConnection() {
+  return _nuclideRemoteConnection2 = require('../../nuclide-remote-connection');
+}
 
-var _nuclideCommons = require('../../nuclide-commons');
+var _assert2;
+
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
+
+var _nuclideAtomHelpers2;
+
+function _nuclideAtomHelpers() {
+  return _nuclideAtomHelpers2 = require('../../nuclide-atom-helpers');
+}
+
+var _nuclideCommons2;
+
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
 
 var MATCH_PREFIX_CASE_SENSITIVE_SCORE = 6;
 var MATCH_PREFIX_CASE_INSENSITIVE_SCORE = 4;
@@ -103,7 +122,7 @@ function compareHackCompletions(token) {
 var HACK_WORD_REGEX = /[a-zA-Z0-9_$]+/g;
 
 function getIdentifierAndRange(editor, position) {
-  var matchData = (0, _nuclideAtomHelpers.extractWordAtPosition)(editor, position, HACK_WORD_REGEX);
+  var matchData = (0, (_nuclideAtomHelpers2 || _nuclideAtomHelpers()).extractWordAtPosition)(editor, position, HACK_WORD_REGEX);
   return matchData == null || matchData.wordMatch.length === 0 ? null : { id: matchData.wordMatch[0], range: matchData.range };
 }
 
@@ -115,7 +134,7 @@ function getIdentifierAtPosition(editor, position) {
 // Don't call this directly from outside this package.
 // Call getHackEnvironmentDetails instead.
 function getHackService(filePath) {
-  var hackRegisteredService = (0, _nuclideRemoteConnection.getServiceByNuclideUri)(HACK_SERVICE_NAME, filePath);
-  (0, _assert2['default'])(hackRegisteredService);
+  var hackRegisteredService = (0, (_nuclideRemoteConnection2 || _nuclideRemoteConnection()).getServiceByNuclideUri)(HACK_SERVICE_NAME, filePath);
+  (0, (_assert2 || _assert()).default)(hackRegisteredService);
   return hackRegisteredService;
 }

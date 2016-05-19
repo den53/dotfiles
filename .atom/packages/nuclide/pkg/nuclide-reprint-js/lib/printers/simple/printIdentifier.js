@@ -8,11 +8,22 @@
  * the root directory of this source tree.
  */
 
-var flatten = require('../../utils/flatten');
-var markers = require('../../constants/markers');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _utilsFlatten2;
+
+function _utilsFlatten() {
+  return _utilsFlatten2 = _interopRequireDefault(require('../../utils/flatten'));
+}
+
+var _constantsMarkers2;
+
+function _constantsMarkers() {
+  return _constantsMarkers2 = _interopRequireDefault(require('../../constants/markers'));
+}
 
 function printIdentifier(print, node) {
-  return flatten([node.name, node.typeAnnotation ? print(node.typeAnnotation) : markers.empty]);
+  return (0, (_utilsFlatten2 || _utilsFlatten()).default)([node.name, node.typeAnnotation ? print(node.typeAnnotation) : (_constantsMarkers2 || _constantsMarkers()).default.empty]);
 }
 
 module.exports = printIdentifier;

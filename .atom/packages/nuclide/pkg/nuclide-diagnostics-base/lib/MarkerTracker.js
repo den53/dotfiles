@@ -12,15 +12,21 @@ Object.defineProperty(exports, '__esModule', {
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _atom = require('atom');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _assert = require('assert');
+var _atom2;
 
-var _assert2 = _interopRequireDefault(_assert);
+function _atom() {
+  return _atom2 = require('atom');
+}
+
+var _assert2;
+
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
 var MarkerTracker = (function () {
   function MarkerTracker() {
@@ -30,7 +36,7 @@ var MarkerTracker = (function () {
 
     this._messageToMarker = new Map();
     this._fileToMessages = new Map();
-    this._subscriptions = new _atom.CompositeDisposable();
+    this._subscriptions = new (_atom2 || _atom()).CompositeDisposable();
     this._disposed = false;
 
     this._subscriptions.add(atom.workspace.observeTextEditors(function (editor) {
@@ -130,9 +136,9 @@ var MarkerTracker = (function () {
       for (var message of messages) {
         var messageSet = this._fileToMessages.get(message.filePath);
         if (messageSet != null) {
-          messageSet['delete'](message);
+          messageSet.delete(message);
           if (messageSet.size === 0) {
-            this._fileToMessages['delete'](message.filePath);
+            this._fileToMessages.delete(message.filePath);
           }
         }
 
@@ -150,7 +156,7 @@ var MarkerTracker = (function () {
       var _this3 = this;
 
       var fix = message.fix;
-      (0, _assert2['default'])(fix != null);
+      (0, (_assert2 || _assert()).default)(fix != null);
 
       var marker = editor.markBufferRange(fix.oldRange, {
         // 'touch' is the least permissive invalidation strategy: It will invalidate for
@@ -166,7 +172,7 @@ var MarkerTracker = (function () {
       // The marker will be destroyed automatically when its associated TextBuffer is destroyed. Clean
       // up when that happens.
       var markerSubscription = marker.onDidDestroy(function () {
-        _this3._messageToMarker['delete'](message);
+        _this3._messageToMarker.delete(message);
         markerSubscription.dispose();
         _this3._subscriptions.remove(markerSubscription);
       });
@@ -175,7 +181,7 @@ var MarkerTracker = (function () {
   }, {
     key: '_assertNotDisposed',
     value: function _assertNotDisposed() {
-      (0, _assert2['default'])(!this._disposed, 'MarkerTracker has been disposed');
+      (0, (_assert2 || _assert()).default)(!this._disposed, 'MarkerTracker has been disposed');
     }
   }]);
 

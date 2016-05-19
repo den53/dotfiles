@@ -12,17 +12,21 @@ Object.defineProperty(exports, '__esModule', {
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _QueryItem = require('./QueryItem');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _QueryItem2 = _interopRequireDefault(_QueryItem);
+var _QueryItem2;
 
-var _TopScores = require('./TopScores');
+function _QueryItem() {
+  return _QueryItem2 = _interopRequireDefault(require('./QueryItem'));
+}
 
-var _TopScores2 = _interopRequireDefault(_TopScores);
+var _TopScores2;
+
+function _TopScores() {
+  return _TopScores2 = _interopRequireDefault(require('./TopScores'));
+}
 
 /**
  * Fallback `Matcher` class compatible with the fuzzy-native implementation.
@@ -45,7 +49,7 @@ var Matcher = (function () {
     value: function match(query) {
       var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 
-      var topScores = new _TopScores2['default'](options.maxResults || 0);
+      var topScores = new (_TopScores2 || _TopScores()).default(options.maxResults || 0);
       this._queryItems.forEach(function (item) {
         var score = item.score(query);
         if (score != null) {
@@ -60,7 +64,7 @@ var Matcher = (function () {
       var _this = this;
 
       candidates.forEach(function (candidate) {
-        _this._queryItems.set(candidate, new _QueryItem2['default'](candidate));
+        _this._queryItems.set(candidate, new (_QueryItem2 || _QueryItem()).default(candidate));
       });
     }
   }, {
@@ -69,7 +73,7 @@ var Matcher = (function () {
       var _this2 = this;
 
       candidates.forEach(function (candidate) {
-        _this2._queryItems['delete'](candidate);
+        _this2._queryItems.delete(candidate);
       });
     }
   }, {

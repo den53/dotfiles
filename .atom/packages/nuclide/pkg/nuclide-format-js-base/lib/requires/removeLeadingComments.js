@@ -1,15 +1,4 @@
-
-
-var FirstNode = require('../utils/FirstNode');
-
-/**
- * Removes the leading comments from the first node. Leading comments are
- * defined as:
- *
- *   - let N be the number of leading comments numbered 0 to N-1
- *   - if there is space betwee comment N-1 and first, comments 0 to N-1
- *   - else comments 0 to N-2
- */
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -19,8 +8,22 @@ var FirstNode = require('../utils/FirstNode');
  * the root directory of this source tree.
  */
 
+var _utilsFirstNode2;
+
+function _utilsFirstNode() {
+  return _utilsFirstNode2 = _interopRequireDefault(require('../utils/FirstNode'));
+}
+
+/**
+ * Removes the leading comments from the first node. Leading comments are
+ * defined as:
+ *
+ *   - let N be the number of leading comments numbered 0 to N-1
+ *   - if there is space betwee comment N-1 and first, comments 0 to N-1
+ *   - else comments 0 to N-2
+ */
 function removeLeadingComments(root) {
-  var firstPath = FirstNode.get(root);
+  var firstPath = (_utilsFirstNode2 || _utilsFirstNode()).default.get(root);
   if (!firstPath) {
     return [];
   }

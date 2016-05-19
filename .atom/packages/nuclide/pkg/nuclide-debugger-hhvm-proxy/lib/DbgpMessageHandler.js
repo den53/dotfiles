@@ -6,9 +6,9 @@ var _createClass = (function () { function defineProperties(target, props) { for
 
 exports.getDbgpMessageHandlerInstance = getDbgpMessageHandlerInstance;
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -18,13 +18,17 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * the root directory of this source tree.
  */
 
-var _utils = require('./utils');
+var _utils2;
 
-var _utils2 = _interopRequireDefault(_utils);
+function _utils() {
+  return _utils2 = _interopRequireDefault(require('./utils'));
+}
 
-var _assert = require('assert');
+var _assert2;
 
-var _assert2 = _interopRequireDefault(_assert);
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
 var GLOBAL_HHVM_DEBUGGER_KEY = '_global_hhvm_debugger_key';
 
@@ -57,7 +61,7 @@ var DbgpMessageHandler = (function () {
        * 2: length<NULL>xml-part1.
        * >=3: Other scenarios.
        */
-      _utils2['default'].log('Total components: ' + components.length);
+      (_utils2 || _utils()).default.log('Total components: ' + components.length);
 
       // Merge head component with prevIncompletedMessage if needed.
       var results = [];
@@ -74,7 +78,7 @@ var DbgpMessageHandler = (function () {
 
       // Verify that we can't get another message without completing previous one.
       if (prevIncompletedMessage && components.length !== 0) {
-        _utils2['default'].logErrorAndThrow('Error: got extra messages without completing previous message. ' + ('Previous message was: ' + JSON.stringify(prevIncompletedMessage) + '. ') + ('Remaining components: ' + JSON.stringify(components)));
+        (_utils2 || _utils()).default.logErrorAndThrow('Error: got extra messages without completing previous message. ' + ('Previous message was: ' + JSON.stringify(prevIncompletedMessage) + '. ') + ('Remaining components: ' + JSON.stringify(components)));
       }
 
       var isIncompleteResponse = components.length % 2 === 0;
@@ -83,32 +87,32 @@ var DbgpMessageHandler = (function () {
       if (!isIncompleteResponse) {
         var lastComponent = components.pop();
         if (lastComponent.length !== 0) {
-          _utils2['default'].logErrorAndThrow('The complete response should terminate with' + (' zero character while got: ' + lastComponent + ' '));
+          (_utils2 || _utils()).default.logErrorAndThrow('The complete response should terminate with' + (' zero character while got: ' + lastComponent + ' '));
         }
       }
 
       // Process two tail components into prevIncompletedMessage for incompleted response.
       if (isIncompleteResponse && components.length > 0) {
-        (0, _assert2['default'])(components.length >= 2);
+        (0, (_assert2 || _assert()).default)(components.length >= 2);
         // content comes after length.
         var _content = components.pop();
         var _length = Number(components.pop());
         var lastMessage = { length: _length, content: _content };
         if (!this._isIncompletedMessage(lastMessage)) {
-          _utils2['default'].logErrorAndThrow('The last message should be a fragment of a full message: ' + JSON.stringify(lastMessage));
+          (_utils2 || _utils()).default.logErrorAndThrow('The last message should be a fragment of a full message: ' + JSON.stringify(lastMessage));
         }
         prevIncompletedMessage = lastMessage;
       }
 
       // The remaining middle components should all be completed messages.
-      (0, _assert2['default'])(components.length % 2 === 0);
+      (0, (_assert2 || _assert()).default)(components.length % 2 === 0);
       while (components.length >= 2) {
         var message = {
           length: Number(components.shift()),
           content: components.shift()
         };
         if (!this._isCompletedMessage(message)) {
-          _utils2['default'].logErrorAndThrow('Got message length(' + message.content.length + ') ' + ('not equal to expected(' + message.length + '). ') + ('Message was: ' + JSON.stringify(message)));
+          (_utils2 || _utils()).default.logErrorAndThrow('Got message length(' + message.content.length + ') ' + ('not equal to expected(' + message.length + '). ') + ('Message was: ' + JSON.stringify(message)));
         }
         results.push(this._parseXml(message));
       }
@@ -154,8 +158,8 @@ var DbgpMessageHandler = (function () {
       if (errorValue !== null) {
         throw new Error('Error ' + JSON.stringify(errorValue) + ' parsing xml: ' + xml);
       }
-      _utils2['default'].log('Translating server message result json: ' + JSON.stringify(resultValue));
-      (0, _assert2['default'])(resultValue != null);
+      (_utils2 || _utils()).default.log('Translating server message result json: ' + JSON.stringify(resultValue));
+      (0, (_assert2 || _assert()).default)(resultValue != null);
       return resultValue;
     }
 

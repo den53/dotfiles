@@ -1,9 +1,5 @@
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
  * All rights reserved.
@@ -12,11 +8,21 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * the root directory of this source tree.
  */
 
-var _rxjs = require('rxjs');
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
 
-var _require = require('../../nuclide-remote-connection');
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var RemoteDirectory = _require.RemoteDirectory;
+var _rxjs2;
+
+function _rxjs() {
+  return _rxjs2 = require('rxjs');
+}
+
+var _nuclideRemoteConnection2;
+
+function _nuclideRemoteConnection() {
+  return _nuclideRemoteConnection2 = require('../../nuclide-remote-connection');
+}
 
 var RemoteDirectorySearcher = (function () {
 
@@ -32,12 +38,13 @@ var RemoteDirectorySearcher = (function () {
   _createClass(RemoteDirectorySearcher, [{
     key: 'canSearchDirectory',
     value: function canSearchDirectory(directory) {
-      return RemoteDirectory.isRemoteDirectory(directory);
+      return (_nuclideRemoteConnection2 || _nuclideRemoteConnection()).RemoteDirectory.isRemoteDirectory(directory);
     }
   }, {
     key: 'search',
     value: function search(directories, regex, options) {
-      var _this = this;
+      var _Observable,
+          _this = this;
 
       // Track the files that we have seen updates for.
       var seenFiles = new Set();
@@ -48,12 +55,12 @@ var RemoteDirectorySearcher = (function () {
       });
 
       // Start the search in each directory, and merge the resulting streams.
-      var searchStream = _rxjs.Observable.merge.apply(_rxjs.Observable, _toConsumableArray(directories.map(function (dir, index) {
+      var searchStream = (_Observable = (_rxjs2 || _rxjs()).Observable).merge.apply(_Observable, _toConsumableArray(directories.map(function (dir, index) {
         return services[index].findInProjectSearch(dir.getPath(), regex, options.inclusions);
       })));
 
       // Create a subject that we can use to track search completion.
-      var searchCompletion = new _rxjs.ReplaySubject();
+      var searchCompletion = new (_rxjs2 || _rxjs()).ReplaySubject();
       searchCompletion.next();
 
       var subscription = searchStream.subscribe(function (next) {

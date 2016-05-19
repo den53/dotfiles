@@ -8,26 +8,34 @@
  * the root directory of this source tree.
  */
 
-var _atom = require('atom');
+var _atom2;
 
-var _require = require('./ServerConnection');
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var ServerConnection = _require.ServerConnection;
+var _ServerConnection2;
 
-var _require2 = require('../../nuclide-remote-uri');
+function _ServerConnection() {
+  return _ServerConnection2 = require('./ServerConnection');
+}
 
-var isRemote = _require2.isRemote;
+var _nuclideRemoteUri2;
+
+function _nuclideRemoteUri() {
+  return _nuclideRemoteUri2 = require('../../nuclide-remote-uri');
+}
 
 module.exports = {
   getFileForPath: function getFileForPath(filePath) {
-    if (isRemote(filePath)) {
-      var connection = ServerConnection.getForUri(filePath);
+    if ((0, (_nuclideRemoteUri2 || _nuclideRemoteUri()).isRemote)(filePath)) {
+      var connection = (_ServerConnection2 || _ServerConnection()).ServerConnection.getForUri(filePath);
       if (!connection) {
         return null;
       }
       return connection.createFile(filePath);
     } else {
-      return new _atom.File(filePath);
+      return new (_atom2 || _atom()).File(filePath);
     }
   }
 };

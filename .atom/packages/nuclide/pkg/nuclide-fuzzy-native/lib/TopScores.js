@@ -4,9 +4,9 @@ Object.defineProperty(exports, '__esModule', {
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -16,11 +16,17 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * the root directory of this source tree.
  */
 
-var _heap = require('heap');
+var _heap2;
 
-var _heap2 = _interopRequireDefault(_heap);
+function _heap() {
+  return _heap2 = _interopRequireDefault(require('heap'));
+}
 
-var _utils = require('./utils');
+var _utils2;
+
+function _utils() {
+  return _utils2 = require('./utils');
+}
 
 /**
  * This data structure is designed to hold the top K scores from a collection of
@@ -40,7 +46,7 @@ var TopScores = (function () {
 
     this._capacity = capacity;
     this._full = false;
-    this._heap = new _heap2['default'](_utils.inverseScoreComparator);
+    this._heap = new (_heap2 || _heap()).default((_utils2 || _utils()).inverseScoreComparator);
     this._min = null;
   }
 
@@ -48,7 +54,7 @@ var TopScores = (function () {
     key: 'insert',
     value: function insert(score) {
       if (this._full && this._min) {
-        var cmp = (0, _utils.scoreComparator)(score, this._min);
+        var cmp = (0, (_utils2 || _utils()).scoreComparator)(score, this._min);
         if (cmp < 0) {
           this._doInsert(score);
         }
@@ -80,7 +86,7 @@ var TopScores = (function () {
     key: 'getTopScores',
     value: function getTopScores() {
       var array = this._heap.toArray();
-      array.sort(_utils.scoreComparator);
+      array.sort((_utils2 || _utils()).scoreComparator);
       return array;
     }
   }]);
@@ -88,5 +94,5 @@ var TopScores = (function () {
   return TopScores;
 })();
 
-exports['default'] = TopScores;
-module.exports = exports['default'];
+exports.default = TopScores;
+module.exports = exports.default;

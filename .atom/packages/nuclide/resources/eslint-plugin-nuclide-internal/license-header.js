@@ -9,41 +9,59 @@
  * the root directory of this source tree.
  */
 
-/*eslint-disable no-var, prefer-const*/
+const FAKE_DISABLE_RE = /\s*eslint-disable\s+nuclide-internal\/license-header\s*/;
 
-var FAKE_DISABLE_RE = /\s*eslint-disable\s+nuclide-internal\/license-header\s*/;
+const SHEBANG_RE = /^#!\/usr\/bin\/env node\n/;
+const DIRECTIVES_RE = /^['"]use (babel|strict)['"];\n/;
+const FLOW_PRAGMA_RE = /^\/\* @(no)?flow \*\//;
 
-var SHEBANG_RE = /^#!\/usr\/bin\/env node\n/;
-var DIRECTIVES_RE = /^['"]use (babel|strict)['"];\n/;
-var FLOW_PRAGMA_RE = /^\/\* @(no)?flow \*\//;
+const LICENSE = `\
+/*
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the license found in the LICENSE file in
+ * the root directory of this source tree.
+ */`;
 
-var LICENSE =
-  '/*\n' +
-  ' * Copyright (c) 2015-present, Facebook, Inc.\n' +
-  ' * All rights reserved.\n' +
-  ' *\n' +
-  ' * This source code is licensed under the license found in the LICENSE file in\n' +
-  ' * the root directory of this source tree.\n' +
-  ' */';
+// The LICENSE_WITH_FLOW header is meant for files that are read by flow but
+// not by the transpiler. The build transpiler will transpile any file that
+// starts with the right pragma (e.g. 'use babel', "use babel", /* @flow */, or
+// /** @babel */). There is some flow syntax that babel can't handle, this
+// header is for those files.
+const LICENSE_WITH_FLOW = `\
+/*
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the license found in the LICENSE file in
+ * the root directory of this source tree.
+ *
+ * @flow
+ */`;
 
-var LINE_RE = /^\n/;
-var LINE_OR_END_RE = /^(\n|$)/;
+const LINE_RE = /^\n/;
+const LINE_OR_END_RE = /^(\n|$)/;
 
-module.exports = function(context) {
+module.exports = context => {
   // "eslint-disable" disables rules after it. Since the directives have to go
   // first, we can't use that mechanism to disable this check.
-  var comments = context.getAllComments();
-  for (var i = 0; i < comments.length; i++) {
+  const comments = context.getAllComments();
+  for (let i = 0; i < comments.length; i++) {
     if (FAKE_DISABLE_RE.test(comments[i].value)) {
       return {};
     }
   }
 
-  var sourceCode = context.getSourceCode();
+  const sourceCode = context.getSourceCode();
 
   return {
-    Program: function(node) {
-      var source = sourceCode.text;
+    Program(node) {
+      let source = sourceCode.text;
+
+      if (source.startsWith(LICENSE_WITH_FLOW)) {
+        return;
+      }
 
       // shebangs and directives are optional
       source = source.replace(SHEBANG_RE, '');
@@ -56,8 +74,8 @@ module.exports = function(context) {
           source = source.replace(LINE_OR_END_RE, '');
         } else {
           // ...but, if used, it needs a line break
-          comments.some(function(comment) {
-            var text = sourceCode.getText(comment);
+          comments.some(comment => {
+            const text = sourceCode.getText(comment);
             if (FLOW_PRAGMA_RE.test(text)) {
               context.report({
                 node: comment,
@@ -70,13 +88,13 @@ module.exports = function(context) {
       }
 
       // license is NOT optional
-      if (startsWith(source, LICENSE)) {
+      if (source.startsWith(LICENSE)) {
         source = source.replace(LICENSE, '').replace(LINE_RE, '');
         if (LINE_OR_END_RE.test(source)) {
           // all ok
         } else {
-          comments.some(function(comment) {
-            var text = sourceCode.getText(comment);
+          comments.some(comment => {
+            const text = sourceCode.getText(comment);
             if (text === LICENSE) {
               context.report({
                 node: comment,
@@ -95,9 +113,5 @@ module.exports = function(context) {
     },
   };
 };
-
-function startsWith(str, prefix) {
-  return typeof str === 'string' && str.indexOf(prefix) === 0;
-}
 
 module.exports.schema = [];

@@ -1,6 +1,4 @@
-
-
-var getRootIdentifierInExpression = require('./getRootIdentifierInExpression');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -10,9 +8,15 @@ var getRootIdentifierInExpression = require('./getRootIdentifierInExpression');
  * the root directory of this source tree.
  */
 
+var _getRootIdentifierInExpression2;
+
+function _getRootIdentifierInExpression() {
+  return _getRootIdentifierInExpression2 = _interopRequireDefault(require('./getRootIdentifierInExpression'));
+}
+
 function isRequireExpression(node) {
-  var root = getRootIdentifierInExpression(node);
-  return !!(root && root.name === 'require');
+  var root = (0, (_getRootIdentifierInExpression2 || _getRootIdentifierInExpression()).default)(node);
+  return Boolean(root && root.name === 'require');
 }
 
 module.exports = isRequireExpression;

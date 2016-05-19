@@ -10,15 +10,19 @@ Object.defineProperty(exports, '__esModule', {
  * the root directory of this source tree.
  */
 
-var _TextEventDispatcher = require('./TextEventDispatcher');
+var _TextEventDispatcher2;
 
-exports.TextEventDispatcher = _TextEventDispatcher.TextEventDispatcher;
+function _TextEventDispatcher() {
+  return _TextEventDispatcher2 = require('./TextEventDispatcher');
+}
+
+exports.TextEventDispatcher = (_TextEventDispatcher2 || _TextEventDispatcher()).TextEventDispatcher;
 
 var dispatcher = null;
 module.exports = {
   getInstance: function getInstance() {
     if (!dispatcher) {
-      dispatcher = new _TextEventDispatcher.TextEventDispatcher();
+      dispatcher = new (_TextEventDispatcher2 || _TextEventDispatcher()).TextEventDispatcher();
     }
     return dispatcher;
   }

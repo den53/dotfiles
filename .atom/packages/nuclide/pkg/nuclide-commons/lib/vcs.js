@@ -1,10 +1,10 @@
 var findVcsHelper = _asyncToGenerator(function* (src) {
   var options = {
-    'cwd': path.dirname(src)
+    'cwd': (_path2 || _path()).default.dirname(src)
   };
   var hgResult = undefined;
   try {
-    hgResult = yield asyncExecute('hg', ['root'], options);
+    hgResult = yield (0, (_process2 || _process()).asyncExecute)('hg', ['root'], options);
   } catch (e) {
     hgResult = e;
   }
@@ -18,7 +18,7 @@ var findVcsHelper = _asyncToGenerator(function* (src) {
 
   var gitResult = undefined;
   try {
-    gitResult = yield asyncExecute('git', ['rev-parse', '--show-toplevel'], options);
+    gitResult = yield (0, (_process2 || _process()).asyncExecute)('git', ['rev-parse', '--show-toplevel'], options);
   } catch (e) {
     gitResult = e;
   }
@@ -52,6 +52,8 @@ var findVcs = _asyncToGenerator(function* (src) {
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
  * All rights reserved.
@@ -60,11 +62,17 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
  * the root directory of this source tree.
  */
 
-var _require = require('./process');
+var _process2;
 
-var asyncExecute = _require.asyncExecute;
+function _process() {
+  return _process2 = require('./process');
+}
 
-var path = require('path');
+var _path2;
+
+function _path() {
+  return _path2 = _interopRequireDefault(require('path'));
+}
 
 var vcsInfoCache = {};
 

@@ -6,6 +6,8 @@ var _createClass = (function () { function defineProperties(target, props) { for
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
  * All rights reserved.
@@ -14,15 +16,23 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * the root directory of this source tree.
  */
 
-var _require = require('atom');
+var _atom2;
 
-var Disposable = _require.Disposable;
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var _require2 = require('events');
+var _events2;
 
-var EventEmitter = _require2.EventEmitter;
+function _events() {
+  return _events2 = require('events');
+}
 
-var Constants = require('./Constants');
+var _Constants2;
+
+function _Constants() {
+  return _Constants2 = _interopRequireDefault(require('./Constants'));
+}
 
 var DebuggerMode = Object.freeze({
   STARTING: 'starting',
@@ -43,7 +53,7 @@ var DebuggerStore = (function () {
     _classCallCheck(this, DebuggerStore);
 
     this._dispatcher = dispatcher;
-    this._eventEmitter = new EventEmitter();
+    this._eventEmitter = new (_events2 || _events()).EventEmitter();
     this._dispatcherToken = this._dispatcher.register(this._handlePayload.bind(this));
 
     this._debuggerInstance = null;
@@ -120,7 +130,7 @@ var DebuggerStore = (function () {
     value: function onChange(callback) {
       var emitter = this._eventEmitter;
       this._eventEmitter.on('change', callback);
-      return new Disposable(function () {
+      return new (_atom2 || _atom()).Disposable(function () {
         return emitter.removeListener('change', callback);
       });
     }
@@ -141,28 +151,28 @@ var DebuggerStore = (function () {
       var _this2 = this;
 
       switch (payload.actionType) {
-        case Constants.Actions.SET_PROCESS_SOCKET:
+        case (_Constants2 || _Constants()).default.Actions.SET_PROCESS_SOCKET:
           this._processSocket = payload.data;
           break;
-        case Constants.Actions.ADD_SERVICE:
+        case (_Constants2 || _Constants()).default.Actions.ADD_SERVICE:
           if (this._services.has(payload.data)) {
             return;
           }
           this._services.add(payload.data);
           break;
-        case Constants.Actions.REMOVE_SERVICE:
+        case (_Constants2 || _Constants()).default.Actions.REMOVE_SERVICE:
           if (!this._services.has(payload.data)) {
             return;
           }
-          this._services['delete'](payload.data);
+          this._services.delete(payload.data);
           break;
-        case Constants.Actions.SET_ERROR:
+        case (_Constants2 || _Constants()).default.Actions.SET_ERROR:
           this._error = payload.data;
           break;
-        case Constants.Actions.SET_DEBUGGER_INSTANCE:
+        case (_Constants2 || _Constants()).default.Actions.SET_DEBUGGER_INSTANCE:
           this._debuggerInstance = payload.data;
           break;
-        case Constants.Actions.DEBUGGER_MODE_CHANGE:
+        case (_Constants2 || _Constants()).default.Actions.DEBUGGER_MODE_CHANGE:
           this._debuggerMode = payload.data;
           if (this._debuggerMode === DebuggerMode.STOPPED) {
             this.loaderBreakpointResumePromise = new Promise(function (resolve) {
@@ -170,17 +180,17 @@ var DebuggerStore = (function () {
             });
           }
           break;
-        case Constants.Actions.ADD_EVALUATION_EXPRESSION_PROVIDER:
+        case (_Constants2 || _Constants()).default.Actions.ADD_EVALUATION_EXPRESSION_PROVIDER:
           if (this._evaluationExpressionProviders.has(payload.data)) {
             return;
           }
           this._evaluationExpressionProviders.add(payload.data);
           break;
-        case Constants.Actions.REMOVE_EVALUATION_EXPRESSION_PROVIDER:
+        case (_Constants2 || _Constants()).default.Actions.REMOVE_EVALUATION_EXPRESSION_PROVIDER:
           if (!this._evaluationExpressionProviders.has(payload.data)) {
             return;
           }
-          this._evaluationExpressionProviders['delete'](payload.data);
+          this._evaluationExpressionProviders.delete(payload.data);
           break;
         default:
           return;

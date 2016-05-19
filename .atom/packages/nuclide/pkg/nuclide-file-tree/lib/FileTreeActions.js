@@ -10,45 +10,83 @@ var _createClass = (function () { function defineProperties(target, props) { for
  * the root directory of this source tree.
  */
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _FileTreeConstants = require('./FileTreeConstants');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _nuclideCommons = require('../../nuclide-commons');
+var _FileTreeConstants2;
 
-var _atom = require('atom');
+function _FileTreeConstants() {
+  return _FileTreeConstants2 = require('./FileTreeConstants');
+}
 
-var _FileTreeDispatcher = require('./FileTreeDispatcher');
+var _nuclideCommons2;
 
-var _FileTreeDispatcher2 = _interopRequireDefault(_FileTreeDispatcher);
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
 
-var _FileTreeHelpers = require('./FileTreeHelpers');
+var _atom2;
 
-var _FileTreeHelpers2 = _interopRequireDefault(_FileTreeHelpers);
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var _FileTreeStore = require('./FileTreeStore');
+var _FileTreeDispatcher2;
 
-var _immutable = require('immutable');
+function _FileTreeDispatcher() {
+  return _FileTreeDispatcher2 = _interopRequireDefault(require('./FileTreeDispatcher'));
+}
 
-var _immutable2 = _interopRequireDefault(_immutable);
+var _FileTreeHelpers2;
 
-var _semver = require('semver');
+function _FileTreeHelpers() {
+  return _FileTreeHelpers2 = _interopRequireDefault(require('./FileTreeHelpers'));
+}
 
-var _semver2 = _interopRequireDefault(_semver);
+var _FileTreeStore2;
 
-var _nuclideHgGitBridge = require('../../nuclide-hg-git-bridge');
+function _FileTreeStore() {
+  return _FileTreeStore2 = require('./FileTreeStore');
+}
 
-var _nuclideHgRepositoryBase = require('../../nuclide-hg-repository-base');
+var _immutable2;
 
-var _nuclideLogging = require('../../nuclide-logging');
+function _immutable() {
+  return _immutable2 = _interopRequireDefault(require('immutable'));
+}
 
-var _nuclideRemoteUri = require('../../nuclide-remote-uri');
+var _semver2;
 
-var _nuclideRemoteUri2 = _interopRequireDefault(_nuclideRemoteUri);
+function _semver() {
+  return _semver2 = _interopRequireDefault(require('semver'));
+}
+
+var _nuclideHgGitBridge2;
+
+function _nuclideHgGitBridge() {
+  return _nuclideHgGitBridge2 = require('../../nuclide-hg-git-bridge');
+}
+
+var _nuclideHgRepositoryBase2;
+
+function _nuclideHgRepositoryBase() {
+  return _nuclideHgRepositoryBase2 = require('../../nuclide-hg-repository-base');
+}
+
+var _nuclideLogging2;
+
+function _nuclideLogging() {
+  return _nuclideLogging2 = require('../../nuclide-logging');
+}
+
+var _nuclideRemoteUri2;
+
+function _nuclideRemoteUri() {
+  return _nuclideRemoteUri2 = _interopRequireDefault(require('../../nuclide-remote-uri'));
+}
 
 var instance = undefined;
 
@@ -72,26 +110,26 @@ var FileTreeActions = (function () {
   function FileTreeActions() {
     _classCallCheck(this, FileTreeActions);
 
-    this._dispatcher = _FileTreeDispatcher2['default'].getInstance();
-    this._store = _FileTreeStore.FileTreeStore.getInstance();
-    this._subscriptionForRepository = new _immutable2['default'].Map();
+    this._dispatcher = (_FileTreeDispatcher2 || _FileTreeDispatcher()).default.getInstance();
+    this._store = (_FileTreeStore2 || _FileTreeStore()).FileTreeStore.getInstance();
+    this._subscriptionForRepository = new (_immutable2 || _immutable()).default.Map();
   }
 
   _createClass(FileTreeActions, [{
     key: 'setCwd',
     value: function setCwd(rootKey) {
       this._dispatcher.dispatch({
-        actionType: _FileTreeConstants.ActionType.SET_CWD,
+        actionType: (_FileTreeConstants2 || _FileTreeConstants()).ActionType.SET_CWD,
         rootKey: rootKey
       });
     }
   }, {
     key: 'setRootKeys',
     value: function setRootKeys(rootKeys) {
-      var existingRootKeySet = new _immutable2['default'].Set(this._store.getRootKeys());
-      var addedRootKeys = new _immutable2['default'].Set(rootKeys).subtract(existingRootKeySet);
+      var existingRootKeySet = new (_immutable2 || _immutable()).default.Set(this._store.getRootKeys());
+      var addedRootKeys = new (_immutable2 || _immutable()).default.Set(rootKeys).subtract(existingRootKeySet);
       this._dispatcher.dispatch({
-        actionType: _FileTreeConstants.ActionType.SET_ROOT_KEYS,
+        actionType: (_FileTreeConstants2 || _FileTreeConstants()).ActionType.SET_ROOT_KEYS,
         rootKeys: rootKeys
       });
       for (var rootKey of addedRootKeys) {
@@ -102,7 +140,7 @@ var FileTreeActions = (function () {
     key: 'expandNode',
     value: function expandNode(rootKey, nodeKey) {
       this._dispatcher.dispatch({
-        actionType: _FileTreeConstants.ActionType.EXPAND_NODE,
+        actionType: (_FileTreeConstants2 || _FileTreeConstants()).ActionType.EXPAND_NODE,
         rootKey: rootKey,
         nodeKey: nodeKey
       });
@@ -111,7 +149,7 @@ var FileTreeActions = (function () {
     key: 'expandNodeDeep',
     value: function expandNodeDeep(rootKey, nodeKey) {
       this._dispatcher.dispatch({
-        actionType: _FileTreeConstants.ActionType.EXPAND_NODE_DEEP,
+        actionType: (_FileTreeConstants2 || _FileTreeConstants()).ActionType.EXPAND_NODE_DEEP,
         rootKey: rootKey,
         nodeKey: nodeKey
       });
@@ -119,7 +157,7 @@ var FileTreeActions = (function () {
   }, {
     key: 'deleteSelectedNodes',
     value: function deleteSelectedNodes() {
-      this._dispatcher.dispatch({ actionType: _FileTreeConstants.ActionType.DELETE_SELECTED_NODES });
+      this._dispatcher.dispatch({ actionType: (_FileTreeConstants2 || _FileTreeConstants()).ActionType.DELETE_SELECTED_NODES });
     }
 
     // Makes sure a specific child exists for a given node. If it does not exist, temporarily
@@ -129,7 +167,7 @@ var FileTreeActions = (function () {
     key: 'ensureChildNode',
     value: function ensureChildNode(nodeKey) {
       this._dispatcher.dispatch({
-        actionType: _FileTreeConstants.ActionType.ENSURE_CHILD_NODE,
+        actionType: (_FileTreeConstants2 || _FileTreeConstants()).ActionType.ENSURE_CHILD_NODE,
         nodeKey: nodeKey
       });
     }
@@ -137,7 +175,7 @@ var FileTreeActions = (function () {
     key: 'collapseNode',
     value: function collapseNode(rootKey, nodeKey) {
       this._dispatcher.dispatch({
-        actionType: _FileTreeConstants.ActionType.COLLAPSE_NODE,
+        actionType: (_FileTreeConstants2 || _FileTreeConstants()).ActionType.COLLAPSE_NODE,
         rootKey: rootKey,
         nodeKey: nodeKey
       });
@@ -146,7 +184,7 @@ var FileTreeActions = (function () {
     key: 'collapseNodeDeep',
     value: function collapseNodeDeep(rootKey, nodeKey) {
       this._dispatcher.dispatch({
-        actionType: _FileTreeConstants.ActionType.COLLAPSE_NODE_DEEP,
+        actionType: (_FileTreeConstants2 || _FileTreeConstants()).ActionType.COLLAPSE_NODE_DEEP,
         rootKey: rootKey,
         nodeKey: nodeKey
       });
@@ -155,7 +193,7 @@ var FileTreeActions = (function () {
     key: 'setExcludeVcsIgnoredPaths',
     value: function setExcludeVcsIgnoredPaths(excludeVcsIgnoredPaths) {
       this._dispatcher.dispatch({
-        actionType: _FileTreeConstants.ActionType.SET_EXCLUDE_VCS_IGNORED_PATHS,
+        actionType: (_FileTreeConstants2 || _FileTreeConstants()).ActionType.SET_EXCLUDE_VCS_IGNORED_PATHS,
         excludeVcsIgnoredPaths: excludeVcsIgnoredPaths
       });
     }
@@ -163,7 +201,7 @@ var FileTreeActions = (function () {
     key: 'setHideIgnoredNames',
     value: function setHideIgnoredNames(hideIgnoredNames) {
       this._dispatcher.dispatch({
-        actionType: _FileTreeConstants.ActionType.SET_HIDE_IGNORED_NAMES,
+        actionType: (_FileTreeConstants2 || _FileTreeConstants()).ActionType.SET_HIDE_IGNORED_NAMES,
         hideIgnoredNames: hideIgnoredNames
       });
     }
@@ -171,7 +209,7 @@ var FileTreeActions = (function () {
     key: 'setIgnoredNames',
     value: function setIgnoredNames(ignoredNames) {
       this._dispatcher.dispatch({
-        actionType: _FileTreeConstants.ActionType.SET_IGNORED_NAMES,
+        actionType: (_FileTreeConstants2 || _FileTreeConstants()).ActionType.SET_IGNORED_NAMES,
         ignoredNames: ignoredNames
       });
     }
@@ -179,7 +217,7 @@ var FileTreeActions = (function () {
     key: 'setTrackedNode',
     value: function setTrackedNode(rootKey, nodeKey) {
       this._dispatcher.dispatch({
-        actionType: _FileTreeConstants.ActionType.SET_TRACKED_NODE,
+        actionType: (_FileTreeConstants2 || _FileTreeConstants()).ActionType.SET_TRACKED_NODE,
         nodeKey: nodeKey,
         rootKey: rootKey
       });
@@ -188,7 +226,7 @@ var FileTreeActions = (function () {
     key: 'setUsePreviewTabs',
     value: function setUsePreviewTabs(usePreviewTabs) {
       this._dispatcher.dispatch({
-        actionType: _FileTreeConstants.ActionType.SET_USE_PREVIEW_TABS,
+        actionType: (_FileTreeConstants2 || _FileTreeConstants()).ActionType.SET_USE_PREVIEW_TABS,
         usePreviewTabs: usePreviewTabs
       });
     }
@@ -196,7 +234,7 @@ var FileTreeActions = (function () {
     key: 'setUsePrefixNav',
     value: function setUsePrefixNav(usePrefixNav) {
       this._dispatcher.dispatch({
-        actionType: _FileTreeConstants.ActionType.SET_USE_PREFIX_NAV,
+        actionType: (_FileTreeConstants2 || _FileTreeConstants()).ActionType.SET_USE_PREFIX_NAV,
         usePrefixNav: usePrefixNav
       });
     }
@@ -210,7 +248,7 @@ var FileTreeActions = (function () {
         return;
       }
       if (node.isContainer) {
-        var actionType = node.isExpanded ? _FileTreeConstants.ActionType.COLLAPSE_NODE : _FileTreeConstants.ActionType.EXPAND_NODE;
+        var actionType = node.isExpanded ? (_FileTreeConstants2 || _FileTreeConstants()).ActionType.COLLAPSE_NODE : (_FileTreeConstants2 || _FileTreeConstants()).ActionType.EXPAND_NODE;
         this._dispatcher.dispatch({
           actionType: actionType,
           nodeKey: nodeKey,
@@ -222,17 +260,17 @@ var FileTreeActions = (function () {
           searchAllPanes: true
         };
         // TODO: Make the following the default once Nuclide only supports Atom v1.6.0+
-        if (_semver2['default'].gte(atom.getVersion(), '1.6.0')) {
+        if ((_semver2 || _semver()).default.gte(atom.getVersion(), '1.6.0')) {
           openOptions = _extends({}, openOptions, { pending: true });
         }
-        atom.workspace.open(_FileTreeHelpers2['default'].keyToPath(nodeKey), openOptions);
+        atom.workspace.open((_FileTreeHelpers2 || _FileTreeHelpers()).default.keyToPath(nodeKey), openOptions);
       }
     }
   }, {
     key: 'keepPreviewTab',
     value: function keepPreviewTab() {
       // TODO: Make the following the default once Nuclide only supports Atom v1.6.0+
-      if (_semver2['default'].gte(atom.getVersion(), '1.6.0')) {
+      if ((_semver2 || _semver()).default.gte(atom.getVersion(), '1.6.0')) {
         var activePane = atom.workspace.getActivePane();
         if (activePane != null) {
           activePane.clearPendingItem();
@@ -248,13 +286,13 @@ var FileTreeActions = (function () {
     key: 'openSelectedEntrySplit',
     value: function openSelectedEntrySplit(nodeKey, orientation, side) {
       var pane = atom.workspace.getActivePane();
-      atom.workspace.openURIInPane(_FileTreeHelpers2['default'].keyToPath(nodeKey), pane.split(orientation, side));
+      atom.workspace.openURIInPane((_FileTreeHelpers2 || _FileTreeHelpers()).default.keyToPath(nodeKey), pane.split(orientation, side));
     }
   }, {
     key: 'setVcsStatuses',
     value: function setVcsStatuses(rootKey, vcsStatuses) {
       this._dispatcher.dispatch({
-        actionType: _FileTreeConstants.ActionType.SET_VCS_STATUSES,
+        actionType: (_FileTreeConstants2 || _FileTreeConstants()).ActionType.SET_VCS_STATUSES,
         rootKey: rootKey,
         vcsStatuses: vcsStatuses
       });
@@ -269,10 +307,10 @@ var FileTreeActions = (function () {
       var _this = this;
 
       var rootKeys = rootDirectories.map(function (directory) {
-        return _FileTreeHelpers2['default'].dirPathToKey(directory.getPath());
+        return (_FileTreeHelpers2 || _FileTreeHelpers()).default.dirPathToKey(directory.getPath());
       });
       var rootRepos = yield Promise.all(rootDirectories.map(function (directory) {
-        return (0, _nuclideHgGitBridge.repositoryForPath)(directory.getPath());
+        return (0, (_nuclideHgGitBridge2 || _nuclideHgGitBridge()).repositoryForPath)(directory.getPath());
       }));
 
       // t7114196: Given the current implementation of HgRepositoryClient, each root directory will
@@ -282,20 +320,20 @@ var FileTreeActions = (function () {
 
       // Group all of the root keys by their repository, excluding any that don't belong to a
       // repository.
-      var rootKeysForRepository = _immutable2['default'].List(rootKeys).groupBy(function (rootKey, index) {
+      var rootKeysForRepository = (_immutable2 || _immutable()).default.List(rootKeys).groupBy(function (rootKey, index) {
         return rootRepos[index];
       }).filter(function (v, k) {
         return k != null;
       }).map(function (v) {
-        return new _immutable2['default'].Set(v);
+        return new (_immutable2 || _immutable()).default.Set(v);
       });
 
       var prevRepos = this._store.getRepositories();
 
       // Let the store know we have some new repos!
-      var nextRepos = new _immutable2['default'].Set(rootKeysForRepository.keys());
+      var nextRepos = new (_immutable2 || _immutable()).default.Set(rootKeysForRepository.keys());
       this._dispatcher.dispatch({
-        actionType: _FileTreeConstants.ActionType.SET_REPOSITORIES,
+        actionType: (_FileTreeConstants2 || _FileTreeConstants()).ActionType.SET_REPOSITORIES,
         repositories: nextRepos
       });
 
@@ -323,7 +361,7 @@ var FileTreeActions = (function () {
     key: 'updateWorkingSet',
     value: function updateWorkingSet(workingSet) {
       this._dispatcher.dispatch({
-        actionType: _FileTreeConstants.ActionType.SET_WORKING_SET,
+        actionType: (_FileTreeConstants2 || _FileTreeConstants()).ActionType.SET_WORKING_SET,
         workingSet: workingSet
       });
     }
@@ -331,7 +369,7 @@ var FileTreeActions = (function () {
     key: 'updateOpenFilesWorkingSet',
     value: function updateOpenFilesWorkingSet(openFilesWorkingSet) {
       this._dispatcher.dispatch({
-        actionType: _FileTreeConstants.ActionType.SET_OPEN_FILES_WORKING_SET,
+        actionType: (_FileTreeConstants2 || _FileTreeConstants()).ActionType.SET_OPEN_FILES_WORKING_SET,
         openFilesWorkingSet: openFilesWorkingSet
       });
     }
@@ -339,7 +377,7 @@ var FileTreeActions = (function () {
     key: 'updateWorkingSetsStore',
     value: function updateWorkingSetsStore(workingSetsStore) {
       this._dispatcher.dispatch({
-        actionType: _FileTreeConstants.ActionType.SET_WORKING_SETS_STORE,
+        actionType: (_FileTreeConstants2 || _FileTreeConstants()).ActionType.SET_WORKING_SETS_STORE,
         workingSetsStore: workingSetsStore
       });
     }
@@ -347,7 +385,7 @@ var FileTreeActions = (function () {
     key: 'startEditingWorkingSet',
     value: function startEditingWorkingSet(editedWorkingSet) {
       this._dispatcher.dispatch({
-        actionType: _FileTreeConstants.ActionType.START_EDITING_WORKING_SET,
+        actionType: (_FileTreeConstants2 || _FileTreeConstants()).ActionType.START_EDITING_WORKING_SET,
         editedWorkingSet: editedWorkingSet
       });
     }
@@ -355,14 +393,14 @@ var FileTreeActions = (function () {
     key: 'finishEditingWorkingSet',
     value: function finishEditingWorkingSet() {
       this._dispatcher.dispatch({
-        actionType: _FileTreeConstants.ActionType.FINISH_EDITING_WORKING_SET
+        actionType: (_FileTreeConstants2 || _FileTreeConstants()).ActionType.FINISH_EDITING_WORKING_SET
       });
     }
   }, {
     key: 'checkNode',
     value: function checkNode(rootKey, nodeKey) {
       this._dispatcher.dispatch({
-        actionType: _FileTreeConstants.ActionType.CHECK_NODE,
+        actionType: (_FileTreeConstants2 || _FileTreeConstants()).ActionType.CHECK_NODE,
         rootKey: rootKey,
         nodeKey: nodeKey
       });
@@ -371,7 +409,7 @@ var FileTreeActions = (function () {
     key: 'uncheckNode',
     value: function uncheckNode(rootKey, nodeKey) {
       this._dispatcher.dispatch({
-        actionType: _FileTreeConstants.ActionType.UNCHECK_NODE,
+        actionType: (_FileTreeConstants2 || _FileTreeConstants()).ActionType.UNCHECK_NODE,
         rootKey: rootKey,
         nodeKey: nodeKey
       });
@@ -380,7 +418,7 @@ var FileTreeActions = (function () {
     key: 'setSelectedNode',
     value: function setSelectedNode(rootKey, nodeKey) {
       this._dispatcher.dispatch({
-        actionType: _FileTreeConstants.ActionType.SET_SELECTED_NODE,
+        actionType: (_FileTreeConstants2 || _FileTreeConstants()).ActionType.SET_SELECTED_NODE,
         rootKey: rootKey,
         nodeKey: nodeKey
       });
@@ -389,7 +427,7 @@ var FileTreeActions = (function () {
     key: 'addSelectedNode',
     value: function addSelectedNode(rootKey, nodeKey) {
       this._dispatcher.dispatch({
-        actionType: _FileTreeConstants.ActionType.ADD_SELECTED_NODE,
+        actionType: (_FileTreeConstants2 || _FileTreeConstants()).ActionType.ADD_SELECTED_NODE,
         rootKey: rootKey,
         nodeKey: nodeKey
       });
@@ -398,7 +436,7 @@ var FileTreeActions = (function () {
     key: 'unselectNode',
     value: function unselectNode(rootKey, nodeKey) {
       this._dispatcher.dispatch({
-        actionType: _FileTreeConstants.ActionType.UNSELECT_NODE,
+        actionType: (_FileTreeConstants2 || _FileTreeConstants()).ActionType.UNSELECT_NODE,
         rootKey: rootKey,
         nodeKey: nodeKey
       });
@@ -407,28 +445,28 @@ var FileTreeActions = (function () {
     key: 'moveSelectionUp',
     value: function moveSelectionUp() {
       this._dispatcher.dispatch({
-        actionType: _FileTreeConstants.ActionType.MOVE_SELECTION_UP
+        actionType: (_FileTreeConstants2 || _FileTreeConstants()).ActionType.MOVE_SELECTION_UP
       });
     }
   }, {
     key: 'moveSelectionDown',
     value: function moveSelectionDown() {
       this._dispatcher.dispatch({
-        actionType: _FileTreeConstants.ActionType.MOVE_SELECTION_DOWN
+        actionType: (_FileTreeConstants2 || _FileTreeConstants()).ActionType.MOVE_SELECTION_DOWN
       });
     }
   }, {
     key: 'moveSelectionToTop',
     value: function moveSelectionToTop() {
       this._dispatcher.dispatch({
-        actionType: _FileTreeConstants.ActionType.MOVE_SELECTION_TO_TOP
+        actionType: (_FileTreeConstants2 || _FileTreeConstants()).ActionType.MOVE_SELECTION_TO_TOP
       });
     }
   }, {
     key: 'moveSelectionToBottom',
     value: function moveSelectionToBottom() {
       this._dispatcher.dispatch({
-        actionType: _FileTreeConstants.ActionType.MOVE_SELECTION_TO_BOTTOM
+        actionType: (_FileTreeConstants2 || _FileTreeConstants()).ActionType.MOVE_SELECTION_TO_BOTTOM
       });
     }
   }, {
@@ -447,14 +485,14 @@ var FileTreeActions = (function () {
       }
       // Now that the initial VCS statuses are set, subscribe to changes to the Repository so that the
       // VCS statuses are kept up to date.
-      var subscription = asyncRepo.onDidChangeStatus(
-      // t8227570: If the user is a "nervous saver," many onDidChangeStatuses will get fired in
-      // succession. We should probably explore debouncing this in HgRepositoryClient itself.
-      (0, _nuclideCommons.debounce)(this._onDidChangeStatusesForRepository.bind(this, repo, rootKeysForRepository),
+      var debouncedChangeStatuses = (0, (_nuclideCommons2 || _nuclideCommons()).debounce)(this._onDidChangeStatusesForRepository.bind(this, repo, rootKeysForRepository),
       /* wait */1000,
-      /* immediate */false));
-
-      this._subscriptionForRepository = this._subscriptionForRepository.set(repo, subscription);
+      /* immediate */false);
+      // Different repo types emit different events at individual and refresh updates.
+      // Hence, the need to debounce and listen to both change types.
+      var changeStatusesSubscriptions = new (_atom2 || _atom()).CompositeDisposable();
+      changeStatusesSubscriptions.add(asyncRepo.onDidChangeStatuses(debouncedChangeStatuses), asyncRepo.onDidChangeStatus(debouncedChangeStatuses));
+      this._subscriptionForRepository = this._subscriptionForRepository.set(repo, changeStatusesSubscriptions);
     })
 
     /**
@@ -473,7 +511,8 @@ var FileTreeActions = (function () {
       } else {
         relativeCodePaths = {};
         // Transform `git` bit numbers to `StatusCodeNumber` format.
-        var StatusCodeNumber = _nuclideHgRepositoryBase.hgConstants.StatusCodeNumber;
+
+        var StatusCodeNumber = (_nuclideHgRepositoryBase2 || _nuclideHgRepositoryBase()).hgConstants.StatusCodeNumber;
 
         for (var relativePath in statuses) {
           var gitStatusNumber = statuses[relativePath];
@@ -489,7 +528,7 @@ var FileTreeActions = (function () {
           } else if (asyncRepo.isStatusDeleted(gitStatusNumber)) {
             statusCode = StatusCodeNumber.REMOVED;
           } else {
-            (0, _nuclideLogging.getLogger)().warn('Unrecognized git status number ' + gitStatusNumber);
+            (0, (_nuclideLogging2 || _nuclideLogging()).getLogger)().warn('Unrecognized git status number ' + gitStatusNumber);
             statusCode = StatusCodeNumber.MODIFIED;
           }
           relativeCodePaths[relativePath] = statusCode;
@@ -498,7 +537,7 @@ var FileTreeActions = (function () {
       var repoRoot = repo.getWorkingDirectory();
       var absoluteCodePaths = {};
       for (var relativePath in relativeCodePaths) {
-        var absolutePath = _nuclideRemoteUri2['default'].join(repoRoot, relativePath);
+        var absolutePath = (_nuclideRemoteUri2 || _nuclideRemoteUri()).default.join(repoRoot, relativePath);
         absoluteCodePaths[absolutePath] = relativeCodePaths[relativePath];
       }
       return absoluteCodePaths;
@@ -521,7 +560,7 @@ var FileTreeActions = (function () {
         return;
       }
 
-      this._subscriptionForRepository = this._subscriptionForRepository['delete'](repo);
+      this._subscriptionForRepository = this._subscriptionForRepository.delete(repo);
       disposable.dispose();
     }
   }]);

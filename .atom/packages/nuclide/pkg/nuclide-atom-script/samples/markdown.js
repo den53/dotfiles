@@ -10,31 +10,39 @@ Object.defineProperty(exports, '__esModule', {
  * the root directory of this source tree.
  */
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
-var _fs = require('fs');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _fs2 = _interopRequireDefault(_fs);
+var _fs2;
 
-var _assert = require('assert');
+function _fs() {
+  return _fs2 = _interopRequireDefault(require('fs'));
+}
 
-var _assert2 = _interopRequireDefault(_assert);
+var _assert2;
 
-var _path = require('path');
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
-var _path2 = _interopRequireDefault(_path);
+var _path2;
 
-var _yargs = require('yargs');
+function _path() {
+  return _path2 = _interopRequireDefault(require('path'));
+}
 
-var _yargs2 = _interopRequireDefault(_yargs);
+var _yargs2;
+
+function _yargs() {
+  return _yargs2 = _interopRequireDefault(require('yargs'));
+}
 
 /* eslint-disable no-console */
 
-exports['default'] = _asyncToGenerator(function* (args) {
+exports.default = _asyncToGenerator(function* (args) {
   var argv = yield new Promise(function (resolve, reject) {
-    resolve(_yargs2['default'].usage('Usage: atom-script ' + __dirname + '/markdown.js -o <output file> <input file>').help('h').alias('h', 'help').option('out', {
+    resolve((_yargs2 || _yargs()).default.usage('Usage: atom-script ' + __dirname + '/markdown.js -o <output file> <input file>').help('h').alias('h', 'help').option('out', {
       alias: 'o',
       demand: false,
       describe: 'Must specify a path to an output file.',
@@ -55,7 +63,7 @@ exports['default'] = _asyncToGenerator(function* (args) {
 
   // Use markdown-preview to generate the HTML.
   var markdownPreviewPackage = atom.packages.getActivePackage('markdown-preview');
-  (0, _assert2['default'])(markdownPreviewPackage);
+  (0, (_assert2 || _assert()).default)(markdownPreviewPackage);
   // Apparently copyHtml() is exposed as an export of markdown-preview.
   markdownPreviewPackage.mainModule.copyHtml();
   // Note it should be possible to get the HTML via MarkdownPreviewView.getHTML(),
@@ -67,7 +75,7 @@ exports['default'] = _asyncToGenerator(function* (args) {
 
   // We create a MarkdownPreviewView to call its getMarkdownPreviewCSS() method.
   // $FlowIssue: Need to dynamically load a path.
-  var MarkdownPreviewView = require(_path2['default'].join(markdownPreviewPackage.path, 'lib/markdown-preview-view.js'));
+  var MarkdownPreviewView = require((_path2 || _path()).default.join(markdownPreviewPackage.path, 'lib/markdown-preview-view.js'));
   var view = new MarkdownPreviewView({
     editorId: textEditor.id,
     filePath: markdownFile
@@ -88,7 +96,7 @@ exports['default'] = _asyncToGenerator(function* (args) {
     console.log(html);
   } else {
     var outputFile = resolvePath(argv.out);
-    _fs2['default'].writeFileSync(outputFile, html);
+    (_fs2 || _fs()).default.writeFileSync(outputFile, html);
   }
 
   return 0;
@@ -96,12 +104,12 @@ exports['default'] = _asyncToGenerator(function* (args) {
 
 // TODO(mbolin): Consider using fs-plus to ensure this handles ~ in fileName correctly.
 function resolvePath(fileName) {
-  if (!_path2['default'].isAbsolute(fileName)) {
+  if (!(_path2 || _path()).default.isAbsolute(fileName)) {
     var pwd = process.env['PWD'];
-    (0, _assert2['default'])(pwd);
-    return _path2['default'].join(pwd, fileName);
+    (0, (_assert2 || _assert()).default)(pwd);
+    return (_path2 || _path()).default.join(pwd, fileName);
   } else {
     return fileName;
   }
 }
-module.exports = exports['default'];
+module.exports = exports.default;

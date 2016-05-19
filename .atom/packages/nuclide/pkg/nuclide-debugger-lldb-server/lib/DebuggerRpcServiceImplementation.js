@@ -38,41 +38,67 @@ var getAttachTargetInfoList = _asyncToGenerator(function* () {
 
 exports.getAttachTargetInfoList = getAttachTargetInfoList;
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
-var _eventKit = require('event-kit');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _rxjs = require('rxjs');
+var _eventKit2;
 
-var _child_process = require('child_process');
+function _eventKit() {
+  return _eventKit2 = require('event-kit');
+}
 
-var _child_process2 = _interopRequireDefault(_child_process);
+var _rxjs2;
 
-var _path = require('path');
+function _rxjs() {
+  return _rxjs2 = require('rxjs');
+}
 
-var _path2 = _interopRequireDefault(_path);
+var _child_process2;
 
-var _utils = require('./utils');
+function _child_process() {
+  return _child_process2 = _interopRequireDefault(require('child_process'));
+}
 
-var _utils2 = _interopRequireDefault(_utils);
+var _path2;
 
-var _ws = require('ws');
+function _path() {
+  return _path2 = _interopRequireDefault(require('path'));
+}
 
-var _ws2 = _interopRequireDefault(_ws);
+var _utils2;
 
-var _nuclideDebuggerCommonLibClientCallback = require('../../nuclide-debugger-common/lib/ClientCallback');
+function _utils() {
+  return _utils2 = _interopRequireDefault(require('./utils'));
+}
 
-var _nuclideCommons = require('../../nuclide-commons');
+var _ws2;
 
-var log = _utils2['default'].log;
-var logTrace = _utils2['default'].logTrace;
-var logError = _utils2['default'].logError;
-var logInfo = _utils2['default'].logInfo;
-var setLogLevel = _utils2['default'].setLogLevel;
+function _ws() {
+  return _ws2 = _interopRequireDefault(require('ws'));
+}
+
+var _default = (_utils2 || _utils()).default;
+
+var log = _default.log;
+var logTrace = _default.logTrace;
+var logError = _default.logError;
+var logInfo = _default.logInfo;
+var setLogLevel = _default.setLogLevel;
+
+var _nuclideDebuggerCommonLibClientCallback2;
+
+function _nuclideDebuggerCommonLibClientCallback() {
+  return _nuclideDebuggerCommonLibClientCallback2 = require('../../nuclide-debugger-common/lib/ClientCallback');
+}
+
+var _nuclideCommons2;
+
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
 
 var DebuggerConnection = (function () {
   function DebuggerConnection(clientCallback, lldbWebSocket, lldbProcess, subscriptions) {
@@ -133,10 +159,10 @@ var DebuggerRpcService = (function () {
 
     _classCallCheck(this, DebuggerRpcService);
 
-    this._clientCallback = new _nuclideDebuggerCommonLibClientCallback.ClientCallback();
+    this._clientCallback = new (_nuclideDebuggerCommonLibClientCallback2 || _nuclideDebuggerCommonLibClientCallback()).ClientCallback();
     this._config = config;
     setLogLevel(config.logLevel);
-    this._subscriptions = new _eventKit.CompositeDisposable(new _eventKit.Disposable(function () {
+    this._subscriptions = new (_eventKit2 || _eventKit()).CompositeDisposable(new (_eventKit2 || _eventKit()).Disposable(function () {
       return _this._clientCallback.dispose();
     }));
   }
@@ -175,7 +201,7 @@ var DebuggerRpcService = (function () {
       this._registerIpcChannel(lldbProcess);
       this._sendArgumentsToPythonBackend(lldbProcess, inferiorArguments);
       var lldbWebSocket = yield this._connectWithLLDB(lldbProcess);
-      this._subscriptions.add(new _eventKit.Disposable(function () {
+      this._subscriptions.add(new (_eventKit2 || _eventKit()).Disposable(function () {
         return lldbWebSocket.terminate();
       }));
       return new DebuggerConnection(this._clientCallback, lldbWebSocket, lldbProcess, this._subscriptions);
@@ -186,7 +212,7 @@ var DebuggerRpcService = (function () {
       var IPC_CHANNEL_FD = 4;
       /* $FlowFixMe - update Flow defs for ChildProcess */
       var ipcStream = lldbProcess.stdio[IPC_CHANNEL_FD];
-      this._subscriptions.add(new _nuclideCommons.DisposableSubscription((0, _nuclideCommons.splitStream)((0, _nuclideCommons.observeStream)(ipcStream)).subscribe(this._handleIpcMessage.bind(this, ipcStream), function (error) {
+      this._subscriptions.add(new (_nuclideCommons2 || _nuclideCommons()).DisposableSubscription((0, (_nuclideCommons2 || _nuclideCommons()).splitStream)((0, (_nuclideCommons2 || _nuclideCommons()).observeStream)(ipcStream)).subscribe(this._handleIpcMessage.bind(this, ipcStream), function (error) {
         return logError('ipcStream error: ' + JSON.stringify(error));
       })));
     }
@@ -210,18 +236,18 @@ var DebuggerRpcService = (function () {
   }, {
     key: '_spawnPythonBackend',
     value: function _spawnPythonBackend() {
-      var lldbPythonScriptPath = _path2['default'].join(__dirname, '../scripts/main.py');
+      var lldbPythonScriptPath = (_path2 || _path()).default.join(__dirname, '../scripts/main.py');
       var python_args = [lldbPythonScriptPath, '--arguments_in_json'];
       var options = {
-        cwd: _path2['default'].dirname(lldbPythonScriptPath),
+        cwd: (_path2 || _path()).default.dirname(lldbPythonScriptPath),
         // FD[3] is used for sending arguments JSON blob.
         // FD[4] is used as a ipc channel for output/atom notifications.
         stdio: ['pipe', 'pipe', 'pipe', 'pipe', 'pipe'],
         detached: false };
       // When Atom is killed, clang_server.py should be killed, too.
       logInfo('spawn child_process: ' + JSON.stringify(python_args));
-      var lldbProcess = _child_process2['default'].spawn(this._config.pythonBinaryPath, python_args, options);
-      this._subscriptions.add(new _eventKit.Disposable(function () {
+      var lldbProcess = (_child_process2 || _child_process()).default.spawn(this._config.pythonBinaryPath, python_args, options);
+      this._subscriptions.add(new (_eventKit2 || _eventKit()).Disposable(function () {
         return lldbProcess.kill();
       }));
       return lldbProcess;
@@ -235,7 +261,7 @@ var DebuggerRpcService = (function () {
       // Make sure the bidirectional communication channel is set up before
       // sending data.
       argumentsStream.write('init\n');
-      this._subscriptions.add(new _nuclideCommons.DisposableSubscription((0, _nuclideCommons.observeStream)(argumentsStream).first().subscribe(function (text) {
+      this._subscriptions.add(new (_nuclideCommons2 || _nuclideCommons()).DisposableSubscription((0, (_nuclideCommons2 || _nuclideCommons()).observeStream)(argumentsStream).first().subscribe(function (text) {
         if (text.startsWith('ready')) {
           var args_in_json = JSON.stringify(args);
           logInfo('Sending ' + args_in_json + ' to child_process');
@@ -270,7 +296,7 @@ var DebuggerRpcService = (function () {
               // Investigate if we can use localhost and match protocol version between client/server.
               var lldbWebSocketAddress = 'ws://127.0.0.1:' + result[1] + '/';
               log('Connecting lldb with address: ' + lldbWebSocketAddress);
-              var ws = new _ws2['default'](lldbWebSocketAddress);
+              var ws = new (_ws2 || _ws()).default(lldbWebSocketAddress);
               ws.on('open', function () {
                 // Successfully connected with lldb python process, fulfill the promise.
                 resolve(ws);

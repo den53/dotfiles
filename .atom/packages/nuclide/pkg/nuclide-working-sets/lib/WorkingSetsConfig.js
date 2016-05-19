@@ -4,9 +4,9 @@ Object.defineProperty(exports, '__esModule', {
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -16,9 +16,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * the root directory of this source tree.
  */
 
-var _nuclideFeatureConfig = require('../../nuclide-feature-config');
+var _nuclideFeatureConfig2;
 
-var _nuclideFeatureConfig2 = _interopRequireDefault(_nuclideFeatureConfig);
+function _nuclideFeatureConfig() {
+  return _nuclideFeatureConfig2 = _interopRequireDefault(require('../../nuclide-feature-config'));
+}
 
 var CONFIG_KEY = 'nuclide-working-sets.workingSets';
 
@@ -43,17 +45,17 @@ var WorkingSetsConfig = (function () {
         callback(copiedDefinitions);
       };
 
-      return _nuclideFeatureConfig2['default'].observe(CONFIG_KEY, wrapped);
+      return (_nuclideFeatureConfig2 || _nuclideFeatureConfig()).default.observe(CONFIG_KEY, wrapped);
     }
   }, {
     key: 'getDefinitions',
     value: function getDefinitions() {
-      return _nuclideFeatureConfig2['default'].get(CONFIG_KEY);
+      return (_nuclideFeatureConfig2 || _nuclideFeatureConfig()).default.get(CONFIG_KEY);
     }
   }, {
     key: 'setDefinitions',
     value: function setDefinitions(definitions) {
-      _nuclideFeatureConfig2['default'].set(CONFIG_KEY, definitions);
+      (_nuclideFeatureConfig2 || _nuclideFeatureConfig()).default.set(CONFIG_KEY, definitions);
     }
   }]);
 

@@ -1,4 +1,4 @@
-var _require = require('../../../nuclide-ui/lib/AtomInput');
+var _nuclideUiLibAtomInput2;
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -8,22 +8,24 @@ var _require = require('../../../nuclide-ui/lib/AtomInput');
  * the root directory of this source tree.
  */
 
-var AtomInput = _require.AtomInput;
+function _nuclideUiLibAtomInput() {
+  return _nuclideUiLibAtomInput2 = require('../../../nuclide-ui/lib/AtomInput');
+}
 
-var _require2 = require('react-for-atom');
+var _reactForAtom2;
 
-var React = _require2.React;
-var PropTypes = React.PropTypes;
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
 
-var FilePreview = React.createClass({
-  displayName: 'FilePreview',
+var FilePreview = (_reactForAtom2 || _reactForAtom()).React.createClass({
 
   propTypes: {
-    text: PropTypes.string.isRequired,
-    grammar: PropTypes.object,
-    references: PropTypes.arrayOf(PropTypes.object /*Reference*/).isRequired,
-    startLine: PropTypes.number.isRequired,
-    endLine: PropTypes.number.isRequired
+    text: (_reactForAtom2 || _reactForAtom()).React.PropTypes.string.isRequired,
+    grammar: (_reactForAtom2 || _reactForAtom()).React.PropTypes.object,
+    references: (_reactForAtom2 || _reactForAtom()).React.PropTypes.arrayOf((_reactForAtom2 || _reactForAtom()).React.PropTypes.object /*Reference*/).isRequired,
+    startLine: (_reactForAtom2 || _reactForAtom()).React.PropTypes.number.isRequired,
+    endLine: (_reactForAtom2 || _reactForAtom()).React.PropTypes.number.isRequired
   },
 
   componentDidMount: function componentDidMount() {
@@ -49,21 +51,21 @@ var FilePreview = React.createClass({
   render: function render() {
     var lineNumbers = [];
     for (var i = this.props.startLine; i <= this.props.endLine; i++) {
-      lineNumbers.push(React.createElement(
+      lineNumbers.push((_reactForAtom2 || _reactForAtom()).React.createElement(
         'div',
         { key: i, className: 'nuclide-find-references-line-number' },
         i
       ));
     }
-    return React.createElement(
+    return (_reactForAtom2 || _reactForAtom()).React.createElement(
       'div',
       { className: 'nuclide-find-references-file-preview' },
-      React.createElement(
+      (_reactForAtom2 || _reactForAtom()).React.createElement(
         'div',
         { className: 'nuclide-find-references-line-number-column' },
         lineNumbers
       ),
-      React.createElement(AtomInput, {
+      (_reactForAtom2 || _reactForAtom()).React.createElement((_nuclideUiLibAtomInput2 || _nuclideUiLibAtomInput()).AtomInput, {
         ref: 'editor',
         initialValue: this.props.text,
         disabled: true

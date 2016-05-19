@@ -29,9 +29,9 @@ var getLineNumberForTag = _asyncToGenerator(function* (tag) {
       }
       try {
         // Search for the pattern in the file.
-        var service = (0, _nuclideRemoteConnection.getServiceByNuclideUri)('FileSystemService', tag.file);
-        (0, _assert2['default'])(service);
-        var contents = yield service.readFile((0, _nuclideRemoteUri.getPath)(tag.file));
+        var service = (0, (_nuclideRemoteConnection2 || _nuclideRemoteConnection()).getServiceByNuclideUri)('FileSystemService', tag.file);
+        (0, (_assert2 || _assert()).default)(service);
+        var contents = yield service.readFile((0, (_nuclideRemoteUri2 || _nuclideRemoteUri()).getPath)(tag.file));
         var lines = contents.toString('utf8').split('\n');
         lineNumber = 0;
         for (var i = 0; i < lines.length; i++) {
@@ -41,7 +41,7 @@ var getLineNumberForTag = _asyncToGenerator(function* (tag) {
           }
         }
       } catch (e) {
-        (0, _nuclideLogging.getLogger)().warn('nuclide-remote-ctags: Could not locate pattern in ' + tag.file, e);
+        (0, (_nuclideLogging2 || _nuclideLogging()).getLogger)().warn('nuclide-remote-ctags: Could not locate pattern in ' + tag.file, e);
       }
     }
 
@@ -50,19 +50,33 @@ var getLineNumberForTag = _asyncToGenerator(function* (tag) {
 
 exports.getLineNumberForTag = getLineNumberForTag;
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
-var _assert = require('assert');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _assert2 = _interopRequireDefault(_assert);
+var _assert2;
 
-var _nuclideLogging = require('../../nuclide-logging');
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
-var _nuclideRemoteConnection = require('../../nuclide-remote-connection');
+var _nuclideLogging2;
 
-var _nuclideRemoteUri = require('../../nuclide-remote-uri');
+function _nuclideLogging() {
+  return _nuclideLogging2 = require('../../nuclide-logging');
+}
+
+var _nuclideRemoteConnection2;
+
+function _nuclideRemoteConnection() {
+  return _nuclideRemoteConnection2 = require('../../nuclide-remote-connection');
+}
+
+var _nuclideRemoteUri2;
+
+function _nuclideRemoteUri() {
+  return _nuclideRemoteUri2 = require('../../nuclide-remote-uri');
+}
 
 // Taken from http://ctags.sourceforge.net/FORMAT
 var CTAGS_KIND_NAMES = {

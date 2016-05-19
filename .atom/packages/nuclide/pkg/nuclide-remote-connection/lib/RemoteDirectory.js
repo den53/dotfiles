@@ -12,29 +12,45 @@ Object.defineProperty(exports, '__esModule', {
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _assert = require('assert');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _assert2 = _interopRequireDefault(_assert);
+var _assert2;
 
-var _path = require('path');
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
-var _path2 = _interopRequireDefault(_path);
+var _path2;
 
-var _atom = require('atom');
+function _path() {
+  return _path2 = _interopRequireDefault(require('path'));
+}
 
-var _nuclideLogging = require('../../nuclide-logging');
+var _atom2;
 
-var _nuclideRemoteUri = require('../../nuclide-remote-uri');
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var _nuclideRemoteUri2 = _interopRequireDefault(_nuclideRemoteUri);
+var _nuclideLogging2;
 
-var logger = (0, _nuclideLogging.getLogger)();
+function _nuclideLogging() {
+  return _nuclideLogging2 = require('../../nuclide-logging');
+}
+
+var _nuclideRemoteUri2;
+
+function _nuclideRemoteUri() {
+  return _nuclideRemoteUri2 = _interopRequireDefault(require('../../nuclide-remote-uri'));
+}
+
+var posixPath = (_path2 || _path()).default.posix;
+
+var logger = (0, (_nuclideLogging2 || _nuclideLogging()).getLogger)();
 
 var MARKER_PROPERTY_FOR_REMOTE_DIRECTORY = '__nuclide_remote_directory__';
 
@@ -61,24 +77,25 @@ var RemoteDirectory = (function () {
     Object.defineProperty(this, MARKER_PROPERTY_FOR_REMOTE_DIRECTORY, { value: true });
     this._server = server;
     this._uri = uri;
-    this._emitter = new _atom.Emitter();
+    this._emitter = new (_atom2 || _atom()).Emitter();
     this._subscriptionCount = 0;
     this._symlink = symlink;
 
-    var _remoteUri$parse = _nuclideRemoteUri2['default'].parse(uri);
+    var _default$parse = (_nuclideRemoteUri2 || _nuclideRemoteUri()).default.parse(uri);
 
-    var directoryPath = _remoteUri$parse.path;
-    var protocol = _remoteUri$parse.protocol;
-    var host = _remoteUri$parse.host;
+    var directoryPath = _default$parse.path;
+    var protocol = _default$parse.protocol;
+    var host = _default$parse.host;
 
-    (0, _assert2['default'])(protocol);
-    (0, _assert2['default'])(host);
+    (0, (_assert2 || _assert()).default)(protocol);
+    (0, (_assert2 || _assert()).default)(host);
     /** In the example, this would be "nuclide://example.com:9090". */
     this._host = protocol + '//' + host;
     /** In the example, this would be "/path/to/directory". */
     this._localPath = directoryPath;
     // A workaround before Atom 2.0: see ::getHgRepoInfo of main.js.
     this._hgRepositoryDescription = options ? options.hgRepositoryDescription : null;
+    this._deleted = false;
   }
 
   _createClass(RemoteDirectory, [{
@@ -86,6 +103,12 @@ var RemoteDirectory = (function () {
     value: function onDidChange(callback) {
       this._willAddSubscription();
       return this._trackUnsubscription(this._emitter.on('did-change', callback));
+    }
+  }, {
+    key: 'onDidDelete',
+    value: function onDidDelete(callback) {
+      this._willAddSubscription();
+      return this._trackUnsubscription(this._emitter.on('did-delete', callback));
     }
   }, {
     key: '_willAddSubscription',
@@ -113,14 +136,19 @@ var RemoteDirectory = (function () {
       var watchStream = watchDirectory(this._uri);
       this._watchSubscription = watchStream.subscribe(function (watchUpdate) {
         logger.debug('watchDirectory update:', watchUpdate);
-        if (watchUpdate.type === 'change') {
-          return _this._handleNativeChangeEvent();
+        switch (watchUpdate.type) {
+          case 'change':
+            return _this._handleNativeChangeEvent();
+          case 'delete':
+            return _this._handleNativeDeleteEvent();
         }
       }, function (error) {
         logger.error('Failed to subscribe RemoteDirectory:', _this._uri, error);
+        _this._watchSubscription = null;
       }, function () {
         // Nothing needs to be done if the root directory watch has ended.
         logger.debug('watchDirectory ended: ' + _this._uri);
+        _this._watchSubscription = null;
       });
     }
   }, {
@@ -129,11 +157,20 @@ var RemoteDirectory = (function () {
       this._emitter.emit('did-change');
     }
   }, {
+    key: '_handleNativeDeleteEvent',
+    value: function _handleNativeDeleteEvent() {
+      this._unsubscribeFromNativeChangeEvents();
+      if (!this._deleted) {
+        this._deleted = true;
+        this._emitter.emit('did-delete');
+      }
+    }
+  }, {
     key: '_trackUnsubscription',
     value: function _trackUnsubscription(subscription) {
       var _this2 = this;
 
-      return new _atom.Disposable(function () {
+      return new (_atom2 || _atom()).Disposable(function () {
         subscription.dispose();
         _this2._didRemoveSubscription();
       });
@@ -182,8 +219,8 @@ var RemoteDirectory = (function () {
   }, {
     key: '_isRoot',
     value: function _isRoot(filePath) {
-      filePath = _path2['default'].normalize(filePath);
-      var parts = _path2['default'].parse(filePath);
+      filePath = posixPath.normalize(filePath);
+      var parts = posixPath.parse(filePath);
       return parts.root === filePath;
     }
   }, {
@@ -209,7 +246,7 @@ var RemoteDirectory = (function () {
   }, {
     key: 'getBaseName',
     value: function getBaseName() {
-      return _path2['default'].basename(this._localPath);
+      return posixPath.basename(this._localPath);
     }
   }, {
     key: 'relativize',
@@ -218,8 +255,8 @@ var RemoteDirectory = (function () {
         return uri;
       }
       // Note: host of uri must match this._host.
-      var subpath = _nuclideRemoteUri2['default'].parse(uri).path;
-      return _path2['default'].relative(this._localPath, subpath);
+      var subpath = (_nuclideRemoteUri2 || _nuclideRemoteUri()).default.parse(uri).path;
+      return posixPath.relative(this._localPath, subpath);
     }
   }, {
     key: 'getParent',
@@ -227,25 +264,26 @@ var RemoteDirectory = (function () {
       if (this.isRoot()) {
         return this;
       } else {
-        var uri = this._host + _path2['default'].normalize(_path2['default'].join(this._localPath, '..'));
+        var uri = this._host + posixPath.normalize(posixPath.join(this._localPath, '..'));
         return this._server.createDirectory(uri, this._hgRepositoryDescription);
       }
     }
   }, {
     key: 'getFile',
     value: function getFile(filename) {
-      var uri = this._host + _path2['default'].join(this._localPath, filename);
+      var uri = this._host + posixPath.join(this._localPath, filename);
       return this._server.createFile(uri);
     }
   }, {
     key: 'getSubdirectory',
     value: function getSubdirectory(dirname) {
-      var uri = this._host + _path2['default'].join(this._localPath, dirname);
+      var uri = this._host + posixPath.join(this._localPath, dirname);
       return this._server.createDirectory(uri, this._hgRepositoryDescription);
     }
   }, {
     key: 'create',
     value: _asyncToGenerator(function* () {
+      (0, (_assert2 || _assert()).default)(!this._deleted, 'RemoteDirectory has been deleted');
       var created = yield this._getFileSystemService().mkdirp(this._localPath);
       if (this._subscriptionCount > 0) {
         this._subscribeToNativeChangeEvents();
@@ -256,7 +294,7 @@ var RemoteDirectory = (function () {
     key: 'delete',
     value: _asyncToGenerator(function* () {
       yield this._getFileSystemService().rmdir(this._localPath);
-      this._unsubscribeFromNativeChangeEvents();
+      this._handleNativeDeleteEvent();
     })
 
     /**
@@ -271,14 +309,14 @@ var RemoteDirectory = (function () {
       // setting the new `this._localPath`.
       this._unsubscribeFromNativeChangeEvents();
 
-      var _remoteUri$parse2 = _nuclideRemoteUri2['default'].parse(this._uri);
+      var _default$parse2 = (_nuclideRemoteUri2 || _nuclideRemoteUri()).default.parse(this._uri);
 
-      var protocol = _remoteUri$parse2.protocol;
-      var host = _remoteUri$parse2.host;
+      var protocol = _default$parse2.protocol;
+      var host = _default$parse2.host;
 
       this._localPath = newPath;
-      (0, _assert2['default'])(protocol);
-      (0, _assert2['default'])(host);
+      (0, (_assert2 || _assert()).default)(protocol);
+      (0, (_assert2 || _assert()).default)(host);
       this._uri = protocol + '//' + host + this._localPath;
 
       // Subscribe to changes for the new `this._localPath`. This must be done
@@ -318,8 +356,8 @@ var RemoteDirectory = (function () {
       entries.sort(function (a, b) {
         return a.file.toLowerCase().localeCompare(b.file.toLowerCase());
       }).forEach(function (entry) {
-        (0, _assert2['default'])(entry);
-        var uri = _this3._host + _path2['default'].join(_this3._localPath, entry.file);
+        (0, (_assert2 || _assert()).default)(entry);
+        var uri = _this3._host + posixPath.join(_this3._localPath, entry.file);
         var symlink = entry.isSymbolicLink;
         if (entry.stats && entry.stats.isFile()) {
           files.push(_this3._server.createFile(uri, symlink));
@@ -339,8 +377,8 @@ var RemoteDirectory = (function () {
       // So first check startsWith. If so, then if the two path lengths are
       // equal OR if the next character in the path to check is a path
       // separator, then we know the checked path is in this path.
-      var endIndex = this.getPath().slice(-1) === _path2['default'].sep ? this.getPath().length - 1 : this.getPath().length;
-      return pathToCheck != null && pathToCheck.startsWith(this.getPath()) && (pathToCheck.length === this.getPath().length || pathToCheck.charAt(endIndex) === _path2['default'].sep);
+      var endIndex = this.getPath().slice(-1) === posixPath.sep ? this.getPath().length - 1 : this.getPath().length;
+      return pathToCheck != null && pathToCheck.startsWith(this.getPath()) && (pathToCheck.length === this.getPath().length || pathToCheck.charAt(endIndex) === posixPath.sep);
     }
   }, {
     key: 'off',

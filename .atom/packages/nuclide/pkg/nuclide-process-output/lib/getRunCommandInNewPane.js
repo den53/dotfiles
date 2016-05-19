@@ -10,23 +10,39 @@ Object.defineProperty(exports, '__esModule', {
  * the root directory of this source tree.
  */
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-var _reactForAtom = require('react-for-atom');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _atom = require('atom');
+var _reactForAtom2;
 
-var _assert = require('assert');
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
 
-var _assert2 = _interopRequireDefault(_assert);
+var _atom2;
 
-var _nuclideAtomHelpers = require('../../nuclide-atom-helpers');
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var _createBoundTextBuffer = require('./createBoundTextBuffer');
+var _assert2;
 
-var _createBoundTextBuffer2 = _interopRequireDefault(_createBoundTextBuffer);
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
+
+var _nuclideAtomHelpers2;
+
+function _nuclideAtomHelpers() {
+  return _nuclideAtomHelpers2 = require('../../nuclide-atom-helpers');
+}
+
+var _createBoundTextBuffer2;
+
+function _createBoundTextBuffer() {
+  return _createBoundTextBuffer2 = _interopRequireDefault(require('./createBoundTextBuffer'));
+}
 
 var NUCLIDE_PROCESS_OUTPUT_VIEW_URI = 'atom://nuclide/process-output/';
 var PROCESS_OUTPUT_HANDLER_KEY = 'nuclide-processOutputHandler';
@@ -60,18 +76,18 @@ function createProcessOutputView(uri, openOptions) {
   var ProcessOutputView = require('./ProcessOutputView');
   var component = ProcessOutputView.createView({
     title: tabTitle,
-    textBuffer: (0, _createBoundTextBuffer2['default'])(processOutputStore, processOutputHandler),
+    textBuffer: (0, (_createBoundTextBuffer2 || _createBoundTextBuffer()).default)(processOutputStore, processOutputHandler),
     processOutputStore: processOutputStore,
     processOutputViewTopElement: processOutputViewTopElement
   });
 
-  (0, _assert2['default'])(processOutputStores);
+  (0, (_assert2 || _assert()).default)(processOutputStores);
   processOutputStores.add(processOutputStore);
 
   // When the process exits, we want to remove the reference to the process.
   var handleProcessExit = function handleProcessExit() {
     if (processOutputStores) {
-      processOutputStores['delete'](processOutputStore);
+      processOutputStores.delete(processOutputStore);
     }
   };
   var handleProcessExitWithError = function handleProcessExitWithError(error) {
@@ -93,7 +109,7 @@ function runCommandInNewPane(options) {
 
   var tabTitle = options.tabTitle;
   if (options.destroyExistingPane) {
-    (0, _nuclideAtomHelpers.destroyPaneItemWithTitle)(tabTitle);
+    (0, (_nuclideAtomHelpers2 || _nuclideAtomHelpers()).destroyPaneItemWithTitle)(tabTitle);
   }
   // Not documented: the 'options' passed to atom.workspace.open() are passed to the opener.
   // There's no other great way for a consumer of this service to specify a ProcessOutputHandler.
@@ -106,7 +122,7 @@ function runCommandInNewPane(options) {
 
 function activateModule() {
   if (!subscriptions) {
-    subscriptions = new _atom.CompositeDisposable();
+    subscriptions = new (_atom2 || _atom()).CompositeDisposable();
     // $FlowFixMe: the expando options argument is an undocumented hack.
     subscriptions.add(atom.workspace.addOpener(function (uri, options) {
       if (uri.startsWith(NUCLIDE_PROCESS_OUTPUT_VIEW_URI)) {
@@ -164,7 +180,7 @@ function getRunCommandInNewPane() {
   incrementReferences();
   return {
     runCommandInNewPane: runCommandInNewPane,
-    disposable: new _atom.Disposable(function () {
+    disposable: new (_atom2 || _atom()).Disposable(function () {
       return decrementReferences();
     })
   };

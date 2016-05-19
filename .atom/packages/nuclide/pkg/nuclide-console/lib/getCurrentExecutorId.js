@@ -10,7 +10,7 @@ Object.defineProperty(exports, '__esModule', {
  * the root directory of this source tree.
  */
 
-exports['default'] = getCurrentExecutorId;
+exports.default = getCurrentExecutorId;
 
 function getCurrentExecutorId(state) {
   var currentExecutorId = state.currentExecutorId;
@@ -22,4 +22,4 @@ function getCurrentExecutorId(state) {
   return currentExecutorId;
 }
 
-module.exports = exports['default'];
+module.exports = exports.default;

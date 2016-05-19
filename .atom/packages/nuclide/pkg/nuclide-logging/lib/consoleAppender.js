@@ -1,4 +1,4 @@
-
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -8,10 +8,14 @@
  * the root directory of this source tree.
  */
 
-var util = require('util');
+var _util2;
+
+function _util() {
+  return _util2 = _interopRequireDefault(require('util'));
+}
 
 function layout(loggingEvent) {
-  var eventInfo = util.format('[%s] [%s] %s - ', loggingEvent.startTime.toISOString(), loggingEvent.level, loggingEvent.categoryName);
+  var eventInfo = (_util2 || _util()).default.format('[%s] [%s] %s - ', loggingEvent.startTime.toISOString(), loggingEvent.level, loggingEvent.categoryName);
 
   var data = loggingEvent.data.slice();
 

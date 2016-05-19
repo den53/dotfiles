@@ -17,17 +17,23 @@ exports.createSuccessResponseMessage = createSuccessResponseMessage;
 exports.createErrorReponseMessage = createErrorReponseMessage;
 exports.isValidResponseMessage = isValidResponseMessage;
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _nuclideCommons = require('../../nuclide-commons');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _assert = require('assert');
+var _nuclideCommons2;
 
-var _assert2 = _interopRequireDefault(_assert);
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
 
 var logger = require('../../nuclide-logging').getLogger();
+
+var _assert2;
+
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
 var CALL_MESSAGE_TYPE = 'call';
 var RESPONSE_MESSAGE_TYPE = 'response';
@@ -67,13 +73,13 @@ var StreamTransport = (function () {
     _classCallCheck(this, StreamTransport);
 
     this._output = output;
-    this._messages = (0, _nuclideCommons.splitStream)((0, _nuclideCommons.observeStream)(input));
+    this._messages = (0, (_nuclideCommons2 || _nuclideCommons()).splitStream)((0, (_nuclideCommons2 || _nuclideCommons()).observeStream)(input));
   }
 
   _createClass(StreamTransport, [{
     key: 'sendMessage',
     value: function sendMessage(message) {
-      (0, _assert2['default'])(message.indexOf('\n') === -1);
+      (0, (_assert2 || _assert()).default)(message.indexOf('\n') === -1);
       this._output.write(message + '\n');
     }
   }, {
@@ -97,7 +103,7 @@ var HackRpc = (function () {
     this._index = 0;
     this._inProgress = new Map();
     this._transport = transport;
-    this._subscription = transport.onMessage()['do'](function (message) {
+    this._subscription = transport.onMessage().do(function (message) {
       _this._handleMessage(message);
     }).subscribe();
   }
@@ -152,13 +158,13 @@ var HackRpc = (function () {
       var resolve = inProgress.resolve;
       var reject = inProgress.reject;
 
-      this._inProgress['delete'](id);
+      this._inProgress.delete(id);
       if (result != null) {
         logger.debug('Returning ' + JSON.stringify(result) + ' from Hack RPC ' + id);
         resolve(result);
         return;
       } else {
-        (0, _assert2['default'])(error != null);
+        (0, (_assert2 || _assert()).default)(error != null);
         logger.debug('Error ' + JSON.stringify(error) + ' from Hack RPC ' + id);
         reject(new Error(JSON.stringify(error)));
       }

@@ -14,23 +14,29 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+var _ActionTypes2;
 
-var _ActionTypes = require('./ActionTypes');
+function _ActionTypes() {
+  return _ActionTypes2 = _interopRequireWildcard(require('./ActionTypes'));
+}
 
-var ActionTypes = _interopRequireWildcard(_ActionTypes);
+var _getCurrentExecutorId2;
 
-var _getCurrentExecutorId = require('./getCurrentExecutorId');
+function _getCurrentExecutorId() {
+  return _getCurrentExecutorId2 = _interopRequireDefault(require('./getCurrentExecutorId'));
+}
 
-var _getCurrentExecutorId2 = _interopRequireDefault(_getCurrentExecutorId);
+var _assert2;
 
-var _assert = require('assert');
-
-var _assert2 = _interopRequireDefault(_assert);
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
 var Commands = (function () {
   function Commands(observer, getState) {
@@ -44,7 +50,7 @@ var Commands = (function () {
     key: 'clearRecords',
     value: function clearRecords() {
       this._observer.next({
-        type: ActionTypes.RECORDS_CLEARED
+        type: (_ActionTypes2 || _ActionTypes()).RECORDS_CLEARED
       });
     }
 
@@ -54,16 +60,16 @@ var Commands = (function () {
   }, {
     key: 'execute',
     value: function execute(code) {
-      var currentExecutorId = (0, _getCurrentExecutorId2['default'])(this._getState());
-      (0, _assert2['default'])(currentExecutorId);
+      var currentExecutorId = (0, (_getCurrentExecutorId2 || _getCurrentExecutorId()).default)(this._getState());
+      (0, (_assert2 || _assert()).default)(currentExecutorId);
 
       var executor = this._getState().executors.get(currentExecutorId);
-      (0, _assert2['default'])(executor != null);
+      (0, (_assert2 || _assert()).default)(executor != null);
 
       // TODO: Is this the best way to do this? Might want to go through nuclide-executors and have
       //       that register output sources?
       this._observer.next({
-        type: ActionTypes.MESSAGE_RECEIVED,
+        type: (_ActionTypes2 || _ActionTypes()).MESSAGE_RECEIVED,
         payload: {
           record: {
             kind: 'request',
@@ -75,7 +81,7 @@ var Commands = (function () {
       });
 
       this._observer.next({
-        type: ActionTypes.EXECUTE,
+        type: (_ActionTypes2 || _ActionTypes()).EXECUTE,
         payload: {
           executorId: currentExecutorId,
           code: code
@@ -86,7 +92,7 @@ var Commands = (function () {
     key: 'registerExecutor',
     value: function registerExecutor(executor) {
       this._observer.next({
-        type: ActionTypes.REGISTER_EXECUTOR,
+        type: (_ActionTypes2 || _ActionTypes()).REGISTER_EXECUTOR,
         payload: { executor: executor }
       });
       this._registerRecordProvider({
@@ -126,7 +132,7 @@ var Commands = (function () {
       //       way, we won't trigger cold observer side-effects when we don't need the results.
       var subscription = recordProvider.records.map(function (record) {
         return {
-          type: ActionTypes.MESSAGE_RECEIVED,
+          type: (_ActionTypes2 || _ActionTypes()).MESSAGE_RECEIVED,
           payload: { record: record }
         };
       }).subscribe(function (action) {
@@ -134,7 +140,7 @@ var Commands = (function () {
       });
 
       this._observer.next({
-        type: ActionTypes.PROVIDER_REGISTERED,
+        type: (_ActionTypes2 || _ActionTypes()).PROVIDER_REGISTERED,
         payload: {
           recordProvider: recordProvider,
           subscription: subscription
@@ -150,7 +156,7 @@ var Commands = (function () {
       }
       subscription.unsubscribe();
       this._observer.next({
-        type: ActionTypes.SOURCE_REMOVED,
+        type: (_ActionTypes2 || _ActionTypes()).SOURCE_REMOVED,
         payload: { source: source }
       });
     }
@@ -158,7 +164,7 @@ var Commands = (function () {
     key: 'selectExecutor',
     value: function selectExecutor(executorId) {
       this._observer.next({
-        type: ActionTypes.SELECT_EXECUTOR,
+        type: (_ActionTypes2 || _ActionTypes()).SELECT_EXECUTOR,
         payload: { executorId: executorId }
       });
     }
@@ -166,7 +172,7 @@ var Commands = (function () {
     key: 'setMaxMessageCount',
     value: function setMaxMessageCount(maxMessageCount) {
       this._observer.next({
-        type: ActionTypes.MAX_MESSAGE_COUNT_UPDATED,
+        type: (_ActionTypes2 || _ActionTypes()).MAX_MESSAGE_COUNT_UPDATED,
         payload: { maxMessageCount: maxMessageCount }
       });
     }
@@ -174,7 +180,7 @@ var Commands = (function () {
     key: 'unregisterExecutor',
     value: function unregisterExecutor(executor) {
       this._observer.next({
-        type: ActionTypes.UNREGISTER_EXECUTOR,
+        type: (_ActionTypes2 || _ActionTypes()).UNREGISTER_EXECUTOR,
         payload: { executor: executor }
       });
       this.removeSource(executor.id);
@@ -184,5 +190,5 @@ var Commands = (function () {
   return Commands;
 })();
 
-exports['default'] = Commands;
-module.exports = exports['default'];
+exports.default = Commands;
+module.exports = exports.default;

@@ -29,7 +29,7 @@ var getMercurialContext = _asyncToGenerator(function* () {
   var hgRepository = null;
   var priority = 2;
   if (activePath != null) {
-    var repository = (0, _nuclideHgGitBridge.repositoryForPath)(activePath);
+    var repository = (0, (_nuclideHgGitBridge2 || _nuclideHgGitBridge()).repositoryForPath)(activePath);
     if (isHgRepo(repository)) {
       hgRepository = repository;
       priority = 3;
@@ -44,14 +44,22 @@ var getMercurialContext = _asyncToGenerator(function* () {
     return null;
   }
   var workingDirectory = directories[repositories.indexOf(hgRepository)];
-  return new _MercurialConflictContext.MercurialConflictContext(hgRepository, workingDirectory, priority);
+  return new (_MercurialConflictContext2 || _MercurialConflictContext()).MercurialConflictContext(hgRepository, workingDirectory, priority);
 });
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
-var _nuclideHgGitBridge = require('../../nuclide-hg-git-bridge');
+var _nuclideHgGitBridge2;
 
-var _MercurialConflictContext = require('./MercurialConflictContext');
+function _nuclideHgGitBridge() {
+  return _nuclideHgGitBridge2 = require('../../nuclide-hg-git-bridge');
+}
+
+var _MercurialConflictContext2;
+
+function _MercurialConflictContext() {
+  return _MercurialConflictContext2 = require('./MercurialConflictContext');
+}
 
 var cwdApi = null;
 

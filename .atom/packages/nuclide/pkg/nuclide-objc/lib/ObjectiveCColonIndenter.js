@@ -2,8 +2,6 @@ var _createClass = (function () { function defineProperties(target, props) { for
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _nuclideAnalytics = require('../../nuclide-analytics');
-
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
  * All rights reserved.
@@ -12,10 +10,17 @@ var _nuclideAnalytics = require('../../nuclide-analytics');
  * the root directory of this source tree.
  */
 
-var _require = require('atom');
+var _atom2;
 
-var CompositeDisposable = _require.CompositeDisposable;
-var Range = _require.Range;
+function _atom() {
+  return _atom2 = require('atom');
+}
+
+var _nuclideAnalytics2;
+
+function _nuclideAnalytics() {
+  return _nuclideAnalytics2 = require('../../nuclide-analytics');
+}
 
 var GRAMMARS = ['source.objc', 'source.objcpp'];
 
@@ -43,7 +48,7 @@ var ObjectiveCColonIndenter = (function () {
       }
       this._insertTextSubscriptionsMap = new Map();
 
-      var subscriptions = this._subscriptions = new CompositeDisposable();
+      var subscriptions = this._subscriptions = new (_atom2 || _atom()).CompositeDisposable();
       subscriptions.add({ dispose: function dispose() {
           _this._insertTextSubscriptionsMap.forEach(function (subscription) {
             return subscription.dispose();
@@ -51,9 +56,9 @@ var ObjectiveCColonIndenter = (function () {
           _this._insertTextSubscriptionsMap.clear();
         } });
 
-      var _require2 = require('../../nuclide-atom-helpers');
+      var _require = require('../../nuclide-atom-helpers');
 
-      var observeLanguageTextEditors = _require2.observeLanguageTextEditors;
+      var observeLanguageTextEditors = _require.observeLanguageTextEditors;
 
       subscriptions.add(observeLanguageTextEditors(GRAMMARS, function (textEditor) {
         return _this._enableInTextEditor(textEditor);
@@ -73,7 +78,7 @@ var ObjectiveCColonIndenter = (function () {
     key: '_enableInTextEditor',
     value: function _enableInTextEditor(textEditor) {
       this._insertTextSubscriptionsMap.set(textEditor, textEditor.onDidInsertText(function (event) {
-        (0, _nuclideAnalytics.trackOperationTiming)('objc:indent-colon', function () {
+        (0, (_nuclideAnalytics2 || _nuclideAnalytics()).trackOperationTiming)('objc:indent-colon', function () {
           var range = event.range;
           var text = event.text;
 
@@ -122,7 +127,7 @@ var ObjectiveCColonIndenter = (function () {
       var subscription = this._insertTextSubscriptionsMap.get(textEditor);
       if (subscription) {
         subscription.dispose();
-        this._insertTextSubscriptionsMap['delete'](textEditor);
+        this._insertTextSubscriptionsMap.delete(textEditor);
       }
     }
 
@@ -132,7 +137,7 @@ var ObjectiveCColonIndenter = (function () {
   }], [{
     key: 'getIndentedColonColumn',
     value: function getIndentedColonColumn(buffer, startPosition) {
-      var startPositionText = buffer.getTextInRange(Range.fromObject([startPosition, startPosition.translate([0, 1])]));
+      var startPositionText = buffer.getTextInRange((_atom2 || _atom()).Range.fromObject([startPosition, startPosition.translate([0, 1])]));
       if (startPositionText !== ':') {
         throw new Error('The start position must contain a colon, found \'' + startPositionText + '\' instead');
       }
@@ -149,7 +154,7 @@ var ObjectiveCColonIndenter = (function () {
       var numberOfUnclosedBrackets = 0;
       buffer.backwardsScanInRange(
       // Only stop at the key characters: `:[]+-`.
-      /:|\[|\]|\+|-/g, Range.fromObject([startPosition.translate([-NUMBER_OF_PREVIOUS_LINES_TO_SEARCH_FOR_COLONS, 0]), startPosition.translate([0, -1])]), function (_ref) {
+      /:|\[|\]|\+|-/g, (_atom2 || _atom()).Range.fromObject([startPosition.translate([-NUMBER_OF_PREVIOUS_LINES_TO_SEARCH_FOR_COLONS, 0]), startPosition.translate([0, -1])]), function (_ref) {
         var match = _ref.match;
         var matchText = _ref.matchText;
         var range = _ref.range;

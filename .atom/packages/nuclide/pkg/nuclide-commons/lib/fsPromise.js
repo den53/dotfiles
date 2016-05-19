@@ -16,10 +16,10 @@ var findNearestFile = _asyncToGenerator(function* (fileName, pathToDirectory) {
   // this function. The downside would be that if someone added a closer file
   // with fileName to pathToFile (or deleted the one that was cached), then we
   // would have a bug. This would probably be pretty rare, though.
-  var currentPath = _path2['default'].resolve(pathToDirectory);
+  var currentPath = (_path2 || _path()).default.resolve(pathToDirectory);
   do {
     // eslint-disable-line no-constant-condition
-    var fileToFind = _path2['default'].join(currentPath, fileName);
+    var fileToFind = (_path2 || _path()).default.join(currentPath, fileName);
     var hasFile = yield exists(fileToFind); // eslint-disable-line babel/no-await-in-loop
     if (hasFile) {
       return currentPath;
@@ -28,7 +28,7 @@ var findNearestFile = _asyncToGenerator(function* (fileName, pathToDirectory) {
     if (isRoot(currentPath)) {
       return null;
     }
-    currentPath = _path2['default'].dirname(currentPath);
+    currentPath = (_path2 || _path()).default.dirname(currentPath);
   } while (true);
 });
 
@@ -46,7 +46,7 @@ var mkdirp = _asyncToGenerator(function* (filePath) {
     return false;
   } else {
     return new Promise(function (resolve, reject) {
-      (0, _mkdirp2['default'])(filePath, function (err) {
+      (0, (_mkdirp2 || _mkdirp()).default)(filePath, function (err) {
         if (err) {
           reject(err);
         } else {
@@ -64,7 +64,7 @@ var mkdirp = _asyncToGenerator(function* (filePath) {
 
 var rmdir = _asyncToGenerator(function* (filePath) {
   return new Promise(function (resolve, reject) {
-    (0, _rimraf2['default'])(filePath, function (err) {
+    (0, (_rimraf2 || _rimraf()).default)(filePath, function (err) {
       if (err) {
         reject(err);
       } else {
@@ -78,7 +78,7 @@ var rmdir = _asyncToGenerator(function* (filePath) {
 
 var isNfs = _asyncToGenerator(function* (entityPath) {
   if (process.platform === 'linux' || process.platform === 'darwin') {
-    var _ref = yield (0, _process.checkOutput)('stat', ['-f', '-L', '-c', '%T', entityPath]);
+    var _ref = yield (0, (_process2 || _process()).checkOutput)('stat', ['-f', '-L', '-c', '%T', entityPath]);
 
     var stdout = _ref.stdout;
     var exitCode = _ref.exitCode;
@@ -101,9 +101,9 @@ var isNfs = _asyncToGenerator(function* (entityPath) {
  */
 );
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -113,34 +113,50 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
  * the root directory of this source tree.
  */
 
-var _fsPlus = require('fs-plus');
+var _fsPlus2;
 
-var _fsPlus2 = _interopRequireDefault(_fsPlus);
+function _fsPlus() {
+  return _fsPlus2 = _interopRequireDefault(require('fs-plus'));
+}
 
-var _assert = require('assert');
+var _assert2;
 
-var _assert2 = _interopRequireDefault(_assert);
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
-var _mkdirp = require('mkdirp');
+var _mkdirp2;
 
-var _mkdirp2 = _interopRequireDefault(_mkdirp);
+function _mkdirp() {
+  return _mkdirp2 = _interopRequireDefault(require('mkdirp'));
+}
 
-var _path = require('path');
+var _path2;
 
-var _path2 = _interopRequireDefault(_path);
+function _path() {
+  return _path2 = _interopRequireDefault(require('path'));
+}
 
-var _rimraf = require('rimraf');
+var _rimraf2;
 
-var _rimraf2 = _interopRequireDefault(_rimraf);
+function _rimraf() {
+  return _rimraf2 = _interopRequireDefault(require('rimraf'));
+}
 
-var _temp = require('temp');
+var _temp2;
 
-var _temp2 = _interopRequireDefault(_temp);
+function _temp() {
+  return _temp2 = _interopRequireDefault(require('temp'));
+}
 
-var _process = require('./process');
+var _process2;
+
+function _process() {
+  return _process2 = require('./process');
+}
 
 function isRoot(filePath) {
-  return _path2['default'].dirname(filePath) === filePath;
+  return (_path2 || _path()).default.dirname(filePath) === filePath;
 }
 
 /**
@@ -153,7 +169,7 @@ function tempdir() {
   var prefix = arguments.length <= 0 || arguments[0] === undefined ? '' : arguments[0];
 
   return new Promise(function (resolve, reject) {
-    _temp2['default'].mkdir(prefix, function (err, dirPath) {
+    (_temp2 || _temp()).default.mkdir(prefix, function (err, dirPath) {
       if (err) {
         reject(err);
       } else {
@@ -169,11 +185,11 @@ function tempdir() {
  */
 function tempfile(options) {
   return new Promise(function (resolve, reject) {
-    _temp2['default'].open(options, function (err, info) {
+    (_temp2 || _temp()).default.open(options, function (err, info) {
       if (err) {
         reject(err);
       } else {
-        _fsPlus2['default'].close(info.fd, function (closeErr) {
+        (_fsPlus2 || _fsPlus()).default.close(info.fd, function (closeErr) {
           if (closeErr) {
             reject(closeErr);
           } else {
@@ -186,18 +202,18 @@ function tempfile(options) {
 }
 
 function getCommonAncestorDirectory(filePaths) {
-  var commonDirectoryPath = _path2['default'].dirname(filePaths[0]);
+  var commonDirectoryPath = (_path2 || _path()).default.dirname(filePaths[0]);
   while (filePaths.some(function (filePath) {
     return !filePath.startsWith(commonDirectoryPath);
   })) {
-    commonDirectoryPath = _path2['default'].dirname(commonDirectoryPath);
+    commonDirectoryPath = (_path2 || _path()).default.dirname(commonDirectoryPath);
   }
   return commonDirectoryPath;
 }
 
 function exists(filePath) {
   return new Promise(function (resolve, reject) {
-    _fsPlus2['default'].exists(filePath, resolve);
+    (_fsPlus2 || _fsPlus()).default.exists(filePath, resolve);
   });
 }
 
@@ -206,9 +222,9 @@ function expandHomeDir(filePath) {
 
   var resolvedPath = null;
   if (filePath === '~') {
-    (0, _assert2['default'])(HOME != null);
+    (0, (_assert2 || _assert()).default)(HOME != null);
     resolvedPath = HOME;
-  } else if (filePath.startsWith('~' + _path2['default'].sep)) {
+  } else if (filePath.startsWith('~' + (_path2 || _path()).default.sep)) {
     resolvedPath = '' + HOME + filePath.substr(1);
   } else {
     resolvedPath = filePath;
@@ -220,9 +236,9 @@ function expandHomeDir(filePath) {
       args[_key] = arguments[_key];
     }
 
-    var method = _fsPlus2['default'][methodName];
+    var method = (_fsPlus2 || _fsPlus()).default[methodName];
     return new Promise(function (resolve, reject) {
-      method.apply(_fsPlus2['default'], args.concat([function (err, result) {
+      method.apply((_fsPlus2 || _fsPlus()).default, args.concat([function (err, result) {
         return err ? reject(err) : resolve(result);
       }]));
     });

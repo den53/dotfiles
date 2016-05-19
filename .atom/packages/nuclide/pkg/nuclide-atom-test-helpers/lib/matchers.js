@@ -8,9 +8,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
  * the root directory of this source tree.
  */
 
-var _assert = require('assert');
+var _assert2;
 
-var _assert2 = _interopRequireDefault(_assert);
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
 /**
  * This file contains a set of custom matchers for jasmine testing, as described
@@ -25,7 +27,7 @@ var _assert2 = _interopRequireDefault(_assert);
  * @returns True if the Ranges are equal.
  */
 function toEqualAtomRange(expected) {
-  return !!this.actual && !!expected && this.actual.isEqual(expected);
+  return Boolean(this.actual && expected && this.actual.isEqual(expected));
 }
 
 /**
@@ -41,7 +43,7 @@ function toEqualAtomRanges(expected) {
     return false;
   }
   this.actual.some(function (range, index) {
-    (0, _assert2['default'])(expected); // Tell Flow this is definitely non-null now.
+    (0, (_assert2 || _assert()).default)(expected); // Tell Flow this is definitely non-null now.
     if (range.isEqual(expected[index])) {
       return false;
     } else {

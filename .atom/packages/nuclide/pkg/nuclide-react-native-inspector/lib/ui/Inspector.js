@@ -10,21 +10,35 @@ var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_ag
  * the root directory of this source tree.
  */
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var _reactForAtom = require('react-for-atom');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _path = require('path');
+var _reactForAtom2;
 
-var _path2 = _interopRequireDefault(_path);
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
 
-var _nuclideUiLibWebview = require('../../../nuclide-ui/lib/Webview');
+var _path2;
 
-var _nuclideCommons = require('../../../nuclide-commons');
+function _path() {
+  return _path2 = _interopRequireDefault(require('path'));
+}
+
+var _nuclideUiLibWebview2;
+
+function _nuclideUiLibWebview() {
+  return _nuclideUiLibWebview2 = require('../../../nuclide-ui/lib/Webview');
+}
+
+var _nuclideCommons2;
+
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../../nuclide-commons');
+}
 
 var Inspector = (function (_React$Component) {
   _inherits(Inspector, _React$Component);
@@ -50,7 +64,7 @@ var Inspector = (function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
-      return _reactForAtom.React.createElement(_nuclideUiLibWebview.Webview, {
+      return (_reactForAtom2 || _reactForAtom()).React.createElement((_nuclideUiLibWebview2 || _nuclideUiLibWebview()).Webview, {
         style: { width: '100%', height: '100%' },
         nodeintegration: true,
         className: 'native-key-bindings',
@@ -63,12 +77,12 @@ var Inspector = (function (_React$Component) {
     value: function _handleDidFinishLoad(event) {
       var element = event.target;
       var requirePaths = require.cache[__filename].paths;
-      var inspectorDevTools = _path2['default'].join(__dirname, '../../VendorLib/dev-tools/standalone.js');
-      element.executeJavaScript('initializeElementInspector(' + (0, _nuclideCommons.toJsString)(inspectorDevTools) + ', ' + (0, _nuclideCommons.toJsString)(requirePaths) + ');');
+      var inspectorDevTools = (_path2 || _path()).default.join(__dirname, '../../VendorLib/dev-tools/standalone.js');
+      element.executeJavaScript('initializeElementInspector(' + (0, (_nuclideCommons2 || _nuclideCommons()).toJsString)(inspectorDevTools) + ', ' + (0, (_nuclideCommons2 || _nuclideCommons()).toJsString)(requirePaths) + ');');
     }
   }]);
 
   return Inspector;
-})(_reactForAtom.React.Component);
+})((_reactForAtom2 || _reactForAtom()).React.Component);
 
 module.exports = Inspector;

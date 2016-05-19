@@ -1,4 +1,6 @@
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -8,23 +10,48 @@ var _createClass = (function () { function defineProperties(target, props) { for
  * the root directory of this source tree.
  */
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _nuclideContextMenu = require('../../nuclide-context-menu');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _nuclideContextMenu2 = _interopRequireDefault(_nuclideContextMenu);
+var _nuclideContextMenu2;
 
-var _atom = require('atom');
+function _nuclideContextMenu() {
+  return _nuclideContextMenu2 = _interopRequireDefault(require('../../nuclide-context-menu'));
+}
 
-var _FileTreeConstants = require('./FileTreeConstants');
+var _atom2;
 
-var _FileTreeStore = require('./FileTreeStore');
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var _path = require('path');
+var _FileTreeConstants2;
 
-var _path2 = _interopRequireDefault(_path);
+function _FileTreeConstants() {
+  return _FileTreeConstants2 = require('./FileTreeConstants');
+}
+
+var _FileTreeStore2;
+
+function _FileTreeStore() {
+  return _FileTreeStore2 = require('./FileTreeStore');
+}
+
+var _path2;
+
+function _path() {
+  return _path2 = _interopRequireDefault(require('path'));
+}
+
+// It's just atom$ContextMenuItem with an optional `callback` property added.
+// I wish flow would let add it in a more elegant way.
+
+var FILE_TREE_CSS = '.nuclide-file-tree-toolbar-container';
 
 var NEW_MENU_PRIORITY = 0;
 var ADD_PROJECT_MENU_PRIORITY = 1000;
@@ -56,7 +83,7 @@ var SHOW_IN_MENU_PRIORITY = 6000;
  * },
  *
  * // Include the following in the main.js file for your package:
- * import {CompositeDisposable} from 'atom';
+ * import {CompositeDisposable, Disposable} from 'atom';
  * import invariant from 'assert';
  *
  * let subscriptions: ?CompositeDisposable = null;
@@ -72,14 +99,17 @@ var SHOW_IN_MENU_PRIORITY = 6000;
  *   }
  * }
  *
- * export function addItemsToFileTreeContextMenu(contextMenu: FileTreeContextMenu): void {
+ * export function addItemsToFileTreeContextMenu(contextMenu: FileTreeContextMenu): IDisposable {
  *   invariant(subscriptions);
  *
- *   subscriptions.add(
- *     atom.commands.add(
- *       'atom-workspace',
- *       'command-that-should-only-be-fired-from-the-context-menu',
- *       () => {
+ *   const contextDisposable = contextMenu.addItemToSourceControlMenu(
+ *     {
+ *       label: 'Label for the menu item that acts on a file',
+ *       command: 'command-that-should-only-be-fired-from-the-context-menu',
+ *       // If the callback below is given a new atom command with the given name will be
+ *       // automatically registered. You can omit it if you prefer to register the command
+ *       // manually.
+ *       callback() {
  *         Array.from(contextMenu.getSelectedNodes())
  *           .filter(node => !node.isContainer)
  *           .forEach((node: FileTreeNode) => {
@@ -87,25 +117,22 @@ var SHOW_IN_MENU_PRIORITY = 6000;
  *             // DO WHAT YOU LIKE WITH THE URI!
  *           });
  *       },
- *     )
- *   );
- *   subscriptions.add(contextMenu.addItemToSourceControlMenu(
- *     {
- *       label: 'Label for the menu item that acts on a file',
- *       command: 'command-that-should-only-be-fired-from-the-context-menu',
  *       shouldDisplay() {
  *         return Array.from(contextMenu.getSelectedNodes()).some(node => !node.isContainer);
  *       },
  *     },
  *     1000, // priority
- *   ));
+ *   );
+ *
+ *   subscriptions.add(contextDisposable);
+ *   return new Disposable(() => {
+ *     invariant(subscriptions);
+ *     if (subscriptions != null) {
+ *       subscriptions.remove(contextDisposable);
+ *     }
+ *   });
  * }
  * ```
- *
- * Note that it is a little odd to register a command that only makes sense in the context of what
- * is currently selected in the file tree. Ideally, there would be a way to make this a "private"
- * command that could not be selected from the command palette. (Or really, just associate a
- * callback function with a menu item instead of a command.)
  */
 
 var FileTreeContextMenu = (function () {
@@ -114,20 +141,25 @@ var FileTreeContextMenu = (function () {
 
     _classCallCheck(this, FileTreeContextMenu);
 
-    this._contextMenu = new _nuclideContextMenu2['default']({
+    this._contextMenu = new (_nuclideContextMenu2 || _nuclideContextMenu()).default({
       type: 'root',
-      cssSelector: _FileTreeConstants.EVENT_HANDLER_SELECTOR
+      cssSelector: (_FileTreeConstants2 || _FileTreeConstants()).EVENT_HANDLER_SELECTOR
     });
-    this._subscriptions = new _atom.CompositeDisposable();
-    this._store = _FileTreeStore.FileTreeStore.getInstance();
+    this._subscriptions = new (_atom2 || _atom()).CompositeDisposable();
+    this._store = (_FileTreeStore2 || _FileTreeStore()).FileTreeStore.getInstance();
+
+    var shouldDisplaySetToCurrentWorkingRootOption = function shouldDisplaySetToCurrentWorkingRootOption() {
+      var node = _this._store.getSingleSelectedNode();
+      return node != null && node.isRoot && _this._store.hasCwd() && !node.isCwd;
+    };
 
     this._addContextMenuItemGroup([{
       label: 'Set to Current Working Root',
       command: 'nuclide-file-tree:set-current-working-root',
-      shouldDisplay: function shouldDisplay() {
-        var node = _this._store.getSingleSelectedNode();
-        return node != null && node.isRoot && _this._store.hasCwd() && !node.isCwd;
-      }
+      shouldDisplay: shouldDisplaySetToCurrentWorkingRootOption
+    }, {
+      type: 'separator',
+      shouldDisplay: shouldDisplaySetToCurrentWorkingRootOption
     }, {
       label: 'New',
       shouldDisplay: function shouldDisplay() {
@@ -157,7 +189,7 @@ var FileTreeContextMenu = (function () {
       }
     }], ADD_PROJECT_MENU_PRIORITY);
 
-    this._sourceControlMenu = new _nuclideContextMenu2['default']({
+    this._sourceControlMenu = new (_nuclideContextMenu2 || _nuclideContextMenu()).default({
       type: 'submenu',
       label: 'Source Control',
       parent: this._contextMenu
@@ -255,26 +287,35 @@ var FileTreeContextMenu = (function () {
 
   _createClass(FileTreeContextMenu, [{
     key: 'addItemToTestSection',
-    value: function addItemToTestSection(item, priority) {
+    value: function addItemToTestSection(originalItem, priority) {
       if (priority < 0 || priority >= 1000) {
         throw Error('Illegal priority value: ' + priority);
       }
-      return this._contextMenu.addItem(item, TEST_SECTION_PRIORITY + priority);
+
+      return this._addItemToMenu(originalItem, this._contextMenu, TEST_SECTION_PRIORITY + priority);
     }
   }, {
     key: 'addItemToSourceControlMenu',
-    value: function addItemToSourceControlMenu(item, priority) {
-      return this._sourceControlMenu.addItem(item, priority);
+    value: function addItemToSourceControlMenu(originalItem, priority) {
+      return this._addItemToMenu(originalItem, this._sourceControlMenu, priority);
     }
-
-    /**
-     * This is appropriate to use as the target for a command that is triggered exclusively by an
-     * item in the file tree context menu.
-     */
   }, {
-    key: 'getCSSSelectorForFileTree',
-    value: function getCSSSelectorForFileTree() {
-      return '.nuclide-file-tree-toolbar-container';
+    key: '_addItemToMenu',
+    value: function _addItemToMenu(originalItem, menu, priority) {
+      var _this2 = this;
+
+      var _initCommandIfPresent = initCommandIfPresent(originalItem);
+
+      var itemDisposable = _initCommandIfPresent.itemDisposable;
+      var item = _initCommandIfPresent.item;
+
+      itemDisposable.add(menu.addItem(item, priority));
+
+      this._subscriptions.add(itemDisposable);
+      return new (_atom2 || _atom()).Disposable(function () {
+        _this2._subscriptions.remove(itemDisposable);
+        itemDisposable.dispose();
+      });
     }
   }, {
     key: 'getSelectedNodes',
@@ -294,14 +335,14 @@ var FileTreeContextMenu = (function () {
   }, {
     key: '_addContextMenuItemGroup',
     value: function _addContextMenuItemGroup(menuItems, priority) {
-      var _this2 = this;
+      var _this3 = this;
 
       // Atom is smart about only displaying a separator when there are items to
       // separate, so there will never be a dangling separator at the end.
 
       var allItems = menuItems.concat([{ type: 'separator' }]);
       allItems.forEach(function (item) {
-        _this2._contextMenu.addItem(item, ++priority);
+        _this3._contextMenu.addItem(item, ++priority);
       });
     }
 
@@ -313,12 +354,30 @@ var FileTreeContextMenu = (function () {
     key: '_shouldDisplayShowInFileManager',
     value: function _shouldDisplayShowInFileManager(platform) {
       var node = this.getSingleSelectedNode();
-      return node != null && _path2['default'].isAbsolute(node.uri) && process.platform === platform;
+      return node != null && (_path2 || _path()).default.isAbsolute(node.uri) && process.platform === platform;
     }
   }]);
 
   return FileTreeContextMenu;
 })();
+
+function initCommandIfPresent(item) {
+  var itemDisposable = new (_atom2 || _atom()).CompositeDisposable();
+  if (item.callback != null && item.label != null) {
+    var _command = item.command || generateNextInternalCommand(item.label);
+    itemDisposable.add(atom.commands.add(FILE_TREE_CSS, _command, item.callback));
+    return { itemDisposable: itemDisposable, item: _extends({}, item, { command: _command }) };
+  }
+
+  return { itemDisposable: itemDisposable, item: item };
+}
+
+var nextInternalCommandId = 0;
+
+function generateNextInternalCommand(itemLabel) {
+  var cmdName = itemLabel.toLowerCase().replace(/[^\w]+/g, '-') + '-' + nextInternalCommandId++;
+  return 'nuclide-file-tree:' + cmdName;
+}
 
 module.exports = FileTreeContextMenu;
 // $FlowFixMe: The conversion between MenuItemDefinition and atom$ContextMenuItem is a mess.

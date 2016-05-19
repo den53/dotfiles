@@ -1,7 +1,7 @@
 Object.defineProperty(exports, '__esModule', {
   value: true
 });
-exports['default'] = createComponentItem;
+exports.default = createComponentItem;
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -11,7 +11,11 @@ exports['default'] = createComponentItem;
  * the root directory of this source tree.
  */
 
-var _reactForAtom = require('react-for-atom');
+var _reactForAtom2;
+
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
 
 /**
  * Create an object suitable for use as an Atom pane item from a React element.
@@ -26,7 +30,7 @@ function createComponentItem(reactElement) {
   // (something clears it) so we add a class to style it instead.
   container.className = 'nuclide-gadgets--gadget-container';
 
-  var mountedComponent = _reactForAtom.ReactDOM.render(reactElement, container);
+  var mountedComponent = (_reactForAtom2 || _reactForAtom()).ReactDOM.render(reactElement, container);
 
   // Add the element as a property of the mounted component. This is a special property that Atom's
   // view registry knows to look for. (See [View Resolution
@@ -37,4 +41,4 @@ function createComponentItem(reactElement) {
   return mountedComponent;
 }
 
-module.exports = exports['default'];
+module.exports = exports.default;

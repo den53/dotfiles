@@ -18,29 +18,48 @@ exports.consumeToolBar = consumeToolBar;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _atom = require('atom');
+var _types = require('./types');
 
-var _nuclideFeatureConfig = require('../../nuclide-feature-config');
+Object.defineProperty(exports, 'HomeFragments', {
+  enumerable: true,
+  get: function get() {
+    return _types.HomeFragments;
+  }
+});
 
-var _nuclideFeatureConfig2 = _interopRequireDefault(_nuclideFeatureConfig);
+var _atom2;
 
-var _immutable = require('immutable');
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var _immutable2 = _interopRequireDefault(_immutable);
+var _nuclideFeatureConfig2;
 
-var _rxjs = require('rxjs');
+function _nuclideFeatureConfig() {
+  return _nuclideFeatureConfig2 = _interopRequireDefault(require('../../nuclide-feature-config'));
+}
 
-var _rxjs2 = _interopRequireDefault(_rxjs);
+var _immutable2;
+
+function _immutable() {
+  return _immutable2 = _interopRequireDefault(require('immutable'));
+}
+
+var _rxjs2;
+
+function _rxjs() {
+  return _rxjs2 = _interopRequireDefault(require('rxjs'));
+}
 
 var subscriptions = null;
 var gadgetsApi = null;
 
 // A stream of all of the fragments. This is essentially the state of our panel.
-var allHomeFragmentsStream = new _rxjs2['default'].BehaviorSubject(_immutable2['default'].Set());
+var allHomeFragmentsStream = new (_rxjs2 || _rxjs()).default.BehaviorSubject((_immutable2 || _immutable()).default.Set());
 
 function activate(state) {
   considerDisplayingHome();
-  subscriptions = new _atom.CompositeDisposable();
+  subscriptions = new (_atom2 || _atom()).CompositeDisposable();
   subscriptions.add(atom.commands.add('atom-workspace', 'nuclide-home:show-settings', function () {
     atom.workspace.open('atom://config/packages/nuclide');
   }));
@@ -48,7 +67,7 @@ function activate(state) {
 
 function setHomeFragments(homeFragments) {
   allHomeFragmentsStream.next(allHomeFragmentsStream.getValue().add(homeFragments));
-  return new _atom.Disposable(function () {
+  return new (_atom2 || _atom()).Disposable(function () {
     allHomeFragmentsStream.next(allHomeFragmentsStream.getValue().remove(homeFragments));
   });
 }
@@ -57,7 +76,7 @@ function considerDisplayingHome() {
   if (gadgetsApi == null) {
     return;
   }
-  var showHome = _nuclideFeatureConfig2['default'].get('nuclide-home.showHome');
+  var showHome = (_nuclideFeatureConfig2 || _nuclideFeatureConfig()).default.get('nuclide-home.showHome');
   if (showHome) {
     gadgetsApi.showGadget('nuclide-home');
   }
@@ -65,7 +84,7 @@ function considerDisplayingHome() {
 
 function deactivate() {
   gadgetsApi = null;
-  allHomeFragmentsStream.next(_immutable2['default'].Set());
+  allHomeFragmentsStream.next((_immutable2 || _immutable()).default.Set());
   subscriptions.dispose();
   subscriptions = null;
 }
@@ -74,9 +93,8 @@ function consumeGadgetsService(api) {
   var createHomePaneItem = require('./createHomePaneItem');
   gadgetsApi = api;
   var gadget = createHomePaneItem(allHomeFragmentsStream);
-  var disposable = api.registerGadget(gadget);
+  subscriptions.add(api.registerGadget(gadget));
   considerDisplayingHome();
-  return disposable;
 }
 
 function consumeToolBar(getToolBar) {
@@ -91,7 +109,7 @@ function consumeToolBar(getToolBar) {
     tooltip: 'Open Nuclide Settings',
     priority: priority
   });
-  subscriptions.add(new _atom.Disposable(function () {
+  subscriptions.add(new (_atom2 || _atom()).Disposable(function () {
     toolBar.removeItems();
   }));
 }

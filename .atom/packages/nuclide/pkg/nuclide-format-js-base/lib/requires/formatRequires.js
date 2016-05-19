@@ -1,6 +1,4 @@
-
-
-var FirstNode = require('../utils/FirstNode');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -10,76 +8,111 @@ var FirstNode = require('../utils/FirstNode');
  * the root directory of this source tree.
  */
 
-var NewLine = require('../utils/NewLine');
+var _utilsFirstNode2;
 
-var _require = require('../utils/StringUtils');
+function _utilsFirstNode() {
+  return _utilsFirstNode2 = _interopRequireDefault(require('../utils/FirstNode'));
+}
 
-var compareStrings = _require.compareStrings;
-var isCapitalized = _require.isCapitalized;
+var _utilsNewLine2;
 
-var hasOneRequireDeclaration = require('../utils/hasOneRequireDeclaration');
-var isGlobal = require('../utils/isGlobal');
-var isRequireExpression = require('../utils/isRequireExpression');
-var jscs = require('jscodeshift');
-var reprintRequire = require('../utils/reprintRequire');
+function _utilsNewLine() {
+  return _utilsNewLine2 = _interopRequireDefault(require('../utils/NewLine'));
+}
+
+var _utilsStringUtils2;
+
+function _utilsStringUtils() {
+  return _utilsStringUtils2 = require('../utils/StringUtils');
+}
+
+var _utilsHasOneRequireDeclaration2;
+
+function _utilsHasOneRequireDeclaration() {
+  return _utilsHasOneRequireDeclaration2 = _interopRequireDefault(require('../utils/hasOneRequireDeclaration'));
+}
+
+var _utilsIsGlobal2;
+
+function _utilsIsGlobal() {
+  return _utilsIsGlobal2 = _interopRequireDefault(require('../utils/isGlobal'));
+}
+
+var _utilsIsRequireExpression2;
+
+function _utilsIsRequireExpression() {
+  return _utilsIsRequireExpression2 = _interopRequireDefault(require('../utils/isRequireExpression'));
+}
+
+var _jscodeshift2;
+
+function _jscodeshift() {
+  return _jscodeshift2 = _interopRequireDefault(require('jscodeshift'));
+}
+
+var _utilsReprintRequire2;
+
+function _utilsReprintRequire() {
+  return _utilsReprintRequire2 = _interopRequireDefault(require('../utils/reprintRequire'));
+}
 
 // Set up a config to easily add require formats
 var CONFIG = [
 // Handle type imports
 {
-  searchTerms: [jscs.ImportDeclaration, { importKind: 'type' }],
-  filters: [isGlobal],
+  searchTerms: [(_jscodeshift2 || _jscodeshift()).default.ImportDeclaration, { importKind: 'type' }],
+  filters: [(_utilsIsGlobal2 || _utilsIsGlobal()).default],
   comparator: function comparator(node1, node2) {
-    return compareStrings(node1.specifiers[0].local.name, node2.specifiers[0].local.name);
+    return (0, (_utilsStringUtils2 || _utilsStringUtils()).compareStrings)(node1.specifiers[0].local.name, node2.specifiers[0].local.name);
   },
   mapper: function mapper(node) {
-    return reprintRequire(node);
+    return (0, (_utilsReprintRequire2 || _utilsReprintRequire()).default)(node);
   }
 },
 
 // Handle side effects, e.g: `require('monkey-patches');`
 {
-  searchTerms: [jscs.ExpressionStatement],
-  filters: [isGlobal, function (path) {
-    return isRequireExpression(path.node);
+  searchTerms: [(_jscodeshift2 || _jscodeshift()).default.ExpressionStatement],
+  filters: [(_utilsIsGlobal2 || _utilsIsGlobal()).default, function (path) {
+    return (0, (_utilsIsRequireExpression2 || _utilsIsRequireExpression()).default)(path.node);
   }],
   comparator: function comparator(node1, node2) {
-    return compareStrings(node1.expression.arguments[0].value, node2.expression.arguments[0].value);
+    return (0, (_utilsStringUtils2 || _utilsStringUtils()).compareStrings)(node1.expression.arguments[0].value, node2.expression.arguments[0].value);
   },
   mapper: function mapper(node) {
-    return reprintRequire(node);
+    return (0, (_utilsReprintRequire2 || _utilsReprintRequire()).default)(node);
   }
 },
 
 // Handle UpperCase requires, e.g: `require('UpperCase');`
 {
-  searchTerms: [jscs.VariableDeclaration],
-  filters: [isGlobal, function (path) {
+  searchTerms: [(_jscodeshift2 || _jscodeshift()).default.VariableDeclaration],
+  filters: [(_utilsIsGlobal2 || _utilsIsGlobal()).default, function (path) {
     return isValidRequireDeclaration(path.node);
   }, function (path) {
-    return isCapitalized(getDeclarationName(path.node));
+    return (0, (_utilsStringUtils2 || _utilsStringUtils()).isCapitalized)(getDeclarationName(path.node));
   }],
   comparator: function comparator(node1, node2) {
-    return compareStrings(getDeclarationName(node1), getDeclarationName(node2));
+    return (0, (_utilsStringUtils2 || _utilsStringUtils()).compareStrings)(getDeclarationName(node1), getDeclarationName(node2));
   },
   mapper: function mapper(node) {
-    return reprintRequire(node);
+    return (0, (_utilsReprintRequire2 || _utilsReprintRequire()).default)(node);
   }
 },
 
 // Handle lowerCase requires, e.g: `require('lowerCase');`
 {
-  searchTerms: [jscs.VariableDeclaration],
-  filters: [isGlobal, function (path) {
+  searchTerms: [(_jscodeshift2 || _jscodeshift()).default.VariableDeclaration],
+  filters: [(_utilsIsGlobal2 || _utilsIsGlobal()).default, function (path) {
     return isValidRequireDeclaration(path.node);
   }, function (path) {
-    return !isCapitalized(getDeclarationName(path.node));
+    return !(0, (_utilsStringUtils2 || _utilsStringUtils()).isCapitalized)(getDeclarationName(path.node));
   }],
   comparator: function comparator(node1, node2) {
-    return compareStrings(getDeclarationName(node1), getDeclarationName(node2));
+    return (0, (_utilsStringUtils2 || _utilsStringUtils()).compareStrings)(getDeclarationName(node1), getDeclarationName(node2));
   },
   mapper: function mapper(node) {
-    return reprintRequire(node);
+    return (0, (_utilsReprintRequire2 || _utilsReprintRequire()).default)(node);
   }
 }];
 
@@ -99,7 +132,7 @@ var CONFIG = [
  * sorting.
  */
 function formatRequires(root) {
-  var first = FirstNode.get(root);
+  var first = (_utilsFirstNode2 || _utilsFirstNode()).default.get(root);
   if (!first) {
     return;
   }
@@ -116,7 +149,7 @@ function formatRequires(root) {
     // Save the underlying nodes before removing the paths
     var nodes = paths.nodes().slice();
     paths.forEach(function (path) {
-      return jscs(path).remove();
+      return (0, (_jscodeshift2 || _jscodeshift()).default)(path).remove();
     });
     return nodes.map(function (node) {
       return config.mapper(node);
@@ -124,9 +157,9 @@ function formatRequires(root) {
   });
 
   // Build all the nodes we want to insert, then add them
-  var allGroups = [[NewLine.statement]];
+  var allGroups = [[(_utilsNewLine2 || _utilsNewLine()).default.statement]];
   nodeGroups.forEach(function (group) {
-    return allGroups.push(group, [NewLine.statement]);
+    return allGroups.push(group, [(_utilsNewLine2 || _utilsNewLine()).default.statement]);
   });
   var nodesToInsert = Array.prototype.concat.apply([], allGroups);
   nodesToInsert.reverse().forEach(function (node) {
@@ -138,21 +171,21 @@ function formatRequires(root) {
  * Tests if a variable declaration is a valid require declaration.
  */
 function isValidRequireDeclaration(node) {
-  if (!hasOneRequireDeclaration(node)) {
+  if (!(0, (_utilsHasOneRequireDeclaration2 || _utilsHasOneRequireDeclaration()).default)(node)) {
     return false;
   }
   var declaration = node.declarations[0];
-  if (jscs.Identifier.check(declaration.id)) {
+  if ((_jscodeshift2 || _jscodeshift()).default.Identifier.check(declaration.id)) {
     return true;
   }
-  if (jscs.ObjectPattern.check(declaration.id)) {
+  if ((_jscodeshift2 || _jscodeshift()).default.ObjectPattern.check(declaration.id)) {
     return declaration.id.properties.every(function (prop) {
-      return prop.shorthand && jscs.Identifier.check(prop.key);
+      return prop.shorthand && (_jscodeshift2 || _jscodeshift()).default.Identifier.check(prop.key);
     });
   }
-  if (jscs.ArrayPattern.check(declaration.id)) {
+  if ((_jscodeshift2 || _jscodeshift()).default.ArrayPattern.check(declaration.id)) {
     return declaration.id.elements.every(function (element) {
-      return jscs.Identifier.check(element);
+      return (_jscodeshift2 || _jscodeshift()).default.Identifier.check(element);
     });
   }
   return false;
@@ -160,15 +193,15 @@ function isValidRequireDeclaration(node) {
 
 function getDeclarationName(node) {
   var declaration = node.declarations[0];
-  if (jscs.Identifier.check(declaration.id)) {
+  if ((_jscodeshift2 || _jscodeshift()).default.Identifier.check(declaration.id)) {
     return declaration.id.name;
   }
   // Order by the first property name in the object pattern.
-  if (jscs.ObjectPattern.check(declaration.id)) {
+  if ((_jscodeshift2 || _jscodeshift()).default.ObjectPattern.check(declaration.id)) {
     return declaration.id.properties[0].key.name;
   }
   // Order by the first element name in the array pattern.
-  if (jscs.ArrayPattern.check(declaration.id)) {
+  if ((_jscodeshift2 || _jscodeshift()).default.ArrayPattern.check(declaration.id)) {
     return declaration.id.elements[0].name;
   }
   return '';

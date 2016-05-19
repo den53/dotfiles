@@ -14,57 +14,95 @@ var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = 
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _assert = require('assert');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _assert2 = _interopRequireDefault(_assert);
+var _assert2;
 
-var _path = require('path');
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
-var _path2 = _interopRequireDefault(_path);
+var _path2;
 
-var _nuclideServerLibServiceframeworkClientComponent = require('../../nuclide-server/lib/serviceframework/ClientComponent');
+function _path() {
+  return _path2 = _interopRequireDefault(require('path'));
+}
 
-var _nuclideServerLibServiceframeworkClientComponent2 = _interopRequireDefault(_nuclideServerLibServiceframeworkClientComponent);
+var _nuclideRpc2;
 
-var _nuclideServerLibServiceframeworkConfig = require('../../nuclide-server/lib/serviceframework/config');
+function _nuclideRpc() {
+  return _nuclideRpc2 = require('../../nuclide-rpc');
+}
 
-var _nuclideServiceParser = require('../../nuclide-service-parser');
+var _nuclideServerLibServices2;
 
-var _nuclideServerLibServiceframeworkIndex = require('../../nuclide-server/lib/serviceframework/index');
+function _nuclideServerLibServices() {
+  return _nuclideServerLibServices2 = require('../../nuclide-server/lib/services');
+}
 
-var _nuclideServerLibServiceframeworkIndex2 = _interopRequireDefault(_nuclideServerLibServiceframeworkIndex);
+var _RemoteConnectionConfigurationManager2;
 
-var _RemoteConnectionConfigurationManager = require('./RemoteConnectionConfigurationManager');
+function _RemoteConnectionConfigurationManager() {
+  return _RemoteConnectionConfigurationManager2 = require('./RemoteConnectionConfigurationManager');
+}
 
-var _ConnectionHealthNotifier = require('./ConnectionHealthNotifier');
+var _ConnectionHealthNotifier2;
 
-var _RemoteFile = require('./RemoteFile');
+function _ConnectionHealthNotifier() {
+  return _ConnectionHealthNotifier2 = require('./ConnectionHealthNotifier');
+}
 
-var _RemoteDirectory = require('./RemoteDirectory');
+var _RemoteFile2;
 
-var _atom = require('atom');
+function _RemoteFile() {
+  return _RemoteFile2 = require('./RemoteFile');
+}
 
-var _nuclideRemoteUri = require('../../nuclide-remote-uri');
+var _RemoteDirectory2;
 
-var _events = require('events');
+function _RemoteDirectory() {
+  return _RemoteDirectory2 = require('./RemoteDirectory');
+}
 
-var _nuclideServerLibNuclideSocket = require('../../nuclide-server/lib/NuclideSocket');
+var _atom2;
 
-var _nuclideServerLibNuclideSocket2 = _interopRequireDefault(_nuclideServerLibNuclideSocket);
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var _nuclideVersion = require('../../nuclide-version');
+var _nuclideRemoteUri2;
 
-var newServices = _nuclideServerLibServiceframeworkIndex2['default'].loadServicesConfig();
+function _nuclideRemoteUri() {
+  return _nuclideRemoteUri2 = require('../../nuclide-remote-uri');
+}
+
+var _events2;
+
+function _events() {
+  return _events2 = require('events');
+}
+
+var _nuclideServerLibNuclideSocket2;
+
+function _nuclideServerLibNuclideSocket() {
+  return _nuclideServerLibNuclideSocket2 = require('../../nuclide-server/lib/NuclideSocket');
+}
+
+var _nuclideVersion2;
+
+function _nuclideVersion() {
+  return _nuclideVersion2 = require('../../nuclide-version');
+}
+
+var posixPath = (_path2 || _path()).default.posix;
 
 // key for https connection.
 
-var _emitter = new _events.EventEmitter();
+var _emitter = new (_events2 || _events()).EventEmitter();
 
 // ServerConnection represents the client side of a connection to a remote machine.
 // There can be at most one connection to a given remote machine at a time. Clients should
@@ -139,8 +177,8 @@ var ServerConnection = (function () {
   }, {
     key: '_monitorConnectionHeartbeat',
     value: function _monitorConnectionHeartbeat() {
-      (0, _assert2['default'])(this._healthNotifier == null);
-      this._healthNotifier = new _ConnectionHealthNotifier.ConnectionHealthNotifier(this._config.host, this.getSocket());
+      (0, (_assert2 || _assert()).default)(this._healthNotifier == null);
+      this._healthNotifier = new (_ConnectionHealthNotifier2 || _ConnectionHealthNotifier()).ConnectionHealthNotifier(this._config.host, this.getSocket());
     }
   }, {
     key: 'getUriOfRemotePath',
@@ -150,31 +188,26 @@ var ServerConnection = (function () {
   }, {
     key: 'getPathOfUri',
     value: function getPathOfUri(uri) {
-      return (0, _nuclideRemoteUri.parse)(uri).path;
+      return (0, (_nuclideRemoteUri2 || _nuclideRemoteUri()).parse)(uri).path;
     }
   }, {
     key: 'createDirectory',
     value: function createDirectory(uri, hgRepositoryDescription) {
       var symlink = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
 
-      var _parseRemoteUri = (0, _nuclideRemoteUri.parse)(uri);
+      var _ref3 = (0, (_nuclideRemoteUri2 || _nuclideRemoteUri()).parse)(uri);
 
-      var path = _parseRemoteUri.path;
+      var path = _ref3.path;
 
-      path = _path2['default'].normalize(path);
+      path = posixPath.normalize(path);
 
       var entry = this._entries[path];
       if (!entry || entry.getLocalPath() !== path || entry.isSymbolicLink() !== symlink) {
-        this._entries[path] = entry = new _RemoteDirectory.RemoteDirectory(this, this.getUriOfRemotePath(path), symlink, { hgRepositoryDescription: hgRepositoryDescription });
-        // TODO: We should add the following line to keep the cache up-to-date.
-        // We need to implement onDidRename and onDidDelete in RemoteDirectory
-        // first. It's ok that we don't add the handlers for now since we have
-        // the check `entry.getLocalPath() !== path` above.
-        //
-        // this._addHandlersForEntry(entry);
+        this._entries[path] = entry = new (_RemoteDirectory2 || _RemoteDirectory()).RemoteDirectory(this, this.getUriOfRemotePath(path), symlink, { hgRepositoryDescription: hgRepositoryDescription });
+        this._addHandlersForEntry(entry);
       }
 
-      (0, _assert2['default'])(entry instanceof _RemoteDirectory.RemoteDirectory);
+      (0, (_assert2 || _assert()).default)(entry instanceof (_RemoteDirectory2 || _RemoteDirectory()).RemoteDirectory);
       if (!entry.isDirectory()) {
         throw new Error('Path is not a directory:' + uri);
       }
@@ -186,19 +219,19 @@ var ServerConnection = (function () {
     value: function createFile(uri) {
       var symlink = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
 
-      var _parseRemoteUri2 = (0, _nuclideRemoteUri.parse)(uri);
+      var _ref4 = (0, (_nuclideRemoteUri2 || _nuclideRemoteUri()).parse)(uri);
 
-      var path = _parseRemoteUri2.path;
+      var path = _ref4.path;
 
-      path = _path2['default'].normalize(path);
+      path = posixPath.normalize(path);
 
       var entry = this._entries[path];
       if (!entry || entry.getLocalPath() !== path || entry.isSymbolicLink() !== symlink) {
-        this._entries[path] = entry = new _RemoteFile.RemoteFile(this, this.getUriOfRemotePath(path), symlink);
+        this._entries[path] = entry = new (_RemoteFile2 || _RemoteFile()).RemoteFile(this, this.getUriOfRemotePath(path), symlink);
         this._addHandlersForEntry(entry);
       }
 
-      (0, _assert2['default'])(entry instanceof _RemoteFile.RemoteFile);
+      (0, (_assert2 || _assert()).default)(entry instanceof (_RemoteFile2 || _RemoteFile()).RemoteFile);
       if (entry.isDirectory()) {
         throw new Error('Path is not a file');
       }
@@ -210,16 +243,9 @@ var ServerConnection = (function () {
     value: function _addHandlersForEntry(entry) {
       var _this = this;
 
-      var oldPath = entry.getLocalPath();
-      /* $FlowFixMe */
-      var renameSubscription = entry.onDidRename(function () {
-        delete _this._entries[oldPath];
-        _this._entries[entry.getLocalPath()] = entry;
-      });
-      /* $FlowFixMe */
+      // TODO(most): Subscribe to rename events when they're implemented.
       var deleteSubscription = entry.onDidDelete(function () {
         delete _this._entries[entry.getLocalPath()];
-        renameSubscription.dispose();
         deleteSubscription.dispose();
       });
     }
@@ -232,12 +258,12 @@ var ServerConnection = (function () {
       // Test connection first. First time we get here we're checking to reestablish
       // connection using cached credentials. This will fail fast (faster than infoService)
       // when we don't have cached credentials yet.
-      yield client.testConnection();
+      yield client.getTransport().testConnection();
 
       // Do version check.
       var serverVersion = yield this._getInfoService().getServerVersion();
 
-      var clientVersion = (0, _nuclideVersion.getVersion)();
+      var clientVersion = (0, (_nuclideVersion2 || _nuclideVersion()).getVersion)();
       if (clientVersion !== serverVersion) {
         throw new Error('Version mismatch. Client at ' + clientVersion + ' while server at ' + serverVersion + '.');
       }
@@ -245,7 +271,7 @@ var ServerConnection = (function () {
       this._monitorConnectionHeartbeat();
 
       ServerConnection._connections.set(this.getRemoteHostname(), this);
-      (0, _RemoteConnectionConfigurationManager.setConnectionConfig)(this._config);
+      (0, (_RemoteConnectionConfigurationManager2 || _RemoteConnectionConfigurationManager()).setConnectionConfig)(this._config);
       _emitter.emit('did-add', this);
     })
   }, {
@@ -265,50 +291,47 @@ var ServerConnection = (function () {
       }
 
       // Remove from _connections to not be considered in future connection queries.
-      if (ServerConnection._connections['delete'](this.getRemoteHostname())) {
+      if (ServerConnection._connections.delete(this.getRemoteHostname())) {
         _emitter.emit('did-close', this);
       }
     }
   }, {
     key: 'getClient',
     value: function getClient() {
-      (0, _assert2['default'])(!this._closed && this._client != null, 'Server connection has been closed.');
+      (0, (_assert2 || _assert()).default)(!this._closed && this._client != null, 'Server connection has been closed.');
       return this._client;
     }
   }, {
     key: '_startRpc',
     value: function _startRpc() {
-      var _this2 = this;
-
       var uri = undefined;
-      var options = {};
+      var options = undefined;
 
       // Use https if we have key, cert, and ca
       if (this._isSecure()) {
-        options.certificateAuthorityCertificate = this._config.certificateAuthorityCertificate;
-        options.clientCertificate = this._config.clientCertificate;
-        options.clientKey = this._config.clientKey;
+        (0, (_assert2 || _assert()).default)(this._config.certificateAuthorityCertificate != null);
+        (0, (_assert2 || _assert()).default)(this._config.clientCertificate != null);
+        (0, (_assert2 || _assert()).default)(this._config.clientKey != null);
+        options = {
+          ca: this._config.certificateAuthorityCertificate,
+          cert: this._config.clientCertificate,
+          key: this._config.clientKey
+        };
         uri = 'https://' + this.getRemoteHost();
       } else {
+        options = null;
         uri = 'http://' + this.getRemoteHost();
       }
 
-      var socket = new _nuclideServerLibNuclideSocket2['default'](uri, options);
-      var client = new _nuclideServerLibServiceframeworkClientComponent2['default'](socket, (0, _nuclideServerLibServiceframeworkConfig.loadServicesConfig)());
-
-      // Register NuclideUri type conversions.
-      client.registerType('NuclideUri', function (remoteUri) {
-        return _this2.getPathOfUri(remoteUri);
-      }, function (path) {
-        return _this2.getUriOfRemotePath(path);
-      });
+      var socket = new (_nuclideServerLibNuclideSocket2 || _nuclideServerLibNuclideSocket()).NuclideSocket(uri, options);
+      var client = (_nuclideRpc2 || _nuclideRpc()).ClientComponent.createRemote(this.getRemoteHostname(), this.getPort(), socket, (0, (_nuclideServerLibServices2 || _nuclideServerLibServices()).loadServicesConfig)());
 
       this._client = client;
     }
   }, {
     key: '_isSecure',
     value: function _isSecure() {
-      return !!(this._config.certificateAuthorityCertificate && this._config.clientCertificate && this._config.clientKey);
+      return Boolean(this._config.certificateAuthorityCertificate && this._config.clientCertificate && this._config.clientKey);
     }
   }, {
     key: 'getRemoteHost',
@@ -338,7 +361,7 @@ var ServerConnection = (function () {
   }, {
     key: 'removeConnection',
     value: _asyncToGenerator(function* (connection, shutdownIfLast) {
-      (0, _assert2['default'])(this._connections.indexOf(connection) !== -1, 'Attempt to remove a non-existent RemoteConnection');
+      (0, (_assert2 || _assert()).default)(this._connections.indexOf(connection) !== -1, 'Attempt to remove a non-existent RemoteConnection');
       this._connections.splice(this._connections.indexOf(connection), 1);
       if (this._connections.length === 0) {
         // The await here is subtle, it ensures that the shutdown call is sent
@@ -352,9 +375,9 @@ var ServerConnection = (function () {
   }, {
     key: 'getRemoteConnectionForUri',
     value: function getRemoteConnectionForUri(uri) {
-      var _parseRemoteUri3 = (0, _nuclideRemoteUri.parse)(uri);
+      var _ref5 = (0, (_nuclideRemoteUri2 || _nuclideRemoteUri()).parse)(uri);
 
-      var path = _parseRemoteUri3.path;
+      var path = _ref5.path;
 
       return this.getConnections().filter(function (connection) {
         return path.startsWith(connection.getPathForInitialWorkingDirectory());
@@ -368,21 +391,12 @@ var ServerConnection = (function () {
   }, {
     key: 'getService',
     value: function getService(serviceName) {
-      var _newServices$filter = newServices.filter(function (config) {
-        return config.name === serviceName;
-      });
-
-      var _newServices$filter2 = _slicedToArray(_newServices$filter, 1);
-
-      var serviceConfig = _newServices$filter2[0];
-
-      (0, _assert2['default'])(serviceConfig != null, 'No config found for service ' + serviceName);
-      return (0, _nuclideServiceParser.getProxy)(serviceConfig.name, serviceConfig.definition, this.getClient());
+      return this.getClient().getService(serviceName);
     }
   }, {
     key: 'getSocket',
     value: function getSocket() {
-      return this.getClient().getSocket();
+      return this.getClient().getTransport();
     }
   }, {
     key: '_getInfoService',
@@ -405,7 +419,7 @@ var ServerConnection = (function () {
     key: 'onDidAddServerConnection',
     value: function onDidAddServerConnection(handler) {
       _emitter.on('did-add', handler);
-      return new _atom.Disposable(function () {
+      return new (_atom2 || _atom()).Disposable(function () {
         _emitter.removeListener('did-add', handler);
       });
     }
@@ -413,16 +427,16 @@ var ServerConnection = (function () {
     key: 'onDidCloseServerConnection',
     value: function onDidCloseServerConnection(handler) {
       _emitter.on('did-close', handler);
-      return new _atom.Disposable(function () {
+      return new (_atom2 || _atom()).Disposable(function () {
         _emitter.removeListener('did-close', handler);
       });
     }
   }, {
     key: 'getForUri',
     value: function getForUri(uri) {
-      var _parseRemoteUri4 = (0, _nuclideRemoteUri.parse)(uri);
+      var _ref6 = (0, (_nuclideRemoteUri2 || _nuclideRemoteUri()).parse)(uri);
 
-      var hostname = _parseRemoteUri4.hostname;
+      var hostname = _ref6.hostname;
 
       if (hostname == null) {
         return null;

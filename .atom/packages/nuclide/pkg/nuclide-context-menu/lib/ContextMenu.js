@@ -4,11 +4,11 @@ Object.defineProperty(exports, '__esModule', {
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -18,11 +18,17 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * the root directory of this source tree.
  */
 
-var _atom = require('atom');
+var _atom2;
 
-var _assert = require('assert');
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var _assert2 = _interopRequireDefault(_assert);
+var _assert2;
+
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
 /**
  * This class represents a collection of context menu items that have been registered with Atom's
@@ -104,7 +110,7 @@ var ContextMenu = (function () {
 
       // TODO(mbolin): Ideally, this Disposable should be garbage-collected if this ContextMenu is
       // disposed.
-      return new _atom.Disposable(function () {
+      return new (_atom2 || _atom()).Disposable(function () {
         var index = _this._items.indexOf(value);
         _this._items.splice(index, 1);
 
@@ -153,14 +159,14 @@ var ContextMenu = (function () {
         // Note that due to our own strict renaming rules, this must be a private method instead of a
         // static function becuase of the access to _menuOptions and _items.
         var menuOptions = internalItem.menu._menuOptions;
-        (0, _assert2['default'])(menuOptions.type === 'submenu');
+        (0, (_assert2 || _assert()).default)(menuOptions.type === 'submenu');
         var items = internalItem.menu._sortAndFilterItems();
         return {
           label: menuOptions.label,
           submenu: items.map(this._contextMenuItemForInternalItem, this)
         };
       } else {
-        (0, _assert2['default'])(false);
+        (0, (_assert2 || _assert()).default)(false);
       }
     }
   }, {
@@ -193,11 +199,11 @@ var ContextMenu = (function () {
   return ContextMenu;
 })();
 
-exports['default'] = ContextMenu;
+exports.default = ContextMenu;
 function compareInternalItems(a, b) {
   return a.priority - b.priority;
 }
-module.exports = exports['default'];
+module.exports = exports.default;
 
 /**
  * List of items that have been added to this context menu in the order they were added.

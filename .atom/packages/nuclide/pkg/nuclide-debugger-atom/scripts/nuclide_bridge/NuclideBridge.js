@@ -2,7 +2,7 @@ var _createClass = (function () { function defineProperties(target, props) { for
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _libAnalyticsHelper = require('../../lib/AnalyticsHelper');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -12,9 +12,29 @@ var _libAnalyticsHelper = require('../../lib/AnalyticsHelper');
  * the root directory of this source tree.
  */
 
-var Emitter = require('./Emitter');
-var Multimap = require('../../lib/Multimap');
-var ipc = require('ipc');
+var _Emitter2;
+
+function _Emitter() {
+  return _Emitter2 = _interopRequireDefault(require('./Emitter'));
+}
+
+var _libMultimap2;
+
+function _libMultimap() {
+  return _libMultimap2 = _interopRequireDefault(require('../../lib/Multimap'));
+}
+
+var _ipc2;
+
+function _ipc() {
+  return _ipc2 = _interopRequireDefault(require('ipc'));
+}
+
+var _libAnalyticsHelper2;
+
+function _libAnalyticsHelper() {
+  return _libAnalyticsHelper2 = require('../../lib/AnalyticsHelper');
+}
 
 var WebInspector = window.WebInspector;
 // Re-use 'watch-group' since some backends throw when they encounted an unrecognized object group.
@@ -33,12 +53,12 @@ var NuclideBridge = (function () {
     _classCallCheck(this, NuclideBridge);
 
     this._allBreakpoints = [];
-    this._unresolvedBreakpoints = new Multimap();
-    this._emitter = new Emitter();
+    this._unresolvedBreakpoints = new (_libMultimap2 || _libMultimap()).default();
+    this._emitter = new (_Emitter2 || _Emitter()).default();
     this._debuggerPausedCount = 0;
     this._suppressBreakpointNotification = false;
 
-    ipc.on('command', this._handleIpcCommand.bind(this));
+    (_ipc2 || _ipc()).default.on('command', this._handleIpcCommand.bind(this));
 
     WebInspector.targetManager.addModelListener(WebInspector.DebuggerModel, WebInspector.DebuggerModel.Events.CallFrameSelected, this._handleCallFrameSelected, this);
 
@@ -104,13 +124,13 @@ var NuclideBridge = (function () {
           this.updateProperties(properties, internalProperties);
         }
         // $FlowFixMe.
-        WebInspector.RemoteObject.loadFromObject(this.object, !!this.ignoreHasOwnProperty, callback.bind(this));
+        WebInspector.RemoteObject.loadFromObject(this.object, Boolean(this.ignoreHasOwnProperty), callback.bind(this));
       };
     }
   }, {
     key: '_handleWindowLoad',
     value: function _handleWindowLoad() {
-      ipc.sendToHost('notification', 'ready');
+      (_ipc2 || _ipc()).default.sendToHost('notification', 'ready');
     }
   }, {
     key: '_handleIpcCommand',
@@ -142,7 +162,7 @@ var NuclideBridge = (function () {
     value: function _handleCallFrameSelected(event) {
       var frame = event.data;
       var uiLocation = WebInspector.debuggerWorkspaceBinding.rawLocationToUILocation(frame.location());
-      ipc.sendToHost('notification', 'CallFrameSelected', {
+      (_ipc2 || _ipc()).default.sendToHost('notification', 'CallFrameSelected', {
         sourceURL: uiLocation.uiSourceCode.uri(),
         lineNumber: uiLocation.lineNumber
       });
@@ -156,7 +176,7 @@ var NuclideBridge = (function () {
   }, {
     key: 'sendOpenSourceLocation',
     value: function sendOpenSourceLocation(sourceURL, line) {
-      ipc.sendToHost('notification', 'OpenSourceLocation', {
+      (_ipc2 || _ipc()).default.sendToHost('notification', 'OpenSourceLocation', {
         sourceURL: sourceURL,
         lineNumber: line
       });
@@ -173,7 +193,7 @@ var NuclideBridge = (function () {
       false, /* returnByValue */
       false, /* generatePreview */
       function (remoteObject, wasThrown, error) {
-        ipc.sendToHost('notification', 'ExpressionEvaluationResponse', {
+        (_ipc2 || _ipc()).default.sendToHost('notification', 'ExpressionEvaluationResponse', {
           result: wasThrown ? null : remoteObject,
           error: wasThrown ? error : null,
           expression: expression
@@ -183,8 +203,8 @@ var NuclideBridge = (function () {
   }, {
     key: '_handleDebuggerPaused',
     value: function _handleDebuggerPaused(event) {
-      (0, _libAnalyticsHelper.endTimerTracking)();
-      ipc.sendToHost('notification', 'DebuggerPaused', {});
+      (0, (_libAnalyticsHelper2 || _libAnalyticsHelper()).endTimerTracking)();
+      (_ipc2 || _ipc()).default.sendToHost('notification', 'DebuggerPaused', {});
       ++this._debuggerPausedCount;
       if (this._debuggerPausedCount === 1) {
         this._handleLoaderBreakpoint();
@@ -215,17 +235,17 @@ var NuclideBridge = (function () {
         }
       });
 
-      ipc.sendToHost('notification', 'LoaderBreakpointResumed', {});
+      (_ipc2 || _ipc()).default.sendToHost('notification', 'LoaderBreakpointResumed', {});
     }
   }, {
     key: '_handleDebuggerResumed',
     value: function _handleDebuggerResumed(event) {
-      ipc.sendToHost('notification', 'DebuggerResumed', {});
+      (_ipc2 || _ipc()).default.sendToHost('notification', 'DebuggerResumed', {});
     }
   }, {
     key: '_handleClearInterface',
     value: function _handleClearInterface(event) {
-      ipc.sendToHost('notification', 'ClearInterface', {});
+      (_ipc2 || _ipc()).default.sendToHost('notification', 'ClearInterface', {});
     }
   }, {
     key: '_handleBreakpointAdded',
@@ -243,7 +263,7 @@ var NuclideBridge = (function () {
     key: '_sendBreakpointNotification',
     value: function _sendBreakpointNotification(location, type) {
       if (!this._suppressBreakpointNotification) {
-        ipc.sendToHost('notification', type, {
+        (_ipc2 || _ipc()).default.sendToHost('notification', type, {
           sourceURL: location.uiSourceCode.uri(),
           lineNumber: location.lineNumber
         });
@@ -281,7 +301,7 @@ var NuclideBridge = (function () {
       try {
         (function () {
           _this2._suppressBreakpointNotification = true;
-          _this2._unresolvedBreakpoints = new Multimap();
+          _this2._unresolvedBreakpoints = new (_libMultimap2 || _libMultimap()).default();
 
           var newBreakpointSet = new Set(_this2._allBreakpoints.map(function (breakpoint) {
             return formatBreakpointKey(breakpoint.sourceURL, breakpoint.lineNumber);
@@ -330,7 +350,7 @@ var NuclideBridge = (function () {
     value: function _continue() {
       var target = WebInspector.targetManager.mainTarget();
       if (target) {
-        (0, _libAnalyticsHelper.beginTimerTracking)('nuclide-debugger-atom:continue');
+        (0, (_libAnalyticsHelper2 || _libAnalyticsHelper()).beginTimerTracking)('nuclide-debugger-atom:continue');
         target.debuggerModel.resume();
       }
     }
@@ -339,7 +359,7 @@ var NuclideBridge = (function () {
     value: function _stepOver() {
       var target = WebInspector.targetManager.mainTarget();
       if (target) {
-        (0, _libAnalyticsHelper.beginTimerTracking)('nuclide-debugger-atom:stepOver');
+        (0, (_libAnalyticsHelper2 || _libAnalyticsHelper()).beginTimerTracking)('nuclide-debugger-atom:stepOver');
         target.debuggerModel.stepOver();
       }
     }
@@ -348,7 +368,7 @@ var NuclideBridge = (function () {
     value: function _stepInto() {
       var target = WebInspector.targetManager.mainTarget();
       if (target) {
-        (0, _libAnalyticsHelper.beginTimerTracking)('nuclide-debugger-atom:stepInto');
+        (0, (_libAnalyticsHelper2 || _libAnalyticsHelper()).beginTimerTracking)('nuclide-debugger-atom:stepInto');
         target.debuggerModel.stepInto();
       }
     }
@@ -357,7 +377,7 @@ var NuclideBridge = (function () {
     value: function _stepOut() {
       var target = WebInspector.targetManager.mainTarget();
       if (target) {
-        (0, _libAnalyticsHelper.beginTimerTracking)('nuclide-debugger-atom:stepOut');
+        (0, (_libAnalyticsHelper2 || _libAnalyticsHelper()).beginTimerTracking)('nuclide-debugger-atom:stepOut');
         target.debuggerModel.stepOut();
       }
     }

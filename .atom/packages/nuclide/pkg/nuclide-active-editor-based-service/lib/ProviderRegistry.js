@@ -29,7 +29,7 @@ var ProviderRegistry = (function () {
   }, {
     key: 'removeProvider',
     value: function removeProvider(provider) {
-      this._providers['delete'](provider);
+      this._providers.delete(provider);
     }
   }, {
     key: 'findProvider',

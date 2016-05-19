@@ -6,11 +6,11 @@ var _createClass = (function () { function defineProperties(target, props) { for
 
 var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -20,23 +20,53 @@ function _inherits(subClass, superClass) { if (typeof superClass !== 'function' 
  * the root directory of this source tree.
  */
 
-var _libFileTreeStore = require('../lib/FileTreeStore');
+var _libFileTreeStore2;
 
-var _reactForAtom = require('react-for-atom');
+function _libFileTreeStore() {
+  return _libFileTreeStore2 = require('../lib/FileTreeStore');
+}
 
-var _FileTreeEntryComponent = require('./FileTreeEntryComponent');
+var _reactForAtom2;
 
-var _EmptyComponent = require('./EmptyComponent');
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
 
-var _nuclideAnalytics = require('../../nuclide-analytics');
+var _FileTreeEntryComponent2;
 
-var _nuclideCommons = require('../../nuclide-commons');
+function _FileTreeEntryComponent() {
+  return _FileTreeEntryComponent2 = require('./FileTreeEntryComponent');
+}
 
-var _classnames = require('classnames');
+var _EmptyComponent2;
 
-var _classnames2 = _interopRequireDefault(_classnames);
+function _EmptyComponent() {
+  return _EmptyComponent2 = require('./EmptyComponent');
+}
 
-var _atom = require('atom');
+var _nuclideAnalytics2;
+
+function _nuclideAnalytics() {
+  return _nuclideAnalytics2 = require('../../nuclide-analytics');
+}
+
+var _nuclideCommons2;
+
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
+
+var _classnames2;
+
+function _classnames() {
+  return _classnames2 = _interopRequireDefault(require('classnames'));
+}
+
+var _atom2;
+
+function _atom() {
+  return _atom2 = require('atom');
+}
 
 var BUFFER_ELEMENTS = 15;
 
@@ -45,8 +75,8 @@ var FileTree = (function (_React$Component) {
 
   _createClass(FileTree, null, [{
     key: 'trackFirstRender',
-    value: (0, _nuclideCommons.once)(function () {
-      var rootKeysLength = _libFileTreeStore.FileTreeStore.getInstance().roots.size;
+    value: (0, (_nuclideCommons2 || _nuclideCommons()).once)(function () {
+      var rootKeysLength = (_libFileTreeStore2 || _libFileTreeStore()).FileTreeStore.getInstance().roots.size;
       // Wait using `setTimeout` and not `process.nextTick` or `setImmediate`
       // because those queue tasks in the current and next turn of the event loop
       // respectively. Since `setTimeout` gets preempted by them, it works great
@@ -54,7 +84,7 @@ var FileTree = (function (_React$Component) {
       // (`Promise.resolve().then`) runs on the same queue as `process.nextTick`
       // but with a higher priority.
       setTimeout(function () {
-        (0, _nuclideAnalytics.track)('filetree-first-render', {
+        (0, (_nuclideAnalytics2 || _nuclideAnalytics()).track)('filetree-first-render', {
           'time-to-render': String(process.uptime() * 1000),
           'root-keys': String(rootKeysLength)
         });
@@ -67,8 +97,8 @@ var FileTree = (function (_React$Component) {
     _classCallCheck(this, FileTree);
 
     _get(Object.getPrototypeOf(FileTree.prototype), 'constructor', this).call(this, props);
-    this._store = _libFileTreeStore.FileTreeStore.getInstance();
-    this._disposables = new _atom.CompositeDisposable();
+    this._store = (_libFileTreeStore2 || _libFileTreeStore()).FileTreeStore.getInstance();
+    this._disposables = new (_atom2 || _atom()).CompositeDisposable();
 
     this.state = {
       elementHeight: 22 };
@@ -95,7 +125,7 @@ var FileTree = (function (_React$Component) {
           _this._afRequestId = null;
           _this._measureHeights();
         });
-      }), new _atom.Disposable(function () {
+      }), new (_atom2 || _atom()).Disposable(function () {
         window.removeEventListener('resize', _this._measureHeights);
       }));
     }
@@ -136,7 +166,7 @@ var FileTree = (function (_React$Component) {
 
       this._initialHeightMeasured = true;
 
-      var node = _reactForAtom.ReactDOM.findDOMNode(measuredComponent);
+      var node = (_reactForAtom2 || _reactForAtom()).ReactDOM.findDOMNode(measuredComponent);
       var elementHeight = node.clientHeight;
       if (elementHeight !== this.state.elementHeight && elementHeight > 0) {
         this.setState({ elementHeight: elementHeight });
@@ -152,9 +182,9 @@ var FileTree = (function (_React$Component) {
         'nuclide-file-tree-editing-working-set': this._store.isEditingWorkingSet()
       };
 
-      return _reactForAtom.React.createElement(
+      return (_reactForAtom2 || _reactForAtom()).React.createElement(
         'div',
-        { className: (0, _classnames2['default'])(classes), tabIndex: 0 },
+        { className: (0, (_classnames2 || _classnames()).default)(classes), tabIndex: 0 },
         this._renderChildren()
       );
     }
@@ -165,7 +195,7 @@ var FileTree = (function (_React$Component) {
       var childrenCount = countShownNodes(roots);
 
       if (childrenCount === 0) {
-        return _reactForAtom.React.createElement(_EmptyComponent.EmptyComponent, null);
+        return (_reactForAtom2 || _reactForAtom()).React.createElement((_EmptyComponent2 || _EmptyComponent()).EmptyComponent, null);
       }
 
       var scrollTop = this.props.containerScrollTop;
@@ -194,10 +224,10 @@ var FileTree = (function (_React$Component) {
       var key = firstToRender % amountToRender;
       while (node != null && visibleChildren.length < amountToRender) {
         if (!node.isRoot && !chosenMeasured) {
-          visibleChildren.push(_reactForAtom.React.createElement(_FileTreeEntryComponent.FileTreeEntryComponent, { key: key, node: node, ref: 'measured' }));
+          visibleChildren.push((_reactForAtom2 || _reactForAtom()).React.createElement((_FileTreeEntryComponent2 || _FileTreeEntryComponent()).FileTreeEntryComponent, { key: key, node: node, ref: 'measured' }));
           chosenMeasured = true;
         } else {
-          visibleChildren.push(_reactForAtom.React.createElement(_FileTreeEntryComponent.FileTreeEntryComponent, { key: key, node: node }));
+          visibleChildren.push((_reactForAtom2 || _reactForAtom()).React.createElement((_FileTreeEntryComponent2 || _FileTreeEntryComponent()).FileTreeEntryComponent, { key: key, node: node }));
         }
         node = node.findNext();
         key = (key + 1) % amountToRender;
@@ -207,22 +237,22 @@ var FileTree = (function (_React$Component) {
       var bottomPlaceholderCount = childrenCount - (firstToRender + visibleChildren.length);
       var bottomPlaceholderSize = bottomPlaceholderCount * elementHeight;
 
-      return _reactForAtom.React.createElement(
+      return (_reactForAtom2 || _reactForAtom()).React.createElement(
         'div',
         null,
-        _reactForAtom.React.createElement('div', { style: { height: topPlaceholderSize + 'px' } }),
-        _reactForAtom.React.createElement(
+        (_reactForAtom2 || _reactForAtom()).React.createElement('div', { style: { height: topPlaceholderSize + 'px' } }),
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
           'ul',
           { className: 'list-tree has-collapsable-children' },
           visibleChildren
         ),
-        _reactForAtom.React.createElement('div', { style: { height: bottomPlaceholderSize + 'px' } })
+        (_reactForAtom2 || _reactForAtom()).React.createElement('div', { style: { height: bottomPlaceholderSize + 'px' } })
       );
     }
   }]);
 
   return FileTree;
-})(_reactForAtom.React.Component);
+})((_reactForAtom2 || _reactForAtom()).React.Component);
 
 exports.FileTree = FileTree;
 

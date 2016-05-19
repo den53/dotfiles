@@ -16,17 +16,29 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
  * the root directory of this source tree.
  */
 
-var _clientInfo = require('./clientInfo');
+var _clientInfo2;
 
-var _systemInfo = require('./systemInfo');
+function _clientInfo() {
+  return _clientInfo2 = require('./clientInfo');
+}
 
-var _environment = require('./environment');
+var _systemInfo2;
 
-var _environment2 = _interopRequireDefault(_environment);
+function _systemInfo() {
+  return _systemInfo2 = require('./systemInfo');
+}
 
-var _session = require('./session');
+var _environment2;
 
-var _session2 = _interopRequireDefault(_session);
+function _environment() {
+  return _environment2 = _interopRequireDefault(require('./environment'));
+}
+
+var _session2;
+
+function _session() {
+  return _session2 = _interopRequireDefault(require('./session'));
+}
 
 var cachedInformation = null;
 
@@ -37,13 +49,13 @@ function getCacheableRuntimeInformation() {
 
   cachedInformation = {
     sessionId: '',
-    user: _environment2['default'].USER,
-    osType: (0, _systemInfo.getOsType)(),
+    user: (_environment2 || _environment()).default.USER,
+    osType: (0, (_systemInfo2 || _systemInfo()).getOsType)(),
     timestamp: 0,
-    isClient: (0, _clientInfo.isRunningInClient)(),
-    isDevelopment: (0, _clientInfo.isDevelopment)(),
-    atomVersion: (0, _clientInfo.isRunningInClient)() ? (0, _clientInfo.getAtomVersion)() : '',
-    nuclideVersion: (0, _clientInfo.getNuclideVersion)(),
+    isClient: (0, (_clientInfo2 || _clientInfo()).isRunningInClient)(),
+    isDevelopment: (0, (_clientInfo2 || _clientInfo()).isDevelopment)(),
+    atomVersion: (0, (_clientInfo2 || _clientInfo()).isRunningInClient)() ? (0, (_clientInfo2 || _clientInfo()).getAtomVersion)() : '',
+    nuclideVersion: (0, (_clientInfo2 || _clientInfo()).getNuclideVersion)(),
     installerPackageVersion: 0,
     uptime: 0,
     // TODO (chenshen) fill following information.
@@ -55,7 +67,7 @@ function getCacheableRuntimeInformation() {
 
 function getRuntimeInformation() {
   var runtimeInformation = _extends({}, getCacheableRuntimeInformation(), {
-    sessionId: _session2['default'].id,
+    sessionId: (_session2 || _session()).default.id,
     timestamp: Date.now(),
     uptime: Math.floor(process.uptime() * 1000)
   });

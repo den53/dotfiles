@@ -1,7 +1,7 @@
 Object.defineProperty(exports, '__esModule', {
   value: true
 });
-exports['default'] = destroyPaneItemWithTitle;
+exports.default = destroyPaneItemWithTitle;
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -23,4 +23,4 @@ function destroyPaneItemWithTitle(title) {
   }
 }
 
-module.exports = exports['default'];
+module.exports = exports.default;

@@ -28,9 +28,13 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
  * the root directory of this source tree.
  */
 
-var _rxjs = require('rxjs');
+var _rxjs2;
 
-var goToLocationSubject = new _rxjs.Subject();
+function _rxjs() {
+  return _rxjs2 = require('rxjs');
+}
+
+var goToLocationSubject = new (_rxjs2 || _rxjs()).Subject();
 
 // Scrolls to the given line/column at the given editor
 // broadcasts the editor instance on an observable (subject) available

@@ -1,4 +1,4 @@
-
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -8,7 +8,11 @@
  * the root directory of this source tree.
  */
 
-var markers = require('../constants/markers');
+var _constantsMarkers2;
+
+function _constantsMarkers() {
+  return _constantsMarkers2 = _interopRequireDefault(require('../constants/markers'));
+}
 
 /**
  * Given an array of lines this will parse the scopes and return a mapping of
@@ -20,7 +24,7 @@ function buildScopes(lines) {
   var id = 0;
   var stack = [];
   for (var i = 0; i < lines.length; i++) {
-    if (lines[i] === markers.openScope) {
+    if (lines[i] === (_constantsMarkers2 || _constantsMarkers()).default.openScope) {
       stack.push(id++);
     }
     if (stack.length > 0) {
@@ -30,7 +34,7 @@ function buildScopes(lines) {
     }
     // Make sure to do this after saving in the scope map. The closeScope is
     // part of it's own scope, we don't want to pop too soon.
-    if (lines[i] === markers.closeScope) {
+    if (lines[i] === (_constantsMarkers2 || _constantsMarkers()).default.closeScope) {
       stack.pop();
     }
   }

@@ -10,15 +10,21 @@ Object.defineProperty(exports, '__esModule', {
  * the root directory of this source tree.
  */
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-var _classnames2 = require('classnames');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _classnames3 = _interopRequireDefault(_classnames2);
+var _classnames2;
 
-var _reactForAtom = require('react-for-atom');
+function _classnames() {
+  return _classnames2 = _interopRequireDefault(require('classnames'));
+}
+
+var _reactForAtom2;
+
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
 
 var BadgeSizes = Object.freeze({
   medium: 'medium',
@@ -49,7 +55,7 @@ var BadgeColorClassNames = Object.freeze({
 });
 
 var Badge = function Badge(props) {
-  var _classnames;
+  var _ref;
 
   var className = props.className;
   var color = props.color;
@@ -59,8 +65,8 @@ var Badge = function Badge(props) {
 
   var sizeClassName = size == null ? '' : BadgeSizeClassNames[size] || '';
   var colorClassName = color == null ? '' : BadgeColorClassNames[color] || '';
-  var newClassName = (0, _classnames3['default'])(className, 'badge', (_classnames = {}, _defineProperty(_classnames, sizeClassName, size != null), _defineProperty(_classnames, colorClassName, color != null), _defineProperty(_classnames, 'icon icon-' + icon, icon != null), _classnames));
-  return _reactForAtom.React.createElement(
+  var newClassName = (0, (_classnames2 || _classnames()).default)(className, 'badge', (_ref = {}, _defineProperty(_ref, sizeClassName, size != null), _defineProperty(_ref, colorClassName, color != null), _defineProperty(_ref, 'icon icon-' + icon, icon != null), _ref));
+  return (_reactForAtom2 || _reactForAtom()).React.createElement(
     'span',
     { className: newClassName },
     value

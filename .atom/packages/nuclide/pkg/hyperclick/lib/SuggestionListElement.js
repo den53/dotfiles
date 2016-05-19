@@ -10,25 +10,33 @@ Object.defineProperty(exports, '__esModule', {
  * the root directory of this source tree.
  */
 
-/* eslint-env browser */
-
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
 var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var _atom = require('atom');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _reactForAtom = require('react-for-atom');
+var _atom2;
 
-var _assert = require('assert');
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var _assert2 = _interopRequireDefault(_assert);
+var _reactForAtom2;
+
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
+
+var _assert2;
+
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
 /**
  * We need to create this custom HTML element so we can hook into the view
@@ -55,12 +63,12 @@ var SuggestionListElement = (function (_HTMLElement) {
   }, {
     key: 'attachedCallback',
     value: function attachedCallback() {
-      _reactForAtom.ReactDOM.render(_reactForAtom.React.createElement(SuggestionList, { suggestionList: this._model }), this);
+      (_reactForAtom2 || _reactForAtom()).ReactDOM.render((_reactForAtom2 || _reactForAtom()).React.createElement(SuggestionList, { suggestionList: this._model }), this);
     }
   }, {
     key: 'dispose',
     value: function dispose() {
-      _reactForAtom.ReactDOM.unmountComponentAtNode(this);
+      (_reactForAtom2 || _reactForAtom()).ReactDOM.unmountComponentAtNode(this);
       if (this.parentNode) {
         this.parentNode.removeChild(this);
       }
@@ -80,7 +88,7 @@ var SuggestionList = (function (_React$Component) {
     this.state = {
       selectedIndex: 0
     };
-    this._subscriptions = new _atom.CompositeDisposable();
+    this._subscriptions = new (_atom2 || _atom()).CompositeDisposable();
     this._boundConfirm = this._confirm.bind(this);
   }
 
@@ -90,7 +98,7 @@ var SuggestionList = (function (_React$Component) {
       var suggestionList = this.props.suggestionList;
 
       var suggestion = suggestionList.getSuggestion();
-      (0, _assert2['default'])(suggestion);
+      (0, (_assert2 || _assert()).default)(suggestion);
       // TODO(nmote): This is assuming `suggestion.callback` is always an Array, which is not true
       //   according to hyperclick/lib/types. It can also be a function.
       this._items = suggestion.callback;
@@ -102,7 +110,7 @@ var SuggestionList = (function (_React$Component) {
       var _this = this;
 
       var textEditor = this._textEditor;
-      (0, _assert2['default'])(textEditor);
+      (0, (_assert2 || _assert()).default)(textEditor);
       var textEditorView = atom.views.getView(textEditor);
       var boundClose = this._close.bind(this);
       this._subscriptions.add(atom.commands.add(textEditorView, {
@@ -121,9 +129,9 @@ var SuggestionList = (function (_React$Component) {
       var stopPropagation = function stopPropagation(event) {
         return event.stopPropagation();
       };
-      _reactForAtom.ReactDOM.findDOMNode(this.refs['scroller']).addEventListener('mousewheel', stopPropagation);
-      this._subscriptions.add(new _atom.Disposable(function () {
-        _reactForAtom.ReactDOM.findDOMNode(_this.refs['scroller']).removeEventListener('mousewheel', stopPropagation);
+      (_reactForAtom2 || _reactForAtom()).ReactDOM.findDOMNode(this.refs['scroller']).addEventListener('mousewheel', stopPropagation);
+      this._subscriptions.add(new (_atom2 || _atom()).Disposable(function () {
+        (_reactForAtom2 || _reactForAtom()).ReactDOM.findDOMNode(_this.refs['scroller']).removeEventListener('mousewheel', stopPropagation);
       }));
 
       var keydown = function keydown(event) {
@@ -134,7 +142,7 @@ var SuggestionList = (function (_React$Component) {
         }
       };
       textEditorView.addEventListener('keydown', keydown);
-      this._subscriptions.add(new _atom.Disposable(function () {
+      this._subscriptions.add(new (_atom2 || _atom()).Disposable(function () {
         textEditorView.removeEventListener('keydown', keydown);
       }));
     }
@@ -148,14 +156,14 @@ var SuggestionList = (function (_React$Component) {
         if (index === _this2.state.selectedIndex) {
           className += ' selected';
         }
-        return _reactForAtom.React.createElement(
+        return (_reactForAtom2 || _reactForAtom()).React.createElement(
           'li',
           { className: className,
             key: index,
             onMouseDown: _this2._boundConfirm,
             onMouseEnter: _this2._setSelectedIndex.bind(_this2, index) },
           item.title,
-          _reactForAtom.React.createElement(
+          (_reactForAtom2 || _reactForAtom()).React.createElement(
             'span',
             { className: 'right-label' },
             item.rightLabel
@@ -163,10 +171,10 @@ var SuggestionList = (function (_React$Component) {
         );
       });
 
-      return _reactForAtom.React.createElement(
+      return (_reactForAtom2 || _reactForAtom()).React.createElement(
         'div',
         { className: 'popover-list select-list hyperclick-suggestion-list-scroller', ref: 'scroller' },
-        _reactForAtom.React.createElement(
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
           'ol',
           { className: 'list-group', ref: 'selectionList' },
           itemComponents
@@ -246,16 +254,16 @@ var SuggestionList = (function (_React$Component) {
   }, {
     key: '_updateScrollPosition',
     value: function _updateScrollPosition() {
-      var listNode = _reactForAtom.ReactDOM.findDOMNode(this.refs['selectionList']);
+      var listNode = (_reactForAtom2 || _reactForAtom()).ReactDOM.findDOMNode(this.refs['selectionList']);
       var selectedNode = listNode.getElementsByClassName('selected')[0];
       selectedNode.scrollIntoViewIfNeeded(false);
     }
   }]);
 
   return SuggestionList;
-})(_reactForAtom.React.Component);
+})((_reactForAtom2 || _reactForAtom()).React.Component);
 
-exports['default'] = document.registerElement('hyperclick-suggestion-list', {
+exports.default = document.registerElement('hyperclick-suggestion-list', {
   prototype: SuggestionListElement.prototype
 });
-module.exports = exports['default'];
+module.exports = exports.default;

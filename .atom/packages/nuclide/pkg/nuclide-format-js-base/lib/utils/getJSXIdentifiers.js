@@ -1,6 +1,4 @@
-
-
-var jscs = require('jscodeshift');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -10,9 +8,17 @@ var jscs = require('jscodeshift');
  * the root directory of this source tree.
  */
 
-var _require = require('./StringUtils');
+var _jscodeshift2;
 
-var isLowerCase = _require.isLowerCase;
+function _jscodeshift() {
+  return _jscodeshift2 = _interopRequireDefault(require('jscodeshift'));
+}
+
+var _StringUtils2;
+
+function _StringUtils() {
+  return _StringUtils2 = require('./StringUtils');
+}
 
 // TODO: make this configurable somehow, we probably don't want to explicitly
 // list out all of the lowercase html tags that are built-in
@@ -26,12 +32,12 @@ function getJSXIdentifiers(root) {
   root
   // There should be an opening element for every single closing element so
   // we can just look for opening ones
-  .find(jscs.JSXOpeningElement).filter(function (path) {
-    return jscs.JSXIdentifier.check(path.node.name);
+  .find((_jscodeshift2 || _jscodeshift()).default.JSXOpeningElement).filter(function (path) {
+    return (_jscodeshift2 || _jscodeshift()).default.JSXIdentifier.check(path.node.name);
   }).forEach(function (path) {
     var name = path.node.name.name;
     // TODO: should this be here or in addMissingRequires?
-    if (!isLowerCase(name) || LOWER_CASE_WHITE_LIST.has(name)) {
+    if (!(0, (_StringUtils2 || _StringUtils()).isLowerCase)(name) || LOWER_CASE_WHITE_LIST.has(name)) {
       ids.add(name);
     }
   });

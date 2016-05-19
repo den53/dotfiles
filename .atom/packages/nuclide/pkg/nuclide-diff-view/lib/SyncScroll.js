@@ -14,7 +14,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * the root directory of this source tree.
  */
 
-var _atom = require('atom');
+var _atom2;
+
+function _atom() {
+  return _atom2 = require('atom');
+}
+
+var DEFER_SCROLL_SYNC_MS = 10;
 
 var SyncScroll = (function () {
   function SyncScroll(editor1Element, editor2Element) {
@@ -23,7 +29,7 @@ var SyncScroll = (function () {
     _classCallCheck(this, SyncScroll);
 
     // Atom master or >= v1.0.18 have changed the scroll logic to the editor element.
-    var subscriptions = this._subscriptions = new _atom.CompositeDisposable();
+    this._subscriptions = new (_atom2 || _atom()).CompositeDisposable();
     this._syncInfo = [{
       scrollElement: editor1Element,
       scrolling: false
@@ -38,14 +44,18 @@ var SyncScroll = (function () {
       var updateScrollPosition = function updateScrollPosition() {
         return _this._scrollPositionChanged(i);
       };
-      subscriptions.add(scrollElement.onDidChangeScrollTop(updateScrollPosition));
-      subscriptions.add(scrollElement.onDidChangeScrollLeft(updateScrollPosition));
+      _this._subscriptions.add(scrollElement.onDidChangeScrollTop(updateScrollPosition));
+      _this._subscriptions.add(scrollElement.onDidChangeScrollLeft(updateScrollPosition));
     });
+    this._scrollSyncTimeout = null;
+    this._scrollPositionChanged(1);
   }
 
   _createClass(SyncScroll, [{
     key: '_scrollPositionChanged',
     value: function _scrollPositionChanged(changeScrollIndex) {
+      var _this2 = this;
+
       var thisInfo = this._syncInfo[changeScrollIndex];
       if (thisInfo.scrolling) {
         return;
@@ -60,18 +70,28 @@ var SyncScroll = (function () {
       }
       var thisElement = thisInfo.scrollElement;
 
+      if (thisElement.getScrollHeight() !== otherElement.getScrollHeight()) {
+        // One of the editors' dimensions is pending sync.
+        if (this._scrollSyncTimeout != null) {
+          clearTimeout(this._scrollSyncTimeout);
+        }
+        this._scrollSyncTimeout = setTimeout(function () {
+          _this2._scrollPositionChanged(1);
+          _this2._scrollSyncTimeout = null;
+        }, DEFER_SCROLL_SYNC_MS);
+        return;
+      }
       otherInfo.scrolling = true;
       otherElement.setScrollTop(thisElement.getScrollTop());
-      // $FlowFixMe Atom API backword compatability.
       otherElement.setScrollLeft(thisElement.getScrollLeft());
       otherInfo.scrolling = false;
     }
   }, {
     key: 'dispose',
     value: function dispose() {
-      if (this._subscriptions) {
-        this._subscriptions.dispose();
-        this._subscriptions = null;
+      this._subscriptions.dispose();
+      if (this._scrollSyncTimeout != null) {
+        clearTimeout(this._scrollSyncTimeout);
       }
     }
   }]);
@@ -79,5 +99,5 @@ var SyncScroll = (function () {
   return SyncScroll;
 })();
 
-exports['default'] = SyncScroll;
-module.exports = exports['default'];
+exports.default = SyncScroll;
+module.exports = exports.default;

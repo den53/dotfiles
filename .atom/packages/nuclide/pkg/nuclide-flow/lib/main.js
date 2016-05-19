@@ -17,28 +17,55 @@ exports.provideBusySignal = provideBusySignal;
 exports.provideDiagnostics = provideDiagnostics;
 exports.provideOutlines = provideOutlines;
 exports.createTypeHintProvider = createTypeHintProvider;
+exports.createCoverageProvider = createCoverageProvider;
 exports.createEvaluationExpressionProvider = createEvaluationExpressionProvider;
 exports.deactivate = deactivate;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _assert = require('assert');
+var _assert2;
 
-var _assert2 = _interopRequireDefault(_assert);
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
-var _atom = require('atom');
+var _atom2;
 
-var _nuclideFeatureConfig = require('../../nuclide-feature-config');
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var _nuclideFeatureConfig2 = _interopRequireDefault(_nuclideFeatureConfig);
+var _nuclideFeatureConfig2;
 
-var _nuclideClient = require('../../nuclide-client');
+function _nuclideFeatureConfig() {
+  return _nuclideFeatureConfig2 = _interopRequireDefault(require('../../nuclide-feature-config'));
+}
 
-var _nuclideAnalytics = require('../../nuclide-analytics');
+var _nuclideClient2;
 
-var _constants = require('./constants');
+function _nuclideClient() {
+  return _nuclideClient2 = require('../../nuclide-client');
+}
 
-var GRAMMARS_STRING = _constants.JS_GRAMMARS.join(', ');
+var _nuclideAnalytics2;
+
+function _nuclideAnalytics() {
+  return _nuclideAnalytics2 = require('../../nuclide-analytics');
+}
+
+var _FlowCoverageProvider2;
+
+function _FlowCoverageProvider() {
+  return _FlowCoverageProvider2 = require('./FlowCoverageProvider');
+}
+
+var _constants2;
+
+function _constants() {
+  return _constants2 = require('./constants');
+}
+
+var GRAMMARS_STRING = (_constants2 || _constants()).JS_GRAMMARS.join(', ');
 var diagnosticsOnFlySetting = 'nuclide-flow.diagnosticsOnFly';
 
 var PACKAGE_NAME = 'nuclide-flow';
@@ -51,7 +78,7 @@ var disposables = undefined;
 
 function activate() {
   if (!disposables) {
-    disposables = new _atom.CompositeDisposable();
+    disposables = new (_atom2 || _atom()).CompositeDisposable();
 
     var _require = require('./FlowServiceWatcher');
 
@@ -77,10 +104,10 @@ function createAutocompleteProvider() {
   var autocompleteProvider = new AutocompleteProvider();
   var getSuggestions = autocompleteProvider.getSuggestions.bind(autocompleteProvider);
 
-  var excludeLowerPriority = Boolean(_nuclideFeatureConfig2['default'].get('nuclide-flow.excludeOtherAutocomplete'));
+  var excludeLowerPriority = Boolean((_nuclideFeatureConfig2 || _nuclideFeatureConfig()).default.get('nuclide-flow.excludeOtherAutocomplete'));
 
   return {
-    selector: _constants.JS_GRAMMARS.map(function (grammar) {
+    selector: (_constants2 || _constants()).JS_GRAMMARS.map(function (grammar) {
       return '.' + grammar;
     }).join(', '),
     disableForSelector: '.source.js .comment',
@@ -88,7 +115,7 @@ function createAutocompleteProvider() {
     // We want to get ranked higher than the snippets provider.
     suggestionPriority: 5,
     onDidInsertSuggestion: function onDidInsertSuggestion() {
-      (0, _nuclideAnalytics.track)('nuclide-flow.autocomplete-chosen');
+      (0, (_nuclideAnalytics2 || _nuclideAnalytics()).track)('nuclide-flow.autocomplete-chosen');
     },
     excludeLowerPriority: excludeLowerPriority,
     getSuggestions: getSuggestions
@@ -100,7 +127,7 @@ function getHyperclickProvider() {
   var flowHyperclickProvider = new FlowHyperclickProvider();
   var getSuggestionForWord = flowHyperclickProvider.getSuggestionForWord.bind(flowHyperclickProvider);
   return {
-    wordRegExp: _constants.JAVASCRIPT_WORD_REGEX,
+    wordRegExp: (_constants2 || _constants()).JAVASCRIPT_WORD_REGEX,
     priority: 20,
     providerName: PACKAGE_NAME,
     getSuggestionForWord: getSuggestionForWord
@@ -122,16 +149,16 @@ function provideDiagnostics() {
   if (!flowDiagnosticsProvider) {
     var busyProvider = this.provideBusySignal();
     var FlowDiagnosticsProvider = require('./FlowDiagnosticsProvider');
-    var runOnTheFly = _nuclideFeatureConfig2['default'].get(diagnosticsOnFlySetting);
+    var runOnTheFly = (_nuclideFeatureConfig2 || _nuclideFeatureConfig()).default.get(diagnosticsOnFlySetting);
     flowDiagnosticsProvider = new FlowDiagnosticsProvider(runOnTheFly, busyProvider);
-    (0, _assert2['default'])(disposables);
+    (0, (_assert2 || _assert()).default)(disposables);
 
     var _require4 = require('../../nuclide-atom-helpers');
 
     var projects = _require4.projects;
 
     disposables.add(projects.onDidRemoveProjectPath(function (projectPath) {
-      (0, _assert2['default'])(flowDiagnosticsProvider);
+      (0, (_assert2 || _assert()).default)(flowDiagnosticsProvider);
       flowDiagnosticsProvider.invalidateProjectPath(projectPath);
     }));
   }
@@ -145,7 +172,7 @@ function provideOutlines() {
 
   var provider = new FlowOutlineProvider();
   return {
-    grammarScopes: _constants.JS_GRAMMARS,
+    grammarScopes: (_constants2 || _constants()).JS_GRAMMARS,
     priority: 1,
     name: 'Flow',
     getOutline: provider.getOutline.bind(provider)
@@ -167,6 +194,16 @@ function createTypeHintProvider() {
   };
 }
 
+function createCoverageProvider() {
+  return {
+    priority: 10,
+    grammarScopes: (_constants2 || _constants()).JS_GRAMMARS,
+    getCoverage: function getCoverage(path) {
+      return (0, (_FlowCoverageProvider2 || _FlowCoverageProvider()).getCoverage)(path);
+    }
+  };
+}
+
 function createEvaluationExpressionProvider() {
   var _require7 = require('./FlowEvaluationExpressionProvider');
 
@@ -185,8 +222,8 @@ function deactivate() {
   // TODO(mbolin): Find a way to unregister the autocomplete provider from
   // ServiceHub, or set a boolean in the autocomplete provider to always return
   // empty results.
-  var service = (0, _nuclideClient.getServiceByNuclideUri)('FlowService');
-  (0, _assert2['default'])(service);
+  var service = (0, (_nuclideClient2 || _nuclideClient()).getServiceByNuclideUri)('FlowService');
+  (0, (_assert2 || _assert()).default)(service);
   service.dispose();
   if (disposables) {
     disposables.dispose();

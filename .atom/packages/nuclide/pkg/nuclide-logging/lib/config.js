@@ -4,7 +4,7 @@ var getServerLogAppenderConfig = _asyncToGenerator(function* () {
   // 2) or running in Atom client
   // 3) or running in open sourced version of nuclide
   // 4) or the scribe_cat command is missing.
-  if (clientInfo.isRunningInTest() || clientInfo.isRunningInClient() || !(yield fsPromise.exists(scribeAppenderPath)) || !(yield ScribeProcess.isScribeCatOnPath())) {
+  if ((_nuclideCommons2 || _nuclideCommons()).clientInfo.isRunningInTest() || (_nuclideCommons2 || _nuclideCommons()).clientInfo.isRunningInClient() || !(yield (_nuclideCommons2 || _nuclideCommons()).fsPromise.exists(scribeAppenderPath)) || !(yield (_nuclideCommons2 || _nuclideCommons()).ScribeProcess.isScribeCatOnPath())) {
     return null;
   }
 
@@ -33,29 +33,39 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
  * the root directory of this source tree.
  */
 
-var _require = require('../../nuclide-commons');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var clientInfo = _require.clientInfo;
-var fsPromise = _require.fsPromise;
-var systemInfo = _require.systemInfo;
-var ScribeProcess = _require.ScribeProcess;
+var _nuclideCommons2;
 
-var os = require('os');
-var path = require('path');
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
+
+var _os2;
+
+function _os() {
+  return _os2 = _interopRequireDefault(require('os'));
+}
+
+var _path2;
+
+function _path() {
+  return _path2 = _interopRequireDefault(require('path'));
+}
 
 var USER = require('../../nuclide-commons').env.USER;
 
 var LOG_FILE_PATH = undefined;
 
-if (systemInfo.isRunningInWindows()) {
-  LOG_FILE_PATH = path.join(os.tmpdir(), '/nuclide-' + USER + '-logs/nuclide.log');
+if ((_nuclideCommons2 || _nuclideCommons()).systemInfo.isRunningInWindows()) {
+  LOG_FILE_PATH = (_path2 || _path()).default.join((_os2 || _os()).default.tmpdir(), '/nuclide-' + USER + '-logs/nuclide.log');
 } else {
   LOG_FILE_PATH = '/tmp/nuclide-' + USER + '-logs/nuclide.log';
 }
 
-var logDirectory = path.dirname(LOG_FILE_PATH);
+var logDirectory = (_path2 || _path()).default.dirname(LOG_FILE_PATH);
 var logDirectoryInitialized = false;
-var scribeAppenderPath = path.join(__dirname, '../fb/scribeAppender.js');
+var scribeAppenderPath = (_path2 || _path()).default.join(__dirname, '../fb/scribeAppender.js');
 
 var LOG4JS_DATE_FORMAT = '-yyyy-MM-dd';
 
@@ -75,7 +85,7 @@ module.exports = {
   getDefaultConfig: _asyncToGenerator(function* () {
 
     if (!logDirectoryInitialized) {
-      yield fsPromise.mkdirp(logDirectory);
+      yield (_nuclideCommons2 || _nuclideCommons()).fsPromise.mkdirp(logDirectory);
       logDirectoryInitialized = true;
     }
 
@@ -84,7 +94,7 @@ module.exports = {
         type: 'logLevelFilter',
         level: 'INFO',
         appender: {
-          type: path.join(__dirname, './consoleAppender')
+          type: (_path2 || _path()).default.join(__dirname, './consoleAppender')
         }
       }, {
         type: 'dateFile',

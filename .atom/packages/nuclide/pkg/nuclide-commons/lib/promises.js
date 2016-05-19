@@ -70,11 +70,11 @@ var retryLimit = _asyncToGenerator(function* (retryFunction, validationFunction,
  */
 );
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -84,9 +84,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * the root directory of this source tree.
  */
 
-var _assert = require('assert');
+var _assert2;
 
-var _assert2 = _interopRequireDefault(_assert);
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
 /**
  * Allows a caller to ensure that the results it receives from consecutive
@@ -209,7 +211,7 @@ function awaitMilliSeconds(milliSeconds) {
   };
   var scheduleNextCall = function scheduleNextCall() {
     if (scheduledCall == null) {
-      (0, _assert2['default'])(pendingCall, 'pendingCall must not be null!');
+      (0, (_assert2 || _assert()).default)(pendingCall, 'pendingCall must not be null!');
       scheduledCall = pendingCall.then(callNext, callNext);
     }
     return scheduledCall;
@@ -433,7 +435,7 @@ var promises = module.exports = {
    * Check if an object is Promise by testing if it has a `then` function property.
    */
   isPromise: function isPromise(object) {
-    return !!object && typeof object === 'object' && typeof object.then === 'function';
+    return Boolean(object) && typeof object === 'object' && typeof object.then === 'function';
   },
 
   retryLimit: retryLimit,

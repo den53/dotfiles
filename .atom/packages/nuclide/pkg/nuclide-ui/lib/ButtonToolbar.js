@@ -12,11 +12,17 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
  * the root directory of this source tree.
  */
 
-var _classnames = require('classnames');
+var _classnames2;
 
-var _classnames2 = _interopRequireDefault(_classnames);
+function _classnames() {
+  return _classnames2 = _interopRequireDefault(require('classnames'));
+}
 
-var _reactForAtom = require('react-for-atom');
+var _reactForAtom2;
+
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
 
 /**
  * Visually groups Buttons passed in as children.
@@ -25,9 +31,9 @@ var ButtonToolbar = function ButtonToolbar(props) {
   var children = props.children;
   var className = props.className;
 
-  return _reactForAtom.React.createElement(
+  return (_reactForAtom2 || _reactForAtom()).React.createElement(
     'div',
-    { className: (0, _classnames2['default'])('btn-toolbar', className) },
+    { className: (0, (_classnames2 || _classnames()).default)('btn-toolbar', className) },
     children
   );
 };

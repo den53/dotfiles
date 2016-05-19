@@ -10,14 +10,17 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * the root directory of this source tree.
  */
 
-var _require = require('atom');
+var _atom2;
 
-var CompositeDisposable = _require.CompositeDisposable;
-var Disposable = _require.Disposable;
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var _require2 = require('events');
+var _events2;
 
-var EventEmitter = _require2.EventEmitter;
+function _events() {
+  return _events2 = require('events');
+}
 
 var START_OBSERVING_TEXT_EDITOR_EVENT = 'start-observing-text-editor';
 var STOP_OBSERVING_TEXT_EDITOR_EVENT = 'stop-observing-text-editor';
@@ -37,13 +40,13 @@ var LanguageTextEditorsListener = (function () {
 
     this._grammarScopes = grammarScopes;
 
-    this._emitter = new EventEmitter();
+    this._emitter = new (_events2 || _events()).EventEmitter();
     this._observedTextEditors = new Set();
     this._destroySubscriptionsMap = new Map();
 
-    var _require3 = require('..');
+    var _require = require('..');
 
-    var observeGrammarForTextEditors = _require3.observeGrammarForTextEditors;
+    var observeGrammarForTextEditors = _require.observeGrammarForTextEditors;
 
     this._grammarSubscription = observeGrammarForTextEditors(function (textEditor, grammar) {
       var textEditorHasTheRightGrammar = _this._grammarScopes.has(grammar.scopeName);
@@ -53,7 +56,7 @@ var LanguageTextEditorsListener = (function () {
         _this._observedTextEditors.add(textEditor);
       } else if (!textEditorHasTheRightGrammar && isTextEditorObserved) {
         _this._emitter.emit(STOP_OBSERVING_TEXT_EDITOR_EVENT, textEditor);
-        _this._observedTextEditors['delete'](textEditor);
+        _this._observedTextEditors.delete(textEditor);
       }
 
       var destroySubscription = textEditor.onDidDestroy(function () {
@@ -61,11 +64,11 @@ var LanguageTextEditorsListener = (function () {
         // do clean-up even if its grammar hasn't changed.
         if (_this._observedTextEditors.has(textEditor)) {
           _this._emitter.emit(STOP_OBSERVING_TEXT_EDITOR_EVENT, textEditor);
-          _this._observedTextEditors['delete'](textEditor);
+          _this._observedTextEditors.delete(textEditor);
         }
 
         destroySubscription.dispose();
-        _this._destroySubscriptionsMap['delete'](textEditor);
+        _this._destroySubscriptionsMap.delete(textEditor);
       });
       _this._destroySubscriptionsMap.set(textEditor, destroySubscription);
     });
@@ -89,7 +92,7 @@ var LanguageTextEditorsListener = (function () {
 
       this._emitter.addListener(START_OBSERVING_TEXT_EDITOR_EVENT, fn);
       this._emitter.addListener(STOP_OBSERVING_TEXT_EDITOR_EVENT, cleanupFn);
-      return new Disposable(function () {
+      return new (_atom2 || _atom()).Disposable(function () {
         _this2._emitter.removeListener(START_OBSERVING_TEXT_EDITOR_EVENT, fn);
         _this2._emitter.removeListener(STOP_OBSERVING_TEXT_EDITOR_EVENT, cleanupFn);
       });
@@ -120,7 +123,7 @@ module.exports =
  * grammars or is destroyed.
  */
 function observeLanguageTextEditors(grammarScopes, fn, cleanupFn) {
-  var subscriptions = new CompositeDisposable();
+  var subscriptions = new (_atom2 || _atom()).CompositeDisposable();
   var listener = new LanguageTextEditorsListener(new Set(grammarScopes));
   subscriptions.add(listener);
   subscriptions.add(listener.observeLanguageTextEditors(fn, cleanupFn || function () {}));

@@ -10,31 +10,65 @@ var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_ag
  * the root directory of this source tree.
  */
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var _nuclideUiLibAtomTextEditor = require('../../nuclide-ui/lib/AtomTextEditor');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _nuclideUiLibCheckbox = require('../../nuclide-ui/lib/Checkbox');
+var _nuclideUiLibAtomTextEditor2;
 
-var _classnames = require('classnames');
+function _nuclideUiLibAtomTextEditor() {
+  return _nuclideUiLibAtomTextEditor2 = require('../../nuclide-ui/lib/AtomTextEditor');
+}
 
-var _classnames2 = _interopRequireDefault(_classnames);
+var _nuclideUiLibCheckbox2;
 
-var _constants = require('./constants');
+function _nuclideUiLibCheckbox() {
+  return _nuclideUiLibCheckbox2 = require('../../nuclide-ui/lib/Checkbox');
+}
 
-var _reactForAtom = require('react-for-atom');
+var _classnames2;
 
-var _nuclideUiLibButton = require('../../nuclide-ui/lib/Button');
+function _classnames() {
+  return _classnames2 = _interopRequireDefault(require('classnames'));
+}
 
-var _nuclideUiLibToolbar = require('../../nuclide-ui/lib/Toolbar');
+var _constants2;
 
-var _nuclideUiLibToolbarLeft = require('../../nuclide-ui/lib/ToolbarLeft');
+function _constants() {
+  return _constants2 = require('./constants');
+}
 
-var _nuclideUiLibToolbarRight = require('../../nuclide-ui/lib/ToolbarRight');
+var _reactForAtom2;
+
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
+
+var _nuclideUiLibButton2;
+
+function _nuclideUiLibButton() {
+  return _nuclideUiLibButton2 = require('../../nuclide-ui/lib/Button');
+}
+
+var _nuclideUiLibToolbar2;
+
+function _nuclideUiLibToolbar() {
+  return _nuclideUiLibToolbar2 = require('../../nuclide-ui/lib/Toolbar');
+}
+
+var _nuclideUiLibToolbarLeft2;
+
+function _nuclideUiLibToolbarLeft() {
+  return _nuclideUiLibToolbarLeft2 = require('../../nuclide-ui/lib/ToolbarLeft');
+}
+
+var _nuclideUiLibToolbarRight2;
+
+function _nuclideUiLibToolbarRight() {
+  return _nuclideUiLibToolbarRight2 = require('../../nuclide-ui/lib/ToolbarRight');
+}
 
 var DiffCommitView = (function (_React$Component) {
   _inherits(DiffCommitView, _React$Component);
@@ -45,6 +79,7 @@ var DiffCommitView = (function (_React$Component) {
     _get(Object.getPrototypeOf(DiffCommitView.prototype), 'constructor', this).call(this, props);
     this._onClickCommit = this._onClickCommit.bind(this);
     this._onToggleAmend = this._onToggleAmend.bind(this);
+    this._onClickBack = this._onClickBack.bind(this);
   }
 
   _createClass(DiffCommitView, [{
@@ -69,15 +104,15 @@ var DiffCommitView = (function (_React$Component) {
     value: function render() {
       var commitModeState = this.props.commitModeState;
 
-      var isLoading = commitModeState !== _constants.CommitModeState.READY;
+      var isLoading = commitModeState !== (_constants2 || _constants()).CommitModeState.READY;
 
       var message = undefined;
       if (isLoading) {
         switch (commitModeState) {
-          case _constants.CommitModeState.AWAITING_COMMIT:
+          case (_constants2 || _constants()).CommitModeState.AWAITING_COMMIT:
             message = 'Committing...';
             break;
-          case _constants.CommitModeState.LOADING_COMMIT_MESSAGE:
+          case (_constants2 || _constants()).CommitModeState.LOADING_COMMIT_MESSAGE:
             message = 'Loading...';
             break;
           default:
@@ -88,44 +123,51 @@ var DiffCommitView = (function (_React$Component) {
         message = 'Commit';
       }
 
-      var btnClassname = (0, _classnames2['default'])('pull-right', {
+      var btnClassname = (0, (_classnames2 || _classnames()).default)('pull-right', {
         'btn-progress': isLoading
       });
-      return _reactForAtom.React.createElement(
+      return (_reactForAtom2 || _reactForAtom()).React.createElement(
         'div',
         { className: 'nuclide-diff-mode' },
-        _reactForAtom.React.createElement(
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
           'div',
           { className: 'message-editor-wrapper' },
-          _reactForAtom.React.createElement(_nuclideUiLibAtomTextEditor.AtomTextEditor, {
+          (_reactForAtom2 || _reactForAtom()).React.createElement((_nuclideUiLibAtomTextEditor2 || _nuclideUiLibAtomTextEditor()).AtomTextEditor, {
             gutterHidden: true,
             path: '.HG_COMMIT_EDITMSG',
             readOnly: isLoading,
             ref: 'message'
           })
         ),
-        _reactForAtom.React.createElement(
-          _nuclideUiLibToolbar.Toolbar,
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
+          (_nuclideUiLibToolbar2 || _nuclideUiLibToolbar()).Toolbar,
           { location: 'bottom' },
-          _reactForAtom.React.createElement(
-            _nuclideUiLibToolbarLeft.ToolbarLeft,
+          (_reactForAtom2 || _reactForAtom()).React.createElement(
+            (_nuclideUiLibToolbarLeft2 || _nuclideUiLibToolbarLeft()).ToolbarLeft,
             null,
-            _reactForAtom.React.createElement(_nuclideUiLibCheckbox.Checkbox, {
-              checked: this.props.commitMode === _constants.CommitMode.AMEND,
+            (_reactForAtom2 || _reactForAtom()).React.createElement((_nuclideUiLibCheckbox2 || _nuclideUiLibCheckbox()).Checkbox, {
+              checked: this.props.commitMode === (_constants2 || _constants()).CommitMode.AMEND,
               disabled: isLoading,
               label: 'Amend',
               onChange: this._onToggleAmend
             })
           ),
-          _reactForAtom.React.createElement(
-            _nuclideUiLibToolbarRight.ToolbarRight,
+          (_reactForAtom2 || _reactForAtom()).React.createElement(
+            (_nuclideUiLibToolbarRight2 || _nuclideUiLibToolbarRight()).ToolbarRight,
             null,
-            _reactForAtom.React.createElement(
-              _nuclideUiLibButton.Button,
+            (_reactForAtom2 || _reactForAtom()).React.createElement(
+              (_nuclideUiLibButton2 || _nuclideUiLibButton()).Button,
+              {
+                size: (_nuclideUiLibButton2 || _nuclideUiLibButton()).ButtonSizes.SMALL,
+                onClick: this._onClickBack },
+              'Back'
+            ),
+            (_reactForAtom2 || _reactForAtom()).React.createElement(
+              (_nuclideUiLibButton2 || _nuclideUiLibButton()).Button,
               {
                 className: btnClassname,
-                size: _nuclideUiLibButton.ButtonSizes.SMALL,
-                buttonType: _nuclideUiLibButton.ButtonTypes.SUCCESS,
+                size: (_nuclideUiLibButton2 || _nuclideUiLibButton()).ButtonSizes.SMALL,
+                buttonType: (_nuclideUiLibButton2 || _nuclideUiLibButton()).ButtonTypes.SUCCESS,
                 disabled: isLoading,
                 onClick: this._onClickCommit },
               message
@@ -140,6 +182,11 @@ var DiffCommitView = (function (_React$Component) {
       this.props.diffModel.commit(this._getCommitMessage());
     }
   }, {
+    key: '_onClickBack',
+    value: function _onClickBack() {
+      this.props.diffModel.setViewMode((_constants2 || _constants()).DiffMode.BROWSE_MODE);
+    }
+  }, {
     key: '_getCommitMessage',
     value: function _getCommitMessage() {
       return this.refs['message'].getTextBuffer().getText();
@@ -147,7 +194,7 @@ var DiffCommitView = (function (_React$Component) {
   }, {
     key: '_onToggleAmend',
     value: function _onToggleAmend(isChecked) {
-      this.props.diffModel.setCommitMode(isChecked ? _constants.CommitMode.AMEND : _constants.CommitMode.COMMIT);
+      this.props.diffModel.setCommitMode(isChecked ? (_constants2 || _constants()).CommitMode.AMEND : (_constants2 || _constants()).CommitMode.COMMIT);
     }
   }, {
     key: 'componentWillUnmount',
@@ -165,6 +212,6 @@ var DiffCommitView = (function (_React$Component) {
   }]);
 
   return DiffCommitView;
-})(_reactForAtom.React.Component);
+})((_reactForAtom2 || _reactForAtom()).React.Component);
 
 module.exports = DiffCommitView;

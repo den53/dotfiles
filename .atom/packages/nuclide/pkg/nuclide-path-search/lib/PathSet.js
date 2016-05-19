@@ -12,21 +12,27 @@ Object.defineProperty(exports, '__esModule', {
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _os = require('os');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _os2 = _interopRequireDefault(_os);
+var _os2;
 
-var _nuclideFuzzyNative = require('../../nuclide-fuzzy-native');
+function _os() {
+  return _os2 = _interopRequireDefault(require('os'));
+}
+
+var _nuclideFuzzyNative2;
+
+function _nuclideFuzzyNative() {
+  return _nuclideFuzzyNative2 = require('../../nuclide-fuzzy-native');
+}
 
 var PathSet = (function () {
   function PathSet(paths) {
     _classCallCheck(this, PathSet);
 
-    this._matcher = new _nuclideFuzzyNative.Matcher(paths);
+    this._matcher = new (_nuclideFuzzyNative2 || _nuclideFuzzyNative()).Matcher(paths);
   }
 
   _createClass(PathSet, [{
@@ -44,7 +50,7 @@ var PathSet = (function () {
     value: function match(query) {
       return this._matcher.match(query, {
         maxResults: 20,
-        numThreads: _os2['default'].cpus().length,
+        numThreads: (_os2 || _os()).default.cpus().length,
         recordMatchIndexes: true
       });
     }

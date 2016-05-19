@@ -13,18 +13,26 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
  * the root directory of this source tree.
  */
 
-var _nuclideCommons = require('../../nuclide-commons');
+var _nuclideCommons2;
 
-var _nuclideFeatureConfig = require('../../nuclide-feature-config');
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
 
-var _nuclideFeatureConfig2 = _interopRequireDefault(_nuclideFeatureConfig);
+var _nuclideFeatureConfig2;
 
-var _rxjs = require('rxjs');
+function _nuclideFeatureConfig() {
+  return _nuclideFeatureConfig2 = _interopRequireDefault(require('../../nuclide-feature-config'));
+}
 
-var _rxjs2 = _interopRequireDefault(_rxjs);
+var _rxjs2;
+
+function _rxjs() {
+  return _rxjs2 = _interopRequireDefault(require('rxjs'));
+}
 
 function createProcessStream() {
-  return (0, _nuclideCommons.observeProcess)(spawnAdbLogcat).map(function (event) {
+  return (0, (_nuclideCommons2 || _nuclideCommons()).observeProcess)(spawnAdbLogcat).map(function (event) {
     if (event.kind === 'error') {
       throw event.error;
     }
@@ -48,5 +56,5 @@ function createProcessStream() {
 }
 
 function spawnAdbLogcat() {
-  return (0, _nuclideCommons.safeSpawn)(_nuclideFeatureConfig2['default'].get('nuclide-adb-logcat.pathToAdb'), ['logcat', '-v', 'long', '-T', '1']);
+  return (0, (_nuclideCommons2 || _nuclideCommons()).safeSpawn)((_nuclideFeatureConfig2 || _nuclideFeatureConfig()).default.get('nuclide-adb-logcat.pathToAdb'), ['logcat', '-v', 'long', '-T', '1']);
 }

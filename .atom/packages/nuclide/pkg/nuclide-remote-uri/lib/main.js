@@ -4,18 +4,6 @@ Object.defineProperty(exports, '__esModule', {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _assert = require('assert');
-
-var _assert2 = _interopRequireDefault(_assert);
-
-var _path4 = require('path');
-
-var _path5 = _interopRequireDefault(_path4);
-
-var _url = require('url');
-
-var _url2 = _interopRequireDefault(_url);
-
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
  * All rights reserved.
@@ -28,6 +16,24 @@ var _url2 = _interopRequireDefault(_url);
 // of the form nuclide://<host>:<port><path>
 //
 // This package creates, queries and decomposes NuclideUris.
+
+var _assert2;
+
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
+
+var _path2;
+
+function _path() {
+  return _path2 = _interopRequireDefault(require('path'));
+}
+
+var _url2;
+
+function _url() {
+  return _url2 = _interopRequireDefault(require('url'));
+}
 
 var REMOTE_PATH_URI_PREFIX = 'nuclide://';
 
@@ -62,9 +68,9 @@ function createRemoteUri(hostname, remotePort, remotePath) {
  *         }
  */
 function parse(uri) {
-  var parsedUri = _url2['default'].parse(uri);
+  var parsedUri = (_url2 || _url()).default.parse(uri);
 
-  (0, _assert2['default'])(parsedUri.path, 'Nuclide URIs must contain paths, \'' + parsedUri.path + '\' found while parsing \'' + uri + '\'');
+  (0, (_assert2 || _assert()).default)(parsedUri.path, 'Nuclide URIs must contain paths, \'' + parsedUri.path + '\' found while parsing \'' + uri + '\'');
   var path = parsedUri.path;
   // `url.parse` treates the first '#' character as the beginning of the `hash` attribute. That
   // feature is not used in Nuclide and is instead treated as part of the path.
@@ -72,7 +78,7 @@ function parse(uri) {
     path += parsedUri.hash;
   }
 
-  (0, _assert2['default'])(parsedUri.pathname, 'Nuclide URIs must contain pathnamess, \'' + parsedUri.pathname + '\' found while parsing \'' + uri + '\'');
+  (0, (_assert2 || _assert()).default)(parsedUri.pathname, 'Nuclide URIs must contain pathnamess, \'' + parsedUri.pathname + '\' found while parsing \'' + uri + '\'');
   var pathname = parsedUri.pathname;
   // `url.parse` treates the first '#' character as the beginning of the `hash` attribute. That
   // feature is not used in Nuclide and is instead treated as part of the pathname.
@@ -102,8 +108,8 @@ function parseRemoteUri(remoteUri) {
     throw new Error('Expected remote uri. Got ' + remoteUri);
   }
   var parsedUri = parse(remoteUri);
-  (0, _assert2['default'])(parsedUri.hostname, 'Remote Nuclide URIs must contain hostnames, \'' + parsedUri.hostname + '\' found ' + ('while parsing \'' + remoteUri + '\''));
-  (0, _assert2['default'])(parsedUri.port, 'Remote Nuclide URIs must have port numbers, \'' + parsedUri.port + '\' found ' + ('while parsing \'' + remoteUri + '\''));
+  (0, (_assert2 || _assert()).default)(parsedUri.hostname, 'Remote Nuclide URIs must contain hostnames, \'' + parsedUri.hostname + '\' found ' + ('while parsing \'' + remoteUri + '\''));
+  (0, (_assert2 || _assert()).default)(parsedUri.port, 'Remote Nuclide URIs must have port numbers, \'' + parsedUri.port + '\' found ' + ('while parsing \'' + remoteUri + '\''));
 
   // Explicitly copying object properties appeases Flow's "maybe" type handling. Using the `...`
   // operator causes null/undefined errors, and `Object.assign` bypasses type checking.
@@ -135,6 +141,8 @@ function getPort(remoteUri) {
 }
 
 function join(uri) {
+  var uriPathModule = pathModuleFor(uri);
+
   for (var _len = arguments.length, relativePath = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
     relativePath[_key - 1] = arguments[_key];
   }
@@ -144,27 +152,28 @@ function join(uri) {
 
     var _hostname = _parseRemoteUri.hostname;
     var _port = _parseRemoteUri.port;
-    var _path = _parseRemoteUri.path;
+    var _path3 = _parseRemoteUri.path;
 
-    relativePath.splice(0, 0, _path);
-    return createRemoteUri(_hostname, Number(_port), _path5['default'].join.apply(null, relativePath));
+    relativePath.splice(0, 0, _path3);
+    return createRemoteUri(_hostname, Number(_port), uriPathModule.join.apply(null, relativePath));
   } else {
     relativePath.splice(0, 0, uri);
-    return _path5['default'].join.apply(null, relativePath);
+    return uriPathModule.join.apply(null, relativePath);
   }
 }
 
 function normalize(uri) {
+  var uriPathModule = pathModuleFor(uri);
   if (isRemote(uri)) {
     var _parseRemoteUri2 = parseRemoteUri(uri);
 
     var _hostname2 = _parseRemoteUri2.hostname;
     var _port2 = _parseRemoteUri2.port;
-    var _path2 = _parseRemoteUri2.path;
+    var _path4 = _parseRemoteUri2.path;
 
-    return createRemoteUri(_hostname2, Number(_port2), _path5['default'].normalize(_path2));
+    return createRemoteUri(_hostname2, Number(_port2), uriPathModule.normalize(_path4));
   } else {
-    return _path5['default'].normalize(uri);
+    return uriPathModule.normalize(uri);
   }
 }
 
@@ -174,37 +183,40 @@ function getParent(uri) {
 }
 
 function relative(uri, other) {
+  var uriPathModule = pathModuleFor(uri);
   var remote = isRemote(uri);
   if (remote !== isRemote(other) || remote && getHostname(uri) !== getHostname(other)) {
     throw new Error('Cannot relative urls on different hosts: ' + uri + ' and ' + other);
   }
   if (remote) {
-    return _path5['default'].relative(getPath(uri), getPath(other));
+    return uriPathModule.relative(getPath(uri), getPath(other));
   } else {
-    return _path5['default'].relative(uri, other);
+    return uriPathModule.relative(uri, other);
   }
 }
 
 // TODO: Add optional ext parameter
 function basename(uri) {
+  var uriPathModule = pathModuleFor(uri);
   if (isRemote(uri)) {
-    return _path5['default'].basename(getPath(uri));
+    return uriPathModule.basename(getPath(uri));
   } else {
-    return _path5['default'].basename(uri);
+    return uriPathModule.basename(uri);
   }
 }
 
 function dirname(uri) {
+  var uriPathModule = pathModuleFor(uri);
   if (isRemote(uri)) {
     var _parseRemoteUri3 = parseRemoteUri(uri);
 
     var _hostname3 = _parseRemoteUri3.hostname;
     var _port3 = _parseRemoteUri3.port;
-    var _path3 = _parseRemoteUri3.path;
+    var _path5 = _parseRemoteUri3.path;
 
-    return createRemoteUri(_hostname3, Number(_port3), _path5['default'].dirname(_path3));
+    return createRemoteUri(_hostname3, Number(_port3), uriPathModule.dirname(_path5));
   } else {
-    return _path5['default'].dirname(uri);
+    return uriPathModule.dirname(uri);
   }
 }
 
@@ -215,7 +227,7 @@ function dirname(uri) {
  * Returns null if not a valid file: URI.
  */
 function uriToNuclideUri(uri) {
-  var urlParts = _url2['default'].parse(uri, false);
+  var urlParts = (_url2 || _url()).default.parse(uri, false);
   if (urlParts.protocol === 'file:' && urlParts.path) {
     // only handle real files for now.
     return urlParts.path;
@@ -241,6 +253,8 @@ function nuclideUriToUri(uri) {
  * Returns true if child is equal to, or is a proper child of parent.
  */
 function contains(parent, child) {
+  parent = parent.replace(/\/$/, '');
+  child = child.replace(/\/$/, '');
   return child.startsWith(parent) && (child.length === parent.length || child[parent.length] === '/');
 }
 
@@ -282,6 +296,27 @@ function nuclideUriToDisplayString(uri) {
   }
 }
 
+function pathModuleFor(uri) {
+  var posixPath = (_path2 || _path()).default.posix;
+  var win32Path = (_path2 || _path()).default.win32;
+
+  if (uri.startsWith(posixPath.sep)) {
+    return posixPath;
+  }
+  if (uri.indexOf('://') > -1) {
+    return posixPath;
+  }
+  if (uri[1] === ':' && uri[2] === win32Path.sep) {
+    return win32Path;
+  }
+
+  if (uri.split(win32Path.sep).length > uri.split(posixPath.sep).length) {
+    return win32Path;
+  } else {
+    return posixPath;
+  }
+}
+
 module.exports = {
   basename: basename,
   dirname: dirname,
@@ -301,5 +336,6 @@ module.exports = {
   nuclideUriToUri: nuclideUriToUri,
   contains: contains,
   nuclideUriToDisplayString: nuclideUriToDisplayString,
-  registerHostnameFormatter: registerHostnameFormatter
+  registerHostnameFormatter: registerHostnameFormatter,
+  pathModuleFor: pathModuleFor
 };

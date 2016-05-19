@@ -10,35 +10,61 @@ var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_ag
  * the root directory of this source tree.
  */
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var _notification = require('./notification');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _AuthenticationPrompt = require('./AuthenticationPrompt');
+var _notification2;
 
-var _AuthenticationPrompt2 = _interopRequireDefault(_AuthenticationPrompt);
+function _notification() {
+  return _notification2 = require('./notification');
+}
 
-var _ConnectionDetailsPrompt = require('./ConnectionDetailsPrompt');
+var _AuthenticationPrompt2;
 
-var _ConnectionDetailsPrompt2 = _interopRequireDefault(_ConnectionDetailsPrompt);
+function _AuthenticationPrompt() {
+  return _AuthenticationPrompt2 = _interopRequireDefault(require('./AuthenticationPrompt'));
+}
 
-var _IndeterminateProgressBar = require('./IndeterminateProgressBar');
+var _ConnectionDetailsPrompt2;
 
-var _IndeterminateProgressBar2 = _interopRequireDefault(_IndeterminateProgressBar);
+function _ConnectionDetailsPrompt() {
+  return _ConnectionDetailsPrompt2 = _interopRequireDefault(require('./ConnectionDetailsPrompt'));
+}
 
-var _reactForAtom = require('react-for-atom');
+var _IndeterminateProgressBar2;
 
-var _nuclideRemoteConnection = require('../../nuclide-remote-connection');
+function _IndeterminateProgressBar() {
+  return _IndeterminateProgressBar2 = _interopRequireDefault(require('./IndeterminateProgressBar'));
+}
 
-var _nuclideUiLibButton = require('../../nuclide-ui/lib/Button');
+var _reactForAtom2;
 
-var _nuclideUiLibButtonGroup = require('../../nuclide-ui/lib/ButtonGroup');
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
+
+var _nuclideRemoteConnection2;
+
+function _nuclideRemoteConnection() {
+  return _nuclideRemoteConnection2 = require('../../nuclide-remote-connection');
+}
 
 var logger = require('../../nuclide-logging').getLogger();
+
+var _nuclideUiLibButton2;
+
+function _nuclideUiLibButton() {
+  return _nuclideUiLibButton2 = require('../../nuclide-ui/lib/Button');
+}
+
+var _nuclideUiLibButtonGroup2;
+
+function _nuclideUiLibButtonGroup() {
+  return _nuclideUiLibButtonGroup2 = require('../../nuclide-ui/lib/ButtonGroup');
+}
 
 var REQUEST_CONNECTION_DETAILS = 1;
 var WAITING_FOR_CONNECTION = 2;
@@ -68,7 +94,7 @@ var ConnectionDialog = (function (_React$Component) {
 
     _get(Object.getPrototypeOf(ConnectionDialog.prototype), 'constructor', this).call(this, props);
 
-    var sshHandshake = new _nuclideRemoteConnection.SshHandshake((0, _nuclideRemoteConnection.decorateSshConnectionDelegateWithTracking)({
+    var sshHandshake = new (_nuclideRemoteConnection2 || _nuclideRemoteConnection()).SshHandshake((0, (_nuclideRemoteConnection2 || _nuclideRemoteConnection()).decorateSshConnectionDelegateWithTracking)({
       onKeyboardInteractive: function onKeyboardInteractive(name, instructions, instructionsLang, prompts, finish) {
         // TODO: Display all prompts, not just the first one.
         _this.requestAuthentication(prompts[0], finish);
@@ -83,7 +109,7 @@ var ConnectionDialog = (function (_React$Component) {
 
       onError: function onError(errorType, error, config) {
         _this.close(); // Close the dialog.
-        (0, _notification.notifySshHandshakeError)(errorType, error, config);
+        (0, (_notification2 || _notification()).notifySshHandshakeError)(errorType, error, config);
         _this.props.onError(error, config);
         logger.debug(error);
       }
@@ -129,7 +155,7 @@ var ConnectionDialog = (function (_React$Component) {
       var okButtonText = undefined;
 
       if (mode === REQUEST_CONNECTION_DETAILS) {
-        content = _reactForAtom.React.createElement(_ConnectionDetailsPrompt2['default'], {
+        content = (_reactForAtom2 || _reactForAtom()).React.createElement((_ConnectionDetailsPrompt2 || _ConnectionDetailsPrompt()).default, {
           ref: 'connection-details',
           connectionProfiles: this.props.connectionProfiles,
           indexOfSelectedConnectionProfile: this.state.indexOfSelectedConnectionProfile,
@@ -142,11 +168,11 @@ var ConnectionDialog = (function (_React$Component) {
         isOkDisabled = false;
         okButtonText = 'Connect';
       } else if (mode === WAITING_FOR_CONNECTION || mode === WAITING_FOR_AUTHENTICATION) {
-        content = _reactForAtom.React.createElement(_IndeterminateProgressBar2['default'], null);
+        content = (_reactForAtom2 || _reactForAtom()).React.createElement((_IndeterminateProgressBar2 || _IndeterminateProgressBar()).default, null);
         isOkDisabled = true;
         okButtonText = 'Connect';
       } else {
-        content = _reactForAtom.React.createElement(_AuthenticationPrompt2['default'], {
+        content = (_reactForAtom2 || _reactForAtom()).React.createElement((_AuthenticationPrompt2 || _AuthenticationPrompt()).default, {
           ref: 'authentication',
           instructions: this.state.instructions,
           onConfirm: this.ok,
@@ -156,28 +182,28 @@ var ConnectionDialog = (function (_React$Component) {
         okButtonText = 'OK';
       }
 
-      return _reactForAtom.React.createElement(
-        'atom-panel',
-        { 'class': 'modal modal-lg from-top' },
-        _reactForAtom.React.createElement(
+      return (_reactForAtom2 || _reactForAtom()).React.createElement(
+        'div',
+        null,
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
           'div',
           { className: 'padded' },
           content
         ),
-        _reactForAtom.React.createElement(
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
           'div',
           { className: 'padded text-right' },
-          _reactForAtom.React.createElement(
-            _nuclideUiLibButtonGroup.ButtonGroup,
+          (_reactForAtom2 || _reactForAtom()).React.createElement(
+            (_nuclideUiLibButtonGroup2 || _nuclideUiLibButtonGroup()).ButtonGroup,
             null,
-            _reactForAtom.React.createElement(
-              _nuclideUiLibButton.Button,
+            (_reactForAtom2 || _reactForAtom()).React.createElement(
+              (_nuclideUiLibButton2 || _nuclideUiLibButton()).Button,
               { onClick: this.cancel },
               'Cancel'
             ),
-            _reactForAtom.React.createElement(
-              _nuclideUiLibButton.Button,
-              { buttonType: _nuclideUiLibButton.ButtonTypes.PRIMARY, onClick: this.ok, disabled: isOkDisabled },
+            (_reactForAtom2 || _reactForAtom()).React.createElement(
+              (_nuclideUiLibButton2 || _nuclideUiLibButton()).Button,
+              { buttonType: (_nuclideUiLibButton2 || _nuclideUiLibButton()).ButtonTypes.PRIMARY, onClick: this.ok, disabled: isOkDisabled },
               okButtonText
             )
           )
@@ -306,7 +332,7 @@ var ConnectionDialog = (function (_React$Component) {
   }]);
 
   return ConnectionDialog;
-})(_reactForAtom.React.Component);
+})((_reactForAtom2 || _reactForAtom()).React.Component);
 
 module.exports = ConnectionDialog;
 

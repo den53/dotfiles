@@ -12,28 +12,47 @@ Object.defineProperty(exports, '__esModule', {
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _assert = require('assert');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _assert2 = _interopRequireDefault(_assert);
+var _assert2;
 
-var _nuclideLogging = require('../../nuclide-logging');
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
-var _nuclideCommons = require('../../nuclide-commons');
+var _atom2;
 
-var _DebuggerStore = require('./DebuggerStore');
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var _require = require('atom');
+var _nuclideLogging2;
 
-var CompositeDisposable = _require.CompositeDisposable;
-var Disposable = _require.Disposable;
+function _nuclideLogging() {
+  return _nuclideLogging2 = require('../../nuclide-logging');
+}
 
-var remoteUri = require('../../nuclide-remote-uri');
+var _nuclideRemoteUri2;
+
+function _nuclideRemoteUri() {
+  return _nuclideRemoteUri2 = _interopRequireDefault(require('../../nuclide-remote-uri'));
+}
+
+var _nuclideCommons2;
+
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
+
+var _DebuggerStore2;
+
+function _DebuggerStore() {
+  return _DebuggerStore2 = require('./DebuggerStore');
+}
 
 var INJECTED_CSS = [
 /* Force the inspector to scroll vertically on Atom ≥ 1.4.0 */
@@ -46,11 +65,11 @@ var Bridge = (function () {
     _classCallCheck(this, Bridge);
 
     this._debuggerModel = debuggerModel;
-    this._cleanupDisposables = new CompositeDisposable();
+    this._cleanupDisposables = new (_atom2 || _atom()).CompositeDisposable();
     this._selectedCallFrameMarker = null;
     this._webview = null;
     this._suppressBreakpointSync = false;
-    this._disposables = new CompositeDisposable(debuggerModel.getBreakpointStore().onChange(this._handleBreakpointStoreChange.bind(this)));
+    this._disposables = new (_atom2 || _atom()).CompositeDisposable(debuggerModel.getBreakpointStore().onChange(this._handleBreakpointStoreChange.bind(this)));
     this._expressionsInFlight = new Map();
   }
 
@@ -60,7 +79,7 @@ var Bridge = (function () {
       this._webview = webview;
       var boundHandler = this._handleIpcMessage.bind(this);
       webview.addEventListener('ipc-message', boundHandler);
-      this._cleanupDisposables.add(new Disposable(function () {
+      this._cleanupDisposables.add(new (_atom2 || _atom()).Disposable(function () {
         return webview.removeEventListener('ipc-message', boundHandler);
       }));
     }
@@ -117,20 +136,20 @@ var Bridge = (function () {
       if (this._expressionsInFlight.has(expression)) {
         deferred = this._expressionsInFlight.get(expression);
       } else {
-        deferred = new _nuclideCommons.Deferred();
+        deferred = new (_nuclideCommons2 || _nuclideCommons()).Deferred();
         this._expressionsInFlight.set(expression, deferred);
-        (0, _assert2['default'])(this._webview != null);
+        (0, (_assert2 || _assert()).default)(this._webview != null);
         this._webview.send('command', 'evaluateOnSelectedCallFrame', expression);
       }
-      (0, _assert2['default'])(deferred != null);
+      (0, (_assert2 || _assert()).default)(deferred != null);
       var result = undefined;
       try {
         result = yield deferred.promise;
       } catch (e) {
-        (0, _nuclideLogging.getLogger)().warn('evaluateOnSelectedCallFrame: Error getting result.', e);
+        (0, (_nuclideLogging2 || _nuclideLogging()).getLogger)().warn('evaluateOnSelectedCallFrame: Error getting result.', e);
         result = null;
       }
-      this._expressionsInFlight['delete'](expression);
+      this._expressionsInFlight.delete(expression);
       return result;
     })
   }, {
@@ -199,7 +218,8 @@ var Bridge = (function () {
   }, {
     key: '_handleDebuggerPaused',
     value: function _handleDebuggerPaused(additionalData) {
-      this._debuggerModel.getStore().setDebuggerMode(_DebuggerStore.DebuggerMode.PAUSED);
+      this._expressionsInFlight.clear();
+      this._debuggerModel.getStore().setDebuggerMode((_DebuggerStore2 || _DebuggerStore()).DebuggerMode.PAUSED);
       // TODO go through dispatcher
       this._debuggerModel.getWatchExpressionStore().triggerReevaluation();
     }
@@ -211,7 +231,7 @@ var Bridge = (function () {
   }, {
     key: '_handleDebuggerResumed',
     value: function _handleDebuggerResumed() {
-      this._debuggerModel.getStore().setDebuggerMode(_DebuggerStore.DebuggerMode.RUNNING);
+      this._debuggerModel.getStore().setDebuggerMode((_DebuggerStore2 || _DebuggerStore()).DebuggerMode.RUNNING);
     }
   }, {
     key: '_handleLoaderBreakpointResumed',
@@ -226,7 +246,7 @@ var Bridge = (function () {
       if (nullableOptions) {
         (function () {
           var options = nullableOptions; // For use in capture without re-checking null
-          var path = remoteUri.uriToNuclideUri(options.sourceURL);
+          var path = (_nuclideRemoteUri2 || _nuclideRemoteUri()).default.uriToNuclideUri(options.sourceURL);
           if (path != null && atom.workspace != null) {
             // only handle real files for now
             atom.workspace.open(path, { searchAllPanes: true }).then(function (editor) {
@@ -245,7 +265,7 @@ var Bridge = (function () {
       if (nullableOptions) {
         (function () {
           var options = nullableOptions; // For use in capture without re-checking null
-          var path = remoteUri.uriToNuclideUri(options.sourceURL);
+          var path = (_nuclideRemoteUri2 || _nuclideRemoteUri()).default.uriToNuclideUri(options.sourceURL);
           if (path != null && atom.workspace != null) {
             // only handle real files for now.
             atom.workspace.open(path, { searchAllPanes: true }).then(function (editor) {
@@ -269,7 +289,7 @@ var Bridge = (function () {
   }, {
     key: '_addBreakpoint',
     value: function _addBreakpoint(location) {
-      var path = remoteUri.uriToNuclideUri(location.sourceURL);
+      var path = (_nuclideRemoteUri2 || _nuclideRemoteUri()).default.uriToNuclideUri(location.sourceURL);
       // only handle real files for now.
       if (path) {
         try {
@@ -283,7 +303,7 @@ var Bridge = (function () {
   }, {
     key: '_removeBreakpoint',
     value: function _removeBreakpoint(location) {
-      var path = remoteUri.uriToNuclideUri(location.sourceURL);
+      var path = (_nuclideRemoteUri2 || _nuclideRemoteUri()).default.uriToNuclideUri(location.sourceURL);
       // only handle real files for now.
       if (path) {
         try {
@@ -319,7 +339,7 @@ var Bridge = (function () {
           var results = [];
           _this2._debuggerModel.getBreakpointStore().getAllBreakpoints().forEach(function (line, key) {
             results.push({
-              sourceURL: remoteUri.nuclideUriToUri(key),
+              sourceURL: (_nuclideRemoteUri2 || _nuclideRemoteUri()).default.nuclideUriToUri(key),
               lineNumber: line
             });
           });

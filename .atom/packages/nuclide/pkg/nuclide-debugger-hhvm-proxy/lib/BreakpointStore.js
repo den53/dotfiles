@@ -6,11 +6,11 @@ var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = 
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -20,23 +20,26 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * the root directory of this source tree.
  */
 
-var _assert = require('assert');
+var _assert2;
 
-var _assert2 = _interopRequireDefault(_assert);
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
-var _utils = require('./utils');
+var _utils2;
 
-var _utils2 = _interopRequireDefault(_utils);
+function _utils() {
+  return _utils2 = _interopRequireDefault(require('./utils'));
+}
+
+var _DbgpSocket2;
+
+function _DbgpSocket() {
+  return _DbgpSocket2 = require('./DbgpSocket');
+}
 
 var PAUSE_ALL_EXCEPTION_NAME = '*';
 var EXCEPTION_PAUSE_STATE_ALL = 'all';
-
-var _require = require('./DbgpSocket');
-
-var STATUS_STOPPING = _require.STATUS_STOPPING;
-var STATUS_STOPPED = _require.STATUS_STOPPED;
-var STATUS_ERROR = _require.STATUS_ERROR;
-var STATUS_END = _require.STATUS_END;
 
 // Stores breakpoints and connections.
 //
@@ -77,7 +80,7 @@ var BreakpointStore = (function () {
   }, {
     key: 'removeBreakpoint',
     value: _asyncToGenerator(function* (breakpointId) {
-      this._breakpoints['delete'](breakpointId);
+      this._breakpoints.delete(breakpointId);
       return yield this._removeBreakpointFromConnections(breakpointId);
     })
 
@@ -116,7 +119,7 @@ var BreakpointStore = (function () {
         return yield this._removeBreakpointFromConnections(breakpointId);
       } else {
         // This can happen if users switch between 'none' and 'uncaught' states.
-        _utils2['default'].log('No exception breakpoint to remove.');
+        (_utils2 || _utils()).default.log('No exception breakpoint to remove.');
         return Promise.resolve();
       }
     })
@@ -132,8 +135,8 @@ var BreakpointStore = (function () {
         if (map.has(breakpointId)) {
           var _ret = (function () {
             var connectionIdPromise = map.get(breakpointId);
-            (0, _assert2['default'])(connectionIdPromise != null);
-            map['delete'](breakpointId);
+            (0, (_assert2 || _assert()).default)(connectionIdPromise != null);
+            map.delete(breakpointId);
             // Ensure we've removed from the connection's map before awaiting.
             return {
               v: _asyncToGenerator(function* () {
@@ -164,10 +167,10 @@ var BreakpointStore = (function () {
       this._connections.set(connection, map);
       connection.onStatus(function (status) {
         switch (status) {
-          case STATUS_STOPPING:
-          case STATUS_STOPPED:
-          case STATUS_ERROR:
-          case STATUS_END:
+          case (_DbgpSocket2 || _DbgpSocket()).STATUS_STOPPING:
+          case (_DbgpSocket2 || _DbgpSocket()).STATUS_STOPPED:
+          case (_DbgpSocket2 || _DbgpSocket()).STATUS_ERROR:
+          case (_DbgpSocket2 || _DbgpSocket()).STATUS_END:
             _this._removeConnection(connection);
         }
       });
@@ -176,7 +179,7 @@ var BreakpointStore = (function () {
     key: '_removeConnection',
     value: function _removeConnection(connection) {
       if (this._connections.has(connection)) {
-        this._connections['delete'](connection);
+        this._connections.delete(connection);
       }
     }
   }]);

@@ -1,22 +1,10 @@
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _AnalyticsHelper = require('./AnalyticsHelper');
-
-var _nuclideRemoteUri = require('../../nuclide-remote-uri');
-
-var _nuclideRemoteUri2 = _interopRequireDefault(_nuclideRemoteUri);
-
-var _assert = require('assert');
-
-var _assert2 = _interopRequireDefault(_assert);
-
-var _DebuggerStore = require('./DebuggerStore');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -26,11 +14,41 @@ var _DebuggerStore = require('./DebuggerStore');
  * the root directory of this source tree.
  */
 
-var Constants = require('./Constants');
+var _Constants2;
 
-var _require = require('atom');
+function _Constants() {
+  return _Constants2 = _interopRequireDefault(require('./Constants'));
+}
 
-var CompositeDisposable = _require.CompositeDisposable;
+var _atom2;
+
+function _atom() {
+  return _atom2 = require('atom');
+}
+
+var _AnalyticsHelper2;
+
+function _AnalyticsHelper() {
+  return _AnalyticsHelper2 = require('./AnalyticsHelper');
+}
+
+var _nuclideRemoteUri2;
+
+function _nuclideRemoteUri() {
+  return _nuclideRemoteUri2 = _interopRequireDefault(require('../../nuclide-remote-uri'));
+}
+
+var _assert2;
+
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
+
+var _DebuggerStore2;
+
+function _DebuggerStore() {
+  return _DebuggerStore2 = require('./DebuggerStore');
+}
 
 function track() {
   var trackFunc = require('../../nuclide-analytics').track;
@@ -56,7 +74,7 @@ var DebuggerActions = (function () {
   function DebuggerActions(dispatcher, store) {
     _classCallCheck(this, DebuggerActions);
 
-    this._disposables = new CompositeDisposable();
+    this._disposables = new (_atom2 || _atom()).CompositeDisposable();
     this._dispatcher = dispatcher;
     this._store = store;
   }
@@ -67,18 +85,18 @@ var DebuggerActions = (function () {
       track(AnalyticsEvents.DEBUGGER_START, {
         serviceName: processInfo.getServiceName()
       });
-      (0, _AnalyticsHelper.beginTimerTracking)('nuclide-debugger-atom:startDebugging');
+      (0, (_AnalyticsHelper2 || _AnalyticsHelper()).beginTimerTracking)('nuclide-debugger-atom:startDebugging');
 
       this.stopDebugging(); // stop existing session.
       this.setError(null);
       this._handleDebugModeStart();
-      this._setDebuggerMode(_DebuggerStore.DebuggerMode.STARTING);
+      this._setDebuggerMode((_DebuggerStore2 || _DebuggerStore()).DebuggerMode.STARTING);
       try {
         atom.commands.dispatch(atom.views.getView(atom.workspace), 'nuclide-debugger:show');
         var debuggerInstance = yield processInfo.debug();
         yield this._waitForChromeConnection(debuggerInstance);
       } catch (err) {
-        (0, _AnalyticsHelper.failTimerTracking)(err);
+        (0, (_AnalyticsHelper2 || _AnalyticsHelper()).failTimerTracking)(err);
         track(AnalyticsEvents.DEBUGGER_START_FAIL, {});
         this.setError('Failed to start debugger process: ' + err);
         this.stopDebugging();
@@ -88,7 +106,7 @@ var DebuggerActions = (function () {
     key: '_setDebuggerMode',
     value: function _setDebuggerMode(debuggerMode) {
       this._dispatcher.dispatch({
-        actionType: Constants.Actions.DEBUGGER_MODE_CHANGE,
+        actionType: (_Constants2 || _Constants()).default.Actions.DEBUGGER_MODE_CHANGE,
         data: debuggerMode
       });
     }
@@ -98,19 +116,19 @@ var DebuggerActions = (function () {
       this._setDebuggerInstance(debuggerInstance);
       if (debuggerInstance.onSessionEnd != null) {
         var handler = this._handleSessionEnd.bind(this, debuggerInstance);
-        (0, _assert2['default'])(debuggerInstance.onSessionEnd);
+        (0, (_assert2 || _assert()).default)(debuggerInstance.onSessionEnd);
         this._disposables.add(debuggerInstance.onSessionEnd(handler));
       }
 
       var socketAddr = yield debuggerInstance.getWebsocketAddress();
-      (0, _AnalyticsHelper.endTimerTracking)();
+      (0, (_AnalyticsHelper2 || _AnalyticsHelper()).endTimerTracking)();
 
       this._dispatcher.dispatch({
-        actionType: Constants.Actions.SET_PROCESS_SOCKET,
+        actionType: (_Constants2 || _Constants()).default.Actions.SET_PROCESS_SOCKET,
         data: socketAddr
       });
       // Debugger finished initializing and entered debug mode.
-      this._setDebuggerMode(_DebuggerStore.DebuggerMode.RUNNING);
+      this._setDebuggerMode((_DebuggerStore2 || _DebuggerStore()).DebuggerMode.RUNNING);
 
       // Wait for 'resume' event from Bridge.js to guarantee we've passed the loader breakpoint.
       yield this._store.loaderBreakpointResumePromise;
@@ -119,7 +137,7 @@ var DebuggerActions = (function () {
     key: '_setDebuggerInstance',
     value: function _setDebuggerInstance(debuggerInstance) {
       this._dispatcher.dispatch({
-        actionType: Constants.Actions.SET_DEBUGGER_INSTANCE,
+        actionType: (_Constants2 || _Constants()).default.Actions.SET_DEBUGGER_INSTANCE,
         data: debuggerInstance
       });
     }
@@ -137,31 +155,31 @@ var DebuggerActions = (function () {
   }, {
     key: 'stopDebugging',
     value: function stopDebugging() {
-      if (this._store.getDebuggerMode() === _DebuggerStore.DebuggerMode.STOPPING) {
+      if (this._store.getDebuggerMode() === (_DebuggerStore2 || _DebuggerStore()).DebuggerMode.STOPPING) {
         return;
       }
-      this._setDebuggerMode(_DebuggerStore.DebuggerMode.STOPPING);
+      this._setDebuggerMode((_DebuggerStore2 || _DebuggerStore()).DebuggerMode.STOPPING);
       var debuggerInstance = this._store.getDebuggerInstance();
       if (debuggerInstance != null) {
         debuggerInstance.dispose();
         this._setDebuggerInstance(null);
       }
       this._dispatcher.dispatch({
-        actionType: Constants.Actions.SET_PROCESS_SOCKET,
+        actionType: (_Constants2 || _Constants()).default.Actions.SET_PROCESS_SOCKET,
         data: null
       });
-      this._setDebuggerMode(_DebuggerStore.DebuggerMode.STOPPED);
+      this._setDebuggerMode((_DebuggerStore2 || _DebuggerStore()).DebuggerMode.STOPPED);
       track(AnalyticsEvents.DEBUGGER_STOP);
-      (0, _AnalyticsHelper.endTimerTracking)();
+      (0, (_AnalyticsHelper2 || _AnalyticsHelper()).endTimerTracking)();
 
-      (0, _assert2['default'])(this._store.getDebuggerInstance() === null);
+      (0, (_assert2 || _assert()).default)(this._store.getDebuggerInstance() === null);
       atom.commands.dispatch(atom.views.getView(atom.workspace), 'nuclide-debugger:hide');
     }
   }, {
     key: 'addService',
     value: function addService(service) {
       this._dispatcher.dispatch({
-        actionType: Constants.Actions.ADD_SERVICE,
+        actionType: (_Constants2 || _Constants()).default.Actions.ADD_SERVICE,
         data: service
       });
     }
@@ -169,7 +187,7 @@ var DebuggerActions = (function () {
     key: 'removeService',
     value: function removeService(service) {
       this._dispatcher.dispatch({
-        actionType: Constants.Actions.REMOVE_SERVICE,
+        actionType: (_Constants2 || _Constants()).default.Actions.REMOVE_SERVICE,
         data: service
       });
     }
@@ -177,7 +195,7 @@ var DebuggerActions = (function () {
     key: 'addDebuggerProvider',
     value: function addDebuggerProvider(provider) {
       this._dispatcher.dispatch({
-        actionType: Constants.Actions.ADD_DEBUGGER_PROVIDER,
+        actionType: (_Constants2 || _Constants()).default.Actions.ADD_DEBUGGER_PROVIDER,
         data: provider
       });
     }
@@ -185,7 +203,7 @@ var DebuggerActions = (function () {
     key: 'removeDebuggerProvider',
     value: function removeDebuggerProvider(provider) {
       this._dispatcher.dispatch({
-        actionType: Constants.Actions.REMOVE_DEBUGGER_PROVIDER,
+        actionType: (_Constants2 || _Constants()).default.Actions.REMOVE_DEBUGGER_PROVIDER,
         data: provider
       });
     }
@@ -193,7 +211,7 @@ var DebuggerActions = (function () {
     key: 'addEvaluationExpressionProvider',
     value: function addEvaluationExpressionProvider(provider) {
       this._dispatcher.dispatch({
-        actionType: Constants.Actions.ADD_EVALUATION_EXPRESSION_PROVIDER,
+        actionType: (_Constants2 || _Constants()).default.Actions.ADD_EVALUATION_EXPRESSION_PROVIDER,
         data: provider
       });
     }
@@ -201,7 +219,7 @@ var DebuggerActions = (function () {
     key: 'removeEvaluationExpressionProvider',
     value: function removeEvaluationExpressionProvider(provider) {
       this._dispatcher.dispatch({
-        actionType: Constants.Actions.REMOVE_EVALUATION_EXPRESSION_PROVIDER,
+        actionType: (_Constants2 || _Constants()).default.Actions.REMOVE_EVALUATION_EXPRESSION_PROVIDER,
         data: provider
       });
     }
@@ -212,7 +230,7 @@ var DebuggerActions = (function () {
         require('../../nuclide-logging').getLogger().error(error);
       }
       this._dispatcher.dispatch({
-        actionType: Constants.Actions.SET_ERROR,
+        actionType: (_Constants2 || _Constants()).default.Actions.SET_ERROR,
         data: error
       });
     }
@@ -227,7 +245,7 @@ var DebuggerActions = (function () {
     key: 'forceProcessSocket',
     value: function forceProcessSocket(socketAddr) {
       this._dispatcher.dispatch({
-        actionType: Constants.Actions.SET_PROCESS_SOCKET,
+        actionType: (_Constants2 || _Constants()).default.Actions.SET_PROCESS_SOCKET,
         data: socketAddr
       });
     }
@@ -244,7 +262,7 @@ var DebuggerActions = (function () {
       // Always have one single local connection.
       connections.push('local');
       this._dispatcher.dispatch({
-        actionType: Constants.Actions.UPDATE_CONNECTIONS,
+        actionType: (_Constants2 || _Constants()).default.Actions.UPDATE_CONNECTIONS,
         data: connections
       });
     }
@@ -257,22 +275,53 @@ var DebuggerActions = (function () {
     value: function _getRemoteConnections() {
       // TODO: move this logic into RemoteConnection package.
       return atom.project.getPaths().filter(function (path) {
-        return _nuclideRemoteUri2['default'].isRemote(path);
+        return (_nuclideRemoteUri2 || _nuclideRemoteUri()).default.isRemote(path);
       }).map(function (remotePath) {
-        var _remoteUri$parseRemoteUri = _nuclideRemoteUri2['default'].parseRemoteUri(remotePath);
+        var _default$parseRemoteUri = (_nuclideRemoteUri2 || _nuclideRemoteUri()).default.parseRemoteUri(remotePath);
 
-        var hostname = _remoteUri$parseRemoteUri.hostname;
-        var port = _remoteUri$parseRemoteUri.port;
+        var hostname = _default$parseRemoteUri.hostname;
+        var port = _default$parseRemoteUri.port;
 
-        return _nuclideRemoteUri2['default'].createRemoteUri(hostname, Number(port), '/');
+        return (_nuclideRemoteUri2 || _nuclideRemoteUri()).default.createRemoteUri(hostname, Number(port), '/');
       }).filter(function (path, index, inputArray) {
         return inputArray.indexOf(path) === index;
       });
     }
   }, {
+    key: 'addWatchExpression',
+    value: function addWatchExpression(expression) {
+      this._dispatcher.dispatch({
+        actionType: (_Constants2 || _Constants()).default.Actions.ADD_WATCH_EXPRESSION,
+        data: {
+          expression: expression
+        }
+      });
+    }
+  }, {
+    key: 'removeWatchExpression',
+    value: function removeWatchExpression(index) {
+      this._dispatcher.dispatch({
+        actionType: (_Constants2 || _Constants()).default.Actions.REMOVE_WATCH_EXPRESSION,
+        data: {
+          index: index
+        }
+      });
+    }
+  }, {
+    key: 'updateWatchExpression',
+    value: function updateWatchExpression(index, newExpression) {
+      this._dispatcher.dispatch({
+        actionType: (_Constants2 || _Constants()).default.Actions.UPDATE_WATCH_EXPRESSION,
+        data: {
+          newExpression: newExpression,
+          index: index
+        }
+      });
+    }
+  }, {
     key: 'dispose',
     value: function dispose() {
-      (0, _AnalyticsHelper.endTimerTracking)();
+      (0, (_AnalyticsHelper2 || _AnalyticsHelper()).endTimerTracking)();
       this._disposables.dispose();
     }
   }, {

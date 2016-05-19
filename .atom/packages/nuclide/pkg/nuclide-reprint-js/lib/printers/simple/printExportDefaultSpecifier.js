@@ -8,10 +8,16 @@
  * the root directory of this source tree.
  */
 
-var flatten = require('../../utils/flatten');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _utilsFlatten2;
+
+function _utilsFlatten() {
+  return _utilsFlatten2 = _interopRequireDefault(require('../../utils/flatten'));
+}
 
 function printExportDefaultSpecifier(print, node) {
-  return flatten(print(node.exported));
+  return (0, (_utilsFlatten2 || _utilsFlatten()).default)(print(node.exported));
 }
 
 module.exports = printExportDefaultSpecifier;

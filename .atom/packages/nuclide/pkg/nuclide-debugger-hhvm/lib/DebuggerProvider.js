@@ -1,4 +1,4 @@
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -8,15 +8,23 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
  * the root directory of this source tree.
  */
 
-var _HhvmLaunchAttachProvider = require('./HhvmLaunchAttachProvider');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _nuclideRemoteUri = require('../../nuclide-remote-uri');
+var _HhvmLaunchAttachProvider2;
 
-var _nuclideRemoteUri2 = _interopRequireDefault(_nuclideRemoteUri);
+function _HhvmLaunchAttachProvider() {
+  return _HhvmLaunchAttachProvider2 = require('./HhvmLaunchAttachProvider');
+}
+
+var _nuclideRemoteUri2;
+
+function _nuclideRemoteUri() {
+  return _nuclideRemoteUri2 = _interopRequireDefault(require('../../nuclide-remote-uri'));
+}
 
 function getLaunchAttachProvider(connection) {
-  if (_nuclideRemoteUri2['default'].isRemote(connection)) {
-    return new _HhvmLaunchAttachProvider.HhvmLaunchAttachProvider('PHP', connection);
+  if ((_nuclideRemoteUri2 || _nuclideRemoteUri()).default.isRemote(connection)) {
+    return new (_HhvmLaunchAttachProvider2 || _HhvmLaunchAttachProvider()).HhvmLaunchAttachProvider('PHP', connection);
   }
   return null;
 }

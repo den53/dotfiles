@@ -26,7 +26,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
  * the root directory of this source tree.
  */
 
-var _reactForAtom = require('react-for-atom');
+var _reactForAtom2;
+
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
 
 var DATATIP_ACTIONS = Object.freeze({
   PIN: 'PIN',
@@ -65,18 +69,18 @@ var DatatipComponent = (function (_React$Component) {
       var actionButton = undefined;
       if (action != null && IconsForAction[action] != null) {
         var actionIcon = IconsForAction[action];
-        actionButton = _reactForAtom.React.createElement('div', {
+        actionButton = (_reactForAtom2 || _reactForAtom()).React.createElement('div', {
           className: 'nuclide-datatip-pin-button icon-' + actionIcon,
           onClick: this.handleActionClick,
           title: actionTitle
         });
       }
-      return _reactForAtom.React.createElement(
+      return (_reactForAtom2 || _reactForAtom()).React.createElement(
         'div',
         _extends({
           className: className + ' nuclide-datatip-container'
         }, props),
-        _reactForAtom.React.createElement(
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
           'div',
           { className: 'nuclide-datatip-content' },
           children
@@ -87,6 +91,6 @@ var DatatipComponent = (function (_React$Component) {
   }]);
 
   return DatatipComponent;
-})(_reactForAtom.React.Component);
+})((_reactForAtom2 || _reactForAtom()).React.Component);
 
 exports.DatatipComponent = DatatipComponent;

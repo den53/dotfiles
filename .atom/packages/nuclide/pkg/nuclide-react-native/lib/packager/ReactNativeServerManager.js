@@ -12,35 +12,53 @@ Object.defineProperty(exports, '__esModule', {
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _assert = require('assert');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _assert2 = _interopRequireDefault(_assert);
+var _assert2;
 
-var _nuclideCommons = require('../../../nuclide-commons');
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
-var _nuclideReactNativeNodeExecutor = require('../../../nuclide-react-native-node-executor');
+var _nuclideCommons2;
 
-var _nuclideReactNativeNodeExecutor2 = _interopRequireDefault(_nuclideReactNativeNodeExecutor);
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../../nuclide-commons');
+}
 
-var _ReactNativeServerStatus = require('./ReactNativeServerStatus');
+var _nuclideReactNativeNodeExecutor2;
 
-var _ReactNativeServerStatus2 = _interopRequireDefault(_ReactNativeServerStatus);
+function _nuclideReactNativeNodeExecutor() {
+  return _nuclideReactNativeNodeExecutor2 = _interopRequireDefault(require('../../../nuclide-react-native-node-executor'));
+}
 
-var _reactForAtom = require('react-for-atom');
+var _ReactNativeServerStatus2;
 
-var _ReactNativeServerPanel = require('./ReactNativeServerPanel');
+function _ReactNativeServerStatus() {
+  return _ReactNativeServerStatus2 = _interopRequireDefault(require('./ReactNativeServerStatus'));
+}
 
-var _ReactNativeServerPanel2 = _interopRequireDefault(_ReactNativeServerPanel);
+var _reactForAtom2;
 
-var _ReactNativeServerActions = require('./ReactNativeServerActions');
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
 
-var _ReactNativeServerActions2 = _interopRequireDefault(_ReactNativeServerActions);
+var _ReactNativeServerPanel2;
+
+function _ReactNativeServerPanel() {
+  return _ReactNativeServerPanel2 = _interopRequireDefault(require('./ReactNativeServerPanel'));
+}
+
+var _ReactNativeServerActions2;
+
+function _ReactNativeServerActions() {
+  return _ReactNativeServerActions2 = _interopRequireDefault(require('./ReactNativeServerActions'));
+}
 
 var ReactNativeServerManager = (function () {
   function ReactNativeServerManager(dispatcher, actions) {
@@ -48,7 +66,7 @@ var ReactNativeServerManager = (function () {
 
     this._actions = actions;
     this._dispatcher = dispatcher;
-    this._status = new _ReactNativeServerStatus2['default']();
+    this._status = new (_ReactNativeServerStatus2 || _ReactNativeServerStatus()).default();
     this._setupActions();
   }
 
@@ -67,16 +85,16 @@ var ReactNativeServerManager = (function () {
 
       this._dispatcher.register(function (action) {
         switch (action.actionType) {
-          case _ReactNativeServerActions2['default'].ActionType.START_NODE_EXECUTOR_SERVER:
+          case (_ReactNativeServerActions2 || _ReactNativeServerActions()).default.ActionType.START_NODE_EXECUTOR_SERVER:
             _this._startNodeExecutorServer();
             break;
-          case _ReactNativeServerActions2['default'].ActionType.START_SERVER:
+          case (_ReactNativeServerActions2 || _ReactNativeServerActions()).default.ActionType.START_SERVER:
             _this._startServer(action.commandInfo);
             break;
-          case _ReactNativeServerActions2['default'].ActionType.STOP_SERVER:
+          case (_ReactNativeServerActions2 || _ReactNativeServerActions()).default.ActionType.STOP_SERVER:
             _this._stopServer();
             break;
-          case _ReactNativeServerActions2['default'].ActionType.RESTART_SERVER:
+          case (_ReactNativeServerActions2 || _ReactNativeServerActions()).default.ActionType.RESTART_SERVER:
             _this._stopServer();
             atom.workspace.destroyActivePaneItem();
             _this._startServer(action.commandInfo);
@@ -103,7 +121,7 @@ var ReactNativeServerManager = (function () {
         this._processRunner = processRunner;
         this._status.setServerRunning(true);
       }
-      (0, _assert2['default'])(processRunner);
+      (0, (_assert2 || _assert()).default)(processRunner);
       processRunner.run();
     })
   }, {
@@ -127,9 +145,9 @@ var ReactNativeServerManager = (function () {
         var cwd = commandInfo.cwd;
         var args = commandInfo.args;
 
-        (0, _assert2['default'])(command);
-        (0, _assert2['default'])(cwd);
-        var observable = (0, _nuclideCommons.scriptSafeSpawnAndObserveOutput)(command, args || [], { cwd: cwd });
+        (0, (_assert2 || _assert()).default)(command);
+        (0, (_assert2 || _assert()).default)(cwd);
+        var observable = (0, (_nuclideCommons2 || _nuclideCommons()).scriptSafeSpawnAndObserveOutput)(command, args || [], { cwd: cwd });
         var onNext = function onNext(data) {
           if (data.stdout) {
             stdout(data.stdout);
@@ -162,7 +180,7 @@ var ReactNativeServerManager = (function () {
 
       var processOutputStore = new ProcessOutputStore(runProcessWithHandlers);
 
-      var panel = _reactForAtom.React.createElement(_ReactNativeServerPanel2['default'], {
+      var panel = (_reactForAtom2 || _reactForAtom()).React.createElement((_ReactNativeServerPanel2 || _ReactNativeServerPanel()).default, {
         store: this._status,
         stopServer: function () {
           return _this2._actions.stopServer();
@@ -193,7 +211,7 @@ var ReactNativeServerManager = (function () {
           paneSubscription = atom.workspace.onDidDestroyPaneItem(function (event) {
             if (event.item === textEditor) {
               isOutputPaneOpen = false;
-              (0, _assert2['default'])(paneSubscription);
+              (0, (_assert2 || _assert()).default)(paneSubscription);
               paneSubscription.dispose();
               paneSubscription = null;
             }
@@ -217,7 +235,7 @@ var ReactNativeServerManager = (function () {
     key: '_startNodeExecutorServer',
     value: function _startNodeExecutorServer() {
       if (!this._nodeExecutorServer) {
-        var server = this._nodeExecutorServer = new _nuclideReactNativeNodeExecutor2['default'](8090);
+        var server = this._nodeExecutorServer = new (_nuclideReactNativeNodeExecutor2 || _nuclideReactNativeNodeExecutor()).default(8090);
         server.onDidEvalApplicationScript(this._attachNodeDebugger.bind(this));
       }
     }
@@ -226,5 +244,5 @@ var ReactNativeServerManager = (function () {
   return ReactNativeServerManager;
 })();
 
-exports['default'] = ReactNativeServerManager;
-module.exports = exports['default'];
+exports.default = ReactNativeServerManager;
+module.exports = exports.default;

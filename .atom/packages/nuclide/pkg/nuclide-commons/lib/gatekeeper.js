@@ -2,6 +2,10 @@ Object.defineProperty(exports, '__esModule', {
   value: true
 });
 
+/**
+ * Check a GK. Silently return false on error.
+ */
+
 var passesGK = _asyncToGenerator(function* (gatekeeperName, timeout) {
   // Only do the expensive require once.
   if (gatekeeper === undefined) {
@@ -12,7 +16,14 @@ var passesGK = _asyncToGenerator(function* (gatekeeperName, timeout) {
     }
   }
 
-  return gatekeeper == null ? false : (yield gatekeeper.asyncIsGkEnabled(gatekeeperName, timeout)) === true;
+  if (gatekeeper == null) {
+    return false;
+  }
+  try {
+    return (yield gatekeeper.asyncIsGkEnabled(gatekeeperName, timeout)) === true;
+  } catch (e) {
+    return false;
+  }
 });
 
 exports.passesGK = passesGK;

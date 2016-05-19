@@ -14,33 +14,59 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _assert = require('assert');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _assert2 = _interopRequireDefault(_assert);
+var _assert2;
 
-var _nuclideAnalytics = require('../../nuclide-analytics');
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
-var _nuclideLogging = require('../../nuclide-logging');
+var _nuclideAnalytics2;
 
-var _reactForAtom = require('react-for-atom');
+function _nuclideAnalytics() {
+  return _nuclideAnalytics2 = require('../../nuclide-analytics');
+}
 
-var _atom = require('atom');
+var _nuclideLogging2;
 
-var _nuclideCommons = require('../../nuclide-commons');
+function _nuclideLogging() {
+  return _nuclideLogging2 = require('../../nuclide-logging');
+}
 
-var _QuickSelectionDispatcher = require('./QuickSelectionDispatcher');
+var _reactForAtom2;
 
-var _QuickSelectionDispatcher2 = _interopRequireDefault(_QuickSelectionDispatcher);
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
 
-var _QuickSelectionActions = require('./QuickSelectionActions');
+var _atom2;
 
-var _QuickSelectionActions2 = _interopRequireDefault(_QuickSelectionActions);
+function _atom() {
+  return _atom2 = require('atom');
+}
+
+var _nuclideCommons2;
+
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
+
+var _QuickSelectionDispatcher2;
+
+function _QuickSelectionDispatcher() {
+  return _QuickSelectionDispatcher2 = _interopRequireDefault(require('./QuickSelectionDispatcher'));
+}
+
+var _QuickSelectionActions2;
+
+function _QuickSelectionActions() {
+  return _QuickSelectionActions2 = _interopRequireDefault(require('./QuickSelectionActions'));
+}
 
 var performance = global.performance;
 
@@ -65,7 +91,8 @@ var OMNISEARCH_PROVIDER = {
   debounceDelay: DEFAULT_QUERY_DEBOUNCE_DELAY,
   name: 'OmniSearchResultProvider',
   prompt: 'Search for anything...',
-  title: 'OmniSearch'
+  title: 'OmniSearch',
+  priority: 0
 };
 // Number of elements in the cache before periodic cleanup kicks in. Includes partial query strings.
 var MAX_CACHED_QUERIES = 100;
@@ -73,6 +100,7 @@ var CACHE_CLEAN_DEBOUNCE_DELAY = 5000;
 var UPDATE_DIRECTORIES_DEBOUNCE_DELAY = 100;
 var GLOBAL_KEY = 'global';
 var DIRECTORY_KEY = 'directory';
+var GK_BASIC_RANKED_OMNISEARCH = 'nuclide_quickopen_basic_ranked_omnisearch';
 
 function isValidProvider(provider) {
   return typeof provider.getProviderType === 'function' && typeof provider.getName === 'function' && typeof provider.getName() === 'string' && typeof provider.isRenderable === 'function' && typeof provider.executeQuery === 'function' && typeof provider.getTabTitle === 'function';
@@ -108,41 +136,48 @@ var SearchResultManager = (function () {
     this._providersByDirectory = new Map();
     this._directories = [];
     this._cachedResults = {};
-    this._debouncedCleanCache = (0, _nuclideCommons.debounce)(function () {
+    this._debouncedCleanCache = (0, (_nuclideCommons2 || _nuclideCommons()).debounce)(function () {
       return _this._cleanCache();
     }, CACHE_CLEAN_DEBOUNCE_DELAY,
     /* immediate */false);
     // `updateDirectories` joins providers and directories, which don't know anything about each
     // other. Debounce this call to reduce churn at startup, and when new providers get activated or
     // a new directory gets mounted.
-    this._debouncedUpdateDirectories = (0, _nuclideCommons.debounce)(function () {
+    this._debouncedUpdateDirectories = (0, (_nuclideCommons2 || _nuclideCommons()).debounce)(function () {
       return _this._updateDirectories();
     }, UPDATE_DIRECTORIES_DEBOUNCE_DELAY,
     /* immediate */false);
     this._queryLruQueue = new Map();
-    this._emitter = new _atom.Emitter();
-    this._subscriptions = new _atom.CompositeDisposable();
-    this._dispatcher = _QuickSelectionDispatcher2['default'].getInstance();
+    this._emitter = new (_atom2 || _atom()).Emitter();
+    this._subscriptions = new (_atom2 || _atom()).CompositeDisposable();
+    this._dispatcher = (_QuickSelectionDispatcher2 || _QuickSelectionDispatcher()).default.getInstance();
     // Check is required for testing.
     if (atom.project) {
       this._subscriptions.add(atom.project.onDidChangePaths(this._debouncedUpdateDirectories.bind(this)));
       this._debouncedUpdateDirectories();
     }
+    this._setupGkConfig();
     this._setUpFlux();
     this._activeProviderName = OMNISEARCH_PROVIDER.name;
   }
 
   _createClass(SearchResultManager, [{
+    key: '_setupGkConfig',
+    value: _asyncToGenerator(function* () {
+      this._shouldRankProviders = false;
+      this._shouldRankProviders = yield (0, (_nuclideCommons2 || _nuclideCommons()).passesGK)(GK_BASIC_RANKED_OMNISEARCH);
+    })
+  }, {
     key: '_setUpFlux',
     value: function _setUpFlux() {
       var _this2 = this;
 
       this._dispatcherToken = this._dispatcher.register(function (action) {
         switch (action.actionType) {
-          case _QuickSelectionDispatcher2['default'].ActionType.QUERY:
+          case (_QuickSelectionDispatcher2 || _QuickSelectionDispatcher()).default.ActionType.QUERY:
             _this2.executeQuery(action.query);
             break;
-          case _QuickSelectionDispatcher2['default'].ActionType.ACTIVE_PROVIDER_CHANGED:
+          case (_QuickSelectionDispatcher2 || _QuickSelectionDispatcher()).default.ActionType.ACTIVE_PROVIDER_CHANGED:
             _this2._activeProviderName = action.providerName;
             _this2._emitter.emit(PROVIDERS_CHANGED);
             break;
@@ -186,15 +221,15 @@ var SearchResultManager = (function () {
         newProvidersByDirectories.set(directory, new Set());
 
         var _loop = function (provider) {
-          (0, _assert2['default'])(provider.isEligibleForDirectory != null, 'Directory provider ' + provider.getName() + ' must provide `isEligibleForDirectory()`.');
+          (0, (_assert2 || _assert()).default)(provider.isEligibleForDirectory != null, 'Directory provider ' + provider.getName() + ' must provide `isEligibleForDirectory()`.');
           eligibilities.push(provider.isEligibleForDirectory(directory).then(function (isEligible) {
             return {
               isEligible: isEligible,
               provider: provider,
               directory: directory
             };
-          })['catch'](function (err) {
-            (0, _nuclideLogging.getLogger)().warn('isEligibleForDirectory failed for directory provider ' + provider.getName(), err);
+          }).catch(function (err) {
+            (0, (_nuclideLogging2 || _nuclideLogging()).getLogger)().warn('isEligibleForDirectory failed for directory provider ' + provider.getName(), err);
             return {
               isEligible: false,
               provider: provider,
@@ -215,7 +250,7 @@ var SearchResultManager = (function () {
 
         if (isEligible) {
           var providersForDirectory = newProvidersByDirectories.get(directory);
-          (0, _assert2['default'])(providersForDirectory != null, 'Providers for directory ' + directory + ' not defined');
+          (0, (_assert2 || _assert()).default)(providersForDirectory != null, 'Providers for directory ' + directory + ' not defined');
           providersForDirectory.add(provider);
         }
       }
@@ -237,7 +272,7 @@ var SearchResultManager = (function () {
 
       if (!isValidProvider(service)) {
         var providerName = service.getName && service.getName() || '<unknown>';
-        (0, _nuclideLogging.getLogger)().error('Quick-open provider ' + providerName + ' is not a valid provider');
+        (0, (_nuclideLogging2 || _nuclideLogging()).getLogger)().error('Quick-open provider ' + providerName + ' is not a valid provider');
       }
       var isRenderableProvider = typeof service.isRenderable === 'function' && service.isRenderable();
       var isGlobalProvider = service.getProviderType() === 'GLOBAL';
@@ -246,17 +281,17 @@ var SearchResultManager = (function () {
       if (!isGlobalProvider) {
         this._debouncedUpdateDirectories();
       }
-      var disposable = new _atom.CompositeDisposable();
-      disposable.add(new _atom.Disposable(function () {
+      var disposable = new (_atom2 || _atom()).CompositeDisposable();
+      disposable.add(new (_atom2 || _atom()).Disposable(function () {
         // This may be called after this package has been deactivated
         // and the SearchResultManager has been disposed.
         if (_this4._isDisposed) {
           return;
         }
         var serviceName = service.getName();
-        targetRegistry['delete'](serviceName);
+        targetRegistry.delete(serviceName);
         _this4._providersByDirectory.forEach(function (providers, dir) {
-          providers['delete'](service);
+          providers.delete(service);
         });
         _this4._removeResultsForProvider(serviceName);
         _this4._emitter.emit(PROVIDERS_CHANGED);
@@ -267,7 +302,7 @@ var SearchResultManager = (function () {
         // TODO replace with computed property once Flow supports it.
         var actionSpec = {};
         actionSpec[toggleAction] = function () {
-          return _QuickSelectionActions2['default'].changeActiveProvider(service.getName());
+          return (_QuickSelectionActions2 || _QuickSelectionActions()).default.changeActiveProvider(service.getName());
         };
         disposable.add(atom.commands.add('atom-workspace', actionSpec));
       }
@@ -294,7 +329,7 @@ var SearchResultManager = (function () {
         error: error
       };
       // Refresh the usage for the current query.
-      this._queryLruQueue['delete'](query);
+      this._queryLruQueue.delete(query);
       this._queryLruQueue.set(query, null);
       setImmediate(this._debouncedCleanCache);
     }
@@ -348,8 +383,8 @@ var SearchResultManager = (function () {
       for (var i = 0; i < entriesToRemove; i++) {
         var firstEntryKey = keyIterator.next().value;
         expiredQueries.push(firstEntryKey);
-        (0, _assert2['default'])(firstEntryKey != null);
-        this._queryLruQueue['delete'](firstEntryKey);
+        (0, (_assert2 || _assert()).default)(firstEntryKey != null);
+        this._queryLruQueue.delete(firstEntryKey);
       }
 
       // For each (provider|directory) pair, remove results for all expired queries from the cache.
@@ -388,7 +423,7 @@ var SearchResultManager = (function () {
       var _loop3 = function (globalProvider) {
         var startTime = performance.now();
         globalProvider.executeQuery(query).then(function (result) {
-          (0, _nuclideAnalytics.track)(AnalyticsEvents.QUERY_SOURCE_PROVIDER, {
+          (0, (_nuclideAnalytics2 || _nuclideAnalytics()).track)(AnalyticsEvents.QUERY_SOURCE_PROVIDER, {
             'quickopen-source-provider': globalProvider.getName(),
             'quickopen-query-duration': (performance.now() - startTime).toString(),
             'quickopen-result-count': result.length.toString()
@@ -415,7 +450,7 @@ var SearchResultManager = (function () {
         var _loop4 = function (directoryProvider) {
           var startTime = performance.now();
           directoryProvider.executeQuery(query, directory).then(function (result) {
-            (0, _nuclideAnalytics.track)(AnalyticsEvents.QUERY_SOURCE_PROVIDER, {
+            (0, (_nuclideAnalytics2 || _nuclideAnalytics()).track)(AnalyticsEvents.QUERY_SOURCE_PROVIDER, {
               'quickopen-source-provider': directoryProvider.getName(),
               'quickopen-query-duration': (performance.now() - startTime).toString(),
               'quickopen-result-count': result.length.toString()
@@ -445,7 +480,7 @@ var SearchResultManager = (function () {
       } else {
         dirProviderName = this._registeredProviders[DIRECTORY_KEY].get(providerName);
       }
-      (0, _assert2['default'])(dirProviderName != null, 'Provider ' + providerName + ' is not registered with quick-open.');
+      (0, (_assert2 || _assert()).default)(dirProviderName != null, 'Provider ' + providerName + ' is not registered with quick-open.');
       return dirProviderName;
     }
   }, {
@@ -460,9 +495,9 @@ var SearchResultManager = (function () {
       return {
         title: provider.getTabTitle(),
         results: providerPaths.reduce(function (results, path) {
-          var cachedPaths = undefined,
-              cachedQueries = undefined,
-              cachedResult = undefined;
+          var cachedPaths = undefined;
+          var cachedQueries = undefined;
+          var cachedResult = undefined;
           if (!((cachedPaths = _this7._cachedResults[providerName]) && (cachedQueries = cachedPaths[path]) && (cachedResult = cachedQueries[query]))) {
             cachedResult = {};
           }
@@ -519,13 +554,18 @@ var SearchResultManager = (function () {
     key: '_bakeProvider',
     value: function _bakeProvider(provider) {
       var providerName = provider.getName();
-      return {
+      var providerSpec = {
         action: provider.getAction && provider.getAction() || '',
         debounceDelay: typeof provider.getDebounceDelay === 'function' ? provider.getDebounceDelay() : DEFAULT_QUERY_DEBOUNCE_DELAY,
         name: providerName,
         prompt: provider.getPromptText && provider.getPromptText() || 'Search ' + providerName,
         title: provider.getTabTitle && provider.getTabTitle() || providerName
       };
+      if (this._shouldRankProviders) {
+        // $FlowIssue priority property is optional
+        providerSpec.priority = typeof provider.getPriority === 'function' ? provider.getPriority() : Number.POSITIVE_INFINITY;
+      }
+      return providerSpec;
     }
   }, {
     key: 'getRenderableProviders',
@@ -554,7 +594,7 @@ var SearchResultManager = (function () {
   return SearchResultManager;
 })();
 
-exports['default'] = SearchResultManager;
+exports.default = SearchResultManager;
 var __test__ = {
   _getOmniSearchProviderSpec: function _getOmniSearchProviderSpec() {
     return OMNISEARCH_PROVIDER;

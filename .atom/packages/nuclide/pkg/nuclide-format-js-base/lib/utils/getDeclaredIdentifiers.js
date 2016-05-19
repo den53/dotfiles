@@ -8,8 +8,19 @@
  * the root directory of this source tree.
  */
 
-var getNamesFromID = require('./getNamesFromID');
-var jscs = require('jscodeshift');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _getNamesFromID2;
+
+function _getNamesFromID() {
+  return _getNamesFromID2 = _interopRequireDefault(require('./getNamesFromID'));
+}
+
+var _jscodeshift2;
+
+function _jscodeshift() {
+  return _jscodeshift2 = _interopRequireDefault(require('jscodeshift'));
+}
 
 /**
  * These are the ways in which an identifier might be declared, note that these
@@ -19,7 +30,7 @@ var jscs = require('jscodeshift');
 var CONFIG = [
 // function foo(...rest) {}
 {
-  searchTerms: [jscs.FunctionDeclaration],
+  searchTerms: [(_jscodeshift2 || _jscodeshift()).default.FunctionDeclaration],
   getNodes: function getNodes(path) {
     return [path.node.id, path.node.rest].concat(path.node.params);
   }
@@ -27,7 +38,7 @@ var CONFIG = [
 
 // foo(...rest) {}, in a class body for example
 {
-  searchTerms: [jscs.FunctionExpression],
+  searchTerms: [(_jscodeshift2 || _jscodeshift()).default.FunctionExpression],
   getNodes: function getNodes(path) {
     return [path.node.rest].concat(path.node.params);
   }
@@ -35,7 +46,7 @@ var CONFIG = [
 
 // var foo;
 {
-  searchTerms: [jscs.VariableDeclaration],
+  searchTerms: [(_jscodeshift2 || _jscodeshift()).default.VariableDeclaration],
   getNodes: function getNodes(path) {
     return path.node.declarations.map(function (declaration) {
       return declaration.id;
@@ -45,7 +56,7 @@ var CONFIG = [
 
 // class foo {}
 {
-  searchTerms: [jscs.ClassDeclaration],
+  searchTerms: [(_jscodeshift2 || _jscodeshift()).default.ClassDeclaration],
   getNodes: function getNodes(path) {
     return [path.node.id];
   }
@@ -53,7 +64,7 @@ var CONFIG = [
 
 // (foo, ...rest) => {}
 {
-  searchTerms: [jscs.ArrowFunctionExpression],
+  searchTerms: [(_jscodeshift2 || _jscodeshift()).default.ArrowFunctionExpression],
   getNodes: function getNodes(path) {
     return [path.node.rest].concat(path.node.params);
   }
@@ -61,7 +72,7 @@ var CONFIG = [
 
 // try {} catch (foo) {}
 {
-  searchTerms: [jscs.CatchClause],
+  searchTerms: [(_jscodeshift2 || _jscodeshift()).default.CatchClause],
   getNodes: function getNodes(path) {
     return [path.node.param];
   }
@@ -69,7 +80,7 @@ var CONFIG = [
 
 // function foo(a = b) {}
 {
-  searchTerms: [jscs.AssignmentPattern],
+  searchTerms: [(_jscodeshift2 || _jscodeshift()).default.AssignmentPattern],
   getNodes: function getNodes(path) {
     return [path.node.left];
   }
@@ -91,7 +102,7 @@ function getDeclaredIdentifiers(root, options, filters) {
     }).forEach(function (path) {
       var nodes = config.getNodes(path);
       nodes.forEach(function (node) {
-        var names = getNamesFromID(node);
+        var names = (0, (_getNamesFromID2 || _getNamesFromID()).default)(node);
         for (var _name of names) {
           ids.add(_name);
         }

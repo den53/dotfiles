@@ -14,11 +14,23 @@ var _createClass = (function () { function defineProperties(target, props) { for
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _nuclideAtomHelpers = require('../../nuclide-atom-helpers');
+var _nuclideAtomHelpers2;
 
-var _executeRnRequests = require('./executeRnRequests');
+function _nuclideAtomHelpers() {
+  return _nuclideAtomHelpers2 = require('../../nuclide-atom-helpers');
+}
 
-var _rxjs = require('rxjs');
+var _executeRnRequests2;
+
+function _executeRnRequests() {
+  return _executeRnRequests2 = require('./executeRnRequests');
+}
+
+var _rxjs2;
+
+function _rxjs() {
+  return _rxjs2 = require('rxjs');
+}
 
 var logger = undefined;
 function getLogger() {
@@ -34,8 +46,8 @@ var ChildManager = (function () {
 
     this._onReply = onReply;
     this._emitter = emitter;
-    this._rnRequests = new _rxjs.Subject();
-    this._executorResponses = (0, _executeRnRequests.executeRnRequests)(this._rnRequests);
+    this._rnRequests = new (_rxjs2 || _rxjs()).Subject();
+    this._executorResponses = (0, (_executeRnRequests2 || _executeRnRequests()).executeRnRequests)(this._rnRequests);
   }
 
   _createClass(ChildManager, [{
@@ -61,14 +73,14 @@ var ChildManager = (function () {
         }
       }, function (err) {
         if (err.code === 'ENOENT') {
-          var _formatEnoentNotification = (0, _nuclideAtomHelpers.formatEnoentNotification)({
+          var _ref = (0, (_nuclideAtomHelpers2 || _nuclideAtomHelpers()).formatEnoentNotification)({
             feature: 'React Native debugging',
             toolName: 'node',
             pathSetting: 'nuclide-react-native.pathToNode'
           });
 
-          var message = _formatEnoentNotification.message;
-          var meta = _formatEnoentNotification.meta;
+          var message = _ref.message;
+          var meta = _ref.meta;
 
           atom.notifications.addError(message, meta);
           return;
@@ -103,5 +115,5 @@ var ChildManager = (function () {
   return ChildManager;
 })();
 
-exports['default'] = ChildManager;
-module.exports = exports['default'];
+exports.default = ChildManager;
+module.exports = exports.default;

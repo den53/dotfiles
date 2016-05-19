@@ -5,10 +5,19 @@
     general:
       _analyticsUserId: "8fd00a1d-9286-4d7a-88c7-f309b1a214da"
     js:
-      default_beautifier: "Pretty Diff"
+      beautify_on_save: true
+      brace_style: "collapse-preserve-inline"
+      end_with_comma: true
+      indent_size: 2
       preserve_newlines: false
-      space_before_conditional: false
-    jsx: {}
+    jsx:
+      beautify_on_save: true
+      break_chained_methods: true
+      disabled: true
+      end_with_comma: true
+      indent_size: 2
+      preserve_newlines: false
+      space_after_anon_function: true
   core:
     customFileTypes:
       "source.ini": [
@@ -27,6 +36,10 @@
       "meteor-api"
       "linter"
       "tree-view"
+      "haskell-grammar"
+      "language-thrift"
+      "sort-lines"
+      "atom-beautify"
     ]
     projectHome: "/Users/denbox/Google\\ Drive/workspace/"
   editor:
@@ -49,12 +62,12 @@
   "linter-eslint":
     disableWhenNoEslintConfig: false
   nuclide:
-    installRecommendedPackages: true
     "nuclide-distraction-free-mode": {}
     "nuclide-format-js":
       reprint: true
     "nuclide-home":
       showHome: false
+    "nuclide-working-sets": {}
   "vim-mode": {}
   welcome:
     showOnStartup: false

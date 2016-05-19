@@ -31,10 +31,10 @@ var getEvaluationExpression = _asyncToGenerator(function* (model, editor, positi
 });
 
 var debuggerDatatip = _asyncToGenerator(function* (model, editor, position) {
-  if (!(yield (0, _nuclideCommons.passesGK)(GK_DEBUGGER_DATATIPS, GK_TIMEOUT))) {
+  if (!(yield (0, (_nuclideCommons2 || _nuclideCommons()).passesGK)(GK_DEBUGGER_DATATIPS, 0))) {
     return null;
   }
-  if (model.getStore().getDebuggerMode() !== _DebuggerStore.DebuggerMode.PAUSED) {
+  if (model.getStore().getDebuggerMode() !== (_DebuggerStore2 || _DebuggerStore()).DebuggerMode.PAUSED) {
     return null;
   }
   var activeEditor = atom.workspace.getActiveTextEditor();
@@ -63,7 +63,7 @@ var debuggerDatatip = _asyncToGenerator(function* (model, editor, position) {
     return { expression: expression, evaluationResult: result };
   });
   return {
-    component: (0, _nuclideUiLibHOC.injectObservableAsProps)(propStream, _DebuggerDatatipComponent.DebuggerDatatipComponent),
+    component: (0, (_nuclideUiLibBindObservableAsProps2 || _nuclideUiLibBindObservableAsProps()).bindObservableAsProps)(propStream, (_DebuggerDatatipComponent2 || _DebuggerDatatipComponent()).DebuggerDatatipComponent),
     pinnable: true,
     range: range
   };
@@ -73,22 +73,41 @@ exports.debuggerDatatip = debuggerDatatip;
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
-var _nuclideAtomHelpers = require('../../nuclide-atom-helpers');
+var _nuclideAtomHelpers2;
 
-var _nuclideUiLibHOC = require('../../nuclide-ui/lib/HOC');
+function _nuclideAtomHelpers() {
+  return _nuclideAtomHelpers2 = require('../../nuclide-atom-helpers');
+}
 
-var _DebuggerStore = require('./DebuggerStore');
+var _nuclideUiLibBindObservableAsProps2;
 
-var _DebuggerDatatipComponent = require('./DebuggerDatatipComponent');
+function _nuclideUiLibBindObservableAsProps() {
+  return _nuclideUiLibBindObservableAsProps2 = require('../../nuclide-ui/lib/bindObservableAsProps');
+}
 
-var _nuclideCommons = require('../../nuclide-commons');
+var _DebuggerStore2;
+
+function _DebuggerStore() {
+  return _DebuggerStore2 = require('./DebuggerStore');
+}
+
+var _DebuggerDatatipComponent2;
+
+function _DebuggerDatatipComponent() {
+  return _DebuggerDatatipComponent2 = require('./DebuggerDatatipComponent');
+}
+
+var _nuclideCommons2;
+
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
 
 var GK_DEBUGGER_DATATIPS = 'nuclide_debugger_datatips';
-var GK_TIMEOUT = 1000;
 
 var DEFAULT_WORD_REGEX = /\w+/gi;
 function defaultGetEvaluationExpression(editor, position) {
-  var extractedIdentifier = (0, _nuclideAtomHelpers.extractWordAtPosition)(editor, position, DEFAULT_WORD_REGEX);
+  var extractedIdentifier = (0, (_nuclideAtomHelpers2 || _nuclideAtomHelpers()).extractWordAtPosition)(editor, position, DEFAULT_WORD_REGEX);
   if (extractedIdentifier == null) {
     return Promise.resolve(null);
   }

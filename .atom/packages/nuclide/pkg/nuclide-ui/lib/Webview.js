@@ -18,9 +18,17 @@ function _inherits(subClass, superClass) { if (typeof superClass !== 'function' 
  * the root directory of this source tree.
  */
 
-var _atom = require('atom');
+var _atom2;
 
-var _reactForAtom = require('react-for-atom');
+function _atom() {
+  return _atom2 = require('atom');
+}
+
+var _reactForAtom2;
+
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
 
 var Webview = (function (_React$Component) {
   _inherits(Webview, _React$Component);
@@ -30,7 +38,7 @@ var Webview = (function (_React$Component) {
 
     _get(Object.getPrototypeOf(Webview.prototype), 'constructor', this).call(this, props);
     this._handleDidFinishLoad = this._handleDidFinishLoad.bind(this);
-    this._disposables = new _atom.CompositeDisposable();
+    this._disposables = new (_atom2 || _atom()).CompositeDisposable();
   }
 
   _createClass(Webview, [{
@@ -38,14 +46,14 @@ var Webview = (function (_React$Component) {
     value: function componentDidMount() {
       var _this = this;
 
-      var element = _reactForAtom.ReactDOM.findDOMNode(this);
+      var element = (_reactForAtom2 || _reactForAtom()).ReactDOM.findDOMNode(this);
 
       // Add event listeners. This has the drawbacks of 1) adding an event listener even when we don't
       // have a callback for it and 2) needing to add explicit support for each event type we want to
       // support. However, those costs aren't great enough to justify a new abstraction for managing
       // it at this time.
       element.addEventListener('did-finish-load', this._handleDidFinishLoad);
-      this._disposables.add(new _atom.Disposable(function () {
+      this._disposables.add(new (_atom2 || _atom()).Disposable(function () {
         return element.removeEventListener('did-finish-load', _this._handleDidFinishLoad);
       }));
 
@@ -64,7 +72,7 @@ var Webview = (function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
-      return _reactForAtom.React.createElement('webview', { className: this.props.className, style: this.props.style });
+      return (_reactForAtom2 || _reactForAtom()).React.createElement('webview', { className: this.props.className, style: this.props.style });
     }
 
     /**
@@ -78,7 +86,7 @@ var Webview = (function (_React$Component) {
     value: function updateAttributes(prevProps) {
       var _this2 = this;
 
-      var element = _reactForAtom.ReactDOM.findDOMNode(this);
+      var element = (_reactForAtom2 || _reactForAtom()).ReactDOM.findDOMNode(this);
       var specialProps = ['className', 'style', 'onDidFinishLoad'];
       var normalProps = Object.keys(this.props).filter(function (prop) {
         return specialProps.indexOf(prop) === -1;
@@ -102,6 +110,6 @@ var Webview = (function (_React$Component) {
   }]);
 
   return Webview;
-})(_reactForAtom.React.Component);
+})((_reactForAtom2 || _reactForAtom()).React.Component);
 
 exports.Webview = Webview;

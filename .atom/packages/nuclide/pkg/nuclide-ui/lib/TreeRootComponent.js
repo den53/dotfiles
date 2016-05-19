@@ -12,31 +12,41 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
  * the root directory of this source tree.
  */
 
-var _require = require('atom');
+var _atom2;
 
-var CompositeDisposable = _require.CompositeDisposable;
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var _require2 = require('events');
+var _events2;
 
-var EventEmitter = _require2.EventEmitter;
+function _events() {
+  return _events2 = require('events');
+}
 
-var _require3 = require('./LazyTreeNode');
+var _LazyTreeNode2;
 
-var LazyTreeNode = _require3.LazyTreeNode;
+function _LazyTreeNode() {
+  return _LazyTreeNode2 = require('./LazyTreeNode');
+}
 
-var _require4 = require('./TreeNodeComponent');
+var _TreeNodeComponent2;
 
-var TreeNodeComponent = _require4.TreeNodeComponent;
+function _TreeNodeComponent() {
+  return _TreeNodeComponent2 = require('./TreeNodeComponent');
+}
 
-var _require5 = require('./tree-node-traversals');
+var _treeNodeTraversals2;
 
-var forEachCachedNode = _require5.forEachCachedNode;
+function _treeNodeTraversals() {
+  return _treeNodeTraversals2 = require('./tree-node-traversals');
+}
 
-var _require6 = require('react-for-atom');
+var _reactForAtom2;
 
-var React = _require6.React;
-var ReactDOM = _require6.ReactDOM;
-var PropTypes = React.PropTypes;
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
 
 /**
  * Toggles the existence of a value in a set. If the value exists, deletes it.
@@ -57,7 +67,7 @@ function toggleSetHas(set, value, forceHas) {
     set.add(value);
     added = true;
   } else {
-    set['delete'](value);
+    set.delete(value);
     added = false;
   }
 
@@ -69,9 +79,7 @@ var FIRST_SELECTED_DESCENDANT_REF = 'firstSelectedDescendant';
 /**
  * Generic tree component that operates on LazyTreeNodes.
  */
-var TreeRootComponent = React.createClass({
-  displayName: 'TreeRootComponent',
-
+var TreeRootComponent = (_reactForAtom2 || _reactForAtom()).React.createClass({
   _allKeys: null,
   _emitter: null,
   _keyToNode: null,
@@ -79,20 +87,20 @@ var TreeRootComponent = React.createClass({
   _subscriptions: null,
 
   propTypes: {
-    initialRoots: PropTypes.arrayOf(PropTypes.instanceOf(LazyTreeNode)).isRequired,
-    eventHandlerSelector: PropTypes.string.isRequired,
+    initialRoots: (_reactForAtom2 || _reactForAtom()).React.PropTypes.arrayOf((_reactForAtom2 || _reactForAtom()).React.PropTypes.instanceOf((_LazyTreeNode2 || _LazyTreeNode()).LazyTreeNode)).isRequired,
+    eventHandlerSelector: (_reactForAtom2 || _reactForAtom()).React.PropTypes.string.isRequired,
     // A node can be confirmed if it is a selected non-container node and the user is clicks on it
     // or presses <enter>.
-    onConfirmSelection: PropTypes.func.isRequired,
+    onConfirmSelection: (_reactForAtom2 || _reactForAtom()).React.PropTypes.func.isRequired,
     // A node can be "kept" (opened permanently) by double clicking it. This only has an effect
     // when the `usePreviewTabs` setting is enabled in the "tabs" package.
-    onKeepSelection: PropTypes.func.isRequired,
-    labelClassNameForNode: PropTypes.func.isRequired,
-    rowClassNameForNode: PropTypes.func.isRequired,
+    onKeepSelection: (_reactForAtom2 || _reactForAtom()).React.PropTypes.func.isRequired,
+    labelClassNameForNode: (_reactForAtom2 || _reactForAtom()).React.PropTypes.func.isRequired,
+    rowClassNameForNode: (_reactForAtom2 || _reactForAtom()).React.PropTypes.func.isRequired,
     // Render will return this component if there are no root nodes.
-    elementToRenderWhenEmpty: PropTypes.element,
-    initialExpandedNodeKeys: PropTypes.arrayOf(PropTypes.string),
-    initialSelectedNodeKeys: PropTypes.arrayOf(PropTypes.string)
+    elementToRenderWhenEmpty: (_reactForAtom2 || _reactForAtom()).React.PropTypes.element,
+    initialExpandedNodeKeys: (_reactForAtom2 || _reactForAtom()).React.PropTypes.arrayOf((_reactForAtom2 || _reactForAtom()).React.PropTypes.string),
+    initialSelectedNodeKeys: (_reactForAtom2 || _reactForAtom()).React.PropTypes.arrayOf((_reactForAtom2 || _reactForAtom()).React.PropTypes.string)
   },
 
   getDefaultProps: function getDefaultProps() {
@@ -138,7 +146,7 @@ var TreeRootComponent = React.createClass({
     if (!prevState || this.state.selectedKeys !== prevState.selectedKeys) {
       var firstSelectedDescendant = this.refs[FIRST_SELECTED_DESCENDANT_REF];
       if (firstSelectedDescendant !== undefined) {
-        ReactDOM.findDOMNode(firstSelectedDescendant).scrollIntoViewIfNeeded(false);
+        (_reactForAtom2 || _reactForAtom()).ReactDOM.findDOMNode(firstSelectedDescendant).scrollIntoViewIfNeeded(false);
       }
     }
 
@@ -150,14 +158,14 @@ var TreeRootComponent = React.createClass({
   _deselectDescendants: function _deselectDescendants(root) {
     var selectedKeys = this.state.selectedKeys;
 
-    forEachCachedNode(root, function (node) {
+    (0, (_treeNodeTraversals2 || _treeNodeTraversals()).forEachCachedNode)(root, function (node) {
       // `forEachCachedNode` iterates over the root, but it should remain
       // selected. Skip it.
       if (node === root) {
         return;
       }
 
-      selectedKeys['delete'](node.getKey());
+      selectedKeys.delete(node.getKey());
     });
 
     this.setState({ selectedKeys: selectedKeys });
@@ -289,12 +297,13 @@ var TreeRootComponent = React.createClass({
           ref = FIRST_SELECTED_DESCENDANT_REF;
         }
 
-        var child = React.createElement(TreeNodeComponent, _extends({}, item, {
+        var child = (_reactForAtom2 || _reactForAtom()).React.createElement((_TreeNodeComponent2 || _TreeNodeComponent()).TreeNodeComponent, _extends({}, item, {
           isContainer: node.isContainer(),
           isExpanded: _this2._isNodeExpanded(node),
           isLoading: !node.isCacheValid(),
           isSelected: isNodeSelected,
           label: node.getLabel(),
+          labelElement: node.getLabelElement(),
           labelClassName: _this2.props.labelClassNameForNode(node),
           rowClassName: _this2.props.rowClassNameForNode(node),
           onClickArrow: _this2._onClickNodeArrow,
@@ -346,7 +355,7 @@ var TreeRootComponent = React.createClass({
 
     this._allKeys = allKeys;
     this._keyToNode = keyToNode;
-    return React.createElement(
+    return (_reactForAtom2 || _reactForAtom()).React.createElement(
       'div',
       { className: 'nuclide-tree-root' },
       children
@@ -365,7 +374,7 @@ var TreeRootComponent = React.createClass({
       keyToNode[rootKey] = root;
     });
 
-    var subscriptions = new CompositeDisposable();
+    var subscriptions = new (_atom2 || _atom()).CompositeDisposable();
     subscriptions.add(atom.commands.add(this.props.eventHandlerSelector, {
       // Expand and collapse.
       'core:move-right': function coreMoveRight() {
@@ -389,7 +398,7 @@ var TreeRootComponent = React.createClass({
     }));
 
     this._allKeys = allKeys;
-    this._emitter = new EventEmitter();
+    this._emitter = new (_events2 || _events()).EventEmitter();
     this._keyToNode = keyToNode;
     this._subscriptions = subscriptions;
   },
@@ -412,7 +421,7 @@ var TreeRootComponent = React.createClass({
 
   invalidateCachedNodes: function invalidateCachedNodes() {
     this.state.roots.forEach(function (root) {
-      forEachCachedNode(root, function (node) {
+      (0, (_treeNodeTraversals2 || _treeNodeTraversals()).forEachCachedNode)(root, function (node) {
         node.invalidateCache();
       });
     });
@@ -489,10 +498,10 @@ var TreeRootComponent = React.createClass({
     var expandedKeys = this.state.expandedKeys;
     var selectedKeys = this.state.selectedKeys;
 
-    forEachCachedNode(root, function (node) {
+    (0, (_treeNodeTraversals2 || _treeNodeTraversals()).forEachCachedNode)(root, function (node) {
       var cachedKey = node.getKey();
-      expandedKeys['delete'](cachedKey);
-      selectedKeys['delete'](cachedKey);
+      expandedKeys.delete(cachedKey);
+      selectedKeys.delete(cachedKey);
     });
 
     this.setState({

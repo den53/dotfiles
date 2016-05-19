@@ -18,9 +18,13 @@ function _inherits(subClass, superClass) { if (typeof superClass !== 'function' 
  * the root directory of this source tree.
  */
 
-var _reactForAtom = require('react-for-atom');
+var _reactForAtom2;
 
-var PropTypes = _reactForAtom.React.PropTypes;
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
+
+var PropTypes = (_reactForAtom2 || _reactForAtom()).React.PropTypes;
 
 var HandlesTableComponent = (function (_React$Component) {
   _inherits(HandlesTableComponent, _React$Component);
@@ -64,34 +68,34 @@ var HandlesTableComponent = (function (_React$Component) {
       var _this2 = this;
 
       if (!this.props.handles || Object.keys(this.props.handles).length === 0) {
-        return _reactForAtom.React.createElement('div', null);
+        return (_reactForAtom2 || _reactForAtom()).React.createElement('div', null);
       }
 
       var handleSummaries = this.getHandleSummaries(this.props.handles);
-      var component = _reactForAtom.React.createElement(
+      var component = (_reactForAtom2 || _reactForAtom()).React.createElement(
         'div',
         null,
-        _reactForAtom.React.createElement(
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
           'h3',
           null,
           this.props.title
         ),
-        _reactForAtom.React.createElement(
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
           'table',
           { className: 'table' },
-          _reactForAtom.React.createElement(
+          (_reactForAtom2 || _reactForAtom()).React.createElement(
             'thead',
             null,
-            _reactForAtom.React.createElement(
+            (_reactForAtom2 || _reactForAtom()).React.createElement(
               'tr',
               null,
-              _reactForAtom.React.createElement(
+              (_reactForAtom2 || _reactForAtom()).React.createElement(
                 'th',
                 { width: '10%' },
                 'ID'
               ),
               this.props.columns.map(function (column, c) {
-                return _reactForAtom.React.createElement(
+                return (_reactForAtom2 || _reactForAtom()).React.createElement(
                   'th',
                   { key: c, width: column.widthPercentage + '%' },
                   column.title
@@ -99,16 +103,16 @@ var HandlesTableComponent = (function (_React$Component) {
               })
             )
           ),
-          _reactForAtom.React.createElement(
+          (_reactForAtom2 || _reactForAtom()).React.createElement(
             'tbody',
             null,
             Object.keys(handleSummaries).map(function (key) {
               var handleSummary = handleSummaries[key];
               var previousHandle = _this2.previousHandleSummaries[key];
-              return _reactForAtom.React.createElement(
+              return (_reactForAtom2 || _reactForAtom()).React.createElement(
                 'tr',
                 { key: key, className: previousHandle ? '' : 'nuclide-health-handle-new' },
-                _reactForAtom.React.createElement(
+                (_reactForAtom2 || _reactForAtom()).React.createElement(
                   'th',
                   null,
                   key
@@ -118,7 +122,7 @@ var HandlesTableComponent = (function (_React$Component) {
                   if (previousHandle && previousHandle[c] !== handleSummary[c]) {
                     className = 'nuclide-health-handle-updated';
                   }
-                  return _reactForAtom.React.createElement(
+                  return (_reactForAtom2 || _reactForAtom()).React.createElement(
                     'td',
                     { key: c, className: className },
                     handleSummary[c]
@@ -135,7 +139,7 @@ var HandlesTableComponent = (function (_React$Component) {
   }]);
 
   return HandlesTableComponent;
-})(_reactForAtom.React.Component);
+})((_reactForAtom2 || _reactForAtom()).React.Component);
 
-exports['default'] = HandlesTableComponent;
-module.exports = exports['default'];
+exports.default = HandlesTableComponent;
+module.exports = exports.default;

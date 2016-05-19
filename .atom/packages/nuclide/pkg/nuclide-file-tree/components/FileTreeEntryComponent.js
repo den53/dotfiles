@@ -6,11 +6,11 @@ var _createClass = (function () { function defineProperties(target, props) { for
 
 var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -20,27 +20,55 @@ function _inherits(subClass, superClass) { if (typeof superClass !== 'function' 
  * the root directory of this source tree.
  */
 
-var _libFileTreeActions = require('../lib/FileTreeActions');
+var _libFileTreeActions2;
 
-var _libFileTreeActions2 = _interopRequireDefault(_libFileTreeActions);
+function _libFileTreeActions() {
+  return _libFileTreeActions2 = _interopRequireDefault(require('../lib/FileTreeActions'));
+}
 
-var _reactForAtom = require('react-for-atom');
+var _reactForAtom2;
 
-var _classnames = require('classnames');
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
 
-var _classnames2 = _interopRequireDefault(_classnames);
+var _classnames2;
 
-var _nuclideAtomHelpers = require('../../nuclide-atom-helpers');
+function _classnames() {
+  return _classnames2 = _interopRequireDefault(require('classnames'));
+}
 
-var _libFileTreeFilterHelper = require('../lib/FileTreeFilterHelper');
+var _nuclideAtomHelpers2;
 
-var _libFileTreeHelpers = require('../lib/FileTreeHelpers');
+function _nuclideAtomHelpers() {
+  return _nuclideAtomHelpers2 = require('../../nuclide-atom-helpers');
+}
 
-var _nuclideUiLibCheckbox = require('../../nuclide-ui/lib/Checkbox');
+var _libFileTreeFilterHelper2;
 
-var _nuclideHgRepositoryBaseLibHgConstants = require('../../nuclide-hg-repository-base/lib/hg-constants');
+function _libFileTreeFilterHelper() {
+  return _libFileTreeFilterHelper2 = require('../lib/FileTreeFilterHelper');
+}
 
-var getActions = _libFileTreeActions2['default'].getInstance;
+var _libFileTreeHelpers2;
+
+function _libFileTreeHelpers() {
+  return _libFileTreeHelpers2 = require('../lib/FileTreeHelpers');
+}
+
+var _nuclideUiLibCheckbox2;
+
+function _nuclideUiLibCheckbox() {
+  return _nuclideUiLibCheckbox2 = require('../../nuclide-ui/lib/Checkbox');
+}
+
+var _nuclideHgRepositoryBaseLibHgConstants2;
+
+function _nuclideHgRepositoryBaseLibHgConstants() {
+  return _nuclideHgRepositoryBaseLibHgConstants2 = require('../../nuclide-hg-repository-base/lib/hg-constants');
+}
+
+var getActions = (_libFileTreeActions2 || _libFileTreeActions()).default.getInstance;
 
 var INDENT_LEVEL = 17;
 
@@ -68,7 +96,7 @@ var FileTreeEntryComponent = (function (_React$Component) {
     value: function render() {
       var node = this.props.node;
 
-      var outerClassName = (0, _classnames2['default'])('entry', {
+      var outerClassName = (0, (_classnames2 || _classnames()).default)('entry', {
         'file list-item': !node.isContainer,
         'directory list-nested-item': node.isContainer,
         'current-working-directory': node.isCwd,
@@ -78,7 +106,7 @@ var FileTreeEntryComponent = (function (_React$Component) {
         'selected': node.isSelected,
         'nuclide-file-tree-softened': node.shouldBeSoftened
       });
-      var listItemClassName = (0, _classnames2['default'])({
+      var listItemClassName = (0, (_classnames2 || _classnames()).default)({
         'header list-item': node.isContainer,
         'loading': node.isLoading
       });
@@ -86,9 +114,9 @@ var FileTreeEntryComponent = (function (_React$Component) {
       var statusClass = undefined;
       if (!node.conf.isEditingWorkingSet) {
         var vcsStatusCode = node.vcsStatusCode;
-        if (vcsStatusCode === _nuclideHgRepositoryBaseLibHgConstants.StatusCodeNumber.MODIFIED) {
+        if (vcsStatusCode === (_nuclideHgRepositoryBaseLibHgConstants2 || _nuclideHgRepositoryBaseLibHgConstants()).StatusCodeNumber.MODIFIED) {
           statusClass = 'status-modified';
-        } else if (vcsStatusCode === _nuclideHgRepositoryBaseLibHgConstants.StatusCodeNumber.ADDED) {
+        } else if (vcsStatusCode === (_nuclideHgRepositoryBaseLibHgConstants2 || _nuclideHgRepositoryBaseLibHgConstants()).StatusCodeNumber.ADDED) {
           statusClass = 'status-added';
         } else if (node.isIgnored) {
           statusClass = 'status-ignored';
@@ -113,10 +141,10 @@ var FileTreeEntryComponent = (function (_React$Component) {
       if (node.isContainer) {
         iconName = node.isCwd ? 'icon-briefcase' : 'icon-file-directory';
       } else {
-        iconName = (0, _nuclideAtomHelpers.fileTypeClass)(node.name);
+        iconName = (0, (_nuclideAtomHelpers2 || _nuclideAtomHelpers()).fileTypeClass)(node.name);
       }
 
-      return _reactForAtom.React.createElement(
+      return (_reactForAtom2 || _reactForAtom()).React.createElement(
         'li',
         {
           className: outerClassName + ' ' + statusClass,
@@ -124,12 +152,12 @@ var FileTreeEntryComponent = (function (_React$Component) {
           onClick: this._onClick,
           onDoubleClick: this._onDoubleClick,
           onMouseDown: this._onMouseDown },
-        _reactForAtom.React.createElement(
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
           'div',
           {
             className: listItemClassName,
             ref: 'arrowContainer' },
-          _reactForAtom.React.createElement(
+          (_reactForAtom2 || _reactForAtom()).React.createElement(
             'span',
             {
               className: 'icon name ' + iconName,
@@ -137,12 +165,12 @@ var FileTreeEntryComponent = (function (_React$Component) {
               'data-name': node.name,
               'data-path': node.uri },
             this._renderCheckbox(),
-            _reactForAtom.React.createElement(
+            (_reactForAtom2 || _reactForAtom()).React.createElement(
               'span',
               {
                 'data-name': node.name,
                 'data-path': node.uri },
-              (0, _libFileTreeFilterHelper.filterName)(node.name, node.highlightedText, node.isSelected)
+              (0, (_libFileTreeFilterHelper2 || _libFileTreeFilterHelper()).filterName)(node.name, node.highlightedText, node.isSelected)
             )
           ),
           this._renderConnectionTitle()
@@ -156,7 +184,7 @@ var FileTreeEntryComponent = (function (_React$Component) {
         return;
       }
 
-      return _reactForAtom.React.createElement(_nuclideUiLibCheckbox.Checkbox, {
+      return (_reactForAtom2 || _reactForAtom()).React.createElement((_nuclideUiLibCheckbox2 || _nuclideUiLibCheckbox()).Checkbox, {
         checked: this.props.node.checkedStatus === 'checked',
         indeterminate: this.props.node.checkedStatus === 'partial',
         onChange: this._checkboxOnChange,
@@ -174,7 +202,7 @@ var FileTreeEntryComponent = (function (_React$Component) {
         return null;
       }
 
-      return _reactForAtom.React.createElement(
+      return (_reactForAtom2 || _reactForAtom()).React.createElement(
         'span',
         { className: 'nuclide-file-tree-connection-title highlight' },
         title
@@ -187,7 +215,7 @@ var FileTreeEntryComponent = (function (_React$Component) {
       var node = this.props.node;
 
       var deep = event.altKey;
-      if (node.isContainer && _reactForAtom.ReactDOM.findDOMNode(this.refs['arrowContainer']).contains(event.target) && event.clientX < _reactForAtom.ReactDOM.findDOMNode(this.refs['pathContainer']).getBoundingClientRect().left) {
+      if (node.isContainer && (_reactForAtom2 || _reactForAtom()).ReactDOM.findDOMNode(this.refs['arrowContainer']).contains(event.target) && event.clientX < (_reactForAtom2 || _reactForAtom()).ReactDOM.findDOMNode(this.refs['pathContainer']).getBoundingClientRect().left) {
         this._toggleNodeExpanded(deep);
         return;
       }
@@ -235,7 +263,7 @@ var FileTreeEntryComponent = (function (_React$Component) {
       event.stopPropagation();
 
       // Select node on right-click (in order for context menu to behave correctly).
-      if ((0, _libFileTreeHelpers.isContextClick)(event)) {
+      if ((0, (_libFileTreeHelpers2 || _libFileTreeHelpers()).isContextClick)(event)) {
         if (!this.props.node.isSelected) {
           getActions().setSelectedNode(this.props.node.rootUri, this.props.node.uri);
         }
@@ -275,6 +303,6 @@ var FileTreeEntryComponent = (function (_React$Component) {
   }]);
 
   return FileTreeEntryComponent;
-})(_reactForAtom.React.Component);
+})((_reactForAtom2 || _reactForAtom()).React.Component);
 
 exports.FileTreeEntryComponent = FileTreeEntryComponent;

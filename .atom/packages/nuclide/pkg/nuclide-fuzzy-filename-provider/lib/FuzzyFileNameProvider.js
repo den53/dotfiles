@@ -8,11 +8,24 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
  * the root directory of this source tree.
  */
 
-var _utils = require('./utils');
+var _utils2;
 
-var _nuclideRemoteConnection = require('../../nuclide-remote-connection');
+function _utils() {
+  return _utils2 = require('./utils');
+}
+
+var _nuclideRemoteConnection2;
+
+function _nuclideRemoteConnection() {
+  return _nuclideRemoteConnection2 = require('../../nuclide-remote-connection');
+}
 
 var FuzzyFileNameProvider = {
+
+  // Give preference to filename results in OmniSearch.
+  getPriority: function getPriority() {
+    return 1;
+  },
 
   getName: function getName() {
     return 'FuzzyFileNameProvider';
@@ -55,7 +68,7 @@ var FuzzyFileNameProvider = {
       throw new Error('FuzzyFileNameProvider is a directory-specific provider but its executeQuery method was' + ' called without a directory argument.');
     }
 
-    var service = yield (0, _utils.getFuzzyFileSearchService)(directory);
+    var service = yield (0, (_utils2 || _utils()).getFuzzyFileSearchService)(directory);
     if (service == null) {
       return [];
     }
@@ -63,7 +76,7 @@ var FuzzyFileNameProvider = {
     var directoryPath = directory.getPath();
     var result = yield service.queryFuzzyFile(directoryPath, query);
     // Take the `nuclide://<host><port>` prefix into account for matchIndexes of remote files.
-    if (_nuclideRemoteConnection.RemoteDirectory.isRemoteDirectory(directory)) {
+    if ((_nuclideRemoteConnection2 || _nuclideRemoteConnection()).RemoteDirectory.isRemoteDirectory(directory)) {
       (function () {
         var remoteDir = directory;
         var indexOffset = directoryPath.length - remoteDir.getLocalPath().length;

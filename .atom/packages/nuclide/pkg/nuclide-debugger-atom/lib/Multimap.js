@@ -44,9 +44,9 @@ var Multimap = (function () {
     value: function _delete(key, value) {
       var set = this._storage.get(key);
       if (set) {
-        var deleted = set['delete'](value);
+        var deleted = set.delete(value);
         if (set.size === 0) {
-          this._storage['delete'](key);
+          this._storage.delete(key);
         }
         return deleted;
       }
@@ -55,7 +55,7 @@ var Multimap = (function () {
   }, {
     key: 'deleteAll',
     value: function deleteAll(key) {
-      return this._storage['delete'](key);
+      return this._storage.delete(key);
     }
   }, {
     key: 'set',

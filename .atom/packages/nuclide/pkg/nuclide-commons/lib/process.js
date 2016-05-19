@@ -33,13 +33,13 @@ var createExecEnvironment = _asyncToGenerator(function* (originalEnv, commonBina
     execEnv.PATH = platformPath;
   } else if (commonBinaryPaths.length) {
     (function () {
-      var paths = execEnv.PATH.split(_path2['default'].delimiter);
+      var paths = execEnv.PATH.split((_path2 || _path()).default.delimiter);
       commonBinaryPaths.forEach(function (commonBinaryPath) {
         if (paths.indexOf(commonBinaryPath) === -1) {
           paths.push(commonBinaryPath);
         }
       });
-      execEnv.PATH = paths.join(_path2['default'].delimiter);
+      execEnv.PATH = paths.join((_path2 || _path()).default.delimiter);
     })();
   }
 
@@ -57,7 +57,7 @@ var safeSpawn = _asyncToGenerator(function* (command) {
   var options = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
 
   options.env = yield createExecEnvironment(options.env || process.env, COMMON_BINARY_PATHS);
-  var child = _child_process2['default'].spawn(command, args, options);
+  var child = (_child_process2 || _child_process()).default.spawn(command, args, options);
   monitorStreamErrors(child, command, args, options);
   child.on('error', function (error) {
     logError('error with command:', command, args, options, 'error:', error);
@@ -72,7 +72,7 @@ var forkWithExecEnvironment = _asyncToGenerator(function* (modulePath) {
   var forkOptions = _extends({}, options, {
     env: yield createExecEnvironment(options.env || process.env, COMMON_BINARY_PATHS)
   });
-  var child = _child_process2['default'].fork(modulePath, args, forkOptions);
+  var child = (_child_process2 || _child_process()).default.fork(modulePath, args, forkOptions);
   child.on('error', function (error) {
     logError('error from module:', modulePath, args, options, 'error:', error);
   });
@@ -100,9 +100,9 @@ var asyncExecute = _asyncToGenerator(function* (command, args) {
   return result;
 });
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -112,25 +112,47 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
  * the root directory of this source tree.
  */
 
-var _child_process = require('child_process');
+var _child_process2;
 
-var _child_process2 = _interopRequireDefault(_child_process);
+function _child_process() {
+  return _child_process2 = _interopRequireDefault(require('child_process'));
+}
 
-var _path = require('path');
+var _path2;
 
-var _path2 = _interopRequireDefault(_path);
+function _path() {
+  return _path2 = _interopRequireDefault(require('path'));
+}
 
-var _PromiseExecutors = require('./PromiseExecutors');
+var _PromiseExecutors2;
 
-var _stream = require('./stream');
+function _PromiseExecutors() {
+  return _PromiseExecutors2 = require('./PromiseExecutors');
+}
 
-var _rxjs = require('rxjs');
+var _stream2;
 
-var _assert = require('assert');
+function _stream() {
+  return _stream2 = require('./stream');
+}
 
-var _assert2 = _interopRequireDefault(_assert);
+var _rxjs2;
 
-var _shellQuote = require('shell-quote');
+function _rxjs() {
+  return _rxjs2 = require('rxjs');
+}
+
+var _assert2;
+
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
+
+var _shellQuote2;
+
+function _shellQuote() {
+  return _shellQuote2 = require('shell-quote');
+}
 
 var platformPathPromise = undefined;
 
@@ -143,7 +165,7 @@ var COMMON_BINARY_PATHS = ['/usr/bin', '/bin', '/usr/sbin', '/sbin', '/usr/local
  *
  *     PATH="/usr/bin"; export PATH;
  */
-var DARWIN_PATH_HELPER_REGEXP = /PATH=\"([^\"]+)\"/;
+var DARWIN_PATH_HELPER_REGEXP = /PATH="([^"]+)"/;
 
 var STREAM_NAMES = ['stdin', 'stdout', 'stderr'];
 
@@ -161,7 +183,7 @@ function getPlatformPath() {
     // bug, filed against Atom Linter here: https://github.com/AtomLinter/Linter/issues/150
     // TODO(jjiaa): remove this hack when the Atom issue is closed
     platformPathPromise = new Promise(function (resolve, reject) {
-      _child_process2['default'].execFile('/usr/libexec/path_helper', ['-s'], function (error, stdout, stderr) {
+      (_child_process2 || _child_process()).default.execFile('/usr/libexec/path_helper', ['-s'], function (error, stdout, stderr) {
         if (error) {
           reject(error);
         } else {
@@ -206,7 +228,7 @@ function monitorStreamErrors(process, command, args, options) {
   } else {
     // On Linux, script takes the command to run as the -c parameter.
     var allArgs = [command].concat(args);
-    return ['-q', '/dev/null', '-c', (0, _shellQuote.quote)(allArgs)];
+    return ['-q', '/dev/null', '-c', (0, (_shellQuote2 || _shellQuote()).quote)(allArgs)];
   }
 }
 
@@ -230,7 +252,7 @@ function scriptSafeSpawnAndObserveOutput(command) {
   var args = arguments.length <= 1 || arguments[1] === undefined ? [] : arguments[1];
   var options = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
 
-  return _rxjs.Observable.create(function (observer) {
+  return (_rxjs2 || _rxjs()).Observable.create(function (observer) {
     var childProcess = undefined;
     scriptSafeSpawn(command, args, options).then(function (proc) {
       childProcess = proc;
@@ -271,7 +293,7 @@ function scriptSafeSpawnAndObserveOutput(command) {
  * 3. The process is killed when there are no more subscribers.
  */
 function _createProcessStream(createProcess, throwOnError) {
-  return _rxjs.Observable.create(function (observer) {
+  return (_rxjs2 || _rxjs()).Observable.create(function (observer) {
     var promise = Promise.resolve(createProcess());
     var process = undefined;
     var disposed = false;
@@ -288,29 +310,29 @@ function _createProcessStream(createProcess, throwOnError) {
       maybeKill();
     });
 
-    var processStream = _rxjs.Observable.fromPromise(promise);
+    var processStream = (_rxjs2 || _rxjs()).Observable.fromPromise(promise);
 
     var errors = throwOnError ? processStream.switchMap(function (p) {
-      return _rxjs.Observable.fromEvent(p, 'error').flatMap(function (err) {
-        return _rxjs.Observable['throw'](err);
+      return (_rxjs2 || _rxjs()).Observable.fromEvent(p, 'error').flatMap(function (err) {
+        return (_rxjs2 || _rxjs()).Observable.throw(err);
       });
-    }) : _rxjs.Observable.empty();
+    }) : (_rxjs2 || _rxjs()).Observable.empty();
 
     var exit = processStream.flatMap(function (p) {
-      return _rxjs.Observable.fromEvent(p, 'exit', function (code, signal) {
+      return (_rxjs2 || _rxjs()).Observable.fromEvent(p, 'exit', function (code, signal) {
         return signal;
       });
     })
     // An exit signal from SIGUSR1 doesn't actually exit the process, so skip that.
     .filter(function (signal) {
       return signal !== 'SIGUSR1';
-    })['do'](function () {
+    }).do(function () {
       exited = true;
     });
 
-    return new _stream.CompositeSubscription(processStream
+    return new (_stream2 || _stream()).CompositeSubscription(processStream
     // A version of processStream that never completes...
-    .merge(_rxjs.Observable.never()).merge(errors)
+    .merge((_rxjs2 || _rxjs()).Observable.never()).merge(errors)
     // ...which we take until the process exits.
     .takeUntil(exit).subscribe(observer), function () {
       disposed = true;maybeKill();
@@ -331,26 +353,26 @@ function createProcessStream(createProcess) {
  */
 function observeProcessExit(createProcess) {
   return _createProcessStream(createProcess, false).flatMap(function (process) {
-    return _rxjs.Observable.fromEvent(process, 'exit').take(1);
+    return (_rxjs2 || _rxjs()).Observable.fromEvent(process, 'exit').take(1);
   });
 }
 
 function getOutputStream(childProcess) {
-  return _rxjs.Observable.fromPromise(Promise.resolve(childProcess)).flatMap(function (process) {
-    (0, _assert2['default'])(process != null, 'process has not yet been disposed');
+  return (_rxjs2 || _rxjs()).Observable.fromPromise(Promise.resolve(childProcess)).flatMap(function (process) {
+    (0, (_assert2 || _assert()).default)(process != null, 'process has not yet been disposed');
     // Use replay/connect on exit for the final concat.
     // By default concat defers subscription until after the LHS completes.
-    var exit = _rxjs.Observable.fromEvent(process, 'exit').take(1).map(function (exitCode) {
+    var exit = (_rxjs2 || _rxjs()).Observable.fromEvent(process, 'exit').take(1).map(function (exitCode) {
       return { kind: 'exit', exitCode: exitCode };
     }).publishReplay();
     exit.connect();
-    var error = _rxjs.Observable.fromEvent(process, 'error').takeUntil(exit).map(function (errorObj) {
+    var error = (_rxjs2 || _rxjs()).Observable.fromEvent(process, 'error').takeUntil(exit).map(function (errorObj) {
       return { kind: 'error', error: errorObj };
     });
-    var stdout = (0, _stream.splitStream)((0, _stream.observeStream)(process.stdout)).map(function (data) {
+    var stdout = (0, (_stream2 || _stream()).splitStream)((0, (_stream2 || _stream()).observeStream)(process.stdout)).map(function (data) {
       return { kind: 'stdout', data: data };
     });
-    var stderr = (0, _stream.splitStream)((0, _stream.observeStream)(process.stderr)).map(function (data) {
+    var stderr = (0, (_stream2 || _stream()).splitStream)((0, (_stream2 || _stream()).observeStream)(process.stderr)).map(function (data) {
       return { kind: 'stderr', data: data };
     });
     return stdout.merge(stderr).merge(error).concat(exit);
@@ -395,7 +417,7 @@ function checkOutput(command, args) {
     if (localOptions.pipedCommand) {
       // If a second command is given, pipe stdout of first to stdin of second. String output
       // returned in this function's Promise will be stderr/stdout of the second command.
-      firstChild = _child_process2['default'].spawn(command, args, localOptions);
+      firstChild = (_child_process2 || _child_process()).default.spawn(command, args, localOptions);
       monitorStreamErrors(firstChild, command, args, localOptions);
       firstChildStderr = '';
 
@@ -414,7 +436,7 @@ function checkOutput(command, args) {
         firstChildStderr += data;
       });
 
-      lastChild = _child_process2['default'].spawn(localOptions.pipedCommand, localOptions.pipedArgs, localOptions);
+      lastChild = (_child_process2 || _child_process()).default.spawn(localOptions.pipedCommand, localOptions.pipedArgs, localOptions);
       monitorStreamErrors(lastChild, command, args, localOptions);
       // pipe() normally pauses the writer when the reader errors (closes).
       // This is not how UNIX pipes work: if the reader closes, the writer needs
@@ -425,7 +447,7 @@ function checkOutput(command, args) {
       });
       firstChild.stdout.pipe(lastChild.stdin);
     } else {
-      lastChild = _child_process2['default'].spawn(command, args, localOptions);
+      lastChild = (_child_process2 || _child_process()).default.spawn(command, args, localOptions);
       monitorStreamErrors(lastChild, command, args, localOptions);
       firstChild = lastChild;
     }
@@ -476,7 +498,7 @@ function checkOutput(command, args) {
       return new Promise(executor);
     } else {
       if (!blockingQueues[localOptions.queueName]) {
-        blockingQueues[localOptions.queueName] = new _PromiseExecutors.PromiseQueue();
+        blockingQueues[localOptions.queueName] = new (_PromiseExecutors2 || _PromiseExecutors()).PromiseQueue();
       }
       return blockingQueues[localOptions.queueName].submit(executor);
     }

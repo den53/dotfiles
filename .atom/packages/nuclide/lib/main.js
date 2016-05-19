@@ -15,32 +15,6 @@ exports.__testUseOnly_removeFeature = __testUseOnly_removeFeature;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _pkgNuclideFeatureConfig = require('../pkg/nuclide-feature-config');
-
-var _pkgNuclideFeatureConfig2 = _interopRequireDefault(_pkgNuclideFeatureConfig);
-
-var _fs = require('fs');
-
-var _fs2 = _interopRequireDefault(_fs);
-
-var _assert = require('assert');
-
-var _assert2 = _interopRequireDefault(_assert);
-
-var _nuclideFeatures = require('./nuclide-features');
-
-var _path = require('path');
-
-var _path2 = _interopRequireDefault(_path);
-
-var _temp = require('temp');
-
-var _temp2 = _interopRequireDefault(_temp);
-
-var _atom = require('atom');
-
-// If we are in a testing environment then we want to use a default atom config.
-
 /* @noflow */
 
 /*
@@ -61,15 +35,60 @@ var _atom = require('atom');
  *
  */
 
-if (typeof atom === 'undefined') {
-  throw new Error('This is an Atom package. Did you mean to run the server?');
+var _pkgNuclideFeatureConfig2;
+
+function _pkgNuclideFeatureConfig() {
+  return _pkgNuclideFeatureConfig2 = _interopRequireDefault(require('../pkg/nuclide-feature-config'));
 }
 
+var _fs2;
+
+function _fs() {
+  return _fs2 = _interopRequireDefault(require('fs'));
+}
+
+var _assert2;
+
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
+
+var _nuclideFeatures2;
+
+function _nuclideFeatures() {
+  return _nuclideFeatures2 = require('./nuclide-features');
+}
+
+var _path2;
+
+function _path() {
+  return _path2 = _interopRequireDefault(require('path'));
+}
+
+var _temp2;
+
+function _temp() {
+  return _temp2 = _interopRequireDefault(require('temp'));
+}
+
+var _pkgNuclideRemoteConnectionLibServiceManager2;
+
+function _pkgNuclideRemoteConnectionLibServiceManager() {
+  return _pkgNuclideRemoteConnectionLibServiceManager2 = require('../pkg/nuclide-remote-connection/lib/service-manager');
+}
+
+var _atom2;
+
+function _atom() {
+  return _atom2 = require('atom');
+}
+
+// If we are in a testing environment then we want to use a default atom config.
 if (atom.inSpecMode()) {
-  _temp2['default'].track();
-  var tempDirPath = _temp2['default'].mkdirSync('atom_home');
+  (_temp2 || _temp()).default.track();
+  var tempDirPath = (_temp2 || _temp()).default.mkdirSync('atom_home');
   atom.config.configDirPath = tempDirPath;
-  atom.config.configFilePath = _path2['default'].join(tempDirPath, 'config.cson');
+  atom.config.configFilePath = (_path2 || _path()).default.join(tempDirPath, 'config.cson');
 }
 
 // Exported "config" object
@@ -80,6 +99,12 @@ var config = {
     title: 'Install Recommended Packages on Startup',
     type: 'boolean'
   },
+  useLocalRpc: {
+    'default': false,
+    description: 'Use RPC marshalling for local services. This ensures better compatibility between the local' + ' and remote case. Useful for internal Nuclide development. Requires restart to take' + ' effect.',
+    title: 'Use RPC for local Services.',
+    type: 'boolean'
+  },
   use: {
     type: 'object',
     properties: {}
@@ -88,7 +113,7 @@ var config = {
 
 exports.config = config;
 // Nuclide packages for Atom are called "features"
-var FEATURES_DIR = _path2['default'].join(__dirname, '../pkg');
+var FEATURES_DIR = (_path2 || _path()).default.join(__dirname, '../pkg');
 var features = {};
 
 var disposables = undefined;
@@ -97,29 +122,29 @@ var hasActivatedOnce = false;
 /**
  * Get the "package.json" of all the features.
  */
-_fs2['default'].readdirSync(FEATURES_DIR).forEach(function (item) {
+(_fs2 || _fs()).default.readdirSync(FEATURES_DIR).forEach(function (item) {
   // Optimization: Our directories don't have periods - this must be a file
   if (item.indexOf('.') !== -1) {
     return;
   }
-  var dirname = _path2['default'].join(FEATURES_DIR, item);
-  var filename = _path2['default'].join(dirname, 'package.json');
+  var dirname = (_path2 || _path()).default.join(FEATURES_DIR, item);
+  var filename = (_path2 || _path()).default.join(dirname, 'package.json');
   try {
-    var stat = _fs2['default'].statSync(filename);
-    (0, _assert2['default'])(stat.isFile());
+    var stat = (_fs2 || _fs()).default.statSync(filename);
+    (0, (_assert2 || _assert()).default)(stat.isFile());
   } catch (err) {
     if (err && err.code === 'ENOENT') {
       return;
     }
   }
-  var src = _fs2['default'].readFileSync(filename, 'utf8');
+  var src = (_fs2 || _fs()).default.readFileSync(filename, 'utf8');
   // Optimization: Avoid JSON parsing if it can't reasonably be an Atom package
   if (src.indexOf('"Atom"') === -1) {
     return;
   }
   var pkg = JSON.parse(src);
   if (pkg.nuclide && pkg.nuclide.packageType === 'Atom') {
-    (0, _assert2['default'])(pkg.name);
+    (0, (_assert2 || _assert()).default)(pkg.name);
     features[pkg.name] = {
       pkg: pkg,
       dirname: dirname,
@@ -188,7 +213,7 @@ Object.keys(features).forEach(function (name) {
   if (pkg.nuclide.deserializers) {
     Object.keys(pkg.nuclide.deserializers).forEach(function (deserializerName) {
       var deserializerPath = pkg.nuclide.deserializers[deserializerName];
-      var modulePath = _path2['default'].join(dirname, deserializerPath);
+      var modulePath = (_path2 || _path()).default.join(dirname, deserializerPath);
       var deserializer = require(modulePath);
       atom.deserializers.add({
         name: deserializerName,
@@ -199,8 +224,8 @@ Object.keys(features).forEach(function (name) {
 });
 
 function activate() {
-  (0, _assert2['default'])(!disposables);
-  disposables = new _atom.CompositeDisposable();
+  (0, (_assert2 || _assert()).default)(!disposables);
+  disposables = new (_atom2 || _atom()).CompositeDisposable();
 
   // Add the "Nuclide" menu, if it's not there already.
   disposables.add(atom.menu.add([{
@@ -244,19 +269,20 @@ function activate() {
   }).filter(Boolean);
 
   if (!hasActivatedOnce) {
-    _nuclideFeatures.nuclideFeatures.didLoadInitialFeatures();
+    (_nuclideFeatures2 || _nuclideFeatures()).nuclideFeatures.didLoadInitialFeatures();
+    (0, (_pkgNuclideRemoteConnectionLibServiceManager2 || _pkgNuclideRemoteConnectionLibServiceManager()).setUseLocalRpc)((_pkgNuclideFeatureConfig2 || _pkgNuclideFeatureConfig()).default.get('useLocalRpc'));
   }
 
   // Activate all of the loaded features.
   // https://github.com/atom/atom/blob/v1.1.0/src/package-manager.coffee#L431-L440
   Promise.all(atom.packages.activatePackages(loaded)).then(function () {
     if (!hasActivatedOnce) {
-      _nuclideFeatures.nuclideFeatures.didActivateInitialFeatures();
+      (_nuclideFeatures2 || _nuclideFeatures()).nuclideFeatures.didActivateInitialFeatures();
 
       // No more Nuclide events will be fired. Dispose the Emitter to release
       // memory and to inform future callers that they're attempting to listen
       // to events that will never fire again.
-      _nuclideFeatures.nuclideFeatures.dispose();
+      (_nuclideFeatures2 || _nuclideFeatures()).nuclideFeatures.dispose();
       hasActivatedOnce = true;
     }
   });
@@ -278,7 +304,7 @@ function activate() {
   // Install public, 3rd-party Atom packages listed in this package's 'package-deps' setting. Run
   // this *after* other packages are activated so they can modify this setting if desired before
   // installation is attempted.
-  if (_pkgNuclideFeatureConfig2['default'].get('installRecommendedPackages') || atom.inSpecMode()) {
+  if ((_pkgNuclideFeatureConfig2 || _pkgNuclideFeatureConfig()).default.get('installRecommendedPackages') || atom.inSpecMode()) {
     require('atom-package-deps').install('nuclide');
   }
 }

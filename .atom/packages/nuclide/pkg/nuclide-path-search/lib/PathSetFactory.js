@@ -5,9 +5,11 @@ Object.defineProperty(exports, '__esModule', {
 var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i['return']) _i['return'](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError('Invalid attempt to destructure non-iterable instance'); } }; })();
 
 var getFilesFromWatchman = _asyncToGenerator(function* (localDirectory) {
-  var watchmanClient = new _nuclideWatchmanHelpers.WatchmanClient();
+  var watchmanClient = new (_nuclideWatchmanHelpers2 || _nuclideWatchmanHelpers()).WatchmanClient();
   try {
-    return yield watchmanClient.listFiles(localDirectory);
+    return yield Promise.race([watchmanClient.listFiles(localDirectory), (_nuclideCommons2 || _nuclideCommons()).promises.awaitMilliSeconds(WATCHMAN_TIMEOUT_MS).then(function () {
+      return Promise.reject();
+    })]);
   } finally {
     watchmanClient.dispose();
   }
@@ -15,9 +17,9 @@ var getFilesFromWatchman = _asyncToGenerator(function* (localDirectory) {
 
 exports.getPaths = getPaths;
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -27,26 +29,44 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
  * the root directory of this source tree.
  */
 
-var _child_process = require('child_process');
+var _child_process2;
 
-var _child_process2 = _interopRequireDefault(_child_process);
+function _child_process() {
+  return _child_process2 = _interopRequireDefault(require('child_process'));
+}
 
-var _split = require('split');
+var _split2;
 
-var _split2 = _interopRequireDefault(_split);
+function _split() {
+  return _split2 = _interopRequireDefault(require('split'));
+}
 
-var _nuclideWatchmanHelpers = require('../../nuclide-watchman-helpers');
+var _nuclideWatchmanHelpers2;
+
+function _nuclideWatchmanHelpers() {
+  return _nuclideWatchmanHelpers2 = require('../../nuclide-watchman-helpers');
+}
+
+var _nuclideCommons2;
+
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
+
+// Occasionally, the watchman client may hang while waiting for a query.
+// Fall back to other methods after the timeout expires.
+var WATCHMAN_TIMEOUT_MS = 20000;
 
 function getFilesFromCommand(command, args, localDirectory, transform) {
   return new Promise(function (resolve, reject) {
     // Use `spawn` here to process the, possibly huge, output of the file listing.
 
-    var proc = _child_process2['default'].spawn(command, args, { cwd: localDirectory });
+    var proc = (_child_process2 || _child_process()).default.spawn(command, args, { cwd: localDirectory });
 
     proc.on('error', reject);
 
     var filePaths = [];
-    proc.stdout.pipe((0, _split2['default'])()).on('data', function (filePath) {
+    proc.stdout.pipe((0, (_split2 || _split()).default)()).on('data', function (filePath) {
       if (transform) {
         filePath = transform(filePath);
       }
@@ -154,13 +174,13 @@ function getPaths(localDirectory) {
   // a fast source control index.
   // TODO (williamsc) once ``{HG|Git}Repository` is working in nuclide-server,
   // use those instead to determine VCS.
-  return getFilesFromWatchman(localDirectory)['catch'](function () {
+  return getFilesFromWatchman(localDirectory).catch(function () {
     return getFilesFromHg(localDirectory);
-  })['catch'](function () {
+  }).catch(function () {
     return getFilesFromGit(localDirectory);
-  })['catch'](function () {
+  }).catch(function () {
     return getAllFiles(localDirectory);
-  })['catch'](function () {
+  }).catch(function () {
     throw new Error('Failed to populate FileSearch for ' + localDirectory);
   });
 }

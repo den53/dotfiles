@@ -18,28 +18,37 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var _require = require('../../nuclide-ui/lib/AtomInput');
+var _nuclideUiLibAtomInput2;
 
-var AtomInput = _require.AtomInput;
+function _nuclideUiLibAtomInput() {
+  return _nuclideUiLibAtomInput2 = require('../../nuclide-ui/lib/AtomInput');
+}
 
-var _require2 = require('atom');
+var _atom2;
 
-var CompositeDisposable = _require2.CompositeDisposable;
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var _require3 = require('../../nuclide-ui/lib/RadioGroup');
+var _nuclideUiLibRadioGroup2;
 
-var RadioGroup = _require3.RadioGroup;
+function _nuclideUiLibRadioGroup() {
+  return _nuclideUiLibRadioGroup2 = require('../../nuclide-ui/lib/RadioGroup');
+}
 
-var _require4 = require('react-for-atom');
+var _reactForAtom2;
 
-var React = _require4.React;
-var ReactDOM = _require4.ReactDOM;
-var PropTypes = React.PropTypes;
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
 
-var _require5 = require('../../nuclide-remote-connection');
+var _nuclideRemoteConnection2;
 
-var SshHandshake = _require5.SshHandshake;
-var SupportedMethods = SshHandshake.SupportedMethods;
+function _nuclideRemoteConnection() {
+  return _nuclideRemoteConnection2 = require('../../nuclide-remote-connection');
+}
+
+var SupportedMethods = (_nuclideRemoteConnection2 || _nuclideRemoteConnection()).SshHandshake.SupportedMethods;
 
 var authMethods = [SupportedMethods.PASSWORD, SupportedMethods.SSL_AGENT, SupportedMethods.PRIVATE_KEY];
 
@@ -51,15 +60,15 @@ var ConnectionDetailsForm = (function (_React$Component) {
   _createClass(ConnectionDetailsForm, null, [{
     key: 'propTypes',
     value: {
-      initialUsername: PropTypes.string,
-      initialServer: PropTypes.string,
-      initialCwd: PropTypes.string,
-      initialRemoteServerCommand: PropTypes.string,
-      initialSshPort: PropTypes.string,
-      initialPathToPrivateKey: PropTypes.string,
-      initialAuthMethod: PropTypes.oneOf(Object.keys(SupportedMethods)),
-      onConfirm: PropTypes.func.isRequired,
-      onCancel: PropTypes.func.isRequired
+      initialUsername: (_reactForAtom2 || _reactForAtom()).React.PropTypes.string,
+      initialServer: (_reactForAtom2 || _reactForAtom()).React.PropTypes.string,
+      initialCwd: (_reactForAtom2 || _reactForAtom()).React.PropTypes.string,
+      initialRemoteServerCommand: (_reactForAtom2 || _reactForAtom()).React.PropTypes.string,
+      initialSshPort: (_reactForAtom2 || _reactForAtom()).React.PropTypes.string,
+      initialPathToPrivateKey: (_reactForAtom2 || _reactForAtom()).React.PropTypes.string,
+      initialAuthMethod: (_reactForAtom2 || _reactForAtom()).React.PropTypes.oneOf(Object.keys(SupportedMethods)),
+      onConfirm: (_reactForAtom2 || _reactForAtom()).React.PropTypes.func.isRequired,
+      onCancel: (_reactForAtom2 || _reactForAtom()).React.PropTypes.func.isRequired
     },
     enumerable: true
   }]);
@@ -106,7 +115,7 @@ var ConnectionDetailsForm = (function (_React$Component) {
       this.setState({
         selectedAuthMethodIndex: passwordAuthMethodIndex
       }, function () {
-        ReactDOM.findDOMNode(_this.refs['password']).focus();
+        (_reactForAtom2 || _reactForAtom()).ReactDOM.findDOMNode(_this.refs['password']).focus();
       });
     }
   }, {
@@ -120,7 +129,7 @@ var ConnectionDetailsForm = (function (_React$Component) {
       }, function () {
         // when setting this immediately, Atom will unset the focus...
         setTimeout(function () {
-          ReactDOM.findDOMNode(_this2.refs['pathToPrivateKey']).focus();
+          (_reactForAtom2 || _reactForAtom()).ReactDOM.findDOMNode(_this2.refs['pathToPrivateKey']).focus();
         }, 0);
       });
     }
@@ -130,18 +139,18 @@ var ConnectionDetailsForm = (function (_React$Component) {
       var activeAuthMethod = authMethods[this.state.selectedAuthMethodIndex];
       // We need native-key-bindings so that delete works and we need
       // _onKeyUp so that escape and enter work
-      var passwordLabel = React.createElement(
+      var passwordLabel = (_reactForAtom2 || _reactForAtom()).React.createElement(
         'div',
         { className: 'nuclide-auth-method' },
-        React.createElement(
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
           'div',
           { className: 'nuclide-auth-method-label' },
           'Password:'
         ),
-        React.createElement(
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
           'div',
           { className: 'nuclide-auth-method-input nuclide-auth-method-password' },
-          React.createElement('input', { type: 'password',
+          (_reactForAtom2 || _reactForAtom()).React.createElement('input', { type: 'password',
             className: 'nuclide-password native-key-bindings',
             disabled: activeAuthMethod !== SupportedMethods.PASSWORD,
             ref: 'password',
@@ -150,18 +159,18 @@ var ConnectionDetailsForm = (function (_React$Component) {
           })
         )
       );
-      var privateKeyLabel = React.createElement(
+      var privateKeyLabel = (_reactForAtom2 || _reactForAtom()).React.createElement(
         'div',
         { className: 'nuclide-auth-method' },
-        React.createElement(
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
           'div',
           { className: 'nuclide-auth-method-label' },
           'Private Key File:'
         ),
-        React.createElement(
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
           'div',
           { className: 'nuclide-auth-method-input nuclide-auth-method-privatekey' },
-          React.createElement(AtomInput, {
+          (_reactForAtom2 || _reactForAtom()).React.createElement((_nuclideUiLibAtomInput2 || _nuclideUiLibAtomInput()).AtomInput, {
             ref: 'pathToPrivateKey',
             disabled: activeAuthMethod !== SupportedMethods.PRIVATE_KEY,
             initialValue: this.state.pathToPrivateKey,
@@ -171,97 +180,97 @@ var ConnectionDetailsForm = (function (_React$Component) {
           })
         )
       );
-      var sshAgentLabel = React.createElement(
+      var sshAgentLabel = (_reactForAtom2 || _reactForAtom()).React.createElement(
         'div',
         { className: 'nuclide-auth-method' },
         'Use ssh-agent'
       );
-      return React.createElement(
+      return (_reactForAtom2 || _reactForAtom()).React.createElement(
         'div',
         null,
-        React.createElement(
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
           'div',
           { className: 'form-group' },
-          React.createElement(
+          (_reactForAtom2 || _reactForAtom()).React.createElement(
             'label',
             null,
             'Username:'
           ),
-          React.createElement(AtomInput, {
+          (_reactForAtom2 || _reactForAtom()).React.createElement((_nuclideUiLibAtomInput2 || _nuclideUiLibAtomInput()).AtomInput, {
             initialValue: this.state.username,
             ref: 'username',
             unstyled: true
           })
         ),
-        React.createElement(
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
           'div',
           { className: 'form-group row' },
-          React.createElement(
+          (_reactForAtom2 || _reactForAtom()).React.createElement(
             'div',
             { className: 'col-xs-9' },
-            React.createElement(
+            (_reactForAtom2 || _reactForAtom()).React.createElement(
               'label',
               null,
               'Server:'
             ),
-            React.createElement(AtomInput, {
+            (_reactForAtom2 || _reactForAtom()).React.createElement((_nuclideUiLibAtomInput2 || _nuclideUiLibAtomInput()).AtomInput, {
               initialValue: this.state.server,
               ref: 'server',
               unstyled: true
             })
           ),
-          React.createElement(
+          (_reactForAtom2 || _reactForAtom()).React.createElement(
             'div',
             { className: 'col-xs-3' },
-            React.createElement(
+            (_reactForAtom2 || _reactForAtom()).React.createElement(
               'label',
               null,
               'SSH Port:'
             ),
-            React.createElement(AtomInput, {
+            (_reactForAtom2 || _reactForAtom()).React.createElement((_nuclideUiLibAtomInput2 || _nuclideUiLibAtomInput()).AtomInput, {
               initialValue: this.state.sshPort,
               ref: 'sshPort',
               unstyled: true
             })
           )
         ),
-        React.createElement(
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
           'div',
           { className: 'form-group' },
-          React.createElement(
+          (_reactForAtom2 || _reactForAtom()).React.createElement(
             'label',
             null,
             'Initial Directory:'
           ),
-          React.createElement(AtomInput, {
+          (_reactForAtom2 || _reactForAtom()).React.createElement((_nuclideUiLibAtomInput2 || _nuclideUiLibAtomInput()).AtomInput, {
             initialValue: this.state.cwd,
             ref: 'cwd',
             unstyled: true
           })
         ),
-        React.createElement(
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
           'div',
           { className: 'form-group' },
-          React.createElement(
+          (_reactForAtom2 || _reactForAtom()).React.createElement(
             'label',
             null,
             'Authentication method:'
           ),
-          React.createElement(RadioGroup, {
+          (_reactForAtom2 || _reactForAtom()).React.createElement((_nuclideUiLibRadioGroup2 || _nuclideUiLibRadioGroup()).RadioGroup, {
             optionLabels: [passwordLabel, sshAgentLabel, privateKeyLabel],
             onSelectedChange: this.handleAuthMethodChange.bind(this),
             selectedIndex: this.state.selectedAuthMethodIndex
           })
         ),
-        React.createElement(
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
           'div',
           { className: 'form-group' },
-          React.createElement(
+          (_reactForAtom2 || _reactForAtom()).React.createElement(
             'label',
             null,
             'Remote Server Command:'
           ),
-          React.createElement(AtomInput, {
+          (_reactForAtom2 || _reactForAtom()).React.createElement((_nuclideUiLibAtomInput2 || _nuclideUiLibAtomInput()).AtomInput, {
             initialValue: this.state.remoteServerCommand,
             ref: 'remoteServerCommand',
             unstyled: true
@@ -274,17 +283,17 @@ var ConnectionDetailsForm = (function (_React$Component) {
     value: function componentDidMount() {
       var _this3 = this;
 
-      var disposables = new CompositeDisposable();
+      var disposables = new (_atom2 || _atom()).CompositeDisposable();
       this._disposables = disposables;
-      var root = ReactDOM.findDOMNode(this);
+      var root = (_reactForAtom2 || _reactForAtom()).ReactDOM.findDOMNode(this);
 
       // Hitting enter when this panel has focus should confirm the dialog.
       disposables.add(atom.commands.add(root, 'core:confirm', function (event) {
         return _this3.props.onConfirm();
       }));
 
-      // Hitting escape when this panel has focus should cancel the dialog.
-      disposables.add(atom.commands.add(root, 'core:cancel', function (event) {
+      // Hitting escape should cancel the dialog.
+      disposables.add(atom.commands.add('atom-workspace', 'core:cancel', function (event) {
         return _this3.props.onCancel();
       }));
 
@@ -360,7 +369,7 @@ var ConnectionDetailsForm = (function (_React$Component) {
   }, {
     key: '_getPassword',
     value: function _getPassword() {
-      return this.refs.password && ReactDOM.findDOMNode(this.refs.password).value || '';
+      return this.refs.password && (_reactForAtom2 || _reactForAtom()).ReactDOM.findDOMNode(this.refs.password).value || '';
     }
   }, {
     key: 'clearPassword',
@@ -373,7 +382,7 @@ var ConnectionDetailsForm = (function (_React$Component) {
   }]);
 
   return ConnectionDetailsForm;
-})(React.Component);
+})((_reactForAtom2 || _reactForAtom()).React.Component);
 
-exports['default'] = ConnectionDetailsForm;
-module.exports = exports['default'];
+exports.default = ConnectionDetailsForm;
+module.exports = exports.default;

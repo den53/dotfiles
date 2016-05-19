@@ -4,9 +4,9 @@ Object.defineProperty(exports, '__esModule', {
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -16,25 +16,47 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * the root directory of this source tree.
  */
 
-var _nuclideCommons = require('../../../nuclide-commons');
+var _nuclideCommons2;
 
-var _getCommandInfo = require('./getCommandInfo');
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../../nuclide-commons');
+}
 
-var _ReactNativeServerActions = require('./ReactNativeServerActions');
+var _getCommandInfo2;
 
-var _ReactNativeServerActions2 = _interopRequireDefault(_ReactNativeServerActions);
+function _getCommandInfo() {
+  return _getCommandInfo2 = require('./getCommandInfo');
+}
 
-var _ReactNativeServerManager = require('./ReactNativeServerManager');
+var _ReactNativeServerActions2;
 
-var _ReactNativeServerManager2 = _interopRequireDefault(_ReactNativeServerManager);
+function _ReactNativeServerActions() {
+  return _ReactNativeServerActions2 = _interopRequireDefault(require('./ReactNativeServerActions'));
+}
 
-var _atom = require('atom');
+var _ReactNativeServerManager2;
 
-var _flux = require('flux');
+function _ReactNativeServerManager() {
+  return _ReactNativeServerManager2 = _interopRequireDefault(require('./ReactNativeServerManager'));
+}
 
-var _rxjs = require('rxjs');
+var _atom2;
 
-var _rxjs2 = _interopRequireDefault(_rxjs);
+function _atom() {
+  return _atom2 = require('atom');
+}
+
+var _flux2;
+
+function _flux() {
+  return _flux2 = require('flux');
+}
+
+var _rxjs2;
+
+function _rxjs() {
+  return _rxjs2 = _interopRequireDefault(require('rxjs'));
+}
 
 /**
  * Runs the server in the appropriate place. This class encapsulates all the state of the packager
@@ -47,7 +69,7 @@ var PackagerActivation = (function () {
 
     _classCallCheck(this, PackagerActivation);
 
-    this._disposables = new _atom.CompositeDisposable(atom.commands.add('atom-workspace', {
+    this._disposables = new (_atom2 || _atom()).CompositeDisposable(atom.commands.add('atom-workspace', {
       'nuclide-react-native:start-packager': function nuclideReactNativeStartPackager() {
         return _this._restart();
       },
@@ -57,7 +79,7 @@ var PackagerActivation = (function () {
       'nuclide-react-native:restart-packager': function nuclideReactNativeRestartPackager() {
         return _this._restart();
       }
-    }), new _atom.Disposable(function () {
+    }), new (_atom2 || _atom()).Disposable(function () {
       return _this._stop();
     }));
 
@@ -65,9 +87,9 @@ var PackagerActivation = (function () {
     //   the packager server. We don't actually have a store here, we're just using the
     //   actions/dispatcher as a roundabout way of calling methods on the server so we can just
     //   merge that stuff into this class (after removing extra logic, etc).
-    var dispatcher = new _flux.Dispatcher();
-    var actions = this._actions = new _ReactNativeServerActions2['default'](dispatcher);
-    new _ReactNativeServerManager2['default'](dispatcher, actions); // eslint-disable-line no-new
+    var dispatcher = new (_flux2 || _flux()).Dispatcher();
+    var actions = this._actions = new (_ReactNativeServerActions2 || _ReactNativeServerActions()).default(dispatcher);
+    new (_ReactNativeServerManager2 || _ReactNativeServerManager()).default(dispatcher, actions); // eslint-disable-line no-new
   }
 
   _createClass(PackagerActivation, [{
@@ -82,7 +104,7 @@ var PackagerActivation = (function () {
 
       this._stop();
 
-      this._connectionDisposables = new _atom.CompositeDisposable(new _nuclideCommons.DisposableSubscription(_rxjs2['default'].Observable.fromPromise((0, _getCommandInfo.getCommandInfo)()).subscribe(function (commandInfo) {
+      this._connectionDisposables = new (_atom2 || _atom()).CompositeDisposable(new (_nuclideCommons2 || _nuclideCommons()).DisposableSubscription((_rxjs2 || _rxjs()).default.Observable.fromPromise((0, (_getCommandInfo2 || _getCommandInfo()).getCommandInfo)()).subscribe(function (commandInfo) {
         if (commandInfo == null) {
           atom.notifications.addError("Couldn't find a React Native project", {
             dismissable: true,
@@ -91,7 +113,7 @@ var PackagerActivation = (function () {
           return;
         }
         _this2._actions.startServer(commandInfo);
-      })), new _atom.Disposable(function () {
+      })), new (_atom2 || _atom()).Disposable(function () {
         return _this2._actions.stopServer();
       }));
     }

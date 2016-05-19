@@ -9,9 +9,9 @@ exports.provideRecentFilesService = provideRecentFilesService;
 exports.serialize = serialize;
 exports.deactivate = deactivate;
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -21,11 +21,17 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * the root directory of this source tree.
  */
 
-var _assert = require('assert');
+var _assert2;
 
-var _assert2 = _interopRequireDefault(_assert);
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
-var _atom = require('atom');
+var _atom2;
+
+function _atom() {
+  return _atom2 = require('atom');
+}
 
 var Activation = (function () {
   function Activation(state) {
@@ -33,10 +39,10 @@ var Activation = (function () {
 
     _classCallCheck(this, Activation);
 
-    this._subscriptions = new _atom.CompositeDisposable();
+    this._subscriptions = new (_atom2 || _atom()).CompositeDisposable();
     var RecentFilesService = require('./RecentFilesService');
     this._service = new RecentFilesService(state);
-    this._subscriptions.add(new _atom.Disposable(function () {
+    this._subscriptions.add(new (_atom2 || _atom()).Disposable(function () {
       _this._service.dispose();
     }));
   }
@@ -65,12 +71,12 @@ function activate(state) {
 }
 
 function provideRecentFilesService() {
-  (0, _assert2['default'])(activation);
+  (0, (_assert2 || _assert()).default)(activation);
   return activation.getService();
 }
 
 function serialize() {
-  (0, _assert2['default'])(activation);
+  (0, (_assert2 || _assert()).default)(activation);
   return {
     filelist: activation.getService().getRecentFiles()
   };

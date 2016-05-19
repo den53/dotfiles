@@ -1,5 +1,71 @@
 # Nuclide Changelog
 
+## v0.136.0
+
+### General
+
+* Fix: file-tree and remote connection modals now appear properly in Atom Beta v1.8.
+
+### Debugger
+
+* Highlight pinned debugger values when they change.
+* HHVM Toolbar remembers script arguments for launched scripts when tabs are switched.
+* PHP Debugger stability fixes.
+
+### Source Control
+
+* Fix fast editing/saving with long-delay saves reverting user changes.
+* Fix diff view updating block decorations to sync with out-of-diff-view edits.
+* Fix publish suggestions racing with commit/amend.
+* Fix a case when scrolling gets out of sync when opening a new file.
+* Fix race condition that leads to closing/re-opening the Diff View not loading the revisions.
+* Fix stuck in publishing state after publish/amend.
+* Fix padding and invalid scrolling of changes at the end of a buffer.
+* [UI] Fixed blame usage for 3rd-party themes ([#484](https://github.com/facebook/nuclide/issues/484)).
+* [UI] Better theme coloring for diff blocks.
+* [UI] Easier switching to Commit/Amend/Publish.
+* [UI] Fix highlighting removed by Atom when editor not focussed when updated.
+* [Experiment] Change the default comparison revision to show dirty changes (hg diff result).
+
+### Windows
+
+* Fix: clicking on an item in the diagnostics panel no longer opens a new tab every click.
+* Fix: reveal in file-tree does not freeze Nuclide any more.
+
+## v0.135.0
+
+### General
+
+* Remote
+    * Variety of remote project reliability improvements.
+    * Unsaved file contents will be reopened in a new tab if saving fails while closing a tab.
+    * Fix spurious 'file has changed on disk' messages in remote files.
+* Quick-open: Fuzzy filename results now always rank at the top of Omnisearch.
+* Working Sets now work on Windows.
+* Fix z-index issue with Hyperclick suggestions.
+
+### Source Control
+
+* [New] Improved integration: Revert files/directories from the file tree and text editor context menu + shortcut (cmd+alt+shif+r).
+* Fix file tree VCS status rendering with hg updates.
+* Diff View Publish: faster feedback about the created/updated Phabricator revision.
+* Fix mercurial diff stats spiking CPU with Atom >= 1.7 (open source).
+* Show the `hg log` for a file or directory. You can launch this view in one of three ways:
+    * In the active text editor, use the keyboard shortcut `ctrl-cmd-l` on OS X or `ctrl-shift-l` on Linux/Windows. (Mnemonic: L is for Log!).
+    * In the file tree, right-click on a file or folder. From the context menu, select **Source Control** ▶ **Show history**.
+    * In the active text editor, right click. From the context menu, select **Show history**.
+
+### JS
+
+* Render `module.exports` in Outline View.
+
+### C/C++/Obj-C
+
+* Go-to-declaration (cmd+click) now works for macros.
+* Outline view fixed for Objective-C files.
+* Improved autocompletion performance for large files.
+
+
 ## v0.134.0
 
 Hotfix for outline view regression.

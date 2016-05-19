@@ -10,15 +10,33 @@ function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defi
  * the root directory of this source tree.
  */
 
-var _require = require('./StringUtils');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var compareStrings = _require.compareStrings;
+var _StringUtils2;
 
-var jscs = require('jscodeshift');
-var oneLineObjectPattern = require('./oneLineObjectPattern');
-var reprintComment = require('./reprintComment');
+function _StringUtils() {
+  return _StringUtils2 = require('./StringUtils');
+}
 
-var statement = jscs.template.statement;
+var _jscodeshift2;
+
+function _jscodeshift() {
+  return _jscodeshift2 = _interopRequireDefault(require('jscodeshift'));
+}
+
+var _oneLineObjectPattern2;
+
+function _oneLineObjectPattern() {
+  return _oneLineObjectPattern2 = _interopRequireDefault(require('./oneLineObjectPattern'));
+}
+
+var _reprintComment2;
+
+function _reprintComment() {
+  return _reprintComment2 = _interopRequireDefault(require('./reprintComment'));
+}
+
+var statement = (_jscodeshift2 || _jscodeshift()).default.template.statement;
 
 /**
  * Thin wrapper to reprint requires, it's wrapped in a new function in order to
@@ -29,7 +47,7 @@ function reprintRequire(node) {
   var newNode = reprintRequireHelper(node);
   if (comments) {
     newNode.comments = comments.map(function (comment) {
-      return reprintComment(comment);
+      return (0, (_reprintComment2 || _reprintComment()).default)(comment);
     });
   }
   return newNode;
@@ -40,29 +58,29 @@ function reprintRequire(node) {
  * and allow us to have a consistent formatting of all requires.
  */
 function reprintRequireHelper(node) {
-  if (jscs.ExpressionStatement.check(node)) {
+  if ((_jscodeshift2 || _jscodeshift()).default.ExpressionStatement.check(node)) {
     return statement(_templateObject, node.expression);
   }
 
-  if (jscs.VariableDeclaration.check(node)) {
+  if ((_jscodeshift2 || _jscodeshift()).default.VariableDeclaration.check(node)) {
     var kind = node.kind || 'const';
     var declaration = node.declarations[0];
-    if (jscs.Identifier.check(declaration.id)) {
-      return jscs.variableDeclaration(kind, [jscs.variableDeclarator(declaration.id, declaration.init)]);
-    } else if (jscs.ObjectPattern.check(declaration.id)) {
+    if ((_jscodeshift2 || _jscodeshift()).default.Identifier.check(declaration.id)) {
+      return (_jscodeshift2 || _jscodeshift()).default.variableDeclaration(kind, [(_jscodeshift2 || _jscodeshift()).default.variableDeclarator(declaration.id, declaration.init)]);
+    } else if ((_jscodeshift2 || _jscodeshift()).default.ObjectPattern.check(declaration.id)) {
       declaration.id.properties.sort(function (prop1, prop2) {
-        return compareStrings(prop1.key.name, prop2.key.name);
+        return (0, (_StringUtils2 || _StringUtils()).compareStrings)(prop1.key.name, prop2.key.name);
       });
-      return jscs.variableDeclaration(kind, [jscs.variableDeclarator(oneLineObjectPattern(declaration.id), declaration.init)]);
-    } else if (jscs.ArrayPattern.check(declaration.id)) {
-      return jscs.variableDeclaration(kind, [jscs.variableDeclarator(declaration.id, declaration.init)]);
+      return (_jscodeshift2 || _jscodeshift()).default.variableDeclaration(kind, [(_jscodeshift2 || _jscodeshift()).default.variableDeclarator((0, (_oneLineObjectPattern2 || _oneLineObjectPattern()).default)(declaration.id), declaration.init)]);
+    } else if ((_jscodeshift2 || _jscodeshift()).default.ArrayPattern.check(declaration.id)) {
+      return (_jscodeshift2 || _jscodeshift()).default.variableDeclaration(kind, [(_jscodeshift2 || _jscodeshift()).default.variableDeclarator(declaration.id, declaration.init)]);
     }
   }
 
-  if (jscs.ImportDeclaration.check(node) && node.importKind === 'type') {
+  if ((_jscodeshift2 || _jscodeshift()).default.ImportDeclaration.check(node) && node.importKind === 'type') {
     // Sort the specifiers.
     node.specifiers.sort(function (one, two) {
-      return compareStrings(one.local.name, two.local.name);
+      return (0, (_StringUtils2 || _StringUtils()).compareStrings)(one.local.name, two.local.name);
     });
     // TODO: Properly remove new lines from the node.
     return node;

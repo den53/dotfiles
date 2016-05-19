@@ -10,10 +10,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * the root directory of this source tree.
  */
 
-var _require = require('../../nuclide-remote-connection');
+var _nuclideRemoteConnection2;
 
-var RemoteConnection = _require.RemoteConnection;
-var RemoteDirectory = _require.RemoteDirectory;
+function _nuclideRemoteConnection() {
+  return _nuclideRemoteConnection2 = require('../../nuclide-remote-connection');
+}
 
 /**
  * The prefix a URI must have for `RemoteDirectoryProvider` to try to produce a
@@ -33,7 +34,7 @@ var RemoteDirectoryProvider = (function () {
       if (!uri.startsWith(REMOTE_PATH_URI_PREFIX)) {
         return null;
       }
-      var connection = RemoteConnection.getForUri(uri);
+      var connection = (_nuclideRemoteConnection2 || _nuclideRemoteConnection()).RemoteConnection.getForUri(uri);
       if (connection) {
         return connection.createDirectory(uri);
       } else {

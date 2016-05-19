@@ -1,4 +1,4 @@
-
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -8,9 +8,13 @@
  * the root directory of this source tree.
  */
 
-var ModuleMap = require('./ModuleMap');
+var _ModuleMap2;
 
-var DefaultModuleMap = new ModuleMap({
+function _ModuleMap() {
+  return _ModuleMap2 = _interopRequireDefault(require('./ModuleMap'));
+}
+
+var DefaultModuleMap = new (_ModuleMap2 || _ModuleMap()).default({
   paths: [],
   pathsToRelativize: [],
   aliases: require('../constants/commonAliases'),

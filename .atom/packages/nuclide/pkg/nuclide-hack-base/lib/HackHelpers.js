@@ -16,22 +16,22 @@ Object.defineProperty(exports, '__esModule', {
 
 var callHHClient = _asyncToGenerator(function* (args, errorStream, outputJson, processInput, filePath) {
 
-  if ((0, _hackConfig.getUseIde)()) {
-    return yield (0, _HackConnection.callHHClientUsingConnection)(args, processInput, filePath);
+  if ((0, (_hackConfig2 || _hackConfig()).getUseIde)()) {
+    return yield (0, (_HackConnection2 || _HackConnection()).callHHClientUsingConnection)(args, processInput, filePath);
   }
 
   if (!hhPromiseQueue) {
-    hhPromiseQueue = new _nuclideCommons.PromiseQueue();
+    hhPromiseQueue = new (_nuclideCommons2 || _nuclideCommons()).PromiseQueue();
   }
 
-  var hackExecOptions = yield (0, _hackConfig.getHackExecOptions)(filePath);
+  var hackExecOptions = yield (0, (_hackConfig2 || _hackConfig()).getHackExecOptions)(filePath);
   if (!hackExecOptions) {
     return null;
   }
   var hackRoot = hackExecOptions.hackRoot;
   var hackCommand = hackExecOptions.hackCommand;
 
-  (0, _assert2['default'])(hhPromiseQueue);
+  (0, (_assert2 || _assert()).default)(hhPromiseQueue);
   return hhPromiseQueue.submit(_asyncToGenerator(function* (resolve, reject) {
     // Append args on the end of our commands.
     var defaults = ['--retries', '0', '--retry-if-init', 'false', '--from', 'nuclide'];
@@ -45,7 +45,7 @@ var callHHClient = _asyncToGenerator(function* (args, errorStream, outputJson, p
     var execResult = null;
     try {
       logger.debug('Calling Hack: ' + hackCommand + ' with ' + allArgs);
-      execResult = yield (0, _nuclideCommons.checkOutput)(hackCommand, allArgs, { stdin: processInput });
+      execResult = yield (0, (_nuclideCommons2 || _nuclideCommons()).checkOutput)(hackCommand, allArgs, { stdin: processInput });
     } catch (err) {
       reject(err);
       return;
@@ -105,7 +105,7 @@ var getSearchResults = _asyncToGenerator(function* (filePath, search, filterType
   } catch (error) {
     throw error;
   } finally {
-    pendingSearchPromises['delete'](search);
+    pendingSearchPromises.delete(search);
   }
 
   if (!searchResponse) {
@@ -145,21 +145,39 @@ var getSearchResults = _asyncToGenerator(function* (filePath, search, filterType
 
 exports.getSearchResults = getSearchResults;
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
-var _assert = require('assert');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _assert2 = _interopRequireDefault(_assert);
+var _assert2;
 
-var _nuclideCommons = require('../../nuclide-commons');
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
-var _nuclideHackCommon = require('../../nuclide-hack-common');
+var _nuclideCommons2;
 
-var _hackConfig = require('./hack-config');
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
 
-var _HackConnection = require('./HackConnection');
+var _nuclideHackCommon2;
+
+function _nuclideHackCommon() {
+  return _nuclideHackCommon2 = require('../../nuclide-hack-common');
+}
+
+var _hackConfig2;
+
+function _hackConfig() {
+  return _hackConfig2 = require('./hack-config');
+}
+
+var _HackConnection2;
+
+function _HackConnection() {
+  return _HackConnection2 = require('./HackConnection');
+}
 
 var HH_SERVER_INIT_MESSAGE = 'hh_server still initializing';
 var HH_SERVER_BUSY_MESSAGE = 'hh_server is busy';
@@ -177,26 +195,26 @@ var pendingSearchPromises = new Map();function filterSearchResults(results, filt
 function getSearchType(info) {
   switch (info) {
     case 'typedef':
-      return _nuclideHackCommon.SearchResultType.TYPEDEF;
+      return (_nuclideHackCommon2 || _nuclideHackCommon()).SearchResultType.TYPEDEF;
     case 'function':
-      return _nuclideHackCommon.SearchResultType.FUNCTION;
+      return (_nuclideHackCommon2 || _nuclideHackCommon()).SearchResultType.FUNCTION;
     case 'constant':
-      return _nuclideHackCommon.SearchResultType.CONSTANT;
+      return (_nuclideHackCommon2 || _nuclideHackCommon()).SearchResultType.CONSTANT;
     case 'trait':
-      return _nuclideHackCommon.SearchResultType.TRAIT;
+      return (_nuclideHackCommon2 || _nuclideHackCommon()).SearchResultType.TRAIT;
     case 'interface':
-      return _nuclideHackCommon.SearchResultType.INTERFACE;
+      return (_nuclideHackCommon2 || _nuclideHackCommon()).SearchResultType.INTERFACE;
     case 'abstract class':
-      return _nuclideHackCommon.SearchResultType.ABSTRACT_CLASS;
+      return (_nuclideHackCommon2 || _nuclideHackCommon()).SearchResultType.ABSTRACT_CLASS;
     default:
       {
         if (info.startsWith('method') || info.startsWith('static method')) {
-          return _nuclideHackCommon.SearchResultType.METHOD;
+          return (_nuclideHackCommon2 || _nuclideHackCommon()).SearchResultType.METHOD;
         }
         if (info.startsWith('class var') || info.startsWith('static class var')) {
-          return _nuclideHackCommon.SearchResultType.CLASS_VAR;
+          return (_nuclideHackCommon2 || _nuclideHackCommon()).SearchResultType.CLASS_VAR;
         }
-        return _nuclideHackCommon.SearchResultType.CLASS;
+        return (_nuclideHackCommon2 || _nuclideHackCommon()).SearchResultType.CLASS;
       }
   }
 }

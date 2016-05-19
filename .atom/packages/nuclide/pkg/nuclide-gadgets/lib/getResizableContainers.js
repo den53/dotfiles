@@ -10,7 +10,7 @@ Object.defineProperty(exports, '__esModule', {
  * the root directory of this source tree.
  */
 
-exports['default'] = getResizableContainers;
+exports.default = getResizableContainers;
 
 var isResizable = function isResizable(pane) {
   return typeof pane.setFlexScale === 'function';
@@ -32,4 +32,4 @@ function* getResizableContainers(container) {
   }
 }
 
-module.exports = exports['default'];
+module.exports = exports.default;

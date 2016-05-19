@@ -10,27 +10,55 @@ Object.defineProperty(exports, '__esModule', {
  * the root directory of this source tree.
  */
 
-var _RemoteConnection = require('./RemoteConnection');
+var _RemoteConnection2;
 
-var _RemoteDirectory = require('./RemoteDirectory');
+function _RemoteConnection() {
+  return _RemoteConnection2 = require('./RemoteConnection');
+}
 
-var _RemoteFile = require('./RemoteFile');
+var _RemoteDirectory2;
 
-var _ServerConnection = require('./ServerConnection');
+function _RemoteDirectory() {
+  return _RemoteDirectory2 = require('./RemoteDirectory');
+}
 
-var _SshHandshake = require('./SshHandshake');
+var _RemoteFile2;
 
-var _client = require('./client');
+function _RemoteFile() {
+  return _RemoteFile2 = require('./RemoteFile');
+}
 
-var _serviceManager = require('./service-manager');
+var _ServerConnection2;
 
-exports.RemoteConnection = _RemoteConnection.RemoteConnection;
-exports.RemoteDirectory = _RemoteDirectory.RemoteDirectory;
-exports.RemoteFile = _RemoteFile.RemoteFile;
-exports.ServerConnection = _ServerConnection.ServerConnection;
-exports.SshHandshake = _SshHandshake.SshHandshake;
-exports.decorateSshConnectionDelegateWithTracking = _SshHandshake.decorateSshConnectionDelegateWithTracking;
-exports.getFileForPath = _client.getFileForPath;
-exports.getService = _serviceManager.getService;
-exports.getServiceByNuclideUri = _serviceManager.getServiceByNuclideUri;
-exports.getServiceLogger = _serviceManager.getServiceLogger;
+function _ServerConnection() {
+  return _ServerConnection2 = require('./ServerConnection');
+}
+
+var _SshHandshake2;
+
+function _SshHandshake() {
+  return _SshHandshake2 = require('./SshHandshake');
+}
+
+var _client2;
+
+function _client() {
+  return _client2 = require('./client');
+}
+
+var _serviceManager2;
+
+function _serviceManager() {
+  return _serviceManager2 = require('./service-manager');
+}
+
+exports.RemoteConnection = (_RemoteConnection2 || _RemoteConnection()).RemoteConnection;
+exports.RemoteDirectory = (_RemoteDirectory2 || _RemoteDirectory()).RemoteDirectory;
+exports.RemoteFile = (_RemoteFile2 || _RemoteFile()).RemoteFile;
+exports.ServerConnection = (_ServerConnection2 || _ServerConnection()).ServerConnection;
+exports.SshHandshake = (_SshHandshake2 || _SshHandshake()).SshHandshake;
+exports.decorateSshConnectionDelegateWithTracking = (_SshHandshake2 || _SshHandshake()).decorateSshConnectionDelegateWithTracking;
+exports.getFileForPath = (_client2 || _client()).getFileForPath;
+exports.getService = (_serviceManager2 || _serviceManager()).getService;
+exports.getServiceByNuclideUri = (_serviceManager2 || _serviceManager()).getServiceByNuclideUri;
+exports.getServiceLogger = (_serviceManager2 || _serviceManager()).getServiceLogger;

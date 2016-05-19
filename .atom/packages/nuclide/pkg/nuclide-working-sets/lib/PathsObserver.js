@@ -4,9 +4,9 @@ Object.defineProperty(exports, '__esModule', {
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -16,11 +16,17 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * the root directory of this source tree.
  */
 
-var _nuclideRemoteUri = require('../../nuclide-remote-uri');
+var _nuclideRemoteUri2;
 
-var _path = require('path');
+function _nuclideRemoteUri() {
+  return _nuclideRemoteUri2 = require('../../nuclide-remote-uri');
+}
 
-var _path2 = _interopRequireDefault(_path);
+var _path2;
+
+function _path() {
+  return _path2 = _interopRequireDefault(require('path'));
+}
 
 var PathsObserver = (function () {
   function PathsObserver(workingSetsStore) {
@@ -41,7 +47,7 @@ var PathsObserver = (function () {
     key: '_didChangePaths',
     value: function _didChangePaths(_paths) {
       var paths = _paths.filter(function (p) {
-        return (0, _nuclideRemoteUri.isRemote)(p) || _path2['default'].isAbsolute(p);
+        return (0, (_nuclideRemoteUri2 || _nuclideRemoteUri()).isRemote)(p) || (_path2 || _path()).default.isAbsolute(p);
       });
       this._workingSetsStore.updateApplicability();
 

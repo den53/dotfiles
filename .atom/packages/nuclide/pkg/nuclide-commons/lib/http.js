@@ -10,21 +10,29 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
  * the root directory of this source tree.
  */
 
-var _fs = require('fs');
+var _fs2;
 
-var _fs2 = _interopRequireDefault(_fs);
+function _fs() {
+  return _fs2 = _interopRequireDefault(require('fs'));
+}
 
-var _http = require('http');
+var _http2;
 
-var _http2 = _interopRequireDefault(_http);
+function _http() {
+  return _http2 = _interopRequireDefault(require('http'));
+}
 
-var _https = require('https');
+var _https2;
 
-var _https2 = _interopRequireDefault(_https);
+function _https() {
+  return _https2 = _interopRequireDefault(require('https'));
+}
 
-var _url = require('url');
+var _url2;
 
-var _url2 = _interopRequireDefault(_url);
+function _url() {
+  return _url2 = _interopRequireDefault(require('url'));
+}
 
 /**
  * This is not complete: see https://www.npmjs.com/package/request for details.
@@ -36,14 +44,14 @@ var _url2 = _interopRequireDefault(_url);
 var contentTypeRe = /\s*\w+\/\w+\s*;\s*charset\s*=\s*([^\s]+)\s*/;
 
 function getProtocolModule(urlString) {
-  var _url$parse = _url2['default'].parse(urlString);
+  var _default$parse = (_url2 || _url()).default.parse(urlString);
 
-  var protocol = _url$parse.protocol;
+  var protocol = _default$parse.protocol;
 
   if (protocol === 'http:') {
-    return _http2['default'];
+    return (_http2 || _http()).default;
   } else if (protocol === 'https:') {
-    return _https2['default'];
+    return (_https2 || _https()).default;
   } else {
     throw Error('Protocol ' + protocol + ' not supported');
   }
@@ -68,7 +76,7 @@ module.exports = {
 
     return new Promise(function (resolve, reject) {
       var body = '';
-      var options = _url2['default'].parse(urlString);
+      var options = (_url2 || _url()).default.parse(urlString);
       if (!options.hostname) {
         reject(new Error('Unable to determine the domain name of ' + urlString));
       }
@@ -85,7 +93,7 @@ module.exports = {
             response.setEncoding(charset);
           }
           response.on('data', function (data) {
-            return body += data;
+            body += data;
           });
           response.on('end', function () {
             return resolve(body);
@@ -155,7 +163,7 @@ module.exports = {
    */
   download: function download(urlString, dest) {
     return new Promise(function (resolve, reject) {
-      var file = _fs2['default'].createWriteStream(dest);
+      var file = (_fs2 || _fs()).default.createWriteStream(dest);
       getProtocolModule(urlString).get(urlString, function (response) {
         if (response.statusCode < 200 || response.statusCode >= 300) {
           reject('Bad status ' + response.statusCode);

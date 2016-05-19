@@ -10,9 +10,9 @@ Object.defineProperty(exports, '__esModule', {
  * the root directory of this source tree.
  */
 
-// Represents the result of an executor executing code.
-
 // A regular message, emitted by output providers.
+
+// Represents the result of an executor executing code.
 
 // A normalized type used internally to represent all possible kinds of messages. Responses and
 // Messages are transformed into these.

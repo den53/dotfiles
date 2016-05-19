@@ -10,9 +10,9 @@ exports.serialize = serialize;
 exports.consumeDistractionFreeModeProvider = consumeDistractionFreeModeProvider;
 exports.consumeToolBar = consumeToolBar;
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -22,17 +22,35 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * the root directory of this source tree.
  */
 
-var _atom = require('atom');
+var _atom2;
 
-var _assert = require('assert');
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var _assert2 = _interopRequireDefault(_assert);
+var _assert2;
 
-var _nuclideAnalytics = require('../../nuclide-analytics');
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
-var _DistractionFreeMode = require('./DistractionFreeMode');
+var _nuclideAnalytics2;
 
-var _BuiltinProviders = require('./BuiltinProviders');
+function _nuclideAnalytics() {
+  return _nuclideAnalytics2 = require('../../nuclide-analytics');
+}
+
+var _DistractionFreeMode2;
+
+function _DistractionFreeMode() {
+  return _DistractionFreeMode2 = require('./DistractionFreeMode');
+}
+
+var _BuiltinProviders2;
+
+function _BuiltinProviders() {
+  return _BuiltinProviders2 = require('./BuiltinProviders');
+}
 
 var Activation = (function () {
   function Activation(state) {
@@ -40,10 +58,10 @@ var Activation = (function () {
 
     _classCallCheck(this, Activation);
 
-    this._disposables = new _atom.CompositeDisposable();
-    this._tunnelVision = new _DistractionFreeMode.DistractionFreeMode(state);
+    this._disposables = new (_atom2 || _atom()).CompositeDisposable();
+    this._tunnelVision = new (_DistractionFreeMode2 || _DistractionFreeMode()).DistractionFreeMode(state);
     this._disposables.add(atom.commands.add(atom.views.getView(atom.workspace), 'nuclide-distraction-free-mode:toggle', function () {
-      (0, _nuclideAnalytics.track)('distraction-free-mode:toggle');
+      (0, (_nuclideAnalytics2 || _nuclideAnalytics()).track)('distraction-free-mode:toggle');
       _this._tunnelVision.toggleDistractionFreeMode();
     }));
   }
@@ -73,7 +91,7 @@ var Activation = (function () {
         tooltip: 'Toggle distraction-free mode',
         priority: 600
       });
-      this._disposables.add(new _atom.Disposable(function () {
+      this._disposables.add(new (_atom2 || _atom()).Disposable(function () {
         toolBar.removeItems();
       }));
     }
@@ -87,7 +105,7 @@ var activation = null;
 function activate(state) {
   if (activation == null) {
     activation = new Activation(state);
-    for (var provider of (0, _BuiltinProviders.getBuiltinProviders)()) {
+    for (var provider of (0, (_BuiltinProviders2 || _BuiltinProviders()).getBuiltinProviders)()) {
       activation.consumeDistractionFreeModeProvider(provider);
     }
   }
@@ -101,20 +119,21 @@ function deactivate() {
 }
 
 function serialize() {
-  (0, _assert2['default'])(activation != null);
+  (0, (_assert2 || _assert()).default)(activation != null);
   return activation.serialize();
 }
 
 function consumeDistractionFreeModeProvider(provider) {
-  (0, _assert2['default'])(activation != null);
+  (0, (_assert2 || _assert()).default)(activation != null);
   return activation.consumeDistractionFreeModeProvider(provider);
 }
 
 function consumeToolBar(getToolBar) {
-  (0, _assert2['default'])(activation != null);
+  (0, (_assert2 || _assert()).default)(activation != null);
   activation.consumeToolBar(getToolBar);
 }
 
-// Should be the unique to all providers. Recommended to be the package name.
+// Should be the unique to all providers. Recommended to be the package name. This string is not
+// user-facing.
 
 // Serialize the restore state via an array of provider names.

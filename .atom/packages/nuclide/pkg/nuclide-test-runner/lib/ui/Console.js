@@ -14,14 +14,17 @@ function _inherits(subClass, superClass) { if (typeof superClass !== 'function' 
  * the root directory of this source tree.
  */
 
-var _require = require('../../../nuclide-ui/lib/AtomTextEditor');
+var _nuclideUiLibAtomTextEditor2;
 
-var AtomTextEditor = _require.AtomTextEditor;
+function _nuclideUiLibAtomTextEditor() {
+  return _nuclideUiLibAtomTextEditor2 = require('../../../nuclide-ui/lib/AtomTextEditor');
+}
 
-var _require2 = require('react-for-atom');
+var _reactForAtom2;
 
-var React = _require2.React;
-var PropTypes = React.PropTypes;
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
 
 var Console = (function (_React$Component) {
   _inherits(Console, _React$Component);
@@ -35,7 +38,7 @@ var Console = (function (_React$Component) {
   _createClass(Console, [{
     key: 'render',
     value: function render() {
-      return React.createElement(AtomTextEditor, {
+      return (_reactForAtom2 || _reactForAtom()).React.createElement((_nuclideUiLibAtomTextEditor2 || _nuclideUiLibAtomTextEditor()).AtomTextEditor, {
         gutterHidden: true,
         path: '.ansi',
         readOnly: true,
@@ -45,12 +48,12 @@ var Console = (function (_React$Component) {
   }], [{
     key: 'propTypes',
     value: {
-      textBuffer: PropTypes.object.isRequired
+      textBuffer: (_reactForAtom2 || _reactForAtom()).React.PropTypes.object.isRequired
     },
     enumerable: true
   }]);
 
   return Console;
-})(React.Component);
+})((_reactForAtom2 || _reactForAtom()).React.Component);
 
 module.exports = Console;

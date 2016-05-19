@@ -10,50 +10,78 @@ Object.defineProperty(exports, '__esModule', {
  * the root directory of this source tree.
  */
 
-var _reactForAtom = require('react-for-atom');
+var _reactForAtom2;
 
-var _Block = require('./Block');
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
 
-var _Toolbar = require('./Toolbar');
+var _Block2;
 
-var _ToolbarCenter = require('./ToolbarCenter');
+function _Block() {
+  return _Block2 = require('./Block');
+}
 
-var _ToolbarLeft = require('./ToolbarLeft');
+var _Toolbar2;
 
-var _ToolbarRight = require('./ToolbarRight');
+function _Toolbar() {
+  return _Toolbar2 = require('./Toolbar');
+}
 
-var _Button = require('./Button');
+var _ToolbarCenter2;
+
+function _ToolbarCenter() {
+  return _ToolbarCenter2 = require('./ToolbarCenter');
+}
+
+var _ToolbarLeft2;
+
+function _ToolbarLeft() {
+  return _ToolbarLeft2 = require('./ToolbarLeft');
+}
+
+var _ToolbarRight2;
+
+function _ToolbarRight() {
+  return _ToolbarRight2 = require('./ToolbarRight');
+}
+
+var _Button2;
+
+function _Button() {
+  return _Button2 = require('./Button');
+}
 
 var ToolbarExampleLeft = function ToolbarExampleLeft() {
-  return _reactForAtom.React.createElement(
+  return (_reactForAtom2 || _reactForAtom()).React.createElement(
     'div',
     null,
-    _reactForAtom.React.createElement(
-      _Block.Block,
+    (_reactForAtom2 || _reactForAtom()).React.createElement(
+      (_Block2 || _Block()).Block,
       null,
-      _reactForAtom.React.createElement(
-        _Toolbar.Toolbar,
+      (_reactForAtom2 || _reactForAtom()).React.createElement(
+        (_Toolbar2 || _Toolbar()).Toolbar,
         { location: 'top' },
-        _reactForAtom.React.createElement(
-          _ToolbarLeft.ToolbarLeft,
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
+          (_ToolbarLeft2 || _ToolbarLeft()).ToolbarLeft,
           null,
-          _reactForAtom.React.createElement(
+          (_reactForAtom2 || _reactForAtom()).React.createElement(
             'div',
             null,
             'a toolbar can have multiple children,'
           ),
-          _reactForAtom.React.createElement(
-            _Button.Button,
+          (_reactForAtom2 || _reactForAtom()).React.createElement(
+            (_Button2 || _Button()).Button,
             null,
             'such as this button.'
           )
         )
       )
     ),
-    _reactForAtom.React.createElement(
-      _Block.Block,
+    (_reactForAtom2 || _reactForAtom()).React.createElement(
+      (_Block2 || _Block()).Block,
       null,
-      _reactForAtom.React.createElement(
+      (_reactForAtom2 || _reactForAtom()).React.createElement(
         'div',
         null,
         'Be sure to use ',
@@ -65,16 +93,16 @@ var ToolbarExampleLeft = function ToolbarExampleLeft() {
 };
 
 var ToolbarExampleCenter = function ToolbarExampleCenter() {
-  return _reactForAtom.React.createElement(
-    _Block.Block,
+  return (_reactForAtom2 || _reactForAtom()).React.createElement(
+    (_Block2 || _Block()).Block,
     null,
-    _reactForAtom.React.createElement(
-      _Toolbar.Toolbar,
+    (_reactForAtom2 || _reactForAtom()).React.createElement(
+      (_Toolbar2 || _Toolbar()).Toolbar,
       { location: 'top' },
-      _reactForAtom.React.createElement(
-        _ToolbarCenter.ToolbarCenter,
+      (_reactForAtom2 || _reactForAtom()).React.createElement(
+        (_ToolbarCenter2 || _ToolbarCenter()).ToolbarCenter,
         null,
-        _reactForAtom.React.createElement(
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
           'div',
           null,
           'Example of ',
@@ -87,16 +115,16 @@ var ToolbarExampleCenter = function ToolbarExampleCenter() {
 };
 
 var ToolbarExampleRight = function ToolbarExampleRight() {
-  return _reactForAtom.React.createElement(
-    _Block.Block,
+  return (_reactForAtom2 || _reactForAtom()).React.createElement(
+    (_Block2 || _Block()).Block,
     null,
-    _reactForAtom.React.createElement(
-      _Toolbar.Toolbar,
+    (_reactForAtom2 || _reactForAtom()).React.createElement(
+      (_Toolbar2 || _Toolbar()).Toolbar,
       { location: 'top' },
-      _reactForAtom.React.createElement(
-        _ToolbarRight.ToolbarRight,
+      (_reactForAtom2 || _reactForAtom()).React.createElement(
+        (_ToolbarRight2 || _ToolbarRight()).ToolbarRight,
         null,
-        _reactForAtom.React.createElement(
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
           'div',
           null,
           'Example of ',
@@ -108,34 +136,34 @@ var ToolbarExampleRight = function ToolbarExampleRight() {
 };
 
 var ToolbarExampleMultiple = function ToolbarExampleMultiple() {
-  return _reactForAtom.React.createElement(
-    _Block.Block,
+  return (_reactForAtom2 || _reactForAtom()).React.createElement(
+    (_Block2 || _Block()).Block,
     null,
-    _reactForAtom.React.createElement(
-      _Toolbar.Toolbar,
+    (_reactForAtom2 || _reactForAtom()).React.createElement(
+      (_Toolbar2 || _Toolbar()).Toolbar,
       { location: 'top' },
-      _reactForAtom.React.createElement(
-        _ToolbarLeft.ToolbarLeft,
+      (_reactForAtom2 || _reactForAtom()).React.createElement(
+        (_ToolbarLeft2 || _ToolbarLeft()).ToolbarLeft,
         null,
-        _reactForAtom.React.createElement(
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
           'div',
           null,
           'You can combine'
         )
       ),
-      _reactForAtom.React.createElement(
-        _ToolbarCenter.ToolbarCenter,
+      (_reactForAtom2 || _reactForAtom()).React.createElement(
+        (_ToolbarCenter2 || _ToolbarCenter()).ToolbarCenter,
         null,
-        _reactForAtom.React.createElement(
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
           'div',
           null,
           'the various kinds'
         )
       ),
-      _reactForAtom.React.createElement(
-        _ToolbarRight.ToolbarRight,
+      (_reactForAtom2 || _reactForAtom()).React.createElement(
+        (_ToolbarRight2 || _ToolbarRight()).ToolbarRight,
         null,
-        _reactForAtom.React.createElement(
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
           'div',
           null,
           'of aligners.'

@@ -14,57 +14,83 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+var _ActionTypes2;
 
-var _ActionTypes = require('./ActionTypes');
+function _ActionTypes() {
+  return _ActionTypes2 = _interopRequireWildcard(require('./ActionTypes'));
+}
 
-var ActionTypes = _interopRequireWildcard(_ActionTypes);
+var _ContainerVisibility2;
 
-var _ContainerVisibility = require('./ContainerVisibility');
+function _ContainerVisibility() {
+  return _ContainerVisibility2 = _interopRequireWildcard(require('./ContainerVisibility'));
+}
 
-var ContainerVisibility = _interopRequireWildcard(_ContainerVisibility);
+var _createComponentItem2;
 
-var _createComponentItem = require('./createComponentItem');
+function _createComponentItem() {
+  return _createComponentItem2 = _interopRequireDefault(require('./createComponentItem'));
+}
 
-var _createComponentItem2 = _interopRequireDefault(_createComponentItem);
+var _ExpandedFlexScale2;
 
-var _ExpandedFlexScale = require('./ExpandedFlexScale');
+function _ExpandedFlexScale() {
+  return _ExpandedFlexScale2 = _interopRequireWildcard(require('./ExpandedFlexScale'));
+}
 
-var ExpandedFlexScale = _interopRequireWildcard(_ExpandedFlexScale);
+var _findOrCreatePaneItemLocation2;
 
-var _findOrCreatePaneItemLocation = require('./findOrCreatePaneItemLocation');
+function _findOrCreatePaneItemLocation() {
+  return _findOrCreatePaneItemLocation2 = _interopRequireDefault(require('./findOrCreatePaneItemLocation'));
+}
 
-var _findOrCreatePaneItemLocation2 = _interopRequireDefault(_findOrCreatePaneItemLocation);
+var _findPaneAndItem2;
 
-var _findPaneAndItem = require('./findPaneAndItem');
+function _findPaneAndItem() {
+  return _findPaneAndItem2 = _interopRequireDefault(require('./findPaneAndItem'));
+}
 
-var _findPaneAndItem2 = _interopRequireDefault(_findPaneAndItem);
+var _getContainerToHide2;
 
-var _getContainerToHide = require('./getContainerToHide');
+function _getContainerToHide() {
+  return _getContainerToHide2 = _interopRequireDefault(require('./getContainerToHide'));
+}
 
-var _getContainerToHide2 = _interopRequireDefault(_getContainerToHide);
+var _getResizableContainers2;
 
-var _getResizableContainers = require('./getResizableContainers');
+function _getResizableContainers() {
+  return _getResizableContainers2 = _interopRequireDefault(require('./getResizableContainers'));
+}
 
-var _getResizableContainers2 = _interopRequireDefault(_getResizableContainers);
+var _GadgetPlaceholder2;
 
-var _GadgetPlaceholder = require('./GadgetPlaceholder');
+function _GadgetPlaceholder() {
+  return _GadgetPlaceholder2 = _interopRequireDefault(require('./GadgetPlaceholder'));
+}
 
-var _GadgetPlaceholder2 = _interopRequireDefault(_GadgetPlaceholder);
+var _reactForAtom2;
 
-var _reactForAtom = require('react-for-atom');
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
 
-var _shallowequal = require('shallowequal');
+var _shallowequal2;
 
-var _shallowequal2 = _interopRequireDefault(_shallowequal);
+function _shallowequal() {
+  return _shallowequal2 = _interopRequireDefault(require('shallowequal'));
+}
 
-var _wrapGadget = require('./wrapGadget');
+var _wrapGadget2;
 
-var _wrapGadget2 = _interopRequireDefault(_wrapGadget);
+function _wrapGadget() {
+  return _wrapGadget2 = _interopRequireDefault(require('./wrapGadget'));
+}
 
 /**
  * Create an object that provides commands ("action creators")
@@ -82,14 +108,14 @@ var Commands = (function () {
     key: 'deactivate',
     value: function deactivate() {
       this._observer.next({
-        type: ActionTypes.DEACTIVATE
+        type: (_ActionTypes2 || _ActionTypes()).DEACTIVATE
       });
       this._observer.complete();
     }
   }, {
     key: 'destroyGadget',
     value: function destroyGadget(gadgetId) {
-      var match = (0, _findPaneAndItem2['default'])(function (item) {
+      var match = (0, (_findPaneAndItem2 || _findPaneAndItem()).default)(function (item) {
         return getGadgetId(item) === gadgetId;
       });
       if (match == null) {
@@ -104,10 +130,10 @@ var Commands = (function () {
         return;
       }
 
-      _reactForAtom.ReactDOM.unmountComponentAtNode(item.element);
+      (_reactForAtom2 || _reactForAtom()).ReactDOM.unmountComponentAtNode(item.element);
 
       this._observer.next({
-        type: ActionTypes.DESTROY_PANE_ITEM,
+        type: (_ActionTypes2 || _ActionTypes()).DESTROY_PANE_ITEM,
         payload: { item: item }
       });
     }
@@ -132,10 +158,10 @@ var Commands = (function () {
       }
 
       var GadgetComponent = gadget;
-      var item = (0, _createComponentItem2['default'])(_reactForAtom.React.createElement(GadgetComponent, props));
+      var item = (0, (_createComponentItem2 || _createComponentItem()).default)((_reactForAtom2 || _reactForAtom()).React.createElement(GadgetComponent, props));
 
       this._observer.next({
-        type: ActionTypes.CREATE_PANE_ITEM,
+        type: (_ActionTypes2 || _ActionTypes()).CREATE_PANE_ITEM,
         payload: {
           component: GadgetComponent,
           gadgetId: gadgetId,
@@ -156,7 +182,7 @@ var Commands = (function () {
       // to which this one belongs and get it out of the way. Though groups can be nested, the most
       // useful to hide is almost certainly the topmost, so that's what we do.
 
-      var match = (0, _findPaneAndItem2['default'])(function (item) {
+      var match = (0, (_findPaneAndItem2 || _findPaneAndItem()).default)(function (item) {
         return getGadgetId(item) === gadgetId;
       });
 
@@ -168,7 +194,7 @@ var Commands = (function () {
       var gadgetItem = match.item;
       var parentPane = match.pane;
 
-      var containerToHide = (0, _getContainerToHide2['default'])(parentPane);
+      var containerToHide = (0, (_getContainerToHide2 || _getContainerToHide()).default)(parentPane);
 
       // If gadget is at the top level "hiding" is kind of a murky concept but we'll take it to mean
       // "close."
@@ -181,16 +207,16 @@ var Commands = (function () {
         return;
       }
 
-      ContainerVisibility.hide(containerToHide);
+      (_ContainerVisibility2 || _ContainerVisibility()).hide(containerToHide);
     }
   }, {
     key: 'registerGadget',
     value: function registerGadget(gadget) {
       // Wrap the gadget so it has Atom-specific stuff.
-      gadget = (0, _wrapGadget2['default'])(gadget);
+      gadget = (0, (_wrapGadget2 || _wrapGadget()).default)(gadget);
 
       this._observer.next({
-        type: ActionTypes.REGISTER_GADGET,
+        type: (_ActionTypes2 || _ActionTypes()).REGISTER_GADGET,
         payload: { gadget: gadget }
       });
     }
@@ -234,16 +260,16 @@ var Commands = (function () {
           });
 
           // Don't re-render if the props haven't changed.
-          if ((0, _shallowequal2['default'])(oldProps, newProps)) {
+          if ((0, (_shallowequal2 || _shallowequal()).default)(oldProps, newProps)) {
             continue;
           }
 
           // Re-render the item with the new props.
-          _reactForAtom.ReactDOM.render(_reactForAtom.React.createElement(GadgetComponent, newProps), item.element);
+          (_reactForAtom2 || _reactForAtom()).ReactDOM.render((_reactForAtom2 || _reactForAtom()).React.createElement(GadgetComponent, newProps), item.element);
 
           // $FlowIssue(t10268095)
           _this._observer.next({
-            type: ActionTypes.UPDATE_PANE_ITEM,
+            type: (_ActionTypes2 || _ActionTypes()).UPDATE_PANE_ITEM,
             payload: {
               item: item,
               props: newProps
@@ -259,7 +285,7 @@ var Commands = (function () {
   }, {
     key: 'replacePlaceholder',
     value: function replacePlaceholder(item, pane, index) {
-      if (!(item instanceof _GadgetPlaceholder2['default'])) {
+      if (!(item instanceof (_GadgetPlaceholder2 || _GadgetPlaceholder()).default)) {
         return null;
       }
 
@@ -311,7 +337,7 @@ var Commands = (function () {
   }, {
     key: 'showGadget',
     value: function showGadget(gadgetId) {
-      var match = (0, _findPaneAndItem2['default'])(function (item) {
+      var match = (0, (_findPaneAndItem2 || _findPaneAndItem()).default)(function (item) {
         return getGadgetId(item) === gadgetId;
       });
 
@@ -325,7 +351,7 @@ var Commands = (function () {
 
         var gadget = this._getState().get('gadgets').get(gadgetId);
         var defaultLocation = gadget.defaultLocation || 'active-pane';
-        var _pane = (0, _findOrCreatePaneItemLocation2['default'])(defaultLocation);
+        var _pane = (0, (_findOrCreatePaneItemLocation2 || _findOrCreatePaneItemLocation()).default)(defaultLocation);
         _pane.addItem(newItem);
         _pane.activateItem(newItem);
         return newItem;
@@ -337,14 +363,14 @@ var Commands = (function () {
       pane.activateItem(item);
 
       // If the item isn't in a hidable container (i.e. it's a top-level pane item), we're done.
-      var hiddenContainer = (0, _getContainerToHide2['default'])(pane);
+      var hiddenContainer = (0, (_getContainerToHide2 || _getContainerToHide()).default)(pane);
       if (hiddenContainer == null) {
         return item;
       }
 
       // Show all of the containers recursively up the tree.
-      for (var container of (0, _getResizableContainers2['default'])(hiddenContainer)) {
-        ContainerVisibility.show(container);
+      for (var container of (0, (_getResizableContainers2 || _getResizableContainers()).default)(hiddenContainer)) {
+        (_ContainerVisibility2 || _ContainerVisibility()).show(container);
       }
 
       return item;
@@ -353,7 +379,7 @@ var Commands = (function () {
     key: 'toggleGadget',
     value: function toggleGadget(gadgetId) {
       // Show the gadget if it doesn't already exist in the workspace.
-      var match = (0, _findPaneAndItem2['default'])(function (item) {
+      var match = (0, (_findPaneAndItem2 || _findPaneAndItem()).default)(function (item) {
         return getGadgetId(item) === gadgetId;
       });
       if (match == null) {
@@ -364,8 +390,8 @@ var Commands = (function () {
       var pane = match.pane;
 
       // Show the gadget if it's hidden.
-      for (var container of (0, _getResizableContainers2['default'])(pane)) {
-        if (ContainerVisibility.isHidden(container)) {
+      for (var container of (0, (_getResizableContainers2 || _getResizableContainers()).default)(pane)) {
+        if ((_ContainerVisibility2 || _ContainerVisibility()).isHidden(container)) {
           this.showGadget(gadgetId);
           return;
         }
@@ -377,7 +403,7 @@ var Commands = (function () {
     key: 'unregisterGadget',
     value: function unregisterGadget(gadgetId) {
       this._observer.next({
-        type: ActionTypes.UNREGISTER_GADGET,
+        type: (_ActionTypes2 || _ActionTypes()).UNREGISTER_GADGET,
         payload: { gadgetId: gadgetId }
       });
     }
@@ -395,16 +421,16 @@ var Commands = (function () {
         return;
       }
 
-      ExpandedFlexScale.set(container, flexScale);
+      (_ExpandedFlexScale2 || _ExpandedFlexScale()).set(container, flexScale);
     }
   }]);
 
   return Commands;
 })();
 
-exports['default'] = Commands;
+exports.default = Commands;
 
 function getGadgetId(item) {
   return item.getGadgetId ? item.getGadgetId() : item.constructor.gadgetId;
 }
-module.exports = exports['default'];
+module.exports = exports.default;

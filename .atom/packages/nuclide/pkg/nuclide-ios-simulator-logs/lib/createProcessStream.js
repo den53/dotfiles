@@ -14,31 +14,45 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
  * the root directory of this source tree.
  */
 
-var _nuclideCommons = require('../../nuclide-commons');
+var _nuclideCommons2;
 
-var _nuclideFeatureConfig = require('../../nuclide-feature-config');
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
 
-var _nuclideFeatureConfig2 = _interopRequireDefault(_nuclideFeatureConfig);
+var _nuclideFeatureConfig2;
 
-var _assert = require('assert');
+function _nuclideFeatureConfig() {
+  return _nuclideFeatureConfig2 = _interopRequireDefault(require('../../nuclide-feature-config'));
+}
 
-var _assert2 = _interopRequireDefault(_assert);
+var _assert2;
 
-var _os = require('os');
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
-var _os2 = _interopRequireDefault(_os);
+var _os2;
 
-var _path = require('path');
+function _os() {
+  return _os2 = _interopRequireDefault(require('os'));
+}
 
-var _path2 = _interopRequireDefault(_path);
+var _path2;
 
-var _rxjs = require('rxjs');
+function _path() {
+  return _path2 = _interopRequireDefault(require('path'));
+}
 
-var _rxjs2 = _interopRequireDefault(_rxjs);
+var _rxjs2;
+
+function _rxjs() {
+  return _rxjs2 = _interopRequireDefault(require('rxjs'));
+}
 
 function createProcessStream() {
   // Get a list of devices and their states from `xcrun simctl`.
-  var simctlOutput$ = (0, _nuclideCommons.observeProcess)(spawnSimctlList).map(function (event) {
+  var simctlOutput$ = (0, (_nuclideCommons2 || _nuclideCommons()).observeProcess)(spawnSimctlList).map(function (event) {
     if (event.kind === 'error') {
       throw event.error;
     }
@@ -46,7 +60,7 @@ function createProcessStream() {
   }).filter(function (event) {
     return event.kind === 'stdout';
   }).map(function (event) {
-    return (0, _assert2['default'])(event.data != null), event.data;
+    return (0, (_assert2 || _assert()).default)(event.data != null), event.data;
   }).reduce(function (acc, next) {
     return acc + next;
   }, '').map(function (rawJson) {
@@ -68,7 +82,7 @@ function createProcessStream() {
   });
 
   return udid$.first().flatMap(function (udid) {
-    return (0, _nuclideCommons.observeProcess)(function () {
+    return (0, (_nuclideCommons2 || _nuclideCommons()).observeProcess)(function () {
       return tailDeviceLogs(udid);
     }).map(function (event) {
       if (event.kind === 'error') {
@@ -78,7 +92,7 @@ function createProcessStream() {
     }).filter(function (event) {
       return event.kind === 'stdout';
     }).map(function (event) {
-      return (0, _assert2['default'])(event.data != null), event.data;
+      return (0, (_assert2 || _assert()).default)(event.data != null), event.data;
     });
   });
 }
@@ -99,10 +113,10 @@ function _findAvailableDevice(devices) {
 }
 
 function spawnSimctlList() {
-  return (0, _nuclideCommons.safeSpawn)('xcrun', ['simctl', 'list', '--json']);
+  return (0, (_nuclideCommons2 || _nuclideCommons()).safeSpawn)('xcrun', ['simctl', 'list', '--json']);
 }
 
 function tailDeviceLogs(udid) {
-  var logDir = _path2['default'].join(_os2['default'].homedir(), 'Library', 'Logs', 'CoreSimulator', udid, 'asl');
-  return (0, _nuclideCommons.safeSpawn)(_nuclideFeatureConfig2['default'].get('nuclide-ios-simulator-logs.pathToSyslog'), ['-w', '-F', 'xml', '-d', logDir]);
+  var logDir = (_path2 || _path()).default.join((_os2 || _os()).default.homedir(), 'Library', 'Logs', 'CoreSimulator', udid, 'asl');
+  return (0, (_nuclideCommons2 || _nuclideCommons()).safeSpawn)((_nuclideFeatureConfig2 || _nuclideFeatureConfig()).default.get('nuclide-ios-simulator-logs.pathToSyslog'), ['-w', '-F', 'xml', '-d', logDir]);
 }

@@ -17,24 +17,42 @@ exports.consumeStatusBar = consumeStatusBar;
 exports.consumeBusySignalProvider = consumeBusySignalProvider;
 exports.deactivate = deactivate;
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _atom = require('atom');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _assert = require('assert');
+var _atom2;
 
-var _assert2 = _interopRequireDefault(_assert);
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var _MessageStore = require('./MessageStore');
+var _assert2;
 
-var _BusySignalProviderBase = require('./BusySignalProviderBase');
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
-var _DedupedBusySignalProviderBase = require('./DedupedBusySignalProviderBase');
+var _MessageStore2;
 
-exports.BusySignalProviderBase = _BusySignalProviderBase.BusySignalProviderBase;
-exports.DedupedBusySignalProviderBase = _DedupedBusySignalProviderBase.DedupedBusySignalProviderBase;
+function _MessageStore() {
+  return _MessageStore2 = require('./MessageStore');
+}
+
+var _BusySignalProviderBase2;
+
+function _BusySignalProviderBase() {
+  return _BusySignalProviderBase2 = require('./BusySignalProviderBase');
+}
+
+var _DedupedBusySignalProviderBase2;
+
+function _DedupedBusySignalProviderBase() {
+  return _DedupedBusySignalProviderBase2 = require('./DedupedBusySignalProviderBase');
+}
+
+exports.BusySignalProviderBase = (_BusySignalProviderBase2 || _BusySignalProviderBase()).BusySignalProviderBase;
+exports.DedupedBusySignalProviderBase = (_DedupedBusySignalProviderBase2 || _DedupedBusySignalProviderBase()).DedupedBusySignalProviderBase;
 
 var _types = require('./types');
 
@@ -67,8 +85,8 @@ var Activation = (function () {
   function Activation() {
     _classCallCheck(this, Activation);
 
-    this._disposables = new _atom.CompositeDisposable();
-    this._messageStore = new _MessageStore.MessageStore();
+    this._disposables = new (_atom2 || _atom()).CompositeDisposable();
+    this._messageStore = new (_MessageStore2 || _MessageStore()).MessageStore();
   }
 
   _createClass(Activation, [{
@@ -87,7 +105,7 @@ var Activation = (function () {
 
       var statusBarTile = this._statusBarTile = new StatusBarTile();
       statusBarTile.consumeMessageStream(this._messageStore.getMessageStream());
-      var disposable = new _atom.Disposable(function () {
+      var disposable = new (_atom2 || _atom()).Disposable(function () {
         if (_this._statusBarTile) {
           _this._statusBarTile.dispose();
           _this._statusBarTile = null;
@@ -117,12 +135,12 @@ function activate(state) {
 }
 
 function consumeStatusBar(statusBar) {
-  (0, _assert2['default'])(activation);
+  (0, (_assert2 || _assert()).default)(activation);
   return activation.consumeStatusBar(statusBar);
 }
 
 function consumeBusySignalProvider(provider) {
-  (0, _assert2['default'])(activation);
+  (0, (_assert2 || _assert()).default)(activation);
   return activation.consumeBusySignalProvider(provider);
 }
 

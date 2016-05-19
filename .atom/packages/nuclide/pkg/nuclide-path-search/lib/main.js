@@ -39,12 +39,12 @@ var fileSearchForDirectory = _asyncToGenerator(function* (directoryUri) {
     return fileSearchForDirectoryUri[directoryUri];
   }
 
-  var exists = yield _nuclideCommons.fsPromise.exists(directoryUri);
+  var exists = yield (_nuclideCommons2 || _nuclideCommons()).fsPromise.exists(directoryUri);
   if (!exists) {
     throw new Error('Could not find directory to search : ' + directoryUri);
   }
 
-  var stat = yield _nuclideCommons.fsPromise.stat(directoryUri);
+  var stat = yield (_nuclideCommons2 || _nuclideCommons()).fsPromise.stat(directoryUri);
   if (!stat.isDirectory()) {
     throw new Error('Provided path is not a directory : ' + directoryUri);
   }
@@ -60,11 +60,19 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _nuclideLogging = require('../../nuclide-logging');
+var _nuclideLogging2;
 
-var _nuclideCommons = require('../../nuclide-commons');
+function _nuclideLogging() {
+  return _nuclideLogging2 = require('../../nuclide-logging');
+}
 
-var logger = (0, _nuclideLogging.getLogger)();
+var _nuclideCommons2;
+
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
+
+var logger = (0, (_nuclideLogging2 || _nuclideLogging()).getLogger)();
 
 /**
  * This is an object that lives in the main process that delegates calls to the

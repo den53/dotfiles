@@ -8,11 +8,17 @@
  * the root directory of this source tree.
  */
 
-var wrapStatement = require('../../wrappers/simple/wrapStatement');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _wrappersSimpleWrapStatement2;
+
+function _wrappersSimpleWrapStatement() {
+  return _wrappersSimpleWrapStatement2 = _interopRequireDefault(require('../../wrappers/simple/wrapStatement'));
+}
 
 function printEmptyStatement(print, node) {
   var wrap = function wrap(x) {
-    return wrapStatement(print, node, x);
+    return (0, (_wrappersSimpleWrapStatement2 || _wrappersSimpleWrapStatement()).default)(print, node, x);
   };
   return wrap([';']);
 }

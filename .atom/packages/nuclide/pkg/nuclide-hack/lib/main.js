@@ -24,27 +24,55 @@ exports.provideOutlines = provideOutlines;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _CodeHighlightProvider = require('./CodeHighlightProvider');
+var _CodeHighlightProvider2;
 
-var _CodeHighlightProvider2 = _interopRequireDefault(_CodeHighlightProvider);
+function _CodeHighlightProvider() {
+  return _CodeHighlightProvider2 = _interopRequireDefault(require('./CodeHighlightProvider'));
+}
 
-var _atom = require('atom');
+var _atom2;
 
-var _nuclideHackCommon = require('../../nuclide-hack-common');
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var _config = require('./config');
+var _nuclideHackCommon2;
 
-var _TypeCoverageProvider = require('./TypeCoverageProvider');
+function _nuclideHackCommon() {
+  return _nuclideHackCommon2 = require('../../nuclide-hack-common');
+}
 
-var _OutlineViewProvider = require('./OutlineViewProvider');
+var _config2;
 
-var _nuclideFeatureConfig = require('../../nuclide-feature-config');
+function _config() {
+  return _config2 = require('./config');
+}
 
-var _assert = require('assert');
+var _TypeCoverageProvider2;
 
-var _assert2 = _interopRequireDefault(_assert);
+function _TypeCoverageProvider() {
+  return _TypeCoverageProvider2 = require('./TypeCoverageProvider');
+}
 
-var HACK_GRAMMARS_STRING = _nuclideHackCommon.HACK_GRAMMARS.join(', ');
+var _OutlineViewProvider2;
+
+function _OutlineViewProvider() {
+  return _OutlineViewProvider2 = require('./OutlineViewProvider');
+}
+
+var _nuclideFeatureConfig2;
+
+function _nuclideFeatureConfig() {
+  return _nuclideFeatureConfig2 = require('../../nuclide-feature-config');
+}
+
+var _assert2;
+
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
+
+var HACK_GRAMMARS_STRING = (_nuclideHackCommon2 || _nuclideHackCommon()).HACK_GRAMMARS.join(', ');
 var PACKAGE_NAME = 'nuclide-hack';
 
 var subscriptions = null;
@@ -62,7 +90,7 @@ function activate() {
 
   var projects = _require2.projects;
 
-  subscriptions = new _atom.CompositeDisposable();
+  subscriptions = new (_atom2 || _atom()).CompositeDisposable();
   subscriptions.add(projects.onDidRemoveProjectPath(function (projectPath) {
     var hackLanguage = getCachedHackLanguageForUri(projectPath);
     if (hackLanguage) {
@@ -72,7 +100,7 @@ function activate() {
       hackDiagnosticsProvider.invalidateProjectPath(projectPath);
     }
   }));
-  subscriptions.add((0, _nuclideFeatureConfig.onDidChange)(_config.SHOW_TYPE_COVERAGE_CONFIG_PATH, function (delta) {
+  subscriptions.add((0, (_nuclideFeatureConfig2 || _nuclideFeatureConfig()).onDidChange)((_config2 || _config()).SHOW_TYPE_COVERAGE_CONFIG_PATH, function (delta) {
     if (delta.newValue) {
       enableCoverageProvider();
     } else {
@@ -81,7 +109,7 @@ function activate() {
   }));
   subscriptions.add(atom.commands.add('atom-workspace', 'nuclide-hack:toggle-type-coverage', toggleTypeCoverage));
 
-  if ((0, _config.getShowTypeCoverage)()) {
+  if ((0, (_config2 || _config()).getShowTypeCoverage)()) {
     enableCoverageProvider();
   }
 }
@@ -93,7 +121,7 @@ function createAutocompleteProvider() {
   var autocompleteProvider = new AutocompleteProvider();
 
   return {
-    selector: _nuclideHackCommon.HACK_GRAMMARS.map(function (grammar) {
+    selector: (_nuclideHackCommon2 || _nuclideHackCommon()).HACK_GRAMMARS.map(function (grammar) {
       return '.' + grammar;
     }).join(', '),
     inclusionPriority: 1,
@@ -154,7 +182,7 @@ function createTypeHintProvider() {
 }
 
 function createCodeHighlightProvider() {
-  var codeHighlightProvider = new _CodeHighlightProvider2['default']();
+  var codeHighlightProvider = new (_CodeHighlightProvider2 || _CodeHighlightProvider()).default();
 
   return {
     selector: HACK_GRAMMARS_STRING,
@@ -201,9 +229,9 @@ function deactivate() {
 }
 
 function provideOutlines() {
-  var provider = new _OutlineViewProvider.OutlineViewProvider();
+  var provider = new (_OutlineViewProvider2 || _OutlineViewProvider()).OutlineViewProvider();
   return {
-    grammarScopes: _nuclideHackCommon.HACK_GRAMMARS,
+    grammarScopes: (_nuclideHackCommon2 || _nuclideHackCommon()).HACK_GRAMMARS,
     priority: 1,
     name: 'Hack',
     getOutline: provider.getOutline.bind(provider)
@@ -223,8 +251,8 @@ function provideBusySignal() {
 
 function enableCoverageProvider() {
   if (coverageProvider == null) {
-    coverageProvider = new _TypeCoverageProvider.TypeCoverageProvider(provideBusySignal());
-    (0, _assert2['default'])(hackTypeCoverageProviderSubscription == null);
+    coverageProvider = new (_TypeCoverageProvider2 || _TypeCoverageProvider()).TypeCoverageProvider(provideBusySignal());
+    (0, (_assert2 || _assert()).default)(hackTypeCoverageProviderSubscription == null);
     hackTypeCoverageProviderSubscription = atom.packages.serviceHub.provide('nuclide-diagnostics-provider', '0.1.0', coverageProvider);
   }
 }
@@ -241,5 +269,5 @@ function disableCoverageProvider() {
 }
 
 function toggleTypeCoverage() {
-  (0, _config.setShowTypeCoverage)(!(0, _config.getShowTypeCoverage)());
+  (0, (_config2 || _config()).setShowTypeCoverage)(!(0, (_config2 || _config()).getShowTypeCoverage)());
 }

@@ -20,29 +20,51 @@ exports.consumeNuclideSideBar = consumeNuclideSideBar;
 exports.consumeWorkingSetsStore = consumeWorkingSetsStore;
 exports.consumeCwdApi = consumeCwdApi;
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _atom = require('atom');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _assert = require('assert');
+var _atom2;
 
-var _assert2 = _interopRequireDefault(_assert);
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var _nuclideFeatureConfig = require('../../nuclide-feature-config');
+var _assert2;
 
-var _nuclideFeatureConfig2 = _interopRequireDefault(_nuclideFeatureConfig);
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
-var _libNuclideFeatures = require('../../../lib/nuclide-features');
+var _nuclideFeatureConfig2;
 
-var _nuclideCommons = require('../../nuclide-commons');
+function _nuclideFeatureConfig() {
+  return _nuclideFeatureConfig2 = _interopRequireDefault(require('../../nuclide-feature-config'));
+}
 
-var _nuclideWorkingSets = require('../../nuclide-working-sets');
+var _libNuclideFeatures2;
 
-var _semver = require('semver');
+function _libNuclideFeatures() {
+  return _libNuclideFeatures2 = require('../../../lib/nuclide-features');
+}
 
-var _semver2 = _interopRequireDefault(_semver);
+var _nuclideCommons2;
+
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
+
+var _nuclideWorkingSets2;
+
+function _nuclideWorkingSets() {
+  return _nuclideWorkingSets2 = require('../../nuclide-working-sets');
+}
+
+var _semver2;
+
+function _semver() {
+  return _semver2 = _interopRequireDefault(require('semver'));
+}
 
 /**
  * Minimum interval (in ms) between onChangeActivePaneItem events before revealing the active pane
@@ -58,7 +80,7 @@ var Activation = (function () {
     _classCallCheck(this, Activation);
 
     this._packageState = state;
-    this._subscriptions = new _atom.CompositeDisposable();
+    this._subscriptions = new (_atom2 || _atom()).CompositeDisposable();
 
     var FileTreeController = require('./FileTreeController');
     this._fileTreeController = new FileTreeController(this._packageState);
@@ -70,11 +92,11 @@ var Activation = (function () {
     var usePreviewTabs = 'tabs.usePreviewTabs';
     var allowPendingPaneItems = 'core.allowPendingPaneItems';
 
-    this._subscriptions.add(_nuclideFeatureConfig2['default'].observe(prefixKeyNavSetting, this._setPrefixKeyNavSetting.bind(this)), _nuclideFeatureConfig2['default'].observe(REVEAL_FILE_ON_SWITCH_SETTING, this._setRevealOnFileSwitch.bind(this)), atom.config.observe(ignoredNamesSetting, this._setIgnoredNames.bind(this)), _nuclideFeatureConfig2['default'].observe(hideIgnoredNamesSetting, this._setHideIgnoredNames.bind(this)), atom.config.observe(excludeVcsIgnoredPathsSetting, this._setExcludeVcsIgnoredPaths.bind(this)));
+    this._subscriptions.add((_nuclideFeatureConfig2 || _nuclideFeatureConfig()).default.observe(prefixKeyNavSetting, this._setPrefixKeyNavSetting.bind(this)), (_nuclideFeatureConfig2 || _nuclideFeatureConfig()).default.observe(REVEAL_FILE_ON_SWITCH_SETTING, this._setRevealOnFileSwitch.bind(this)), atom.config.observe(ignoredNamesSetting, this._setIgnoredNames.bind(this)), (_nuclideFeatureConfig2 || _nuclideFeatureConfig()).default.observe(hideIgnoredNamesSetting, this._setHideIgnoredNames.bind(this)), atom.config.observe(excludeVcsIgnoredPathsSetting, this._setExcludeVcsIgnoredPaths.bind(this)));
 
     // The use preview tabs setting was removed from 'tabs' package in atom 1.6 and moved to core
     // instead. Until Atoms <1.6.0 are supported we need to be ready for both
-    if (_semver2['default'].gte(atom.getVersion(), '1.6.0')) {
+    if ((_semver2 || _semver()).default.gte(atom.getVersion(), '1.6.0')) {
       this._subscriptions.add(atom.config.observe(allowPendingPaneItems, this._setUsePreviewTabs.bind(this)));
     } else {
       this._subscriptions.add(atom.config.observe(usePreviewTabs, this._setUsePreviewTabs.bind(this)));
@@ -84,13 +106,13 @@ var Activation = (function () {
   _createClass(Activation, [{
     key: 'consumeCwdApi',
     value: function consumeCwdApi(cwdApi) {
-      (0, _assert2['default'])(this._fileTreeController);
+      (0, (_assert2 || _assert()).default)(this._fileTreeController);
       if (this._cwdApiSubscription != null) {
         this._cwdApiSubscription.dispose();
       }
       var controller = this._fileTreeController;
       controller.setCwdApi(cwdApi);
-      this._cwdApiSubscription = new _atom.Disposable(function () {
+      this._cwdApiSubscription = new (_atom2 || _atom()).Disposable(function () {
         return controller.setCwdApi(null);
       });
       return this._cwdApiSubscription;
@@ -121,32 +143,32 @@ var Activation = (function () {
 
       var updateOpenFilesWorkingSet = this._fileTreeController.updateOpenFilesWorkingSet.bind(this._fileTreeController);
 
-      this._subscriptions.add(new _atom.Disposable(function () {
+      this._subscriptions.add(new (_atom2 || _atom()).Disposable(function () {
         updateOpenFilesWorkingSet = function () {};
       }));
 
-      var rebuildOpenFilesWorkingSet = (0, _nuclideCommons.debounce)(function () {
+      var rebuildOpenFilesWorkingSet = (0, (_nuclideCommons2 || _nuclideCommons()).debounce)(function () {
         var openUris = atom.workspace.getTextEditors().filter(function (te) {
           return te.getPath() != null && te.getPath() !== '';
         }).map(function (te) {
           return te.getPath();
         });
-        var openFilesWorkingSet = new _nuclideWorkingSets.WorkingSet(openUris);
+        var openFilesWorkingSet = new (_nuclideWorkingSets2 || _nuclideWorkingSets()).WorkingSet(openUris);
         updateOpenFilesWorkingSet(openFilesWorkingSet);
       }, OPEN_FILES_UPDATE_DEBOUNCE_INTERVAL_MS);
 
       rebuildOpenFilesWorkingSet();
 
-      var paneObservingDisposable = new _atom.CompositeDisposable();
+      var paneObservingDisposable = new (_atom2 || _atom()).CompositeDisposable();
       paneObservingDisposable.add(atom.workspace.onDidAddPaneItem(rebuildOpenFilesWorkingSet));
       paneObservingDisposable.add(atom.workspace.onDidDestroyPaneItem(rebuildOpenFilesWorkingSet));
 
       this._subscriptions.add(paneObservingDisposable);
 
-      return new _atom.Disposable(function () {
+      return new (_atom2 || _atom()).Disposable(function () {
         _this._fileTreeController.updateWorkingSetsStore(null);
-        _this._fileTreeController.updateWorkingSet(new _nuclideWorkingSets.WorkingSet());
-        _this._fileTreeController.updateOpenFilesWorkingSet(new _nuclideWorkingSets.WorkingSet());
+        _this._fileTreeController.updateWorkingSet(new (_nuclideWorkingSets2 || _nuclideWorkingSets()).WorkingSet());
+        _this._fileTreeController.updateOpenFilesWorkingSet(new (_nuclideWorkingSets2 || _nuclideWorkingSets()).WorkingSet());
         paneObservingDisposable.dispose();
         _this._subscriptions.remove(currentSubscription);
         currentSubscription.dispose();
@@ -224,7 +246,7 @@ var Activation = (function () {
   }, {
     key: 'getContextMenu',
     value: function getContextMenu() {
-      (0, _assert2['default'])(this._fileTreeController);
+      (0, (_assert2 || _assert()).default)(this._fileTreeController);
       return this._fileTreeController.getContextMenu();
     }
   }, {
@@ -262,7 +284,7 @@ function disableTreeViewPackage() {
 }
 
 function activate(state) {
-  (0, _assert2['default'])(activation == null);
+  (0, (_assert2 || _assert()).default)(activation == null);
   // Disable Atom's bundled 'tree-view' package. If this activation is happening during the
   // normal startup activation, the `onDidActivateInitialPackages` handler below must unload the
   // 'tree-view' because it will have been loaded during startup.
@@ -284,7 +306,7 @@ function activate(state) {
 function deactivate() {
   // Re-enable Atom's bundled 'tree-view' when this package is disabled to leave the user's
   // environment the way this package found it.
-  if (_libNuclideFeatures.nuclideFeatures.isFeatureDisabled('nuclide-file-tree') && atom.packages.isPackageDisabled('tree-view')) {
+  if ((_libNuclideFeatures2 || _libNuclideFeatures()).nuclideFeatures.isFeatureDisabled('nuclide-file-tree') && atom.packages.isPackageDisabled('tree-view')) {
     atom.packages.enablePackage('tree-view');
   }
 
@@ -309,12 +331,12 @@ function serialize() {
 }
 
 function getContextMenuForFileTree() {
-  (0, _assert2['default'])(activation);
+  (0, (_assert2 || _assert()).default)(activation);
   return activation.getContextMenu();
 }
 
 function consumeNuclideSideBar(sidebar) {
-  (0, _assert2['default'])(activation);
+  (0, (_assert2 || _assert()).default)(activation);
 
   sidebar.registerView({
     getComponent: function getComponent() {
@@ -323,15 +345,16 @@ function consumeNuclideSideBar(sidebar) {
     onDidShow: function onDidShow() {
       // If "Reveal File on Switch" is enabled, ensure the scroll position is synced to where the
       // user expects when the side bar shows the file tree.
-      if (_nuclideFeatureConfig2['default'].get(REVEAL_FILE_ON_SWITCH_SETTING)) {
+      if ((_nuclideFeatureConfig2 || _nuclideFeatureConfig()).default.get(REVEAL_FILE_ON_SWITCH_SETTING)) {
         atom.commands.dispatch(atom.views.getView(atom.workspace), 'nuclide-file-tree:reveal-active-file');
       }
     },
+    title: 'File Tree',
     toggleCommand: 'nuclide-file-tree:toggle',
     viewId: 'nuclide-file-tree'
   });
 
-  sideBarDisposable = new _atom.Disposable(function () {
+  sideBarDisposable = new (_atom2 || _atom()).Disposable(function () {
     sidebar.destroyView('nuclide-file-tree');
   });
 
@@ -339,12 +362,12 @@ function consumeNuclideSideBar(sidebar) {
 }
 
 function consumeWorkingSetsStore(workingSetsStore) {
-  (0, _assert2['default'])(activation);
+  (0, (_assert2 || _assert()).default)(activation);
 
   return activation.consumeWorkingSetsStore(workingSetsStore);
 }
 
 function consumeCwdApi(cwdApi) {
-  (0, _assert2['default'])(activation);
+  (0, (_assert2 || _assert()).default)(activation);
   return activation.consumeCwdApi(cwdApi);
 }

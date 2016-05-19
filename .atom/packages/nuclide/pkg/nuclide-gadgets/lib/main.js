@@ -16,25 +16,48 @@ exports.provideGadgetsService = provideGadgetsService;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _assert = require('assert');
+var _types = require('./types');
 
-var _assert2 = _interopRequireDefault(_assert);
+Object.defineProperty(exports, 'Gadget', {
+  enumerable: true,
+  get: function get() {
+    return _types.Gadget;
+  }
+});
+Object.defineProperty(exports, 'GadgetLocation', {
+  enumerable: true,
+  get: function get() {
+    return _types.GadgetLocation;
+  }
+});
+Object.defineProperty(exports, 'GadgetsService', {
+  enumerable: true,
+  get: function get() {
+    return _types.GadgetsService;
+  }
+});
+
+var _assert2;
+
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
 var activation = null;
 
 function activate(state) {
-  (0, _assert2['default'])(activation == null);
+  (0, (_assert2 || _assert()).default)(activation == null);
   var Activation = require('./Activation');
   activation = new Activation(state);
 }
 
 function deactivate() {
-  (0, _assert2['default'])(activation);
+  (0, (_assert2 || _assert()).default)(activation);
   activation.deactivate();
   activation = null;
 }
 
 function provideGadgetsService() {
-  (0, _assert2['default'])(activation);
+  (0, (_assert2 || _assert()).default)(activation);
   return activation.provideGadgetsService();
 }

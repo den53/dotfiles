@@ -1,4 +1,4 @@
-var _require = require('atom');
+var _atom2;
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -8,7 +8,9 @@ var _require = require('atom');
  * the root directory of this source tree.
  */
 
-var Range = _require.Range;
+function _atom() {
+  return _atom2 = require('atom');
+}
 
 // Matches something like: textA: or textA:textB:
 var OBJC_SELECTOR_NAME_REGEX = /([^\s:]+:)+$/g;
@@ -35,7 +37,7 @@ function findWholeRangeOfSymbol(textEditor, text, textRange, spelling, extent) {
     return [textRange];
   } else if (text + ':' === spelling) {
     // Quick check for a common case, an Obj-C selector with one argument.
-    var newRange = new Range(textRange.start, [textRange.end.row, textRange.end.column + 1]);
+    var newRange = new (_atom2 || _atom()).Range(textRange.start, [textRange.end.row, textRange.end.column + 1]);
     return [newRange];
   } else if (spelling.match(OBJC_SELECTOR_NAME_REGEX)) {
     var _ret = (function () {
@@ -75,7 +77,7 @@ function findWholeRangeOfSymbol(textEditor, text, textRange, spelling, extent) {
 
         var rangeOfPreviousSegment = ranges[ranges.length - 1];
         var rangeStart = rangeOfPreviousSegment ? rangeOfPreviousSegment.end : extentStart;
-        var rangeToScan = new Range(rangeStart, extentEnd);
+        var rangeToScan = new (_atom2 || _atom()).Range(rangeStart, extentEnd);
 
         textEditor.scanInBufferRange(regex, rangeToScan, iterator);
       }

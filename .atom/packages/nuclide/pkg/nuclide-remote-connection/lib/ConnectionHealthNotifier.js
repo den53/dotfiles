@@ -4,9 +4,9 @@ Object.defineProperty(exports, '__esModule', {
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -16,21 +16,37 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * the root directory of this source tree.
  */
 
-var _assert = require('assert');
+var _assert2;
 
-var _assert2 = _interopRequireDefault(_assert);
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
-var _nuclideAnalytics = require('../../nuclide-analytics');
+var _nuclideAnalytics2;
 
-var _nuclideRemoteUri = require('../../nuclide-remote-uri');
+function _nuclideAnalytics() {
+  return _nuclideAnalytics2 = require('../../nuclide-analytics');
+}
 
-var _require = require('atom');
+var _atom2;
 
-var Disposable = _require.Disposable;
+function _atom() {
+  return _atom2 = require('atom');
+}
+
+var _nuclideRemoteUri2;
+
+function _nuclideRemoteUri() {
+  return _nuclideRemoteUri2 = require('../../nuclide-remote-uri');
+}
+
+var _nuclideServerLibNuclideSocket2;
+
+function _nuclideServerLibNuclideSocket() {
+  return _nuclideServerLibNuclideSocket2 = require('../../nuclide-server/lib/NuclideSocket');
+}
 
 var logger = require('../../nuclide-logging').getLogger();
-
-var NuclideSocket = require('../../nuclide-server/lib/NuclideSocket');
 
 var HEARTBEAT_AWAY_REPORT_COUNT = 3;
 var HEARTBEAT_NOTIFICATION_ERROR = 1;
@@ -88,7 +104,7 @@ var ConnectionHealthNotifier = (function () {
       if (existingNotification) {
         existingNotification.dismiss();
       }
-      (0, _assert2['default'])(notification);
+      (0, (_assert2 || _assert()).default)(notification);
       _this._lastHeartbeatNotification = {
         notification: notification,
         code: errorCode
@@ -123,7 +139,7 @@ var ConnectionHealthNotifier = (function () {
       var message = error.message;
       var originalCode = error.originalCode;
 
-      (0, _nuclideAnalytics.trackEvent)({
+      (0, (_nuclideAnalytics2 || _nuclideAnalytics()).trackEvent)({
         type: 'heartbeat-error',
         data: {
           code: code || '',
@@ -150,8 +166,8 @@ var ConnectionHealthNotifier = (function () {
         case 'PORT_NOT_ACCESSIBLE':
           // Notify never heard a heartbeat from the server.
 
-          var _parseRemoteUri = (0, _nuclideRemoteUri.parse)(serverUri),
-              port = _parseRemoteUri.port;
+          var _ref2 = (0, (_nuclideRemoteUri2 || _nuclideRemoteUri()).parse)(serverUri),
+              port = _ref2.port;
 
           addHeartbeatNotification(HEARTBEAT_NOTIFICATION_ERROR, code, '**Nuclide Server Is Not Reachable**<br/>' + ('It could be running on a port that is not accessible: ' + port + '.'),
           /*dismissable*/true,
@@ -172,13 +188,7 @@ var ConnectionHealthNotifier = (function () {
           break;
       }
     };
-    socket.on('heartbeat', onHeartbeat);
-    socket.on('heartbeat.error', onHeartbeatError);
-
-    this._subscription = new Disposable(function () {
-      socket.removeListener('heartbeat', onHeartbeat);
-      socket.removeListener('heartbeat.error', onHeartbeatError);
-    });
+    this._subscription = new (_atom2 || _atom()).CompositeDisposable(socket.onHeartbeat(onHeartbeat), socket.onHeartbeatError(onHeartbeatError));
   }
 
   _createClass(ConnectionHealthNotifier, [{

@@ -8,7 +8,11 @@
  * the root directory of this source tree.
  */
 
-var _reactForAtom = require('react-for-atom');
+var _reactForAtom2;
+
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
 
 module.exports = function deserializeGadgetPlaceholder(state) {
   // Pane items are deserialized before the gadget providers have had a chance to register their

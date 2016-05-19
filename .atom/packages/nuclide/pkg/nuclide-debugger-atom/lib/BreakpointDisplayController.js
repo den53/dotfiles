@@ -10,10 +10,11 @@ var _createClass = (function () { function defineProperties(target, props) { for
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _require = require('atom');
+var _atom2;
 
-var CompositeDisposable = _require.CompositeDisposable;
-var Disposable = _require.Disposable;
+function _atom() {
+  return _atom2 = require('atom');
+}
 
 /**
  * A single delegate which handles events from the object.
@@ -35,7 +36,7 @@ var BreakpointDisplayController = (function () {
     _classCallCheck(this, BreakpointDisplayController);
 
     this._delegate = delegate;
-    this._disposables = new CompositeDisposable();
+    this._disposables = new (_atom2 || _atom()).CompositeDisposable();
     this._breakpointStore = breakpointStore;
     this._editor = editor;
     this._markers = [];
@@ -50,7 +51,7 @@ var BreakpointDisplayController = (function () {
     var boundClickHandler = this._handleGutterClick.bind(this);
     var gutterView = atom.views.getView(gutter);
     gutterView.addEventListener('click', boundClickHandler);
-    this._disposables.add(new Disposable(function () {
+    this._disposables.add(new (_atom2 || _atom()).Disposable(function () {
       return gutterView.removeEventListener('click', boundClickHandler);
     }));
 
@@ -61,7 +62,7 @@ var BreakpointDisplayController = (function () {
         var lineNumberGutterView = atom.views.getView(lineNumberGutter);
         var boundLineNumberClickHandler = _this._handleLineNumberGutterClick.bind(_this);
         lineNumberGutterView.addEventListener('click', boundLineNumberClickHandler);
-        _this._disposables.add(new Disposable(function () {
+        _this._disposables.add(new (_atom2 || _atom()).Disposable(function () {
           lineNumberGutterView.removeEventListener('click', boundLineNumberClickHandler);
         }));
       })();
@@ -128,7 +129,7 @@ var BreakpointDisplayController = (function () {
         var line = marker.getStartBufferPosition().row;
         if (breakpoints.has(line)) {
           markersToKeep.push(marker);
-          unhandledLines['delete'](line);
+          unhandledLines.delete(line);
         } else {
           marker.destroy();
         }

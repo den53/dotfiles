@@ -1,4 +1,4 @@
-
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -8,9 +8,13 @@
  * the root directory of this source tree.
  */
 
-var markers = require('../constants/markers');
+var _constantsMarkers2;
 
-var SCOPE_BREAK_MARKERS = new Set([markers.scopeBreak, markers.scopeSpaceBreak]);
+function _constantsMarkers() {
+  return _constantsMarkers2 = _interopRequireDefault(require('../constants/markers'));
+}
+
+var SCOPE_BREAK_MARKERS = new Set([(_constantsMarkers2 || _constantsMarkers()).default.scopeBreak, (_constantsMarkers2 || _constantsMarkers()).default.scopeSpaceBreak]);
 
 function isScopeBreakMarker(marker) {
   return SCOPE_BREAK_MARKERS.has(marker);

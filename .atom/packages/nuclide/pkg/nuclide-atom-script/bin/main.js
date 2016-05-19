@@ -23,20 +23,29 @@
  */
 
 // NOTE: This file is run as-is from Node, which is why we do not use let or Flow types.
-/* eslint-disable no-var, no-console */
+/* eslint-disable no-var, no-console, prefer-arrow-callback */
 
 var child_process = require('child_process');
+var epipebomb = require('epipebomb');
 var net = require('net');
 var path = require('path');
+var split = require('split');
 var temp = require('temp').track();
 
+var atomTest;
 var server;
 var domainSocket = path.join(temp.mkdirSync(), 'my.sock');
+
 function exit(code) {
+  // Unfortunately, this does not seem to kill Atom appropriately when the output of atom-script
+  // is piped to another process. That is, this main process dies, but Atom sticks around.
+  if (atomTest != null) {
+    atomTest.kill('SIGTERM');
+  }
+
   if (server != null) {
     server.close();
   }
-  // Flush process.stdout, if possible?
   process.exit(code);
 }
 
@@ -69,7 +78,7 @@ function runAtom() {
     JSON.stringify(scriptArgs),
   ];
 
-  var atomTest = child_process.spawn('atom', args);
+  atomTest = child_process.spawn('atom', args);
   if (process.env['DEBUG_ATOM_SCRIPT'] != null) {
     // When the DEBUG_ATOM_SCRIPT environment variable is set, we forward stdout and stderr from
     // the Atom process to stderr so that the stdout is only what is written by `console.log()`
@@ -79,24 +88,41 @@ function runAtom() {
     atomTest.stderr.on('data', writeToStderr);
   }
 
-  // TODO(mbolin): Before exiting, we should make sure that everything that was written
-  // to the UNIX domain socket has been flushed.
   atomTest.on('close', exit);
 }
 
 function main() {
+  // This ensures that users of atom-script can pipe output to head, etc., without error.
+  epipebomb(process.stdout, exit);
+
   server = net.createServer(function(connection) {
-    connection.on('data', function(bufferOrString) {
-      var data = bufferOrString.toString();
-      // Until a fix for suppressing this debug info is upstreamed:
-      // https://github.com/atom/atom/commit/a4b9b9c6cd27e1403bd1ea4b82bd02f97031fc6a#commitcomment-16378936
-      // We special-case content that starts with this prefix:
-      var PREFIX = 'Window load time: ';
-      // We use this technique instead of startsWith() so this works on Node 0.12.0.
-      if (data.substring(0, PREFIX.length) !== PREFIX) {
-        process.stdout.write(bufferOrString);
-      }
-    });
+    connection
+      .pipe(split(JSON.parse))
+      .on('data', function(obj) {
+        var method = obj.method;
+        if (method === 'end') {
+          server.close();
+          return;
+        }
+
+        var id = obj.id;
+        var data = obj.message;
+
+        // Until a fix for suppressing this debug info is upstreamed:
+        // https://github.com/atom/atom/commit/a4b9b9c6cd27e1403bd1ea4b82bd02f97031fc6a#commitcomment-16378936
+        // We special-case content that starts with this prefix:
+        var PREFIX = 'Window load time: ';
+        // We use this technique instead of startsWith() so this works on Node 0.12.0.
+        if (data.substring(0, PREFIX.length) !== PREFIX) {
+          var stream = method === 'log' ? process.stdout : process.stderr;
+          stream.write(data);
+        }
+
+        connection.write(`${id}\0`);
+      })
+      .on('error', function(error) {
+        process.stderr.write('ERROR: ' + error + '\n');
+      });
   });
   server.listen({path: domainSocket}, runAtom);
 }

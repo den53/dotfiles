@@ -10,18 +10,28 @@ var _createClass = (function () { function defineProperties(target, props) { for
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _require = require('react-for-atom');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var React = _require.React;
+var _reactForAtom2;
 
-var _require2 = require('../../nuclide-atom-helpers');
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
 
-var fileTypeClass = _require2.fileTypeClass;
+var _nuclideAtomHelpers2;
 
-var path = require('path');
+function _nuclideAtomHelpers() {
+  return _nuclideAtomHelpers2 = require('../../nuclide-atom-helpers');
+}
+
+var _path2;
+
+function _path() {
+  return _path2 = _interopRequireDefault(require('path'));
+}
 
 function renderSubsequence(seq, props) {
-  return seq.length === 0 ? null : React.createElement(
+  return seq.length === 0 ? null : (_reactForAtom2 || _reactForAtom()).React.createElement(
     'span',
     props,
     seq
@@ -84,12 +94,12 @@ var FileResultComponent = (function () {
       });
       pathComponents.push(renderUnmatchedSubsequence(filePath.slice(start, filePath.length), 'last'));
 
-      var filenameClasses = ['file', 'icon', fileTypeClass(filePath)].join(' ');
+      var filenameClasses = ['file', 'icon', (0, (_nuclideAtomHelpers2 || _nuclideAtomHelpers()).fileTypeClass)(filePath)].join(' ');
       // `data-name` is support for the "file-icons" package.
       // See: https://atom.io/packages/file-icons
-      return React.createElement(
+      return (_reactForAtom2 || _reactForAtom()).React.createElement(
         'div',
-        { className: filenameClasses, 'data-name': path.basename(filePath) },
+        { className: filenameClasses, 'data-name': (_path2 || _path()).default.basename(filePath) },
         pathComponents
       );
     }

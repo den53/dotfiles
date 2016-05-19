@@ -14,13 +14,29 @@ var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = 
 
 exports.applyUpdateToEditor = applyUpdateToEditor;
 
-var _reactForAtom = require('react-for-atom');
+var _reactForAtom2;
 
-var _nuclideAtomHelpers = require('../../nuclide-atom-helpers');
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
 
-var _nuclideAnalytics = require('../../nuclide-analytics');
+var _nuclideAtomHelpers2;
 
-var _DiagnosticsPopup = require('./DiagnosticsPopup');
+function _nuclideAtomHelpers() {
+  return _nuclideAtomHelpers2 = require('../../nuclide-atom-helpers');
+}
+
+var _nuclideAnalytics2;
+
+function _nuclideAnalytics() {
+  return _nuclideAnalytics2 = require('../../nuclide-analytics');
+}
+
+var _DiagnosticsPopup2;
+
+function _DiagnosticsPopup() {
+  return _DiagnosticsPopup2 = require('./DiagnosticsPopup');
+}
 
 var GUTTER_ID = 'nuclide-diagnostics-gutter';
 
@@ -167,7 +183,7 @@ function createGutterItem(messages, gutterMarkerCssClass, fixer) {
   };
   var dispose = function dispose() {
     if (popupElement) {
-      _reactForAtom.ReactDOM.unmountComponentAtNode(popupElement);
+      (_reactForAtom2 || _reactForAtom()).ReactDOM.unmountComponentAtNode(popupElement);
       popupElement.parentNode.removeChild(popupElement);
       popupElement = null;
     }
@@ -181,7 +197,7 @@ function createGutterItem(messages, gutterMarkerCssClass, fixer) {
     // Before we jump to the location, we want to close the popup.
     dispose();
     var column = 0;
-    (0, _nuclideAtomHelpers.goToLocation)(path, line, column);
+    (0, (_nuclideAtomHelpers2 || _nuclideAtomHelpers()).goToLocation)(path, line, column);
   };
   item.addEventListener('mouseenter', function (event) {
     // If there was somehow another popup for this gutter item, dispose it. This can happen if the
@@ -222,14 +238,14 @@ function showPopupFor(messages, item, goToLocation, fixer) {
 
   var trackedFixer = function trackedFixer() {
     fixer.apply(undefined, arguments);
-    (0, _nuclideAnalytics.track)('diagnostics-gutter-autofix');
+    (0, (_nuclideAnalytics2 || _nuclideAnalytics()).track)('diagnostics-gutter-autofix');
   };
   var trackedGoToLocation = function trackedGoToLocation() {
     goToLocation.apply(undefined, arguments);
-    (0, _nuclideAnalytics.track)('diagnostics-gutter-goto-location');
+    (0, (_nuclideAnalytics2 || _nuclideAnalytics()).track)('diagnostics-gutter-goto-location');
   };
 
-  _reactForAtom.ReactDOM.render(_reactForAtom.React.createElement(_DiagnosticsPopup.DiagnosticsPopup, {
+  (_reactForAtom2 || _reactForAtom()).ReactDOM.render((_reactForAtom2 || _reactForAtom()).React.createElement((_DiagnosticsPopup2 || _DiagnosticsPopup()).DiagnosticsPopup, {
     left: left,
     top: top,
     messages: messages,
@@ -264,7 +280,7 @@ function showPopupFor(messages, item, goToLocation, fixer) {
     return hostElement;
   } finally {
     messages.forEach(function (message) {
-      (0, _nuclideAnalytics.track)('diagnostics-gutter-show-popup', {
+      (0, (_nuclideAnalytics2 || _nuclideAnalytics()).track)('diagnostics-gutter-show-popup', {
         'diagnostics-provider': message.providerName,
         'diagnostics-message': message.text || message.html || ''
       });

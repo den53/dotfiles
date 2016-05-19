@@ -6,13 +6,15 @@ var _createClass = (function () { function defineProperties(target, props) { for
 
 var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+// Handles all 'Runtime.*' Chrome dev tools messages
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -22,18 +24,26 @@ function _inherits(subClass, superClass) { if (typeof superClass !== 'function' 
  * the root directory of this source tree.
  */
 
-var _helpers = require('./helpers');
+var _helpers2;
 
-var _Handler2 = require('./Handler');
+function _helpers() {
+  return _helpers2 = require('./helpers');
+}
 
-var _Handler3 = _interopRequireDefault(_Handler2);
+var _Handler2;
 
-var _utils = require('./utils');
+function _Handler() {
+  return _Handler2 = _interopRequireDefault(require('./Handler'));
+}
 
-// Handles all 'Runtime.*' Chrome dev tools messages
+var _utils2;
 
-var RuntimeHandler = (function (_Handler) {
-  _inherits(RuntimeHandler, _Handler);
+function _utils() {
+  return _utils2 = require('./utils');
+}
+
+var RuntimeHandler = (function (_default) {
+  _inherits(RuntimeHandler, _default);
 
   function RuntimeHandler(clientCallback, connectionMultiplexer) {
     _classCallCheck(this, RuntimeHandler);
@@ -55,7 +65,7 @@ var RuntimeHandler = (function (_Handler) {
           break;
 
         case 'evaluate':
-          var compatParams = (0, _utils.makeExpressionHphpdCompatible)(params);
+          var compatParams = (0, (_utils2 || _utils()).makeExpressionHphpdCompatible)(params);
 
           // Chrome may call 'evaluate' for other purposes like auto-completion etc..
           // and we are only interested in console evaluation.
@@ -77,7 +87,7 @@ var RuntimeHandler = (function (_Handler) {
       this.sendMethod('Runtime.executionContextCreated', {
         'context': {
           'id': 1,
-          'frameId': _helpers.DUMMY_FRAME_ID,
+          'frameId': (_helpers2 || _helpers()).DUMMY_FRAME_ID,
           'name': 'hhvm: TODO: mangle in pid, idekey, script from connection'
         }
       });
@@ -110,6 +120,6 @@ var RuntimeHandler = (function (_Handler) {
   }]);
 
   return RuntimeHandler;
-})(_Handler3['default']);
+})((_Handler2 || _Handler()).default);
 
 exports.RuntimeHandler = RuntimeHandler;

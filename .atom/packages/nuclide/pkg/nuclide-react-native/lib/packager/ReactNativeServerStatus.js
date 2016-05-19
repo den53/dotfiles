@@ -14,13 +14,17 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * the root directory of this source tree.
  */
 
-var _atom = require('atom');
+var _atom2;
+
+function _atom() {
+  return _atom2 = require('atom');
+}
 
 var ReactNativeServerStatus = (function () {
   function ReactNativeServerStatus() {
     _classCallCheck(this, ReactNativeServerStatus);
 
-    this._emitter = new _atom.Emitter();
+    this._emitter = new (_atom2 || _atom()).Emitter();
     this._isRunning = false;
   }
 
@@ -47,5 +51,5 @@ var ReactNativeServerStatus = (function () {
   return ReactNativeServerStatus;
 })();
 
-exports['default'] = ReactNativeServerStatus;
-module.exports = exports['default'];
+exports.default = ReactNativeServerStatus;
+module.exports = exports.default;

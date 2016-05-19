@@ -8,23 +8,45 @@ var _createClass = (function () { function defineProperties(target, props) { for
  * the root directory of this source tree.
  */
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _nuclideAtomHelpers = require('../../nuclide-atom-helpers');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _nuclideConsoleLibLogTailer = require('../../nuclide-console/lib/LogTailer');
+var _nuclideAtomHelpers2;
 
-var _createMessageStream = require('./createMessageStream');
+function _nuclideAtomHelpers() {
+  return _nuclideAtomHelpers2 = require('../../nuclide-atom-helpers');
+}
 
-var _createProcessStream = require('./createProcessStream');
+var _nuclideConsoleLibLogTailer2;
 
-var _atom = require('atom');
+function _nuclideConsoleLibLogTailer() {
+  return _nuclideConsoleLibLogTailer2 = require('../../nuclide-console/lib/LogTailer');
+}
 
-var _rxjs = require('rxjs');
+var _createMessageStream2;
 
-var _rxjs2 = _interopRequireDefault(_rxjs);
+function _createMessageStream() {
+  return _createMessageStream2 = require('./createMessageStream');
+}
+
+var _createProcessStream2;
+
+function _createProcessStream() {
+  return _createProcessStream2 = require('./createProcessStream');
+}
+
+var _atom2;
+
+function _atom() {
+  return _atom2 = require('atom');
+}
+
+var _rxjs2;
+
+function _rxjs() {
+  return _rxjs2 = _interopRequireDefault(require('rxjs'));
+}
 
 var Activation = (function () {
   function Activation(state) {
@@ -32,33 +54,33 @@ var Activation = (function () {
 
     _classCallCheck(this, Activation);
 
-    var message$ = _rxjs2['default'].Observable.defer(function () {
-      return (0, _createMessageStream.createMessageStream)((0, _createProcessStream.createProcessStream)());
-    })['do']({
+    var message$ = (_rxjs2 || _rxjs()).default.Observable.defer(function () {
+      return (0, (_createMessageStream2 || _createMessageStream()).createMessageStream)((0, (_createProcessStream2 || _createProcessStream()).createProcessStream)());
+    }).do({
       error: function error(err) {
         if (err.code === 'ENOENT') {
-          var _formatEnoentNotification = (0, _nuclideAtomHelpers.formatEnoentNotification)({
+          var _ref = (0, (_nuclideAtomHelpers2 || _nuclideAtomHelpers()).formatEnoentNotification)({
             feature: 'iOS Syslog tailing',
             toolName: 'syslog',
             pathSetting: 'nuclide-ios-simulator-logs.pathToSyslog'
           });
 
-          var message = _formatEnoentNotification.message;
-          var meta = _formatEnoentNotification.meta;
+          var message = _ref.message;
+          var meta = _ref.meta;
 
           atom.notifications.addError(message, meta);
         }
       }
     });
 
-    this._logTailer = new _nuclideConsoleLibLogTailer.LogTailer(message$, {
+    this._logTailer = new (_nuclideConsoleLibLogTailer2 || _nuclideConsoleLibLogTailer()).LogTailer(message$, {
       start: 'ios-simulator-logs:start',
       stop: 'ios-simulator-logs:stop',
       restart: 'ios-simulator-logs:restart',
       error: 'ios-simulator-logs:error'
     });
 
-    this._disposables = new _atom.CompositeDisposable(new _atom.Disposable(function () {
+    this._disposables = new (_atom2 || _atom()).CompositeDisposable(new (_atom2 || _atom()).Disposable(function () {
       _this._logTailer.stop();
     }), atom.commands.add('atom-workspace', {
       'nuclide-ios-simulator-logs:start': function nuclideIosSimulatorLogsStart() {

@@ -13,12 +13,14 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
  * the root directory of this source tree.
  */
 
-var _temp = require('temp');
+var _temp2;
 
-var _temp2 = _interopRequireDefault(_temp);
+function _temp() {
+  return _temp2 = _interopRequireDefault(require('temp'));
+}
 
 // Automatically track and cleanup files at exit.
-var tempWithAutoCleanup = _temp2['default'].track();
+var tempWithAutoCleanup = (_temp2 || _temp()).default.track();
 
 /**
  * Creates a temporary directory with the given name.

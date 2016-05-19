@@ -11,10 +11,14 @@
 
 import type {NuclideUri} from '../../nuclide-remote-uri';
 
-const {asyncExecute, scriptSafeSpawnAndObserveOutput} = require('../../nuclide-commons');
-const {fsPromise} = require('../../nuclide-commons');
+import {
+  asyncExecute,
+  scriptSafeSpawnAndObserveOutput,
+} from '../../nuclide-commons';
+import {fsPromise} from '../../nuclide-commons';
+import path from 'path';
+
 const logger = require('../../nuclide-logging').getLogger();
-const path = require('path');
 
 export type dontRunOptions = {
   run: false;
@@ -122,7 +126,7 @@ export class BuckProject {
   _getBuckCommandAndOptions(): BuckCommandAndOptions {
     // $UPFixMe: This should use nuclide-features-config
     const pathToBuck =
-      global.atom && global.atom.config.get('nuclide.nuclide-buck-files.pathToBuck') || 'buck';
+      global.atom && global.atom.config.get('nuclide.nuclide-buck.pathToBuck') || 'buck';
     const buckCommandOptions = {
       cwd: this._rootPath,
       queueName: this._serialQueueName,
@@ -240,7 +244,7 @@ export class BuckProject {
       const json: string = await fsPromise.readFile(report, {encoding: 'UTF-8'});
       if (!json) {
         throw Error(`Report file ${report} for ${buildTargets} was opened, ` +
-            `but nothing was written.`);
+            'but nothing was written.');
       }
 
       try {

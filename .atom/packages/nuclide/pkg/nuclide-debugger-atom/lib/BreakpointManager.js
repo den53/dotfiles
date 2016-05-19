@@ -10,11 +10,19 @@ var _createClass = (function () { function defineProperties(target, props) { for
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _require = require('atom');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var CompositeDisposable = _require.CompositeDisposable;
+var _atom2;
 
-var BreakpointDisplayController = require('./BreakpointDisplayController');
+function _atom() {
+  return _atom2 = require('atom');
+}
+
+var _BreakpointDisplayController2;
+
+function _BreakpointDisplayController() {
+  return _BreakpointDisplayController2 = _interopRequireDefault(require('./BreakpointDisplayController'));
+}
 
 var BreakpointManager = (function () {
   function BreakpointManager(store) {
@@ -22,7 +30,7 @@ var BreakpointManager = (function () {
 
     this._breakpointStore = store;
     this._displayControllers = new Map();
-    this._disposables = new CompositeDisposable(atom.workspace.observeTextEditors(this._handleTextEditor.bind(this)));
+    this._disposables = new (_atom2 || _atom()).CompositeDisposable(atom.workspace.observeTextEditors(this._handleTextEditor.bind(this)));
   }
 
   _createClass(BreakpointManager, [{
@@ -51,7 +59,7 @@ var BreakpointManager = (function () {
     key: 'handleTextEditorDestroyed',
     value: function handleTextEditorDestroyed(controller) {
       controller.dispose();
-      this._displayControllers['delete'](controller.getEditor());
+      this._displayControllers.delete(controller.getEditor());
     }
   }, {
     key: '_handleTextEditor',
@@ -60,7 +68,7 @@ var BreakpointManager = (function () {
         // TODO[jeffreytan]: flow does not seem to accept delegate typing,
         // need to ask flow team if this is a known issue.
         // $FlowFixMe
-        var controller = new BreakpointDisplayController(this, this._breakpointStore, editor);
+        var controller = new (_BreakpointDisplayController2 || _BreakpointDisplayController()).default(this, this._breakpointStore, editor);
         this._displayControllers.set(editor, controller);
       }
     }

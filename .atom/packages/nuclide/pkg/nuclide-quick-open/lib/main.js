@@ -18,32 +18,111 @@ exports.registerStore = registerStore;
 exports.getHomeFragments = getHomeFragments;
 exports.deactivate = deactivate;
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _assert = require('assert');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _assert2 = _interopRequireDefault(_assert);
+var _types = require('./types');
 
-var _reactForAtom = require('react-for-atom');
+Object.defineProperty(exports, 'DirectoryName', {
+  enumerable: true,
+  get: function get() {
+    return _types.DirectoryName;
+  }
+});
+Object.defineProperty(exports, 'FileResult', {
+  enumerable: true,
+  get: function get() {
+    return _types.FileResult;
+  }
+});
+Object.defineProperty(exports, 'GroupedResult', {
+  enumerable: true,
+  get: function get() {
+    return _types.GroupedResult;
+  }
+});
+Object.defineProperty(exports, 'Provider', {
+  enumerable: true,
+  get: function get() {
+    return _types.Provider;
+  }
+});
+Object.defineProperty(exports, 'ProviderResult', {
+  enumerable: true,
+  get: function get() {
+    return _types.ProviderResult;
+  }
+});
+Object.defineProperty(exports, 'ProviderSpec', {
+  enumerable: true,
+  get: function get() {
+    return _types.ProviderSpec;
+  }
+});
+Object.defineProperty(exports, 'ProviderType', {
+  enumerable: true,
+  get: function get() {
+    return _types.ProviderType;
+  }
+});
+Object.defineProperty(exports, 'ServiceName', {
+  enumerable: true,
+  get: function get() {
+    return _types.ServiceName;
+  }
+});
+Object.defineProperty(exports, 'Store', {
+  enumerable: true,
+  get: function get() {
+    return _types.Store;
+  }
+});
 
-var _QuickSelectionComponent = require('./QuickSelectionComponent');
+var _assert2;
 
-var _QuickSelectionComponent2 = _interopRequireDefault(_QuickSelectionComponent);
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
-var _atom = require('atom');
+var _reactForAtom2;
 
-var _nuclideFeatureConfig = require('../../nuclide-feature-config');
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
 
-var _nuclideFeatureConfig2 = _interopRequireDefault(_nuclideFeatureConfig);
+var _QuickSelectionComponent2;
 
-var _nuclideAnalytics = require('../../nuclide-analytics');
+function _QuickSelectionComponent() {
+  return _QuickSelectionComponent2 = _interopRequireDefault(require('./QuickSelectionComponent'));
+}
 
-var _nuclideCommons = require('../../nuclide-commons');
+var _atom2;
+
+function _atom() {
+  return _atom2 = require('atom');
+}
+
+var _nuclideFeatureConfig2;
+
+function _nuclideFeatureConfig() {
+  return _nuclideFeatureConfig2 = _interopRequireDefault(require('../../nuclide-feature-config'));
+}
+
+var _nuclideAnalytics2;
+
+function _nuclideAnalytics() {
+  return _nuclideAnalytics2 = require('../../nuclide-analytics');
+}
+
+var _nuclideCommons2;
+
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
 
 function getSearchResultManager() {
-  return require('./SearchResultManager')['default'].getInstance();
+  return require('./SearchResultManager').default.getInstance();
 }
 
 var DEFAULT_PROVIDER = 'OmniSearchResultProvider';
@@ -69,9 +148,9 @@ var AnalyticsDebounceDelays = Object.freeze({
   CHANGE_SELECTION: 100
 });
 
-var trackProviderChange = (0, _nuclideCommons.debounce)(function (providerName) {
+var trackProviderChange = (0, (_nuclideCommons2 || _nuclideCommons()).debounce)(function (providerName) {
   analyticsSessionId = analyticsSessionId || Date.now().toString();
-  (0, _nuclideAnalytics.track)(AnalyticsEvents.CHANGE_TAB, {
+  (0, (_nuclideAnalytics2 || _nuclideAnalytics()).track)(AnalyticsEvents.CHANGE_TAB, {
     'quickopen-provider': providerName,
     'quickopen-session': analyticsSessionId
   });
@@ -85,7 +164,7 @@ var Activation = (function () {
 
     this._previousFocus = null;
     this._maxScrollableAreaHeight = 10000;
-    this._subscriptions = new _atom.CompositeDisposable();
+    this._subscriptions = new (_atom2 || _atom()).CompositeDisposable();
     this._currentProvider = getSearchResultManager().getProviderByName(DEFAULT_PROVIDER);
     var QuickSelectionDispatcher = require('./QuickSelectionDispatcher');
     QuickSelectionDispatcher.getInstance().register(function (action) {
@@ -96,7 +175,7 @@ var Activation = (function () {
     });
     this._reactDiv = document.createElement('div');
     this._searchPanel = atom.workspace.addModalPanel({ item: this._reactDiv, visible: false });
-    this._debouncedUpdateModalPosition = (0, _nuclideCommons.debounce)(this._updateScrollableHeight.bind(this), 200);
+    this._debouncedUpdateModalPosition = (0, (_nuclideCommons2 || _nuclideCommons()).debounce)(this._updateScrollableHeight.bind(this), 200);
     window.addEventListener('resize', this._debouncedUpdateModalPosition);
     this._customizeModalElement();
     this._updateScrollableHeight();
@@ -120,7 +199,7 @@ var Activation = (function () {
       var providerName = _this._currentProvider.name;
       // default to empty string because `track` enforces string-only values
       var sourceProvider = selection.sourceProvider || '';
-      (0, _nuclideAnalytics.track)(AnalyticsEvents.SELECT_FILE, {
+      (0, (_nuclideAnalytics2 || _nuclideAnalytics()).track)(AnalyticsEvents.SELECT_FILE, {
         'quickopen-filepath': selection.path,
         'quickopen-query': query,
         'quickopen-provider': providerName, // The currently open "tab".
@@ -140,10 +219,10 @@ var Activation = (function () {
     this._searchComponent.onCancellation(function () {
       return _this.closeSearchPanel();
     });
-    this._searchComponent.onSelectionChanged((0, _nuclideCommons.debounce)(function (selection) {
+    this._searchComponent.onSelectionChanged((0, (_nuclideCommons2 || _nuclideCommons()).debounce)(function (selection) {
       // Only track user-initiated selection-change events.
       if (analyticsSessionId != null) {
-        (0, _nuclideAnalytics.track)(AnalyticsEvents.CHANGE_SELECTION, {
+        (0, (_nuclideAnalytics2 || _nuclideAnalytics()).track)(AnalyticsEvents.CHANGE_SELECTION, {
           'quickopen-selected-index': selection.selectedItemIndex.toString(),
           'quickopen-selected-service': selection.selectedService,
           'quickopen-selected-directory': selection.selectedDirectory,
@@ -180,12 +259,12 @@ var Activation = (function () {
   }, {
     key: '_render',
     value: function _render() {
-      var component = _reactForAtom.ReactDOM.render(_reactForAtom.React.createElement(_QuickSelectionComponent2['default'], {
+      var component = (_reactForAtom2 || _reactForAtom()).ReactDOM.render((_reactForAtom2 || _reactForAtom()).React.createElement((_QuickSelectionComponent2 || _QuickSelectionComponent()).default, {
         activeProvider: this._currentProvider,
         onProviderChange: this.handleActiveProviderChange.bind(this),
         maxScrollableAreaHeight: this._maxScrollableAreaHeight
       }), this._reactDiv);
-      (0, _assert2['default'])(component instanceof _QuickSelectionComponent2['default']);
+      (0, (_assert2 || _assert()).default)(component instanceof (_QuickSelectionComponent2 || _QuickSelectionComponent()).default);
       return component;
     }
   }, {
@@ -204,7 +283,7 @@ var Activation = (function () {
     key: 'toggleProvider',
     value: function toggleProvider(providerName) {
       analyticsSessionId = analyticsSessionId || Date.now().toString();
-      (0, _nuclideAnalytics.track)(AnalyticsEvents.CHANGE_TAB, {
+      (0, (_nuclideAnalytics2 || _nuclideAnalytics()).track)(AnalyticsEvents.CHANGE_TAB, {
         'quickopen-provider': providerName,
         'quickopen-session': analyticsSessionId
       });
@@ -227,14 +306,14 @@ var Activation = (function () {
       this._previousFocus = document.activeElement;
       if (this._searchComponent && this._searchPanel) {
         // Start a new search "session" for analytics purposes.
-        (0, _nuclideAnalytics.track)(AnalyticsEvents.OPEN_PANEL, {
+        (0, (_nuclideAnalytics2 || _nuclideAnalytics()).track)(AnalyticsEvents.OPEN_PANEL, {
           'quickopen-session': analyticsSessionId || ''
         });
         // showSearchPanel gets called when changing providers even if it's already shown.
         var isAlreadyVisible = this._searchPanel.isVisible();
         this._searchPanel.show();
         this._searchComponent.focus();
-        if (_nuclideFeatureConfig2['default'].get('nuclide-quick-open.useSelection') && !isAlreadyVisible) {
+        if ((_nuclideFeatureConfig2 || _nuclideFeatureConfig()).default.get('nuclide-quick-open.useSelection') && !isAlreadyVisible) {
           var selectedText = this._getFirstSelectionText();
           if (selectedText && selectedText.length <= MAX_SELECTION_LENGTH) {
             this._searchComponent.setInputValue(selectedText.split('\n')[0]);
@@ -247,7 +326,7 @@ var Activation = (function () {
     key: 'closeSearchPanel',
     value: function closeSearchPanel() {
       if (this._searchComponent && this._searchPanel) {
-        (0, _nuclideAnalytics.track)(AnalyticsEvents.CLOSE_PANEL, {
+        (0, (_nuclideAnalytics2 || _nuclideAnalytics()).track)(AnalyticsEvents.CLOSE_PANEL, {
           'quickopen-session': analyticsSessionId || ''
         });
         this._searchPanel.hide();
@@ -289,7 +368,7 @@ function getActivation() {
 var listeners = null;
 
 function activate() {
-  listeners = new _atom.CompositeDisposable();
+  listeners = new (_atom2 || _atom()).CompositeDisposable();
   listeners.add(atom.commands.add('atom-workspace', {
     'nuclide-quick-open:find-anything-via-omni-search': function nuclideQuickOpenFindAnythingViaOmniSearch() {
       getActivation().toggleOmniSearchProvider();

@@ -10,31 +10,59 @@ var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_ag
  * the root directory of this source tree.
  */
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var _nuclideUiLibAtomInput = require('../../nuclide-ui/lib/AtomInput');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _reactForAtom = require('react-for-atom');
+var _nuclideUiLibAtomInput2;
 
-var _assert = require('assert');
+function _nuclideUiLibAtomInput() {
+  return _nuclideUiLibAtomInput2 = require('../../nuclide-ui/lib/AtomInput');
+}
 
-var _assert2 = _interopRequireDefault(_assert);
+var _reactForAtom2;
 
-var _atom = require('atom');
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
 
-var _ConnectionDetailsForm = require('./ConnectionDetailsForm');
+var _assert2;
 
-var _ConnectionDetailsForm2 = _interopRequireDefault(_ConnectionDetailsForm);
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
-var _formValidationUtils = require('./form-validation-utils');
+var _atom2;
 
-var _nuclideUiLibButton = require('../../nuclide-ui/lib/Button');
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var _nuclideUiLibButtonGroup = require('../../nuclide-ui/lib/ButtonGroup');
+var _ConnectionDetailsForm2;
+
+function _ConnectionDetailsForm() {
+  return _ConnectionDetailsForm2 = _interopRequireDefault(require('./ConnectionDetailsForm'));
+}
+
+var _formValidationUtils2;
+
+function _formValidationUtils() {
+  return _formValidationUtils2 = require('./form-validation-utils');
+}
+
+var _nuclideUiLibButton2;
+
+function _nuclideUiLibButton() {
+  return _nuclideUiLibButton2 = require('../../nuclide-ui/lib/Button');
+}
+
+var _nuclideUiLibButtonGroup2;
+
+function _nuclideUiLibButtonGroup() {
+  return _nuclideUiLibButtonGroup2 = require('../../nuclide-ui/lib/ButtonGroup');
+}
 
 var PROFILE_NAME_LABEL = 'Profile Name';
 var DEFAULT_SERVER_COMMAND_PLACEHOLDER = '(DEFAULT)';
@@ -54,13 +82,13 @@ var CreateConnectionProfileForm = (function (_React$Component) {
     _get(Object.getPrototypeOf(CreateConnectionProfileForm.prototype), 'constructor', this).call(this, props);
     this._clickSave = this._clickSave.bind(this);
     this._clickCancel = this._clickCancel.bind(this);
-    this.disposables = new _atom.CompositeDisposable();
+    this.disposables = new (_atom2 || _atom()).CompositeDisposable();
   }
 
   _createClass(CreateConnectionProfileForm, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
-      var root = _reactForAtom.ReactDOM.findDOMNode(this);
+      var root = (_reactForAtom2 || _reactForAtom()).ReactDOM.findDOMNode(this);
       this.disposables.add(
       // Hitting enter when this panel has focus should confirm the dialog.
       atom.commands.add(root, 'core:confirm', this._clickSave),
@@ -83,55 +111,51 @@ var CreateConnectionProfileForm = (function (_React$Component) {
     value: function render() {
       var initialFields = this.props.initialFormFields;
 
-      return _reactForAtom.React.createElement(
-        'atom-panel',
-        { 'class': 'modal from-top' },
-        _reactForAtom.React.createElement(
+      return (_reactForAtom2 || _reactForAtom()).React.createElement(
+        'div',
+        { className: 'padded' },
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
           'div',
-          { className: 'padded' },
-          _reactForAtom.React.createElement(
-            'div',
-            { className: 'form-group' },
-            _reactForAtom.React.createElement(
-              'label',
-              null,
-              PROFILE_NAME_LABEL,
-              ':'
-            ),
-            _reactForAtom.React.createElement(_nuclideUiLibAtomInput.AtomInput, {
-              initialValue: '',
-              ref: 'profile-name',
-              unstyled: true
-            })
+          { className: 'form-group' },
+          (_reactForAtom2 || _reactForAtom()).React.createElement(
+            'label',
+            null,
+            PROFILE_NAME_LABEL,
+            ':'
           ),
-          _reactForAtom.React.createElement(_ConnectionDetailsForm2['default'], {
-            ref: 'connection-details',
-            initialUsername: initialFields.username,
-            initialServer: initialFields.server,
-            initialCwd: initialFields.cwd,
-            initialRemoteServerCommand: DEFAULT_SERVER_COMMAND_PLACEHOLDER,
-            initialSshPort: initialFields.sshPort,
-            initialPathToPrivateKey: initialFields.pathToPrivateKey,
-            initialAuthMethod: initialFields.authMethod,
-            onConfirm: emptyFunction,
-            onCancel: emptyFunction
-          }),
-          _reactForAtom.React.createElement(
-            'div',
-            { className: 'padded text-right' },
-            _reactForAtom.React.createElement(
-              _nuclideUiLibButtonGroup.ButtonGroup,
-              null,
-              _reactForAtom.React.createElement(
-                _nuclideUiLibButton.Button,
-                { onClick: this._clickCancel },
-                'Cancel'
-              ),
-              _reactForAtom.React.createElement(
-                _nuclideUiLibButton.Button,
-                { buttonType: _nuclideUiLibButton.ButtonTypes.PRIMARY, onClick: this._clickSave },
-                'Save'
-              )
+          (_reactForAtom2 || _reactForAtom()).React.createElement((_nuclideUiLibAtomInput2 || _nuclideUiLibAtomInput()).AtomInput, {
+            initialValue: '',
+            ref: 'profile-name',
+            unstyled: true
+          })
+        ),
+        (_reactForAtom2 || _reactForAtom()).React.createElement((_ConnectionDetailsForm2 || _ConnectionDetailsForm()).default, {
+          ref: 'connection-details',
+          initialUsername: initialFields.username,
+          initialServer: initialFields.server,
+          initialCwd: initialFields.cwd,
+          initialRemoteServerCommand: DEFAULT_SERVER_COMMAND_PLACEHOLDER,
+          initialSshPort: initialFields.sshPort,
+          initialPathToPrivateKey: initialFields.pathToPrivateKey,
+          initialAuthMethod: initialFields.authMethod,
+          onConfirm: emptyFunction,
+          onCancel: emptyFunction
+        }),
+        (_reactForAtom2 || _reactForAtom()).React.createElement(
+          'div',
+          { className: 'padded text-right' },
+          (_reactForAtom2 || _reactForAtom()).React.createElement(
+            (_nuclideUiLibButtonGroup2 || _nuclideUiLibButtonGroup()).ButtonGroup,
+            null,
+            (_reactForAtom2 || _reactForAtom()).React.createElement(
+              (_nuclideUiLibButton2 || _nuclideUiLibButton()).Button,
+              { onClick: this._clickCancel },
+              'Cancel'
+            ),
+            (_reactForAtom2 || _reactForAtom()).React.createElement(
+              (_nuclideUiLibButton2 || _nuclideUiLibButton()).Button,
+              { buttonType: (_nuclideUiLibButton2 || _nuclideUiLibButton()).ButtonTypes.PRIMARY, onClick: this._clickSave },
+              'Save'
             )
           )
         )
@@ -149,12 +173,12 @@ var CreateConnectionProfileForm = (function (_React$Component) {
       // Validate the form inputs.
       var profileName = this._getProfileName();
       var connectionDetails = this.refs['connection-details'].getFormFields();
-      var validationResult = (0, _formValidationUtils.validateFormInputs)(profileName, connectionDetails, DEFAULT_SERVER_COMMAND_PLACEHOLDER);
+      var validationResult = (0, (_formValidationUtils2 || _formValidationUtils()).validateFormInputs)(profileName, connectionDetails, DEFAULT_SERVER_COMMAND_PLACEHOLDER);
       if (validationResult.errorMessage) {
         atom.notifications.addError(validationResult.errorMessage);
         return;
       }
-      (0, _assert2['default'])(validationResult.validatedProfile != null);
+      (0, (_assert2 || _assert()).default)(validationResult.validatedProfile != null);
       // Save the validated profile, and show any warning messages.
       var newProfile = validationResult.validatedProfile;
       if (validationResult.warningMessage) {
@@ -170,7 +194,7 @@ var CreateConnectionProfileForm = (function (_React$Component) {
   }]);
 
   return CreateConnectionProfileForm;
-})(_reactForAtom.React.Component);
+})((_reactForAtom2 || _reactForAtom()).React.Component);
 
 module.exports = CreateConnectionProfileForm;
 

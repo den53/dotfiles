@@ -12,11 +12,17 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
  * the root directory of this source tree.
  */
 
-var _HgRepositoryClient = require('./HgRepositoryClient');
+var _HgRepositoryClient2;
 
-var _HgRepositoryClientAsync = require('./HgRepositoryClientAsync');
+function _HgRepositoryClient() {
+  return _HgRepositoryClient2 = require('./HgRepositoryClient');
+}
 
-var _HgRepositoryClientAsync2 = _interopRequireDefault(_HgRepositoryClientAsync);
+var _HgRepositoryClientAsync2;
 
-exports.HgRepositoryClient = _HgRepositoryClient.HgRepositoryClient;
-exports.HgRepositoryClientAsync = _HgRepositoryClientAsync2['default'];
+function _HgRepositoryClientAsync() {
+  return _HgRepositoryClientAsync2 = _interopRequireDefault(require('./HgRepositoryClientAsync'));
+}
+
+exports.HgRepositoryClient = (_HgRepositoryClient2 || _HgRepositoryClient()).HgRepositoryClient;
+exports.HgRepositoryClientAsync = (_HgRepositoryClientAsync2 || _HgRepositoryClientAsync()).default;

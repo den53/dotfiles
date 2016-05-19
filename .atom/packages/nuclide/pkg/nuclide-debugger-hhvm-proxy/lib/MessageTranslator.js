@@ -6,11 +6,17 @@ var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = 
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+/**
+ * Translates Chrome dev tools JSON messages to/from dbgp.
+ * TODO: Should we proactively push files to the debugger?
+ * Currently we reactively push files to the debuger when they appear in a stack trace.
+ */
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -20,50 +26,67 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * the root directory of this source tree.
  */
 
-var _assert = require('assert');
+var _assert2;
 
-var _assert2 = _interopRequireDefault(_assert);
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
-var _utils = require('./utils');
+var _utils2;
 
-var _utils2 = _interopRequireDefault(_utils);
+function _utils() {
+  return _utils2 = _interopRequireDefault(require('./utils'));
+}
 
-var _ClientCallback = require('./ClientCallback');
+var _DebuggerHandler2;
 
-/**
- * Translates Chrome dev tools JSON messages to/from dbgp.
- * TODO: Should we proactively push files to the debugger?
- * Currently we reactively push files to the debuger when they appear in a stack trace.
- */
+function _DebuggerHandler() {
+  return _DebuggerHandler2 = require('./DebuggerHandler');
+}
 
-var _require = require('./DebuggerHandler');
+var _PageHandler2;
 
-var DebuggerHandler = _require.DebuggerHandler;
+function _PageHandler() {
+  return _PageHandler2 = _interopRequireDefault(require('./PageHandler'));
+}
 
-var PageHandler = require('./PageHandler');
-var ConsoleHandler = require('./ConsoleHandler');
+var _ConsoleHandler2;
 
-var _require2 = require('./RuntimeHandler');
+function _ConsoleHandler() {
+  return _ConsoleHandler2 = _interopRequireDefault(require('./ConsoleHandler'));
+}
 
-var RuntimeHandler = _require2.RuntimeHandler;
+var _RuntimeHandler2;
 
-var _require3 = require('./ConnectionMultiplexer');
+function _RuntimeHandler() {
+  return _RuntimeHandler2 = require('./RuntimeHandler');
+}
 
-var ConnectionMultiplexer = _require3.ConnectionMultiplexer;
+var _ConnectionMultiplexer2;
+
+function _ConnectionMultiplexer() {
+  return _ConnectionMultiplexer2 = require('./ConnectionMultiplexer');
+}
+
+var _ClientCallback2;
+
+function _ClientCallback() {
+  return _ClientCallback2 = require('./ClientCallback');
+}
 
 var MessageTranslator = (function () {
   function MessageTranslator(clientCallback) {
     _classCallCheck(this, MessageTranslator);
 
     this._isDisposed = false;
-    this._connectionMultiplexer = new ConnectionMultiplexer(clientCallback);
+    this._connectionMultiplexer = new (_ConnectionMultiplexer2 || _ConnectionMultiplexer()).ConnectionMultiplexer(clientCallback);
     this._handlers = new Map();
     this._clientCallback = clientCallback;
-    this._debuggerHandler = new DebuggerHandler(clientCallback, this._connectionMultiplexer);
+    this._debuggerHandler = new (_DebuggerHandler2 || _DebuggerHandler()).DebuggerHandler(clientCallback, this._connectionMultiplexer);
     this._addHandler(this._debuggerHandler);
-    this._addHandler(new PageHandler(clientCallback));
-    this._addHandler(new ConsoleHandler(clientCallback));
-    this._addHandler(new RuntimeHandler(clientCallback, this._connectionMultiplexer));
+    this._addHandler(new (_PageHandler2 || _PageHandler()).default(clientCallback));
+    this._addHandler(new (_ConsoleHandler2 || _ConsoleHandler()).default(clientCallback));
+    this._addHandler(new (_RuntimeHandler2 || _RuntimeHandler()).RuntimeHandler(clientCallback, this._connectionMultiplexer));
   }
 
   _createClass(MessageTranslator, [{
@@ -74,13 +97,13 @@ var MessageTranslator = (function () {
   }, {
     key: 'onSessionEnd',
     value: function onSessionEnd(callback) {
-      _utils2['default'].log('onSessionEnd');
+      (_utils2 || _utils()).default.log('onSessionEnd');
       this._debuggerHandler.onSessionEnd(callback);
     }
   }, {
     key: 'handleCommand',
     value: _asyncToGenerator(function* (command) {
-      _utils2['default'].log('handleCommand: ' + command);
+      (_utils2 || _utils()).default.log('handleCommand: ' + command);
 
       var _JSON$parse = JSON.parse(command);
 
@@ -110,17 +133,17 @@ var MessageTranslator = (function () {
 
       try {
         var handler = this._handlers.get(domain);
-        (0, _assert2['default'])(handler != null);
+        (0, (_assert2 || _assert()).default)(handler != null);
         yield handler.handleMethod(id, methodName, params);
       } catch (e) {
-        _utils2['default'].logError('Exception handling command ' + id + ': ' + e + ' ' + e.stack);
+        (_utils2 || _utils()).default.logError('Exception handling command ' + id + ': ' + e + ' ' + e.stack);
         this._replyWithError(id, 'Error handling command: ' + e + '\n ' + e.stack);
       }
     })
   }, {
     key: '_replyWithError',
     value: function _replyWithError(id, error) {
-      _utils2['default'].log(error);
+      (_utils2 || _utils()).default.log(error);
       this._clientCallback.replyWithError(id, error);
     }
   }, {

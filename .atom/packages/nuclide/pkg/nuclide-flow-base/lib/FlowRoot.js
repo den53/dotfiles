@@ -16,28 +16,52 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _fuzzaldrin = require('fuzzaldrin');
+var _fuzzaldrin2;
 
-var _nuclideLogging = require('../../nuclide-logging');
+function _fuzzaldrin() {
+  return _fuzzaldrin2 = require('fuzzaldrin');
+}
 
-var _FlowHelpers = require('./FlowHelpers');
+var _nuclideLogging2;
 
-var _FlowProcess = require('./FlowProcess');
+function _nuclideLogging() {
+  return _nuclideLogging2 = require('../../nuclide-logging');
+}
 
-var _astToOutline = require('./astToOutline');
+var logger = (0, (_nuclideLogging2 || _nuclideLogging()).getLogger)();
 
-var _diagnosticsParser = require('./diagnosticsParser');
+var _FlowHelpers2;
+
+function _FlowHelpers() {
+  return _FlowHelpers2 = require('./FlowHelpers');
+}
+
+var _FlowProcess2;
+
+function _FlowProcess() {
+  return _FlowProcess2 = require('./FlowProcess');
+}
+
+var _astToOutline2;
+
+function _astToOutline() {
+  return _astToOutline2 = require('./astToOutline');
+}
+
+var _diagnosticsParser2;
+
+function _diagnosticsParser() {
+  return _diagnosticsParser2 = require('./diagnosticsParser');
+}
 
 /** Encapsulates all of the state information we need about a specific Flow root */
-
-var logger = (0, _nuclideLogging.getLogger)();
 
 var FlowRoot = (function () {
   function FlowRoot(root) {
     _classCallCheck(this, FlowRoot);
 
     this._root = root;
-    this._process = new _FlowProcess.FlowProcess(root);
+    this._process = new (_FlowProcess2 || _FlowProcess()).FlowProcess(root);
   }
 
   _createClass(FlowRoot, [{
@@ -145,7 +169,7 @@ var FlowRoot = (function () {
         return null;
       }
 
-      return (0, _diagnosticsParser.flowStatusOutputToDiagnostics)(this._root, json);
+      return (0, (_diagnosticsParser2 || _diagnosticsParser()).flowStatusOutputToDiagnostics)(this._root, json);
     })
   }, {
     key: 'flowGetAutocompleteSuggestions',
@@ -175,7 +199,7 @@ var FlowRoot = (function () {
 
       var args = ['autocomplete', '--json', file];
 
-      options.stdin = (0, _FlowHelpers.insertAutocompleteToken)(currentContents, line, column);
+      options.stdin = (0, (_FlowHelpers2 || _FlowHelpers()).insertAutocompleteToken)(currentContents, line, column);
       try {
         var result = yield this._process.execFlow(args, options);
         if (!result) {
@@ -192,9 +216,9 @@ var FlowRoot = (function () {
           resultsArray = json.result;
         }
         var candidates = resultsArray.map(function (item) {
-          return (0, _FlowHelpers.processAutocompleteItem)(replacementPrefix, item);
+          return (0, (_FlowHelpers2 || _FlowHelpers()).processAutocompleteItem)(replacementPrefix, item);
         });
-        return (0, _fuzzaldrin.filter)(candidates, replacementPrefix, { key: 'displayText' });
+        return (0, (_fuzzaldrin2 || _fuzzaldrin()).filter)(candidates, replacementPrefix, { key: 'displayText' });
       } catch (e) {
         return [];
       }
@@ -206,8 +230,8 @@ var FlowRoot = (function () {
 
       options.stdin = currentContents;
 
-      line = line + 1;
-      column = column + 1;
+      line++;
+      column++;
       var args = ['type-at-pos', '--json', '--path', file, line, column];
       if (includeRawType) {
         args.push('--raw');
@@ -248,6 +272,33 @@ var FlowRoot = (function () {
       }
       return { type: type, rawType: rawType };
     })
+  }, {
+    key: 'flowGetCoverage',
+    value: _asyncToGenerator(function* (path) {
+      var args = ['coverage', '--json', path];
+      var result = undefined;
+      try {
+        result = yield this._process.execFlow(args, {});
+      } catch (e) {
+        return null;
+      }
+      if (result == null) {
+        return null;
+      }
+      var json = undefined;
+      try {
+        json = parseJSON(args, result.stdout);
+      } catch (e) {
+        // The error is already logged in parseJSON
+        return null;
+      }
+
+      var covered = json.expressions.covered_count;
+      var total = json.expressions.uncovered_count + covered;
+      return {
+        percentage: covered / total * 100
+      };
+    })
   }], [{
     key: 'flowGetOutline',
     value: _asyncToGenerator(function* (currentContents) {
@@ -259,7 +310,7 @@ var FlowRoot = (function () {
 
       var json = undefined;
       try {
-        var result = yield _FlowProcess.FlowProcess.execFlowClient(args, options);
+        var result = yield (_FlowProcess2 || _FlowProcess()).FlowProcess.execFlowClient(args, options);
         if (result == null) {
           return null;
         }
@@ -270,7 +321,7 @@ var FlowRoot = (function () {
       }
 
       try {
-        return (0, _astToOutline.astToOutline)(json);
+        return (0, (_astToOutline2 || _astToOutline()).astToOutline)(json);
       } catch (e) {
         // Traversing the AST is an error-prone process and it's hard to be sure we've handled all the
         // cases. Fail gracefully if it does not work.

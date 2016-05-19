@@ -8,18 +8,29 @@
  * the root directory of this source tree.
  */
 
-var flatten = require('../../utils/flatten');
-var markers = require('../../constants/markers');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _utilsFlatten2;
+
+function _utilsFlatten() {
+  return _utilsFlatten2 = _interopRequireDefault(require('../../utils/flatten'));
+}
+
+var _constantsMarkers2;
+
+function _constantsMarkers() {
+  return _constantsMarkers2 = _interopRequireDefault(require('../../constants/markers'));
+}
 
 function printClassDeclaration(print, node) {
-  var parts = flatten(['class', markers.noBreak, markers.space, print(node.id), node.typeParameters ? [markers.noBreak, print(node.typeParameters)] : markers.empty, markers.noBreak, markers.space]);
+  var parts = (0, (_utilsFlatten2 || _utilsFlatten()).default)(['class', (_constantsMarkers2 || _constantsMarkers()).default.noBreak, (_constantsMarkers2 || _constantsMarkers()).default.space, print(node.id), node.typeParameters ? [(_constantsMarkers2 || _constantsMarkers()).default.noBreak, print(node.typeParameters)] : (_constantsMarkers2 || _constantsMarkers()).default.empty, (_constantsMarkers2 || _constantsMarkers()).default.noBreak, (_constantsMarkers2 || _constantsMarkers()).default.space]);
 
   if (node.superClass) {
     var superClass = node.superClass;
-    parts = flatten([parts, 'extends', markers.noBreak, markers.space, print(superClass), node.superTypeParameters ? [markers.noBreak, print(node.superTypeParameters)] : markers.empty, markers.noBreak, markers.space]);
+    parts = (0, (_utilsFlatten2 || _utilsFlatten()).default)([parts, 'extends', (_constantsMarkers2 || _constantsMarkers()).default.noBreak, (_constantsMarkers2 || _constantsMarkers()).default.space, print(superClass), node.superTypeParameters ? [(_constantsMarkers2 || _constantsMarkers()).default.noBreak, print(node.superTypeParameters)] : (_constantsMarkers2 || _constantsMarkers()).default.empty, (_constantsMarkers2 || _constantsMarkers()).default.noBreak, (_constantsMarkers2 || _constantsMarkers()).default.space]);
   }
 
-  return flatten([parts, print(node.body), markers.hardBreak]);
+  return (0, (_utilsFlatten2 || _utilsFlatten()).default)([parts, print(node.body), (_constantsMarkers2 || _constantsMarkers()).default.hardBreak]);
 }
 
 module.exports = printClassDeclaration;

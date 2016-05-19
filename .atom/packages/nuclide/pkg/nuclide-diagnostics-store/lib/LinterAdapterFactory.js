@@ -2,7 +2,7 @@
 // Flow didn't like it when I tried import type here. This shouldn't affect
 // performance though, since LinterAdapter requires this anyway.
 
-var _nuclideDiagnosticsProviderBase = require('../../nuclide-diagnostics-provider-base');
+var _nuclideDiagnosticsProviderBase2;
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -12,7 +12,15 @@ var _nuclideDiagnosticsProviderBase = require('../../nuclide-diagnostics-provide
  * the root directory of this source tree.
  */
 
-var _LinterAdapter = require('./LinterAdapter');
+function _nuclideDiagnosticsProviderBase() {
+  return _nuclideDiagnosticsProviderBase2 = require('../../nuclide-diagnostics-provider-base');
+}
+
+var _LinterAdapter2;
+
+function _LinterAdapter() {
+  return _LinterAdapter2 = require('./LinterAdapter');
+}
 
 function createSingleAdapter(provider, ProviderBase) {
   if (provider.disabledForNuclide) {
@@ -20,7 +28,7 @@ function createSingleAdapter(provider, ProviderBase) {
   }
   var validationErrors = validateLinter(provider);
   if (validationErrors.length === 0) {
-    return new _LinterAdapter.LinterAdapter(provider, ProviderBase);
+    return new (_LinterAdapter2 || _LinterAdapter()).LinterAdapter(provider, ProviderBase);
   } else {
     var nameString = provider && provider.providerName ? ' (' + provider.providerName + ')' : '';
     var message = 'nuclide-diagnostics-store found problems with a linter' + nameString + '. ' + 'Diagnostic messages from that linter will be unavailable.\n';

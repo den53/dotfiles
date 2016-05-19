@@ -1,6 +1,7 @@
 Object.defineProperty(exports, '__esModule', {
   value: true
 });
+exports.notifyInternalError = notifyInternalError;
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -10,12 +11,13 @@ Object.defineProperty(exports, '__esModule', {
  * the root directory of this source tree.
  */
 
-exports.notifyInternalError = notifyInternalError;
-exports.notifyFilesystemOverrideUserEdits = notifyFilesystemOverrideUserEdits;
+var _nuclideLogging2;
 
-var _nuclideLogging = require('../../nuclide-logging');
+function _nuclideLogging() {
+  return _nuclideLogging2 = require('../../nuclide-logging');
+}
 
-var logger = (0, _nuclideLogging.getLogger)();
+var logger = (0, (_nuclideLogging2 || _nuclideLogging()).getLogger)();
 
 function notifyInternalError(error) {
   var dismissable = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
@@ -23,10 +25,4 @@ function notifyInternalError(error) {
   var errorMessage = 'Diff View Internal Error';
   logger.error(errorMessage, error);
   atom.notifications.addError(errorMessage, { detail: error.message, dismissable: dismissable });
-}
-
-function notifyFilesystemOverrideUserEdits(filePath) {
-  var message = 'Diff View Override<br/>\nThe filesystem contents of the active file have changed, overriding user changes for file:<br/>\n`' + filePath + '`\n';
-  logger.warn(message);
-  atom.notifications.addWarning(message);
 }

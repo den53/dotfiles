@@ -13,9 +13,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
  * the root directory of this source tree.
  */
 
-var _rxjs = require('rxjs');
+var _rxjs2;
 
-var _rxjs2 = _interopRequireDefault(_rxjs);
+function _rxjs() {
+  return _rxjs2 = _interopRequireDefault(require('rxjs'));
+}
 
 /**
  * Like `Rx.Observable.fromPromise`, but the resulting Observable sequence does not automatically
@@ -24,5 +26,5 @@ var _rxjs2 = _interopRequireDefault(_rxjs);
 // $FlowIssue Rx.Observable.never should not influence merged type
 
 function incompleteObservableFromPromise(promise) {
-  return _rxjs2['default'].Observable.fromPromise(promise).merge(_rxjs2['default'].Observable.never());
+  return (_rxjs2 || _rxjs()).default.Observable.fromPromise(promise).merge((_rxjs2 || _rxjs()).default.Observable.never());
 }

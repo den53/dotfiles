@@ -17,11 +17,17 @@ exports.provideDiagnostics = provideDiagnostics;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _atom = require('atom');
+var _atom2;
 
-var _assert = require('assert');
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var _assert2 = _interopRequireDefault(_assert);
+var _assert2;
+
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
 var subscriptions = null;
 
@@ -43,7 +49,7 @@ function activate() {
     return;
   }
 
-  subscriptions = new _atom.CompositeDisposable();
+  subscriptions = new (_atom2 || _atom()).CompositeDisposable();
 
   var _require2 = require('../../nuclide-atom-helpers');
 
@@ -70,7 +76,7 @@ function provideDiagnostics() {
   var ArcanistDiagnosticsProvider = _require3.ArcanistDiagnosticsProvider;
 
   var provider = new ArcanistDiagnosticsProvider(getBusySignalProvider());
-  (0, _assert2['default'])(subscriptions != null);
+  (0, (_assert2 || _assert()).default)(subscriptions != null);
   subscriptions.add(provider);
   return provider;
 }

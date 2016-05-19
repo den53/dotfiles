@@ -1,6 +1,6 @@
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i['return']) _i['return'](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError('Invalid attempt to destructure non-iterable instance'); } }; })();
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -10,18 +10,25 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * the root directory of this source tree.
  */
 
-var _require = require('atom');
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var Emitter = _require.Emitter;
-var Directory = _require.Directory;
+var _atom2;
 
-var _require2 = require('../../nuclide-remote-uri');
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var isRemote = _require2.isRemote;
+var _nuclideRemoteUri2;
 
-var _require3 = require('../../nuclide-commons');
+function _nuclideRemoteUri() {
+  return _nuclideRemoteUri2 = require('../../nuclide-remote-uri');
+}
 
-var singleton = _require3.singleton;
+var _nuclideCommons2;
+
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
 
 var REMOVE_PROJECT_EVENT = 'did-remove-project';
 var ADD_PROJECT_EVENT = 'did-add-project';
@@ -31,7 +38,7 @@ function getValidProjectPaths() {
   return atom.project.getDirectories().filter(function (directory) {
     // If a remote directory path is a local `Directory` instance, the project path
     // isn't yet ready for consumption.
-    if (isRemote(directory.getPath()) && directory instanceof Directory) {
+    if ((0, (_nuclideRemoteUri2 || _nuclideRemoteUri()).isRemote)(directory.getPath()) && directory instanceof (_atom2 || _atom()).Directory) {
       return false;
     }
     return true;
@@ -44,7 +51,7 @@ var ProjectManager = (function () {
   function ProjectManager() {
     _classCallCheck(this, ProjectManager);
 
-    this._emitter = new Emitter();
+    this._emitter = new (_atom2 || _atom()).Emitter();
     this._projectPaths = new Set(getValidProjectPaths());
     atom.project.onDidChangePaths(this._updateProjectPaths.bind(this));
   }
@@ -90,12 +97,28 @@ var ProjectManager = (function () {
 })();
 
 function getProjectManager() {
-  return singleton.get(PROJECT_PATH_WATCHER_INSTANCE_KEY, function () {
+  return (_nuclideCommons2 || _nuclideCommons()).singleton.get(PROJECT_PATH_WATCHER_INSTANCE_KEY, function () {
     return new ProjectManager();
   });
 }
 
+function getAtomProjectRelativePath(path) {
+  var _atom$project$relativizePath = atom.project.relativizePath(path);
+
+  var _atom$project$relativizePath2 = _slicedToArray(_atom$project$relativizePath, 2);
+
+  var projectPath = _atom$project$relativizePath2[0];
+  var relativePath = _atom$project$relativizePath2[1];
+
+  if (!projectPath) {
+    return null;
+  }
+  return relativePath;
+}
+
 module.exports = {
+  getAtomProjectRelativePath: getAtomProjectRelativePath,
+
   observeProjectPaths: function observeProjectPaths(callback) {
     return getProjectManager().observeProjectPaths(callback);
   },

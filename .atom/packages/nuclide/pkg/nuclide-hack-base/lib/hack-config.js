@@ -10,7 +10,7 @@ exports.findHackConfigDir = findHackConfigDir;
 
 var findHackCommand = _asyncToGenerator(function* () {
   // `stdout` would be empty if there is no such command.
-  return (yield (0, _nuclideCommons.checkOutput)('which', [PATH_TO_HH_CLIENT])).stdout.trim();
+  return (yield (0, (_nuclideCommons2 || _nuclideCommons()).checkOutput)('which', [PATH_TO_HH_CLIENT])).stdout.trim();
 });
 
 exports.setHackCommand = setHackCommand;
@@ -45,7 +45,11 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
  * the root directory of this source tree.
  */
 
-var _nuclideCommons = require('../../nuclide-commons');
+var _nuclideCommons2;
+
+function _nuclideCommons() {
+  return _nuclideCommons2 = require('../../nuclide-commons');
+}
 
 var logger = require('../../nuclide-logging').getLogger();
 
@@ -66,7 +70,7 @@ var useConnection = false;
 */
 
 function findHackConfigDir(localFile) {
-  return _nuclideCommons.fsPromise.findNearestFile(HACK_CONFIG_FILE_NAME, localFile);
+  return (_nuclideCommons2 || _nuclideCommons()).fsPromise.findNearestFile(HACK_CONFIG_FILE_NAME, localFile);
 }
 
 function setHackCommand(newHackCommand) {

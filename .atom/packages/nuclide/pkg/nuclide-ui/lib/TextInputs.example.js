@@ -12,78 +12,98 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
  * the root directory of this source tree.
  */
 
-var _atom = require('atom');
+var _atom2;
 
-var _reactForAtom = require('react-for-atom');
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var _Block = require('./Block');
+var _reactForAtom2;
 
-var _AtomInput = require('./AtomInput');
+function _reactForAtom() {
+  return _reactForAtom2 = require('react-for-atom');
+}
 
-var _AtomTextEditor = require('./AtomTextEditor');
+var _Block2;
+
+function _Block() {
+  return _Block2 = require('./Block');
+}
+
+var _AtomInput2;
+
+function _AtomInput() {
+  return _AtomInput2 = require('./AtomInput');
+}
+
+var _AtomTextEditor2;
+
+function _AtomTextEditor() {
+  return _AtomTextEditor2 = require('./AtomTextEditor');
+}
 
 var AtomInputExample = function AtomInputExample() {
-  return _reactForAtom.React.createElement(
+  return (_reactForAtom2 || _reactForAtom()).React.createElement(
     'div',
     null,
-    _reactForAtom.React.createElement(
-      _Block.Block,
+    (_reactForAtom2 || _reactForAtom()).React.createElement(
+      (_Block2 || _Block()).Block,
       null,
-      _reactForAtom.React.createElement(_AtomInput.AtomInput, {
+      (_reactForAtom2 || _reactForAtom()).React.createElement((_AtomInput2 || _AtomInput()).AtomInput, {
         disabled: false,
         initialValue: 'atom input',
         placeholderText: 'placeholder text'
       })
     ),
-    _reactForAtom.React.createElement(
-      _Block.Block,
+    (_reactForAtom2 || _reactForAtom()).React.createElement(
+      (_Block2 || _Block()).Block,
       null,
-      _reactForAtom.React.createElement(_AtomInput.AtomInput, {
+      (_reactForAtom2 || _reactForAtom()).React.createElement((_AtomInput2 || _AtomInput()).AtomInput, {
         disabled: true,
         initialValue: 'disabled atom input',
         placeholderText: 'placeholder text'
       })
     ),
-    _reactForAtom.React.createElement(
-      _Block.Block,
+    (_reactForAtom2 || _reactForAtom()).React.createElement(
+      (_Block2 || _Block()).Block,
       null,
-      _reactForAtom.React.createElement(_AtomInput.AtomInput, {
+      (_reactForAtom2 || _reactForAtom()).React.createElement((_AtomInput2 || _AtomInput()).AtomInput, {
         initialValue: 'xs atom input',
         placeholderText: 'placeholder text',
         size: 'xs'
       })
     ),
-    _reactForAtom.React.createElement(
-      _Block.Block,
+    (_reactForAtom2 || _reactForAtom()).React.createElement(
+      (_Block2 || _Block()).Block,
       null,
-      _reactForAtom.React.createElement(_AtomInput.AtomInput, {
+      (_reactForAtom2 || _reactForAtom()).React.createElement((_AtomInput2 || _AtomInput()).AtomInput, {
         initialValue: 'sm atom input',
         placeholderText: 'placeholder text',
         size: 'sm'
       })
     ),
-    _reactForAtom.React.createElement(
-      _Block.Block,
+    (_reactForAtom2 || _reactForAtom()).React.createElement(
+      (_Block2 || _Block()).Block,
       null,
-      _reactForAtom.React.createElement(_AtomInput.AtomInput, {
+      (_reactForAtom2 || _reactForAtom()).React.createElement((_AtomInput2 || _AtomInput()).AtomInput, {
         initialValue: 'lg atom input',
         placeholderText: 'placeholder text',
         size: 'lg'
       })
     ),
-    _reactForAtom.React.createElement(
-      _Block.Block,
+    (_reactForAtom2 || _reactForAtom()).React.createElement(
+      (_Block2 || _Block()).Block,
       null,
-      _reactForAtom.React.createElement(_AtomInput.AtomInput, {
+      (_reactForAtom2 || _reactForAtom()).React.createElement((_AtomInput2 || _AtomInput()).AtomInput, {
         initialValue: 'unstyled atom input',
         placeholderText: 'placeholder text',
         unstyled: true
       })
     ),
-    _reactForAtom.React.createElement(
-      _Block.Block,
+    (_reactForAtom2 || _reactForAtom()).React.createElement(
+      (_Block2 || _Block()).Block,
       null,
-      _reactForAtom.React.createElement(_AtomInput.AtomInput, {
+      (_reactForAtom2 || _reactForAtom()).React.createElement((_AtomInput2 || _AtomInput()).AtomInput, {
         initialValue: 'atom input with custom width',
         placeholderText: 'placeholder text',
         width: 200
@@ -92,10 +112,10 @@ var AtomInputExample = function AtomInputExample() {
   );
 };
 
-var buffer1 = new _atom.TextBuffer({
+var buffer1 = new (_atom2 || _atom()).TextBuffer({
   text: '/**\n * Hi!\n */\n\n// I am a TextBuffer.\nconst a = 42;'
 });
-var buffer2 = new _atom.TextBuffer({
+var buffer2 = new (_atom2 || _atom()).TextBuffer({
   text: '/**\n * Hi!\n */\n\n// I am a read-only, gutter-less TextBuffer.\nconst a = 42;'
 });
 var editorWrapperStyle = {
@@ -106,13 +126,13 @@ var editorWrapperStyle = {
 };
 
 var AtomTextEditorExample = function AtomTextEditorExample() {
-  return _reactForAtom.React.createElement(
-    _Block.Block,
+  return (_reactForAtom2 || _reactForAtom()).React.createElement(
+    (_Block2 || _Block()).Block,
     null,
-    _reactForAtom.React.createElement(
+    (_reactForAtom2 || _reactForAtom()).React.createElement(
       'div',
       { style: editorWrapperStyle },
-      _reactForAtom.React.createElement(_AtomTextEditor.AtomTextEditor, {
+      (_reactForAtom2 || _reactForAtom()).React.createElement((_AtomTextEditor2 || _AtomTextEditor()).AtomTextEditor, {
         gutterHidden: false,
         readOnly: false,
         syncTextContents: false,
@@ -121,10 +141,10 @@ var AtomTextEditorExample = function AtomTextEditorExample() {
         textBuffer: buffer1
       })
     ),
-    _reactForAtom.React.createElement(
+    (_reactForAtom2 || _reactForAtom()).React.createElement(
       'div',
       { style: _extends({}, editorWrapperStyle, { marginTop: '2em' }) },
-      _reactForAtom.React.createElement(_AtomTextEditor.AtomTextEditor, {
+      (_reactForAtom2 || _reactForAtom()).React.createElement((_AtomTextEditor2 || _AtomTextEditor()).AtomTextEditor, {
         gutterHidden: true,
         readOnly: true,
         syncTextContents: false,

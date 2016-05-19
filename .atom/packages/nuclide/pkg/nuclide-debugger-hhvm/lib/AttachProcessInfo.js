@@ -6,13 +6,13 @@ var _createClass = (function () { function defineProperties(target, props) { for
 
 var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -22,13 +22,23 @@ function _inherits(subClass, superClass) { if (typeof superClass !== 'function' 
  * the root directory of this source tree.
  */
 
-var _assert = require('assert');
+var _assert2;
 
-var _assert2 = _interopRequireDefault(_assert);
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
-var _nuclideDebuggerAtom = require('../../nuclide-debugger-atom');
+var _nuclideDebuggerAtom2;
 
-var _HhvmDebuggerInstance = require('./HhvmDebuggerInstance');
+function _nuclideDebuggerAtom() {
+  return _nuclideDebuggerAtom2 = require('../../nuclide-debugger-atom');
+}
+
+var _HhvmDebuggerInstance2;
+
+function _HhvmDebuggerInstance() {
+  return _HhvmDebuggerInstance2 = require('./HhvmDebuggerInstance');
+}
 
 var AttachProcessInfo = (function (_DebuggerProcessInfo) {
   _inherits(AttachProcessInfo, _DebuggerProcessInfo);
@@ -42,12 +52,16 @@ var AttachProcessInfo = (function (_DebuggerProcessInfo) {
   _createClass(AttachProcessInfo, [{
     key: 'debug',
     value: _asyncToGenerator(function* () {
-      return new _HhvmDebuggerInstance.HhvmDebuggerInstance(this);
+      try {
+        var services = require('./fb/services');
+        yield services.warnIfNotBuilt(this.getTargetUri());
+      } catch (_) {}
+      return new (_HhvmDebuggerInstance2 || _HhvmDebuggerInstance()).HhvmDebuggerInstance(this);
     })
   }, {
     key: 'compareDetails',
     value: function compareDetails(other) {
-      (0, _assert2['default'])(other instanceof AttachProcessInfo);
+      (0, (_assert2 || _assert()).default)(other instanceof AttachProcessInfo);
       return compareString(this._targetUri, other._targetUri);
     }
   }, {
@@ -59,7 +73,7 @@ var AttachProcessInfo = (function (_DebuggerProcessInfo) {
   }]);
 
   return AttachProcessInfo;
-})(_nuclideDebuggerAtom.DebuggerProcessInfo);
+})((_nuclideDebuggerAtom2 || _nuclideDebuggerAtom()).DebuggerProcessInfo);
 
 exports.AttachProcessInfo = AttachProcessInfo;
 

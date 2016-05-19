@@ -127,6 +127,8 @@ class Server:
         ("clang_getCString",
             [c_void_p],
             c_char_p),
+
+        ("clang_sortCodeCompletionResults", [c_void_p, c_uint], None),
     ]
 
     # New in Clang 3.8: not in the Python bindings yet.
@@ -275,7 +277,8 @@ class Server:
         translation_unit = self._get_translation_unit(None, flags)
         if translation_unit:
             if self.completion_cache is None:
-                self.completion_cache = CompletionCache(self.src, translation_unit)
+                self.completion_cache = CompletionCache(
+                    self.src, translation_unit, self.custom_clang_lib)
             completions = self.completion_cache.get_completions(
                 line + 1,
                 token_start_column + 1,
@@ -364,9 +367,7 @@ class Server:
     def get_outline(self, request, response):
         contents = request['contents']
         flags = request['flags']
-        # Note that this does /not/ update the translation unit.
-        # This is intentional, as we do not want to block autocomplete.
-        translation_unit = self._get_translation_unit(contents, flags)
+        translation_unit = self._update_translation_unit(contents, flags)
         if not translation_unit:
             return
         response['outline'] = outline.get_outline(translation_unit, self.src)
@@ -388,6 +389,7 @@ class Server:
             TranslationUnit.PARSE_PRECOMPILED_PREAMBLE |
             TranslationUnit.PARSE_CACHE_COMPLETION_RESULTS |
             TranslationUnit.PARSE_INCLUDE_BRIEF_COMMENTS_IN_CODE_COMPLETION |
+            TranslationUnit.PARSE_DETAILED_PROCESSING_RECORD |
             TranslationUnit.PARSE_INCOMPLETE)
 
         # Clang 3.8 comes with CXTranslationUnit_CreatePreambleOnFirstParse,
@@ -416,7 +418,7 @@ class Server:
         for arg in flags:
             if arg == self.src:
                 # Including the input file as an argument causes index.parse() to fail.
-                # Surprisingly, including '/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang'
+                # Surprisingly, including the path to the clang binary
                 # as the first argument does not cause any issues.
                 pass
             elif arg == '-c':

@@ -29,10 +29,10 @@ function dispatchKeyboardEvent(key, target) {
 
   var event = atom.keymaps.constructor.buildKeydownEvent(key, {
     target: target,
-    alt: !!alt,
-    cmd: !!cmd,
-    ctrl: !!ctrl,
-    shift: !!shift
+    alt: Boolean(alt),
+    cmd: Boolean(cmd),
+    ctrl: Boolean(ctrl),
+    shift: Boolean(shift)
   });
   atom.keymaps.handleKeyboardEvent(event);
 }

@@ -1,6 +1,4 @@
-
-
-var jscs = require('jscodeshift');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -10,7 +8,13 @@ var jscs = require('jscodeshift');
  * the root directory of this source tree.
  */
 
-var match = jscs.match;
+var _jscodeshift2;
+
+function _jscodeshift() {
+  return _jscodeshift2 = _interopRequireDefault(require('jscodeshift'));
+}
+
+var match = (_jscodeshift2 || _jscodeshift()).default.match;
 
 /**
  * This traverses a node to find the first identifier in nested expressions.

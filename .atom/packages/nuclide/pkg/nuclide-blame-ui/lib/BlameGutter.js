@@ -14,27 +14,41 @@ var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = 
 
 var _createDecoratedClass = (function () { function defineProperties(target, descriptors, initializers) { for (var i = 0; i < descriptors.length; i++) { var descriptor = descriptors[i]; var decorators = descriptor.decorators; var key = descriptor.key; delete descriptor.key; delete descriptor.decorators; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor || descriptor.initializer) descriptor.writable = true; if (decorators) { for (var f = 0; f < decorators.length; f++) { var decorator = decorators[f]; if (typeof decorator === 'function') { descriptor = decorator(target, key, descriptor) || descriptor; } else { throw new TypeError('The decorator for method ' + descriptor.key + ' is of the invalid type ' + typeof decorator); } } if (descriptor.initializer !== undefined) { initializers[key] = descriptor; continue; } } Object.defineProperty(target, key, descriptor); } } return function (Constructor, protoProps, staticProps, protoInitializers, staticInitializers) { if (protoProps) defineProperties(Constructor.prototype, protoProps, protoInitializers); if (staticProps) defineProperties(Constructor, staticProps, staticInitializers); return Constructor; }; })();
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { var callNext = step.bind(null, 'next'); var callThrow = step.bind(null, 'throw'); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(callNext, callThrow); } } callNext(); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _nuclideAnalytics = require('../../nuclide-analytics');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _atom = require('atom');
+var _constants2;
 
-var _assert = require('assert');
+function _constants() {
+  return _constants2 = require('./constants');
+}
 
-var _assert2 = _interopRequireDefault(_assert);
+var _nuclideAnalytics2;
 
-var _shell = require('shell');
+function _nuclideAnalytics() {
+  return _nuclideAnalytics2 = require('../../nuclide-analytics');
+}
 
-var _shell2 = _interopRequireDefault(_shell);
+var _atom2;
 
-var _require = require('./constants');
+function _atom() {
+  return _atom2 = require('atom');
+}
 
-var BLAME_DECORATION_CLASS = _require.BLAME_DECORATION_CLASS;
+var _assert2;
+
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
+
+var _shell2;
+
+function _shell() {
+  return _shell2 = _interopRequireDefault(require('shell'));
+}
 
 var MS_TO_WAIT_BEFORE_SPINNER = 2000;
 var CHANGESET_CSS_CLASS = 'nuclide-blame-ui-hash';
@@ -59,7 +73,7 @@ var _default = (function () {
     this._isDestroyed = false;
     this._isEditorDestroyed = false;
 
-    this._subscriptions = new _atom.CompositeDisposable();
+    this._subscriptions = new (_atom2 || _atom()).CompositeDisposable();
     this._editor = editor;
     this._blameProvider = blameProvider;
     this._changesetSpanClassName = CHANGESET_CSS_CLASS;
@@ -108,16 +122,16 @@ var _default = (function () {
       }
 
       var blameProvider = this._blameProvider;
-      (0, _assert2['default'])(typeof blameProvider.getUrlForRevision === 'function');
+      (0, (_assert2 || _assert()).default)(typeof blameProvider.getUrlForRevision === 'function');
       var url = yield blameProvider.getUrlForRevision(this._editor, changeset);
       if (url) {
         // Note that 'shell' is not the public 'shell' package on npm but an Atom built-in.
-        _shell2['default'].openExternal(url);
+        (_shell2 || _shell()).default.openExternal(url);
       } else {
         atom.notifications.addWarning('No URL found for ' + changeset + '.');
       }
 
-      (0, _nuclideAnalytics.track)('blame-gutter-click-revision', {
+      (0, (_nuclideAnalytics2 || _nuclideAnalytics()).track)('blame-gutter-click-revision', {
         editorPath: this._editor.getPath() || '',
         url: url || ''
       });
@@ -192,7 +206,7 @@ var _default = (function () {
     // The BlameForEditor completely replaces any previous blame information.
   }, {
     key: '_updateBlame',
-    decorators: [(0, _nuclideAnalytics.trackTiming)('blame-ui.blame-gutter.updateBlame')],
+    decorators: [(0, (_nuclideAnalytics2 || _nuclideAnalytics()).trackTiming)('blame-ui.blame-gutter.updateBlame')],
     value: function _updateBlame(blameForEditor) {
       if (blameForEditor.size === 0) {
         atom.notifications.addInfo('Found no blame to display. Is this file empty or untracked?\n          If not, check for errors in the Nuclide logs local to your repo.');
@@ -217,7 +231,7 @@ var _default = (function () {
         var blameInfo = _ref2[1];
 
         this._setBlameLine(bufferLine, blameInfo, longestBlame);
-        allPreviousBlamedLines['delete'](bufferLine);
+        allPreviousBlamedLines.delete(bufferLine);
       }
 
       // Any lines that weren't in the new blameForEditor are outdated.
@@ -241,7 +255,7 @@ var _default = (function () {
       var decorationProperties = {
         type: 'gutter',
         gutterName: this._gutter.name,
-        'class': BLAME_DECORATION_CLASS,
+        'class': (_constants2 || _constants()).BLAME_DECORATION_CLASS,
         item: item
       };
 
@@ -266,7 +280,7 @@ var _default = (function () {
       }
       // The recommended way of destroying a decoration is by destroying its marker.
       blameDecoration.getMarker().destroy();
-      this._bufferLineToDecoration['delete'](bufferLine);
+      this._bufferLineToDecoration.delete(bufferLine);
     }
   }, {
     key: '_createGutterItem',
@@ -299,5 +313,5 @@ var _default = (function () {
   return _default;
 })();
 
-exports['default'] = _default;
-module.exports = exports['default'];
+exports.default = _default;
+module.exports = exports.default;

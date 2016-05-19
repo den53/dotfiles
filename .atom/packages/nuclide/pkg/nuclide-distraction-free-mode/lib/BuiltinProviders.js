@@ -14,24 +14,28 @@ var _createClass = (function () { function defineProperties(target, props) { for
 
 exports.getBuiltinProviders = getBuiltinProviders;
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _assert = require('assert');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _assert2 = _interopRequireDefault(_assert);
+var _assert2;
 
-var _nuclideFeatureConfig = require('../../nuclide-feature-config');
+function _assert() {
+  return _assert2 = _interopRequireDefault(require('assert'));
+}
 
-var _nuclideFeatureConfig2 = _interopRequireDefault(_nuclideFeatureConfig);
+var _nuclideFeatureConfig2;
+
+function _nuclideFeatureConfig() {
+  return _nuclideFeatureConfig2 = _interopRequireDefault(require('../../nuclide-feature-config'));
+}
 
 function getBuiltinProviders() {
   var providers = [];
-  if (_nuclideFeatureConfig2['default'].get('nuclide-distraction-free-mode.hideToolBar')) {
+  if ((_nuclideFeatureConfig2 || _nuclideFeatureConfig()).default.get('nuclide-distraction-free-mode.hideToolBar')) {
     providers.push(toolBarProvider);
   }
-  if (_nuclideFeatureConfig2['default'].get('nuclide-distraction-free-mode.hideStatusBar')) {
+  if ((_nuclideFeatureConfig2 || _nuclideFeatureConfig()).default.get('nuclide-distraction-free-mode.hideStatusBar')) {
     providers.push(new StatusBarProvider());
   }
   return providers;
@@ -72,7 +76,7 @@ var StatusBarProvider = (function () {
         element.style.display = 'none';
       } else {
         // isVisible is false, so oldDisplay is non-null
-        (0, _assert2['default'])(this._oldDisplay != null);
+        (0, (_assert2 || _assert()).default)(this._oldDisplay != null);
         element.style.display = this._oldDisplay;
         this._oldDisplay = null;
       }

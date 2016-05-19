@@ -8,11 +8,22 @@
  * the root directory of this source tree.
  */
 
-var flatten = require('../../utils/flatten');
-var printCommaSeparatedNodes = require('../common/printCommaSeparatedNodes');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _utilsFlatten2;
+
+function _utilsFlatten() {
+  return _utilsFlatten2 = _interopRequireDefault(require('../../utils/flatten'));
+}
+
+var _commonPrintCommaSeparatedNodes2;
+
+function _commonPrintCommaSeparatedNodes() {
+  return _commonPrintCommaSeparatedNodes2 = _interopRequireDefault(require('../common/printCommaSeparatedNodes'));
+}
 
 function printArrayPattern(print, node) {
-  return flatten(['[', printCommaSeparatedNodes(print, node.elements), ']']);
+  return (0, (_utilsFlatten2 || _utilsFlatten()).default)(['[', (0, (_commonPrintCommaSeparatedNodes2 || _commonPrintCommaSeparatedNodes()).default)(print, node.elements), ']']);
 }
 
 module.exports = printArrayPattern;
